@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Dokumentasi - Anisa Reviyana</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 15px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-3px);
+        }
+
+        .section h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2 .icon {
+            font-size: 1.3em;
+        }
+
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .code-block {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block .comment {
+            color: #6c7086;
+        }
+
+        .code-block .keyword {
+            color: #cba6f7;
+        }
+
+        .code-block .string {
+            color: #a6e3a1;
+        }
+
+        .code-block .tag {
+            color: #f38ba8;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        li strong {
+            color: #333;
+        }
+
+        .info-box {
+            background: #f8f4ff;
+            border-left: 4px solid #764ba2;
+            padding: 15px 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 15px 0;
+        }
+
+        .info-box h4 {
+            color: #764ba2;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        table tr:hover {
+            background: #f8f4ff;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📘 Manual Dokumentasi</h1>
+            <p>Dokumentasi proyek oleh <strong>Anisa Reviyana</strong></p>
+            <span class="badge">🚀 Project Documentation</span>
+        </header>
+
+        <div class="section">
+            <h2><span class="icon">📋</span> Informasi Proyek</h2>
+            <table>
+                <tr>
+                    <td><strong>Nama Proyek</strong></td>
+                    <td>Manual Dokumentasi</td>
+                </tr>
+                <tr>
+                    <td><strong>Author</strong></td>
+                    <td>Anisa Reviyana</td>
+                </tr>
+                <tr>
+                    <td><strong>Tanggal</strong></td>
+                    <td>14 Juli 2026</td>
+                </tr>
+                <tr>
+                    <td><strong>Repository</strong></td>
+                    <td><a href="https://github.com/anisareviyana/manual-dokumentation">github.com/anisareviyana/manual-dokumentation</a></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🎯</span> Tujuan</h2>
+            <p>Dokumentasi ini dibuat untuk mencatat dan mendokumentasikan berbagai hal penting terkait proyek yang sedang dikerjakan. Tujuan utama dari pembuatan dokumentasi ini adalah:</p>
+            <ul>
+                <li><strong>Mencatat progress</strong> — Setiap perubahan dan perkembangan proyek tercatat dengan rapi</li>
+                <li><strong>Referensi</strong> — Menjadi acuan ketika diperlukan informasi teknis atau non-teknis</li>
+                <li><strong>Kolaborasi</strong> — Memudahkan kolaborasi dengan anggota tim lainnya</li>
+                <li><strong>Knowledge Base</strong> — Menyimpan pengetahuan yang dapat digunakan kembali di masa depan</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📂</span> Struktur Folder</h2>
+            <p>Berikut adalah struktur folder proyek ini:</p>
+            <div class="code-block">
+<span class="comment">📁 manual-dokumentation/</span>
+ ├── 📄 <span class="tag">index.html</span>        <span class="comment">// Halaman utama dokumentasi</span>
+ ├── 📄 <span class="tag">agent.md</span>          <span class="comment">// Memory untuk AI Agent</span>
+ └── 📄 <span class="tag">README.md</span>         <span class="comment">// Informasi proyek</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">🔧</span> Cara Penggunaan</h2>
+            <p>Untuk menjalankan dan mengelola proyek ini, ikuti langkah-langkah berikut:</p>
+            <ol>
+                <li><strong>Clone repository</strong> — <code>git clone https://github.com/anisareviyana/manual-dokumentation.git</code></li>
+                <li><strong>Buka file HTML</strong> — Buka <code>index.html</code> di browser untuk melihat dokumentasi</li>
+                <li><strong>Edit dokumentasi</strong> — Lakukan perubahan pada file HTML sesuai kebutuhan</li>
+                <li><strong>Push perubahan</strong> — Setiap perubahan akan otomatis di-commit dan di-push ke GitHub</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📝</span> Catatan Perubahan (Changelog)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Perubahan</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>14 Juli 2026</td>
+                        <td>Inisialisasi proyek</td>
+                        <td>Pembuatan file dokumentasi HTML pertama</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2><span class="icon">📞</span> Kontak</h2>
+            <div class="info-box">
+                <h4>Informasi Pengembang</h4>
+                <p>Dokumentasi ini dikelola oleh <strong>Anisa Reviyana</strong>.</p>
+                <p>Untuk pertanyaan atau saran, silakan hubungi melalui repository GitHub.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 <a href="https://github.com/anisareviyana">Anisa Reviyana</a> — Dibuat dengan ❤️ untuk dokumentasi</p>
+        </footer>
+    </div>
+</body>
+</html>
