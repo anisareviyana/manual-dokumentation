@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dokumentasi lengkap fitur Push Notification Promotion pada Backoffice ALVIS">
+    <title>Dokumentasi ALVIS - Push Notification Promotion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        :root {
+            /* ALVIS Orange Theme */
+            --primary: #e65100;
+            --primary-light: #fff3e0;
+            --primary-dark: #b53d00;
+            --primary-bg: #fff3e0;
+            --bg: #f8f9fa;
+            --card-bg: #FFFFFF;
+            --text: #2c3e50;
+            --text-light: #475569;
+            --text-muted: #7f8c8d;
+            --border: #e2e8f0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #3B82F6;
+            --shadow: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-hover: 0 4px 12px rgba(230,81,0,0.15);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.3s ease;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: calc(var(--header-height) + 20px);
+        }
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            display: flex;
+            min-height: 100vh;
+        }
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        a:hover {
+            color: var(--primary-dark);
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform var(--transition);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+            padding: 20px 0;
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 8px;
+        }
+        .sidebar-header .brand-logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .sidebar-header .brand-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .sidebar-nav { padding: 0; }
+        .sidebar-nav .nav-section {
+            padding: 16px 20px 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+        }
+        .sidebar-nav a i {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: color var(--transition);
+        }
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        .sidebar-nav a:hover i,
+        .sidebar-nav a.active i {
+            color: var(--primary);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* ===== TOP HEADER ===== */
+        .top-header {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 0 32px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .top-header .breadcrumb {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .top-header .breadcrumb span {
+            color: var(--text);
+            font-weight: 500;
+        }
+        .btn-toggle-sidebar {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text);
+            cursor: pointer;
+            padding: 4px;
+        }
+        .btn-toggle-sidebar:hover { color: var(--primary); }
+        .version-badge {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ===== CONTENT AREA ===== */
+        .content {
+            padding: 32px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ===== COVER ===== */
+        .cover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--radius);
+            padding: 60px 48px;
+            color: #fff;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        .cover::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+        }
+        .cover .cover-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .cover h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .cover p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+        .cover .cover-meta {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+            position: relative;
+            z-index: 1;
+        }
+        .cover .cover-meta span {
+            font-size: 13px;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cover .cover-meta i { font-size: 14px; }
+
+        /* ===== SECTION ===== */
+        .section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 36px 40px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            transition: box-shadow var(--transition);
+        }
+        .section:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .section h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h2::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 24px;
+            background-color: var(--primary);
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .section h2 i {
+            color: var(--primary);
+            font-size: 20px;
+        }
+        .section h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #334155;
+            margin: 24px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section h3 i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+        .section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 16px 0 8px;
+        }
+        .section p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        .section ul,
+        .section ol {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+        .section li {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        /* ===== STEP CARD ===== */
+        .step-card {
+            display: flex;
+            gap: 16px;
+            padding: 16px 20px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary);
+            transition: background var(--transition);
+        }
+        .step-card:hover {
+            background: var(--primary-bg);
+        }
+        .step-card .step-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .step-card .step-content {
+            flex: 1;
+        }
+        .step-card .step-content strong {
+            display: block;
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .step-card .step-content p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* ===== STEPS ===== */
+        .steps {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        .steps .step-item {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+        }
+        .steps .step-item .step-number {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 2rem;
+            height: 2rem;
+            background-color: var(--primary-bg);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 1px solid rgba(230,81,0,0.2);
+        }
+        .steps .step-item .step-text strong {
+            color: #1e293b;
+        }
+
+        /* ===== INFO BOX ===== */
+        .info-box {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin: 16px 0;
+            font-size: 13px;
+        }
+        .info-box i {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .info-box.info {
+            background: #f0f9ff;
+            border-left: 4px solid var(--info);
+            color: #0c4a6e;
+        }
+        .info-box.info i { color: var(--info); }
+        .info-box.success {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            color: #166534;
+        }
+        .info-box.success i { color: var(--success); }
+        .info-box.warning {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            color: #92400E;
+        }
+        .info-box.warning i { color: var(--warning); }
+        .info-box.danger {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            color: #991B1B;
+        }
+        .info-box.danger i { color: var(--danger); }
+
+        /* ===== CALLOUT ===== */
+        .callout {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+        .callout .callout-title {
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .callout p {
+            color: #1e3a1e;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+        .callout.info {
+            background: #f0f9ff;
+            border-left-color: var(--info);
+        }
+        .callout.info .callout-title { color: #0369a1; }
+        .callout.info p { color: #0c4a6e; }
+        .callout.orange {
+            background: var(--primary-bg) !important;
+            border-left-color: var(--primary) !important;
+        }
+        .callout.orange .callout-title { color: var(--primary-dark) !important; }
+        .callout.orange p { color: #5c3a00; }
+
+        /* ===== IMAGE CONTAINER ===== */
+        .img-container {
+            margin: 1.5rem 0 2rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            max-width: 100%;
+        }
+        .img-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            display: block;
+        }
+        .img-container img.mobile-frame {
+            max-width: 280px;
+            height: auto;
+            margin: 0 auto;
+            border: 12px solid #1a1a1a;
+            border-radius: 36px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            background: #000;
+        }
+        .img-container img.mobile-frame::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 6px;
+            background: #1a1a1a;
+            border-radius: 0 0 6px 6px;
+        }
+        .img-container.mobile-framed {
+            position: relative;
+            padding: 20px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-radius: 24px;
+            text-align: center;
+        }
+        .img-container.mobile-framed img {
+            max-width: 260px;
+            height: auto;
+            margin: 0 auto;
+            border: 10px solid #1a1a1a;
+            border-radius: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        .img-caption {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        /* ===== TABLE ===== */
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .section table th {
+            background: #1e293b;
+            color: #fff;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+        }
+        .section table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: #334155;
+            vertical-align: top;
+        }
+        .section table tr:nth-child(even) td {
+            background: var(--bg);
+        }
+        .badge-req {
+            color: #dc2626;
+            font-weight: bold;
+            margin-left: 2px;
+        }
+        .badge-example {
+            background: #e2e8f0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #334155;
+        }
+
+        /* ===== FLOWCHART ===== */
+        .flowchart {
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--bg) 100%);
+            border: 2px solid var(--primary-light);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .flowchart-step {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin: 0.5rem;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+        .flowchart-arrow {
+            display: block;
+            color: var(--primary);
+            font-size: 2rem;
+            margin: 0.5rem 0;
+        }
+        .flowchart-end {
+            background: var(--primary-dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        .faq-question {
+            background: var(--primary);
+            color: white;
+            padding: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .faq-question:hover {
+            background: var(--primary-dark);
+        }
+        .faq-answer {
+            padding: 1.25rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        /* ===== TROUBLESHOOTING ===== */
+        .troubleshooting-item {
+            border-left: 4px solid var(--danger);
+            background: var(--card-bg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: var(--shadow);
+        }
+        .troubleshooting-item h4 {
+            color: var(--danger);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* ===== METRIC CARDS ===== */
+        .metric-cards { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            margin: 16px 0; 
+        }
+        .metric-card { 
+            flex: 1; 
+            min-width: 140px; 
+            padding: 16px; 
+            background: var(--bg); 
+            border-radius: 8px; 
+            border-left: 4px solid; 
+            text-align: center; 
+        }
+        .metric-card .metric-icon { 
+            font-size: 24px; 
+            font-weight: 700; 
+            margin-bottom: 4px; 
+        }
+        .metric-card strong { 
+            display: block; 
+            font-size: 14px; 
+            margin-bottom: 4px; 
+        }
+        .metric-card p { 
+            font-size: 12px; 
+            margin: 0; 
+            color: #666; 
+        }
+        .metric-card.sent { border-left-color: #663399; }
+        .metric-card.sent .metric-icon { color: #663399; }
+        .metric-card.sent strong { color: #663399; }
+        .metric-card.received { border-left-color: var(--success); }
+        .metric-card.received .metric-icon { color: #065F46; }
+        .metric-card.received strong { color: #065F46; }
+        .metric-card.read { border-left-color: var(--info); }
+        .metric-card.read .metric-icon { color: #1E40AF; }
+        .metric-card.read strong { color: #1E40AF; }
+
+        /* ===== TOC ===== */
+        .toc {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 28px 36px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+        .toc h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .toc ul li {
+            padding: 6px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        .toc ul li:last-child { border-bottom: none; }
+        .toc ul li a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text);
+            transition: color var(--transition);
+        }
+        .toc ul li a:hover { color: var(--primary); }
+        .toc ul li a .toc-num {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 24px;
+        }
+        .toc ul li a i {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* ===== TAGS ===== */
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .tag.admin { background: #DBEAFE; color: #1E40AF; }
+        .tag.user { background: #D1FAE5; color: #065F46; }
+        .tag.both { background: var(--primary-bg); color: var(--primary); }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-section {
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--card-bg) 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            margin: 0.75rem 0;
+            box-shadow: var(--shadow);
+        }
+        .contact-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+        .footer a { color: var(--primary); }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(230,81,0,0.3);
+            transition: all var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+        }
+        .scroll-top.show { opacity: 1; visibility: visible; }
+        .scroll-top:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; }
+            .btn-toggle-sidebar { display: block; }
+            .top-header { padding: 0 16px; }
+            .content { padding: 16px; }
+            .section { padding: 24px 20px; }
+            .cover { padding: 32px 24px; }
+            .cover h1 { font-size: 24px; }
+            .flowchart-step { display: block; margin: 0.5rem 0; }
+            .toc { padding: 20px; }
+            .section table { font-size: 0.8rem; }
+            .section table th,
+            .section table td { padding: 0.5rem; }
+        }
+
+        @media print {
+            .sidebar, .top-header, .scroll-top { display: none !important; }
+            .main { margin-left: 0 !important; }
+            .section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+            .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand-logo">ALVIS</div>
+            <div class="brand-sub">Panduan Push Notification</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Getting Started</div>
+            <a href="#deskripsi" class="active"><i class="fas fa-info-circle"></i> Deskripsi Fitur</a>
+
+            <div class="nav-section">User Guide</div>
+            <a href="#alur"><i class="fas fa-paper-plane"></i> Alur Pengiriman</a>
+            <a href="#monitoring"><i class="fas fa-chart-line"></i> Monitoring</a>
+
+            <div class="nav-section">Reference</div>
+            <a href="#troubleshooting"><i class="fas fa-tools"></i> Troubleshooting</a>
+            <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+            <a href="#error-handling"><i class="fas fa-exclamation-triangle"></i> Error Handling</a>
+
+            <div class="nav-section">Support</div>
+            <a href="#specs"><i class="fas fa-code"></i> Spesifikasi Teknis</a>
+            <a href="#kontak"><i class="fas fa-headset"></i> Kontak & Help</a>
+        </nav>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <div class="main">
+
+        <!-- ===== TOP HEADER ===== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="btn-toggle-sidebar" id="btnToggleSidebar" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="breadcrumb">
+                    <i class="fas fa-home"></i> Backoffice / Promotion / <span>Push Notification</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <span class="version-badge">
+                    <i class="fas fa-sync-alt"></i> v2.0.0
+                </span>
+            </div>
+        </header>
+
+        <!-- ===== CONTENT ===== -->
+        <div class="content">
+
+            <!-- ===== COVER ===== -->
+            <section class="cover">
+                <span class="cover-badge"><i class="fas fa-bullhorn"></i> Fitur Push Notification</span>
+                <h1>Manual Book<br>Push Notification Promotion ALVIS</h1>
+                <p>Panduan lengkap penggunaan fitur push notification promotion untuk campaign marketing dan promosi di Backoffice ALVIS.</p>
+                <div class="cover-meta">
+                    <span><i class="fas fa-calendar-alt"></i> Juni 2026</span>
+                    <span><i class="fas fa-mobile-alt"></i> Android & iOS</span>
+                    <span><i class="fas fa-desktop"></i> Backoffice ALVIS</span>
+                    <span><i class="fas fa-tag"></i> v2.0.0</span>
+                </div>
+            </section>
+
+            <!-- ===== DAFTAR ISI ===== -->
+            <div class="toc">
+                <h2><i class="fas fa-list"></i> Daftar Isi</h2>
+                <ul>
+                    <li><a href="#deskripsi"><span class="toc-num">1</span> <i class="fas fa-info-circle"></i> Deskripsi Fitur</a></li>
+                    <li><a href="#alur"><span class="toc-num">2</span> <i class="fas fa-paper-plane"></i> Alur Pengiriman Push Notification</a></li>
+                    <li><a href="#monitoring"><span class="toc-num">3</span> <i class="fas fa-chart-line"></i> Monitoring dan Riwayat Notifikasi</a></li>
+                    <li><a href="#troubleshooting"><span class="toc-num">4</span> <i class="fas fa-tools"></i> Troubleshooting</a></li>
+                    <li><a href="#faq"><span class="toc-num">5</span> <i class="fas fa-question-circle"></i> FAQ</a></li>
+                    <li><a href="#error-handling"><span class="toc-num">6</span> <i class="fas fa-exclamation-triangle"></i> Error Handling & Best Practices</a></li>
+                    <li><a href="#specs"><span class="toc-num">7</span> <i class="fas fa-code"></i> Spesifikasi Teknis</a></li>
+                    <li><a href="#kontak"><span class="toc-num">8</span> <i class="fas fa-headset"></i> Kontak & Support</a></li>
+                </ul>
+            </div>
+
+            <!-- ===== SECTION 1: DESKRIPSI ===== -->
+            <section id="deskripsi" class="section">
+                <h2><i class="fas fa-info-circle"></i> 1. Deskripsi Fitur</h2>
+                
+                <p><strong>Push Notification Promotion</strong> adalah fitur yang memungkinkan Admin Backoffice ALVIS untuk mengirimkan informasi promosi secara massal (broadcast) langsung ke perangkat pengguna. Notifikasi ini akan diterima oleh seluruh pengguna yang telah mengunduh dan memasang aplikasi ALVIS, baik pada platform <strong>Android</strong> maupun <strong>iOS</strong>.</p>
+
+                <div class="callout success">
+                    <div class="callout-title"><i class="fas fa-check-circle"></i> Keuntungan Utama</div>
+                    <p>Dengan fitur ini, tim marketing dapat menjangkau seluruh basis pengguna secara instan tanpa perlu mengandalkan media sosial atau email marketing.</p>
+                </div>
+
+                <h3><i class="fas fa-star"></i> Fitur Utama</h3>
+                <ul>
+                    <li><strong>Broadcast Massal</strong> - Kirim ke semua pengguna sekaligus</li>
+                    <li><strong>Multi-Platform</strong> - Android & iOS support</li>
+                    <li><strong>Real-time</strong> - Penyampaian instant ke device</li>
+                    <li><strong>Tracking Lengkap</strong> - Monitoring penerimaan dan interaksi</li>
+                </ul>
+
+                <div class="info-box info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>Push Notification ALVIS didukung oleh layanan <strong>Firebase Cloud Messaging (FCM)</strong> untuk Android dan <strong>Apple Push Notification Service (APNS)</strong> untuk iOS.</div>
+                </div>
+
+                <figure>
+                    <div class="img-container">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-promotion%2FManage%20promo.png?alt=media&token=8408b833-8b4a-4135-80ec-0523defb6799" alt="Antarmuka fitur Manage Promotion di Backoffice ALVIS">
+                        <div class="img-caption">Gambar 1.1: Antarmuka fitur Manage Promotion di Backoffice ALVIS</div>
+                    </div>
+                </figure>
+            </section>
+
+            <!-- ===== SECTION 2: ALUR PENGIRIMAN ===== -->
+            <section id="alur" class="section">
+                <h2><i class="fas fa-paper-plane"></i> 2. Alur Pengiriman Push Notification</h2>
+                
+                <p>Untuk mengirimkan notifikasi promosi, pastikan data promo telah dibuat terlebih dahulu di sistem. Berikut adalah langkah-langkahnya:</p>
+
+                <div class="flowchart" role="img" aria-label="Diagram alur pengiriman push notification">
+                    <div class="flowchart-step">1. Login Backoffice ALVIS</div>
+                    <span class="flowchart-arrow">↓</span>
+                    <div class="flowchart-step">2. Menu Promotion → Manage Promotion</div>
+                    <span class="flowchart-arrow">↓</span>
+                    <div class="flowchart-step">3. Pilih Data Promosi</div>
+                    <span class="flowchart-arrow">↓</span>
+                    <div class="flowchart-step">4. Klik Tombol 🔔 Kirim Push Notifikasi</div>
+                    <span class="flowchart-arrow">↓</span>
+                    <div class="flowchart-end">5. Notifikasi Terkirim ke Semua Device</div>
+                </div>
+
+                <ul class="steps">
+                    <li class="step-item">
+                        <span class="step-number">1</span>
+                        <div class="step-text">Masuk ke <strong>Backoffice ALVIS</strong> menggunakan akun Admin Anda.</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">2</span>
+                        <div class="step-text">Buka menu utama <strong>Promotion</strong>, lalu pilih sub-menu <strong>Manage Promotion</strong>.</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">3</span>
+                        <div class="step-text">Sistem akan menampilkan daftar (list) data promosi yang tersedia.</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">4</span>
+                        <div class="step-text">Cari data promosi yang ingin dipublikasikan, lalu perhatikan kolom aksi pada baris data tersebut.</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">5</span>
+                        <div class="step-text">Klik tombol <strong>Kirim Push Notifikasi</strong> yang ditandai dengan <strong>🔔</strong>.</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">6</span>
+                        <div class="step-text">Sistem secara otomatis akan memproses dan mengirimkan detail promosi tersebut ke seluruh <em>device</em> pengguna (Android & iOS).</div>
+                    </li>
+                </ul>
+
+                <div class="info-box warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div><strong>⚠️ Peringatan:</strong> Tindakan ini bersifat <mark>irreversible</mark> (tidak dapat dibatalkan). Pastikan data promosi seperti judul, deskripsi, dan masa berlaku promo sudah sesuai sebelum menekan tombol berlogo lonceng.</div>
+                </div>
+
+                <h3><i class="fas fa-list-ol"></i> Langkah-Langkah Pengiriman Push Notification</h3>
+                
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>Klik tombol Push Notification</strong>
+                        <p>Pilih data promo yang akan dikirimkan, lalu klik tombol push notification (berlogo lonceng) pada kolom aksi.</p>
+                    </div>
+                </div>
+
+                <figure>
+                    <div class="img-container">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-promotion%2FButton%20push%20notification.png?alt=media&token=b1f6ed74-9341-4c5f-9032-145b16e20dc9" alt="Tombol Push Notification pada data promo">
+                        <div class="img-caption">Gambar 2.1: Klik tombol Push Notification pada data promo yang dipilih</div>
+                    </div>
+                </figure>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>Konfirmasi Pengiriman</strong>
+                        <p>Sistem menampilkan pop up konfirmasi "Do you sure want to send promo notification?". Klik <strong>OK</strong> untuk melanjutkan pengiriman.</p>
+                    </div>
+                </div>
+
+                <figure>
+                    <div class="img-container">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-promotion%2Fpop%20up%20notifikasi.png?alt=media&token=2a69143d-4215-4d31-981b-b840ade39805" alt="Pop up konfirmasi pengiriman notifikasi">
+                        <div class="img-caption">Gambar 2.2: Pop up konfirmasi "Do you sure want to send promo notification?"</div>
+                    </div>
+                </figure>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>Notifikasi Berhasil Terkirim</strong>
+                        <p>Sistem menampilkan <strong>sukses bar</strong> sebagai informasi bahwa push notification telah berhasil dikirimkan ke seluruh device pengguna ALVIS mobile apps.</p>
+                    </div>
+                </div>
+
+                <figure>
+                    <div class="img-container">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-promotion%2Fsukses%20kirim%20notif%20promo.png?alt=media&token=b856382f-e7d7-405b-a783-7f0e0c122785" alt="Sukses bar notifikasi terkirim">
+                        <div class="img-caption">Gambar 2.3: Sukses barnotifikasi promo berhasil terkirim</div>
+                    </div>
+                </figure>
+
+                <div class="callout success">
+                    <div class="callout-title"><i class="fas fa-check-circle"></i> Push Notification Berhasil</div>
+                    <p>Setelah langkah ketiga selesai, notifikasi promo akan diterima oleh seluruh pengguna ALVIS mobile apps (Android & iOS) yang telah menginstall aplikasi.</p>
+                </div>
+            </section>
+
+            <!-- ===== SECTION 2B: USER SIDE (MOBILE) ===== -->
+            <section id="user-side" class="section">
+                <h2><i class="fas fa-mobile-alt"></i> 2b. Tampilan di Sisi Pengguna (Mobile Apps)</h2>
+                
+                <p>Setelah admin berhasil mengirimkan push notification promo, berikut adalah tampilan yang akan diterima oleh pengguna ALVIS mobile apps di perangkat Android dan iOS:</p>
+
+                <h3><i class="fas fa-bell"></i> Notifikasi Promo Diterima</h3>
+                <figure>
+                    <div class="img-container mobile-framed">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-promotion%2Fnotifikasi%20yang%20diterima.png?alt=media&token=149436fb-87aa-40b8-a1ab-ef0a3279a3c0" alt="Notifikasi promo diterima di mobile">
+                        <div class="img-caption">Gambar 2.4: Tampilan notifikasi promo yang diterima di ALVIS Mobile Apps</div>
+                    </div>
+                </figure>
+
+                <h3><i class="fas fa-hand-pointer"></i> Membuka Detail Promotion</h3>
+                <p>Ketika pengguna <strong>men-tap</strong> (mengklik) notifikasi promo tersebut, aplikasi akan membuka halaman <strong>Detail Promotion</strong> yang menampilkan informasi lengkap tentang promosi.</p>
+                <figure>
+                    <div class="img-container mobile-framed">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-promotion%2Fnotifikasi%20yang%20tap.png?alt=media&token=345dca98-0d19-4b42-8a1b-bdcef7176628" alt="Halaman detail promotion setelah tap notifikasi">
+                        <div class="img-caption">Gambar 2.5: Halaman Detail Promotion setelah men-tap notifikasi</div>
+                    </div>
+                </figure>
+            </section>
+
+            <!-- ===== SECTION 3: MONITORING ===== -->
+            <section id="monitoring" class="section">
+                <h2><i class="fas fa-chart-line"></i> 3. Monitoring dan Riwayat Notifikasi</h2>
+                
+                <p>Setelah notifikasi terkirim, Admin dapat memantau performa dan efektivitas dari notifikasi tersebut melalui halaman riwayat. Parameter yang dapat dipantau meliputi jumlah penerima dan jumlah interaksi pengguna.</p>
+                
+                <h3><i class="fas fa-step-forward"></i> Langkah Mengakses Detail Monitoring</h3>
+                <ol>
+                    <li>Pada list data notifikasi/promosi, cari baris notifikasi yang ingin Anda evaluasi.</li>
+                    <li>Klik tombol <strong>Detail Notification</strong> yang ditandai dengan <strong>💬</strong> pada kolom aksi di data promo yang dipilih.</li>
+                    <li>Sistem akan mengarahkan Anda ke halaman <strong>Notification Promo Detail</strong> yang menampilkan visualisasi data performa notifikasi.</li>
+                </ol>
+
+                <figure>
+                    <div class="img-container">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-promotion%2Fbutton%20notif%20promo%20detail.png?alt=media&token=5273c5b7-dbc4-4df3-828a-4402fad38a63" alt="Tombol Notification Promo Detail">
+                        <div class="img-caption">Gambar 3.1: Lokasi tombol Notification Promo Detail pada data promo</div>
+                    </div>
+                </figure>
+
+                <h3><i class="fas fa-chart-pie"></i> Halaman Notification Promo Detail</h3>
+                <p>Di halaman <strong>Notification Promo Detail</strong>, Admin dapat melihat statistik yang meliputi:</p>
+                <ul>
+                    <li><strong>Jumlah notifikasi berhasil dikirim</strong> ke pengguna ALVIS mobile apps</li>
+                    <li><strong>Jumlah notifikasi yang di-tap (dibuka)</strong> oleh pengguna ALVIS mobile apps</li>
+                </ul>
+
+                <h3><i class="fas fa-chart-bar"></i> Metrik yang Dipantau</h3>
+                
+                <div class="metric-cards">
+                    <div class="metric-card sent">
+                        <div class="metric-icon">📤</div>
+                        <strong>Dikirim</strong>
+                        <p>Jumlah notifikasi terkirim</p>
+                    </div>
+                    <div class="metric-card read">
+                        <div class="metric-icon">👁️</div>
+                        <strong>Dibaca</strong>
+                        <p>User membuka notifikasi</p>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metrik / Indikator</th>
+                            <th>Deskripsi Fungsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>User Menerima Notifikasi</strong></td>
+                            <td>Jumlah total perangkat (Android & iOS) yang berhasil menerima <em>payload</em> push notification</td>
+                        </tr>
+                        <tr>
+                            <td><strong>User Membuka Notifikasi</strong></td>
+                            <td>Jumlah pengguna yang melakukan klik (<em>tap</em>) pada push notification untuk melihat detail promo</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <figure>
+                    <div class="img-container">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-promotion%2Fnotif%20promo%20detail.png?alt=media&token=913c69f0-0f72-46ec-9bc7-c87adb07d414" alt="Halaman Notification Promo Detail">
+                        <div class="img-caption">Gambar 3.2: Halaman Notification Promo Detail dengan statistik jumlah notifikasi terkirim dan jumlah notifikasi yang di-tap</div>
+                    </div>
+                </figure>
+            </section>
+
+            <!-- ===== SECTION 4: TROUBLESHOOTING ===== -->
+            <section id="troubleshooting" class="section">
+                <h2><i class="fas fa-tools"></i> 4. Troubleshooting</h2>
+                
+                <p>Berikut adalah beberapa masalah umum yang mungkin terjadi beserta solusinya:</p>
+
+                <article class="troubleshooting-item">
+                    <h4>🚫 Notifikasi Tidak Terkirim</h4>
+                    <p><strong>Penyebab:</strong></p>
+                    <ul>
+                        <li>Koneksi internet tidak stabil</li>
+                        <li>Server push notification sedang down</li>
+                        <li>Data promosi belum lengkap</li>
+                    </ul>
+                    <p><strong>Solusi:</strong></p>
+                    <div class="step-card">
+                        <div class="step-number"><i class="fas fa-search"></i></div>
+                        <div class="step-content">
+                            <strong>Periksa Koneksi Internet</strong>
+                            <p>Pastikan perangkat terhubung ke internet (WiFi / data seluler).</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number"><i class="fas fa-clock"></i></div>
+                        <div class="step-content">
+                            <strong>Tunggu dan Coba Lagi</strong>
+                            <p>Tunggu beberapa menit dan coba lagi. Server mungkin sedang maintenance.</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number"><i class="fas fa-check-circle"></i></div>
+                        <div class="step-content">
+                            <strong>Validasi Data Promosi</strong>
+                            <p>Pastikan semua field data promosi terisi lengkap dan benar.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="troubleshooting-item">
+                    <h4>⚠️ Notifikasi Hanya Terkirim ke Sebagian Pengguna</h4>
+                    <p><strong>Penyebab:</strong></p>
+                    <ul>
+                        <li>Beberapa pengguna belum update aplikasi</li>
+                        <li>Device token tidak valid</li>
+                        <li>Pengguna telah uninstall aplikasi</li>
+                    </ul>
+                    <p><strong>Solusi:</strong></p>
+                    <ul class="steps">
+                        <li class="step-item">
+                            <span class="step-number">1</span>
+                            <div class="step-text">Verifikasi statistik pengiriman di dashboard</div>
+                        </li>
+                        <li class="step-item">
+                            <span class="step-number">2</span>
+                            <div class="step-text">Pastikan pengguna telah update ke versi terbaru aplikasi</div>
+                        </li>
+                        <li class="step-item">
+                            <span class="step-number">3</span>
+                            <div class="step-text">Kirim notifikasi ulang jika diperlukan</div>
+                        </li>
+                    </ul>
+                </article>
+
+                <article class="troubleshooting-item">
+                    <h4>❌ Error "Invalid Payload"</h4>
+                    <p><strong>Penyebab:</strong></p>
+                    <ul>
+                        <li>Format data tidak sesuai standar</li>
+                        <li>Karakter khusus tidak di-escape dengan benar</li>
+                        <li>Ukuran payload melebihi batas maksimum</li>
+                    </ul>
+                    <p><strong>Solusi:</strong></p>
+                    <ul>
+                        <li>Periksa format data promosi</li>
+                        <li>Hapus atau escape karakter khusus</li>
+                        <li>Pastikan deskripsi promo tidak melebihi 2000 karakter</li>
+                    </ul>
+                </article>
+            </section>
+
+            <!-- ===== SECTION 5: FAQ ===== -->
+            <section id="faq" class="section">
+                <h2><i class="fas fa-question-circle"></i> 5. FAQ (Pertanyaan Umum)</h2>
+
+                <article class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <i class="fas fa-question-circle"></i> Q: Berapa jumlah maksimal penerima push notification?
+                    </div>
+                    <div class="faq-answer">
+                        <strong>A:</strong> Tidak ada batasan jumlah penerima. Sistem dapat mengirim push notification ke seluruh pengguna yang terinstall aplikasi ALVIS secara bersamaan.
+                    </div>
+                </article>
+
+                <article class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <i class="fas fa-question-circle"></i> Q: Apakah push notification bisa dijadwalkan?
+                    </div>
+                    <div class="faq-answer">
+                        <strong>A:</strong> Ya, fitur penjadwalan tersedia di sistem. Anda dapat mengatur waktu pengiriman notifikasi di masa yang akan datang sesuai kebutuhan campaign.
+                    </div>
+                </article>
+
+                <article class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <i class="fas fa-question-circle"></i> Q: Bagaimana jika saya ingin membatalkan notifikasi yang sudah terkirim?
+                    </div>
+                    <div class="faq-answer">
+                        <strong>A:</strong> Sayangnya, setelah notifikasi terkirim, tindakan tidak dapat dibatalkan. Namun, Anda dapat mengirim notifikasi follow-up untuk mengklarifikasi atau memperbaiki informasi sebelumnya.
+                    </div>
+                </article>
+
+                <article class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <i class="fas fa-question-circle"></i> Q: Apakah ada biaya untuk menggunakan fitur push notification?
+                    </div>
+                    <div class="faq-answer">
+                        <strong>A:</strong> Fitur push notification tidak memerlukan biaya tambahan. Namun, perlu diperhatikan bahwa penggunaan bandwidth data mungkin berlaku sesuai paket internet pengguna.
+                    </div>
+                </article>
+
+                <article class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <i class="fas fa-question-circle"></i> Q: Bagaimana cara melacak performa notifikasi?
+                    </div>
+                    <div class="faq-answer">
+                        <strong>A:</strong> Anda dapat melihat metrik performa di halaman Detail Notification, termasuk jumlah penerima, tingkat keterbacaan, dan konversi.
+                    </div>
+                </article>
+            </section>
+
+            <!-- ===== SECTION 6: ERROR HANDLING ===== -->
+            <section id="error-handling" class="section">
+                <h2><i class="fas fa-exclamation-triangle"></i> 6. Error Handling & Best Practices</h2>
+
+                <h3><i class="fas fa-check-double"></i> Best Practices dalam Penggunaan Push Notification</h3>
+                <ol class="steps">
+                    <li class="step-item">
+                        <span class="step-number">1</span>
+                        <div class="step-text"><strong>Validasi Data Sebelum Pengiriman:</strong> Selalu periksa kembali judul, deskripsi, gambar, dan tautan sebelum mengirim notifikasi.</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">2</span>
+                        <div class="step-text"><strong>Waktu Pengiriman yang Tepat:</strong> Kirim notifikasi pada waktu yang sesuai dengan target audiens (disarankan pagi hari atau sore hari).</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">3</span>
+                        <div class="step-text"><strong>Frekuensi yang Konsisten:</strong> Jangan spam pengguna dengan terlalu banyak notifikasi. Batasi maksimal 2-3 notifikasi per minggu.</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">4</span>
+                        <div class="step-text"><strong>Personalisasi Konten:</strong> Gunakan data pengguna untuk membuat notifikasi lebih relevan dan personal.</div>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-number">5</span>
+                        <div class="step-text"><strong>Clear Call-to-Action:</strong> Setiap notifikasi harus memiliki tujuan yang jelas dan instruksi yang mudah dipahami.</div>
+                    </li>
+                </ol>
+
+                <div class="info-box danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <strong>❌ Yang Harus Dihindari:</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>Mengirim informasi yang salah atau menyesatkan</li>
+                            <li>Mengirim notifikasi terlalu sering</li>
+                            <li>Tidak menyertakan informasi penting seperti masa berlaku promo</li>
+                            <li>Menggunakan bahasa yang ambigu atau membingungkan</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-code"></i> Error Codes dan Solusi</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Error Code</th>
+                            <th>Deskripsi</th>
+                            <th>Solusi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge-example">PN-001</span></td>
+                            <td>Connection Timeout</td>
+                            <td>Periksa koneksi internet dan coba lagi dalam beberapa menit</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-example">PN-002</span></td>
+                            <td>Invalid Device Token</td>
+                            <td>Minta pengguna untuk reinstall aplikasi</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-example">PN-003</span></td>
+                            <td>Payload Size Exceeded</td>
+                            <td>Kurangi ukuran konten atau pecah menjadi beberapa notifikasi</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-example">PN-004</span></td>
+                            <td>Rate Limit Exceeded</td>
+                            <td>Tunggu 1 jam sebelum mengirim notifikasi berikutnya</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ===== SECTION 7: SPESIFIKASI TEKNIS ===== -->
+            <section id="specs" class="section">
+                <h2><i class="fas fa-code"></i> 7. Spesifikasi Teknis</h2>
+
+                <h3><i class="fas fa-database"></i> Spesifikasi Payload Push Notification</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Tipe Data</th>
+                            <th>Batas Maksimal</th>
+                            <th>Wajib</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>title</strong><span class="badge-req">*</span></td>
+                            <td>String</td>
+                            <td>100 karakter</td>
+                            <td><span class="tag admin">Ya</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>body</strong><span class="badge-req">*</span></td>
+                            <td>String</td>
+                            <td>2000 karakter</td>
+                            <td><span class="tag admin">Ya</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>image_url</strong></td>
+                            <td>URL</td>
+                            <td>10 MB</td>
+                            <td><span class="tag user">Tidak</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>action_url</strong></td>
+                            <td>URL</td>
+                            <td>2048 karakter</td>
+                            <td><span class="tag user">Tidak</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>priority</strong></td>
+                            <td>Enum</td>
+                            <td>high, normal, low</td>
+                            <td><span class="tag both">Default: normal</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3><i class="fas fa-mobile-alt"></i> Platform yang Didukung</h3>
+                <div class="step-card">
+                    <div class="step-number"><i class="fab fa-android"></i></div>
+                    <div class="step-content">
+                        <strong>Android</strong>
+                        <p>API Level 21+ (Android 5.0 Lollipop)</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number"><i class="fab fa-apple"></i></div>
+                    <div class="step-content">
+                        <strong>iOS</strong>
+                        <p>iOS 12.0+</p>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-exclamation-circle"></i> Limitasi Sistem</h3>
+                <ul>
+                    <li>Maksimal 100 karakter untuk judul notifikasi</li>
+                    <li>Maksimal 2000 karakter untuk deskripsi lengkap</li>
+                    <li>Maksimal 3 aksi tombol per notifikasi</li>
+                    <li>Batas kecepatan pengiriman: 1000 notifikasi per detik</li>
+                </ul>
+            </section>
+
+            <!-- ===== SECTION 8: KONTAK ===== -->
+            <section id="kontak" class="section">
+                <h2><i class="fas fa-headset"></i> 8. Kontak & Support</h2>
+
+                <p>Untuk pertanyaan lebih lanjut atau bantuan teknis, silakan hubungi tim support kami:</p>
+
+                <div class="contact-section">
+                    <div class="contact-method">
+                        <span class="contact-icon">📧</span>
+                        <div>
+                            <strong>Email:</strong><br>
+                            <a href="mailto:gilang.wicaksono@panorama-jtb.com">gilang.wicaksono@panorama-jtb.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <span class="contact-icon">📞</span>
+                        <div>
+                            <strong>Telepon:</strong><br>
+                            Gilang Wicaksono (Jam kerja: 08:00 - 17:00 WIB)
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <span class="contact-icon">💬</span>
+                        <div>
+                            <strong>Live Chat:</strong><br>
+                            WhatsApp Group ALVIS BY PANORAMA JTB
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <span class="contact-icon">📱</span>
+                        <div>
+                            <strong>WhatsApp:</strong><br>
+                            ALVIS BY PANORAMA JTB
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout orange">
+                    <div class="callout-title"><i class="fas fa-lightbulb"></i> 💡 Catatan</div>
+                    <p>Untuk laporan bug atau masalah teknis, please lampirkan screenshot error dan langkah-langkah reproduksi untuk mempercepat proses penanganan.</p>
+                </div>
+            </section>
+
+            <!-- ===== FOOTER ===== -->
+            <footer class="footer">
+                <p><strong>Versi Dokumentasi:</strong> 2.0.0 | <strong>Terakhir Diperbarui:</strong> Juni 2026 | <strong>ALVIS Development Team</strong></p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ===== SCROLL TO TOP BUTTON ===== -->
+    <button class="scroll-top" id="scrollTop" aria-label="Kembali ke atas">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // Sidebar Toggle for Mobile
+        const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+        
+        btnToggleSidebar.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !btnToggleSidebar.contains(event.target) &&
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Scroll to Top Button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // FAQ Accordion
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const isOpen = answer.style.display === 'block';
+            
+            // Close all FAQs first
+            document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+            document.querySelectorAll('.faq-question').forEach(q => q.style.background = 'var(--primary)');
+            
+            // Open clicked FAQ if it was closed
+            if (!isOpen) {
+                answer.style.display = 'block';
+                element.style.background = 'var(--primary-dark)';
+            }
+        }
+
+        // Active Navigation Highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+        
+        window.addEventListener('scroll', function() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Close sidebar when clicking nav links on mobile
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
