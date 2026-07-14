@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Book - Fitur Flight Payment ALVIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #e65100; --primary-light: #fff3e0; --primary-dark: #b53d00; --primary-bg: #fff3e0;
+            --bg: #f8f9fa; --card-bg: #FFFFFF; --text: #2c3e50; --text-light: #475569; --text-muted: #7f8c8d;
+            --border: #e2e8f0; --success: #10B981; --warning: #F59E0B; --danger: #EF4444; --info: #3B82F6;
+            --shadow: 0 2px 4px rgba(0,0,0,0.05); --shadow-hover: 0 4px 12px rgba(230,81,0,0.15);
+            --radius: 12px; --radius-sm: 8px; --transition: 0.3s ease;
+            --sidebar-width: 280px; --header-height: 60px;
+            --color-input: #3B82F6; --color-payment: #10B981; --color-monitoring: #e65100; --color-support: #8B5CF6;
+        }
+        html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-height) + 20px); }
+        body { font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; display: flex; min-height: 100vh; }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { color: var(--primary-dark); }
+        img { max-width: 100%; height: auto; }
+
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background: var(--card-bg); border-right: 1px solid var(--border); overflow-y: auto; z-index: 1000; transition: transform var(--transition); box-shadow: 2px 0 8px rgba(0,0,0,0.04); padding: 20px 0; }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 2px solid var(--border); margin-bottom: 8px; }
+        .sidebar-header .brand-logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-header .brand-sub { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+        .sidebar-nav { padding: 0; }
+        .sidebar-nav .nav-section { padding: 16px 20px 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .sidebar-nav a { display: flex; align-items: center; gap: 10px; padding: 10px 20px; font-size: 13px; font-weight: 500; color: var(--text); transition: all var(--transition); border-left: 3px solid transparent; }
+        .sidebar-nav a i { width: 18px; text-align: center; font-size: 14px; color: var(--text-muted); transition: color var(--transition); }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: var(--primary-bg); color: var(--primary); border-left-color: var(--primary); }
+        .sidebar-nav a:hover i, .sidebar-nav a.active i { color: var(--primary); }
+        .sidebar-nav .nav-sub a { padding-left: 48px; font-size: 12px; }
+
+        .main { margin-left: var(--sidebar-width); flex: 1; min-height: 100vh; }
+
+        .top-header { position: sticky; top: 0; z-index: 999; background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 0 32px; height: var(--header-height); display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .top-header .breadcrumb { font-size: 13px; color: var(--text-muted); }
+        .top-header .breadcrumb span { color: var(--text); font-weight: 500; }
+        .btn-toggle-sidebar { display: none; background: none; border: none; font-size: 20px; color: var(--text); cursor: pointer; padding: 4px; }
+        .btn-toggle-sidebar:hover { color: var(--primary); }
+        .version-badge { font-size: 13px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 6px; }
+
+        .content { padding: 32px; max-width: 1100px; margin: 0 auto; }
+
+        .cover { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius); padding: 60px 48px; color: #fff; margin-bottom: 40px; position: relative; overflow: hidden; }
+        .cover::before { content: ''; position: absolute; top: -50%; right: -20%; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+        .cover::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 300px; height: 300px; background: rgba(255,255,255,0.03); border-radius: 50%; }
+        .cover .cover-badge { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 20px; backdrop-filter: blur(4px); }
+        .cover h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; position: relative; z-index: 1; }
+        .cover p { font-size: 16px; opacity: 0.9; max-width: 600px; position: relative; z-index: 1; }
+        .cover .cover-meta { display: flex; gap: 24px; margin-top: 24px; position: relative; z-index: 1; flex-wrap: wrap; }
+        .cover .cover-meta span { font-size: 13px; opacity: 0.8; display: flex; align-items: center; gap: 6px; }
+
+        .section { background: var(--card-bg); border-radius: var(--radius); padding: 36px 40px; margin-bottom: 24px; box-shadow: var(--shadow); transition: box-shadow var(--transition); }
+        .section:hover { box-shadow: var(--shadow-hover); }
+        .section h2 { font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 10px; }
+        .section h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background-color: var(--primary); border-radius: 4px; flex-shrink: 0; }
+        .section h3 { font-size: 17px; font-weight: 600; color: #334155; margin: 24px 0 12px; display: flex; align-items: center; gap: 8px; }
+        .section h3 i { color: var(--primary); font-size: 16px; }
+        .section h4 { font-size: 14px; font-weight: 600; color: var(--text); margin: 16px 0 8px; }
+        .section p { font-size: 14px; color: var(--text-light); margin-bottom: 12px; }
+        .section ul, .section ol { padding-left: 20px; margin-bottom: 12px; }
+        .section li { font-size: 14px; color: var(--text-light); margin-bottom: 6px; }
+        .section hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+        .step-card { display: flex; gap: 16px; padding: 16px 20px; background: var(--bg); border-radius: var(--radius-sm); margin-bottom: 12px; border-left: 4px solid var(--primary); transition: background var(--transition); }
+        .step-card:hover { background: var(--primary-bg); }
+        .step-card .step-number { flex-shrink: 0; width: 32px; height: 32px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+        .step-card .step-content { flex: 1; }
+        .step-card .step-content strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+        .step-card .step-content p { font-size: 13px; color: var(--text-light); margin: 0; }
+
+        .steps { list-style: none; margin-bottom: 1.5rem; }
+        .steps .step-item { position: relative; padding-left: 3rem; margin-bottom: 1.5rem; }
+        .steps .step-item .step-number { position: absolute; left: 0; top: 2px; width: 2rem; height: 2rem; background-color: var(--primary-bg); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; border: 1px solid rgba(230,81,0,0.2); }
+        .steps .step-text strong { color: #1e293b; }
+
+        .info-box { display: flex; gap: 12px; padding: 16px 20px; border-radius: var(--radius-sm); margin: 16px 0; font-size: 13px; }
+        .info-box i { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+        .info-box.info { background: #f0f9ff; border-left: 4px solid var(--info); color: #0c4a6e; }
+        .info-box.info i { color: var(--info); }
+        .info-box.success { background: #f0fdf4; border-left: 4px solid var(--success); color: #166534; }
+        .info-box.success i { color: var(--success); }
+        .info-box.warning { background: #fffbeb; border-left: 4px solid var(--warning); color: #92400E; }
+        .info-box.warning i { color: var(--warning); }
+        .info-box.danger { background: #fef2f2; border-left: 4px solid var(--danger); color: #991B1B; }
+        .info-box.danger i { color: var(--danger); }
+
+        .callout { background: #f0fdf4; border-left: 4px solid var(--success); padding: 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; box-shadow: var(--shadow); }
+        .callout .callout-title { font-weight: 700; color: #166534; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+        .callout p { color: #1e3a1e; margin-bottom: 0; font-size: 0.95rem; }
+        .callout.info { background: #f0f9ff; border-left-color: var(--info); }
+        .callout.info .callout-title { color: #0369a1; }
+        .callout.info p { color: #0c4a6e; }
+        .callout-orange { background: #fff3e0 !important; border-left-color: #e65100 !important; }
+        .callout-orange .callout-title { color: #b53d00 !important; }
+        .callout-orange p { color: #5c3a00; }
+        .callout-success-custom { background: #f0fdf4 !important; border-left-color: #10B981 !important; }
+        .callout-success-custom .callout-title { color: #065F46 !important; }
+        .callout-success-custom p { color: #1e3a1e; }
+
+        .img-container { margin: 1.5rem 0 2rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; box-shadow: var(--shadow); max-width: 100%; }
+        .img-container img { width: 100%; height: auto; border-radius: 6px; display: block; }
+        .img-caption { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem; font-weight: 500; font-style: italic; }
+
+        .section table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; box-shadow: var(--shadow); border-radius: 8px; overflow: hidden; }
+        .section table th { background: #1e293b; color: #fff; text-align: left; padding: 0.75rem 1rem; font-weight: 600; }
+        .section table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: #334155; vertical-align: top; }
+        .section table tr:nth-child(even) td { background: var(--bg); }
+        .badge-req { color: #dc2626; font-weight: bold; margin-left: 2px; }
+        .badge-example { background: #e2e8f0; padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; font-size: 0.85rem; color: #334155; }
+
+        .mockup { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; margin: 16px 0; font-size: 13px; }
+        .mockup .mockup-header { display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+        .mockup .mockup-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .mockup .mockup-header .dot.red { background: #EF4444; }
+        .mockup .mockup-header .dot.yellow { background: #F59E0B; }
+        .mockup .mockup-header .dot.green { background: #10B981; }
+        .mockup .mockup-form label { display: block; font-weight: 500; margin-bottom: 4px; color: var(--text); }
+        .mockup .mockup-form input, .mockup .mockup-form textarea, .mockup .mockup-form select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 13px; background: var(--card-bg); color: var(--text); margin-bottom: 12px; transition: border var(--transition); }
+        .mockup .mockup-form input:focus, .mockup .mockup-form textarea:focus, .mockup .mockup-form select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(230,81,0,0.1); }
+        .mockup .mockup-form textarea { min-height: 80px; resize: vertical; }
+        .mockup .mockup-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 20px; border: none; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 500; cursor: default; transition: all var(--transition); }
+        .mockup .mockup-btn.primary { background: var(--primary); color: #fff; }
+        .mockup .mockup-btn.secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+        .mockup .mockup-btn.danger { background: var(--danger); color: #fff; }
+        .mockup .mockup-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .mockup .mockup-table th, .mockup .mockup-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        .mockup .mockup-table th { background: var(--primary-bg); font-weight: 600; color: var(--primary); }
+        .mockup .mockup-table td { color: var(--text-light); }
+        .mockup .mockup-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .mockup .mockup-badge.success { background: #D1FAE5; color: #065F46; }
+        .mockup .mockup-badge.warning { background: #FEF3C7; color: #92400E; }
+        .mockup .mockup-badge.danger { background: #FEE2E2; color: #991B1B; }
+        .mockup .mockup-badge.info { background: #DBEAFE; color: #1E40AF; }
+
+        .flowchart { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 24px auto; max-width: 500px; }
+        .flowchart .flow-step { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: var(--bg); border-radius: var(--radius-sm); border-left: 4px solid var(--primary); width: 100%; position: relative; }
+        .flowchart .flow-step .flow-icon { width: 32px; height: 32px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+        .flowchart .flow-step .flow-text { font-size: 14px; color: var(--text); font-weight: 500; }
+        .flowchart .flow-step .flow-text small { font-weight: 400; color: var(--text-muted); display: block; font-size: 12px; margin-top: 2px; }
+        .flowchart .flow-arrow { color: var(--primary); font-size: 18px; padding: 4px 0; opacity: 0.7; }
+        .flowchart .flow-divider { width: 100%; text-align: center; padding: 8px 0; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+        .flowchart .flow-divider::before, .flowchart .flow-divider::after { content: ' — '; }
+
+        .status-cards { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+        .status-card { flex: 1; min-width: 160px; padding: 16px; border-radius: 8px; border-left: 4px solid; text-align: center; }
+        .status-card .card-icon { font-size: 28px; margin-bottom: 4px; }
+        .status-card strong { display: block; font-size: 16px; margin-bottom: 4px; }
+        .status-card p { font-size: 12px; margin: 0; }
+        .status-card.pending { background: #fffbeb; border-left-color: var(--warning); }
+        .status-card.pending strong { color: #92400E; }
+        .status-card.success { background: #f0fdf4; border-left-color: var(--success); }
+        .status-card.success strong { color: #065F46; }
+        .status-card.danger { background: #fef2f2; border-left-color: var(--danger); }
+        .status-card.danger strong { color: #991B1B; }
+        .status-card.info { background: #f0f9ff; border-left-color: var(--info); }
+        .status-card.info strong { color: #1E40AF; }
+
+        .toc { background: var(--card-bg); border-radius: var(--radius); padding: 28px 36px; box-shadow: var(--shadow); margin-bottom: 24px; }
+        .toc h2 { font-size: 18px; font-weight: 600; color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .toc ul { list-style: none; padding: 0; margin: 0; }
+        .toc ul li { padding: 6px 0; border-bottom: 1px dashed var(--border); }
+        .toc ul li:last-child { border-bottom: none; }
+        .toc ul li a { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); transition: color var(--transition); }
+        .toc ul li a:hover { color: var(--primary); }
+        .toc ul li a .toc-num { font-weight: 600; color: var(--primary); min-width: 24px; }
+        .toc ul li a i { color: var(--text-muted); font-size: 12px; }
+
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .tag.admin { background: #DBEAFE; color: #1E40AF; }
+        .tag.user { background: #D1FAE5; color: #065F46; }
+        .tag.both { background: var(--primary-bg); color: var(--primary); }
+        .tag.system { background: #E9D5FF; color: #6B21A8; }
+
+        .footer { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 40px; }
+        .footer a { color: var(--primary); }
+
+        .scroll-top { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; background: var(--primary); color: #fff; border: none; border-radius: 50%; font-size: 18px; cursor: pointer; box-shadow: 0 4px 12px rgba(230,81,0,0.3); transition: all var(--transition); opacity: 0; visibility: hidden; z-index: 999; }
+        .scroll-top.show { opacity: 1; visibility: visible; }
+        .scroll-top:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        .collapsible-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 500; color: var(--primary); cursor: pointer; transition: all var(--transition); margin: 12px 0; }
+        .collapsible-toggle:hover { background: var(--primary-bg); border-color: var(--primary); }
+        .collapsible-toggle i { transition: transform var(--transition); }
+        .collapsible-toggle.open i { transform: rotate(180deg); }
+        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease; opacity: 0; margin: 0; }
+        .collapsible-content.open { max-height: 2000px; opacity: 1; margin: 12px 0; }
+
+        @media (max-width: 1024px) { .slide-panel { width: 70%; } }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; }
+            .btn-toggle-sidebar { display: block; }
+            .top-header { padding: 0 16px; }
+            .content { padding: 16px; }
+            .section { padding: 24px 20px; }
+            .cover { padding: 32px 24px; }
+            .cover h1 { font-size: 24px; }
+            .cover .cover-meta { flex-wrap: wrap; gap: 12px; }
+            .step-card { flex-direction: column; }
+            .toc { padding: 20px; }
+            .section table { font-size: 0.8rem; }
+            .section table th, .section table td { padding: 0.5rem; }
+        }
+        @media print {
+            .sidebar, .top-header, .scroll-top { display: none !important; }
+            .main { margin-left: 0 !important; }
+            .section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+            .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand-logo">ALVIS</div>
+            <div class="brand-sub">Manual Book Flight Payment</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Pendahuluan</div>
+            <a href="#bab1" class="active"><i class="fas fa-info-circle"></i> Bab 1: Pendahuluan</a>
+            <div class="nav-section">Input Booking</div>
+            <a href="#bab2"><i class="fas fa-plane"></i> Bab 2: Input Booking</a>
+            <div class="nav-sub">
+                <a href="#bab2-1"><i class="fas fa-chevron-right"></i> 2.1 ALVIS Mobile Apps</a>
+                <a href="#bab2-2"><i class="fas fa-chevron-right"></i> 2.2 Web Panorama JTB</a>
+            </div>
+            <div class="nav-section">Pembayaran</div>
+            <a href="#bab3"><i class="fas fa-credit-card"></i> Bab 3: Pembayaran</a>
+            <div class="nav-sub">
+                <a href="#bab3-1"><i class="fas fa-chevron-right"></i> 3.1 Credit Card</a>
+                <a href="#bab3-2"><i class="fas fa-chevron-right"></i> 3.2 Virtual Account</a>
+            </div>
+            <div class="nav-section">Monitoring</div>
+            <a href="#bab4"><i class="fas fa-desktop"></i> Bab 4: Monitoring Backoffice</a>
+            <div class="nav-section">Support</div>
+            <a href="#bab5"><i class="fas fa-question-circle"></i> Bab 5: Troubleshooting & FAQ</a>
+        </nav>
+    </aside>
+
+    <div class="main">
+        <header class="top-header">
+            <div class="header-left">
+                <button class="btn-toggle-sidebar" id="btnToggleSidebar" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+                <div class="breadcrumb"><i class="fas fa-home"></i> Flight / Payment / <span>Manual Book</span></div>
+            </div>
+            <div class="header-actions"><span class="version-badge"><i class="fas fa-sync-alt"></i> v1.0</span></div>
+        </header>
+
+        <div class="content">
+
+            <section class="cover">
+                <span class="cover-badge"><i class="fas fa-credit-card"></i> Fitur Flight Payment</span>
+                <h1>Manual Book<br>Flight Payment ALVIS</h1>
+                <p>Panduan lengkap pembayaran pemesanan tiket pesawat KATRINA melalui ALVIS — mulai dari input booking, pembayaran (credit card & virtual account), hingga monitoring backoffice.</p>
+                <div class="cover-meta">
+                    <span><i class="fas fa-calendar-alt"></i> Juli 2026</span>
+                    <span><i class="fas fa-credit-card"></i> Credit Card & VA</span>
+                    <span><i class="fas fa-globe"></i> ALVIS Mobile & Web</span>
+                    <span><i class="fas fa-tag"></i> v1.0</span>
+                </div>
+            </section>
+
+            <div class="toc">
+                <h2><i class="fas fa-list"></i> Daftar Isi</h2>
+                <ul>
+                    <li><a href="#bab1"><span class="toc-num">1</span> <i class="fas fa-info-circle"></i> Pendahuluan</a></li>
+                    <li><a href="#bab2"><span class="toc-num">2</span> <i class="fas fa-plane"></i> Input Booking dari KATRINA ke ALVIS</a></li>
+                    <li><a href="#bab3"><span class="toc-num">3</span> <i class="fas fa-credit-card"></i> Pembayaran (Payment)</a></li>
+                    <li><a href="#bab4"><span class="toc-num">4</span> <i class="fas fa-desktop"></i> Monitoring Backoffice</a></li>
+                    <li><a href="#bab5"><span class="toc-num">5</span> <i class="fas fa-question-circle"></i> Troubleshooting & FAQ</a></li>
+                </ul>
+            </div>
+
+            <!-- BAB 1: PENDAHULUAN -->
+            <section id="bab1" class="section">
+                <h2>Bab 1: Pendahuluan</h2>
+
+                <h3><i class="fas fa-info-circle"></i> 1.1 Tentang Fitur Flight Payment</h3>
+                <p><strong>Flight Payment</strong> adalah fitur yang memungkinkan pembayaran pemesanan tiket pesawat yang telah dilakukan melalui aplikasi <strong>KATRINA</strong>, dengan pembayaran dilakukan melalui <strong>ALVIS</strong>. Fitur ini mencakup alur dari input booking dari KATRINA ke sistem ALVIS (melalui ALVIS Mobile Apps atau Web Panorama JTB), kemudian melakukan pembayaran (via Credit Card atau Virtual Account), hingga monitoring dan support melalui backoffice.</p>
+
+                <div class="info-box info"><i class="fas fa-info-circle"></i><div>ALVIS Mobile Apps dan Web Panorama JTB dikelola dalam <strong>1 sistem backoffice yang sama</strong>. Monitoring booking yang sudah dimasukkan dapat dilakukan dari sisi backoffice untuk memastikan semuanya ter-record dengan baik.</div></div>
+
+                <h3><i class="fas fa-star"></i> 1.2 Manfaat Flight Payment</h3>
+                <ul>
+                    <li><strong>Terintegrasi:</strong> Booking dari KATRINA langsung masuk ke sistem ALVIS</li>
+                    <li><strong>Multi-channel:</strong> Input booking bisa melalui mobile apps maupun web</li>
+                    <li><strong>Fleksibel:</strong> Pembayaran bisa melalui Credit Card atau Virtual Account</li>
+                    <li><strong>Monitoring Real-time:</strong> Status pembayaran, issued, CSR number, dan invoice bisa dipantau dari backoffice</li>
+                    <li><strong>Support Center:</strong> Penanganan kendala dan kegagalan dapat dilakukan melalui backoffice</li>
+                </ul>
+
+                <h3><i class="fas fa-route"></i> 1.3 Alur Bisnis Flight Payment</h3>
+                <p>Berikut adalah alur lengkap dari booking tiket pesawat KATRINA hingga pembayaran dan issued:</p>
+
+                <div class="flowchart">
+                    <div class="flow-step">
+                        <div class="flow-icon"><i class="fas fa-ticket-alt"></i></div>
+                        <div class="flow-text">Booking tiket di KATRINA <small>Pemesanan tiket pesawat oleh pengguna</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--info);">
+                        <div class="flow-icon" style="background: var(--info);"><i class="fas fa-upload"></i></div>
+                        <div class="flow-text">Input booking ke ALVIS <small>Via ALVIS Mobile Apps atau Web Panorama JTB</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--success);">
+                        <div class="flow-icon" style="background: var(--success);"><i class="fas fa-credit-card"></i></div>
+                        <div class="flow-text">Pembayaran <small>Credit Card atau Virtual Account</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--warning);">
+                        <div class="flow-icon" style="background: var(--warning);"><i class="fas fa-check-circle"></i></div>
+                        <div class="flow-text">Issued tiket di KATRINA <small>ALVIS menerima update status dari KATRINA</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--color-support);">
+                        <div class="flow-icon" style="background: var(--color-support);"><i class="fas fa-file-invoice"></i></div>
+                        <div class="flow-text">CSR Number & Invoice <small>Diterbitkan setelah proses issued selesai</small></div>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-desktop"></i> 1.4 Persyaratan Sistem</h3>
+                <table>
+                    <tr><th>Platform</th><th>Persyaratan</th></tr>
+                    <tr><td><i class="fas fa-mobile-alt" style="color:var(--primary);"></i> ALVIS Mobile Apps</td><td>Android / iOS, koneksi internet</td></tr>
+                    <tr><td><i class="fas fa-globe" style="color:var(--primary);"></i> Web Panorama JTB</td><td>Browser modern (Chrome, Firefox, Edge, Safari) + koneksi internet</td></tr>
+                    <tr><td><i class="fas fa-desktop" style="color:var(--primary);"></i> Backoffice ALVIS</td><td>Browser modern + koneksi internet + akses login admin</td></tr>
+                </table>
+            </section>
+
+            <!-- BAB 2: INPUT BOOKING -->
+            <section id="bab2" class="section">
+                <h2>Bab 2: Input Booking dari KATRINA ke ALVIS</h2>
+                <p>Setelah tiket dipesan di KATRINA, bookingan perlu dimasukkan ke sistem ALVIS agar dapat dilakukan pembayaran. Ada <strong>2 cara</strong> untuk memasukkan booking:</p>
+
+                <div class="status-cards" style="margin-bottom: 24px;">
+                    <div class="status-card info"><div class="card-icon">📱</div><strong>ALVIS Mobile Apps</strong><p>Input booking via aplikasi mobile</p></div>
+                    <div class="status-card success"><div class="card-icon">🌐</div><strong>Web Panorama JTB</strong><p>Input booking via website</p></div>
+                </div>
+
+                <hr>
+
+                <h3 id="bab2-1"><i class="fas fa-mobile-alt"></i> 2.1 Input Booking melalui ALVIS Mobile Apps</h3>
+                <p>Pengguna dapat memasukkan booking tiket pesawat langsung dari aplikasi ALVIS di smartphone mereka.</p>
+
+                <h4><i class="fas fa-sign-in-alt"></i> Langkah-langkah</h4>
+                <ul class="steps">
+                    <li class="step-item"><span class="step-number">1</span><div class="step-text">Buka aplikasi <strong>ALVIS</strong> di smartphone Anda.</div></li>
+                    <li class="step-item"><span class="step-number">2</span><div class="step-text">Pilih menu <strong>Flight</strong> atau <strong>Penerbangan</strong>.</div></li>
+                    <li class="step-item"><span class="step-number">3</span><div class="step-text">Pilih <strong>Flight Payment</strong> untuk memulai proses pembayaran tiket.</div></li>
+                    <li class="step-item"><span class="step-number">4</span><div class="step-text">Masukkan <strong>data booking</strong> dari KATRINA (nomor booking, nama penumpang, rute, dll.).</div></li>
+                    <li class="step-item"><span class="step-number">5</span><div class="step-text">Konfirmasi data booking dan lanjutkan ke halaman <strong>pembayaran</strong>.</div></li>
+                </ul>
+
+                <div class="img-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <div class="mockup">
+                        <div class="mockup-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                            <span style="font-size: 12px; color: #666; margin-left: 8px;">ALVIS Mobile - Flight Payment</span>
+                        </div>
+                        <div class="mockup-form">
+                            <label><i class="fas fa-ticket-alt"></i> Nomor Booking KATRINA</label>
+                            <input type="text" placeholder="Contoh: KTR-2026-XXXXX" readonly>
+                            <label><i class="fas fa-user"></i> Nama Penumpang</label>
+                            <input type="text" placeholder="Nama sesuai tiket" readonly>
+                            <label><i class="fas fa-route"></i> Rute Penerbangan</label>
+                            <input type="text" placeholder="CGK - DPS - CGK" readonly>
+                            <div style="display: flex; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <label><i class="fas fa-calendar"></i> Tanggal</label>
+                                    <input type="text" placeholder="20 Jul 2026" readonly>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label><i class="fas fa-users"></i> Jumlah Penumpang</label>
+                                    <input type="text" placeholder="2 Orang" readonly>
+                                </div>
+                            </div>
+                            <div style="text-align: right; margin-top: 12px;">
+                                <button class="mockup-btn primary" disabled><i class="fas fa-arrow-right"></i> Lanjut ke Pembayaran</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="img-caption">Gambar 2.1: Contoh tampilan input booking di ALVIS Mobile Apps</div>
+                </div>
+
+                <div class="callout callout-success-custom">
+                    <div class="callout-title">✅ Selesai</div>
+                    <p>Data booking berhasil dimasukkan. Anda akan diarahkan ke halaman pembayaran untuk menyelesaikan transaksi.</p>
+                </div>
+
+                <hr>
+
+                <h3 id="bab2-2"><i class="fas fa-globe"></i> 2.2 Input Booking melalui Web Panorama JTB</h3>
+                <p>Alternatif lainnya, booking dapat dimasukkan melalui website <strong>Panorama JTB</strong>. Metode ini berguna jika pengguna lebih nyaman menggunakan browser desktop/laptop.</p>
+
+                <h4><i class="fas fa-sign-in-alt"></i> Langkah-langkah</h4>
+                <ul class="steps">
+                    <li class="step-item"><span class="step-number">1</span><div class="step-text">Buka browser dan akses website <strong>Panorama JTB</strong>.</div></li>
+                    <li class="step-item"><span class="step-number">2</span><div class="step-text">Login dengan akun Anda.</div></li>
+                    <li class="step-item"><span class="step-number">3</span><div class="step-text">Pilih menu <strong>Flight Payment</strong> atau <strong>Pembayaran Tiket</strong>.</div></li>
+                    <li class="step-item"><span class="step-number">4</span><div class="step-text">Masukkan <strong>data booking</strong> dari KATRINA (nomor booking, detail penumpang, dll.).</div></li>
+                    <li class="step-item"><span class="step-number">5</span><div class="step-text">Klik <strong>Submit</strong> untuk menyimpan booking ke sistem ALVIS.</div></li>
+                </ul>
+
+                <div class="img-container" style="max-width: 700px; margin: 1.5rem auto;">
+                    <div class="mockup">
+                        <div class="mockup-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                            <span style="font-size: 12px; color: #666; margin-left: 8px;">Panorama JTB - Flight Payment</span>
+                        </div>
+                        <div class="mockup-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div>
+                                <label>Kode Booking <span class="badge-req">*</span></label>
+                                <input type="text" placeholder="KTR-XXXXX" readonly>
+                            </div>
+                            <div>
+                                <label>Nama Pemesan <span class="badge-req">*</span></label>
+                                <input type="text" placeholder="Nama pemesan" readonly>
+                            </div>
+                            <div>
+                                <label>Maskapai</label>
+                                <input type="text" placeholder="Garuda Indonesia" readonly>
+                            </div>
+                            <div>
+                                <label>Rute</label>
+                                <input type="text" placeholder="CGK - DPS" readonly>
+                            </div>
+                            <div>
+                                <label>Tanggal Terbang</label>
+                                <input type="text" placeholder="20 Jul 2026" readonly>
+                            </div>
+                            <div>
+                                <label>Total Harga</label>
+                                <input type="text" placeholder="Rp 2.500.000" readonly>
+                            </div>
+                        </div>
+                        <div style="text-align: right; margin-top: 12px;">
+                            <button class="mockup-btn secondary" disabled><i class="fas fa-times"></i> Batal</button>
+                            <button class="mockup-btn primary" disabled><i class="fas fa-save"></i> Submit</button>
+                        </div>
+                    </div>
+                    <div class="img-caption">Gambar 2.2: Contoh tampilan input booking di Web Panorama JTB</div>
+                </div>
+
+                <div class="callout info">
+                    <div class="callout-title">💡 Catatan</div>
+                    <p>Baik input melalui ALVIS Mobile Apps maupun Web Panorama JTB, keduanya akan masuk ke <strong>sistem backoffice yang sama</strong> sehingga monitoring dapat dilakukan secara terpusat.</p>
+                </div>
+            </section>
+
+            <!-- BAB 3: PEMBAYARAN -->
+            <section id="bab3" class="section">
+                <h2>Bab 3: Pembayaran (Payment)</h2>
+                <p>Setelah booking berhasil dimasukkan ke sistem ALVIS, langkah selanjutnya adalah melakukan <strong>pembayaran</strong>. Terdapat <strong>2 metode pembayaran</strong> yang tersedia:</p>
+
+                <div class="status-cards" style="margin-bottom: 24px;">
+                    <div class="status-card info"><div class="card-icon">💳</div><strong>Credit Card</strong><p>Pembayaran menggunakan kartu kredit</p></div>
+                    <div class="status-card success"><div class="card-icon">🏦</div><strong>Virtual Account</strong><p>Pembayaran melalui transfer bank</p></div>
+                </div>
+
+                <hr>
+
+                <h3 id="bab3-1"><i class="fas fa-credit-card"></i> 3.1 Pembayaran via Credit Card</h3>
+                <p>Pembayaran menggunakan <strong>Credit Card</strong> memungkinkan pengguna membayar tiket pesawat secara langsung menggunakan kartu kredit yang valid.</p>
+
+                <h4><i class="fas fa-sign-in-alt"></i> Langkah-langkah</h4>
+                <ul class="steps">
+                    <li class="step-item"><span class="step-number">1</span><div class="step-text">Pada halaman pembayaran, pilih metode <strong>Credit Card</strong>.</div></li>
+                    <li class="step-item"><span class="step-number">2</span><div class="step-text">Masukkan <strong>data kartu kredit</strong> Anda:</div></li>
+                </ul>
+
+                <div class="mockup" style="max-width: 500px; margin: 16px auto;">
+                    <div class="mockup-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span style="font-size: 12px; color: #666; margin-left: 8px;">Pembayaran Credit Card</span>
+                    </div>
+                    <div class="mockup-form">
+                        <label><i class="fas fa-credit-card"></i> Nomor Kartu <span class="badge-req">*</span></label>
+                        <input type="text" placeholder="1234 5678 9012 3456" readonly>
+                        <div style="display: flex; gap: 12px;">
+                            <div style="flex: 1;">
+                                <label><i class="fas fa-calendar"></i> Masa Berlaku <span class="badge-req">*</span></label>
+                                <input type="text" placeholder="MM / YY" readonly>
+                            </div>
+                            <div style="flex: 1;">
+                                <label><i class="fas fa-lock"></i> CVV <span class="badge-req">*</span></label>
+                                <input type="text" placeholder="123" readonly>
+                            </div>
+                        </div>
+                        <label><i class="fas fa-user"></i> Nama di Kartu <span class="badge-req">*</span></label>
+                        <input type="text" placeholder="NAMA PEMEGANG KARTU" readonly>
+                        <label><i class="fas fa-calculator"></i> Total Pembayaran</label>
+                        <input type="text" placeholder="Rp 2.500.000" readonly style="font-weight: 600; font-size: 15px;">
+                        <div style="text-align: center; margin-top: 12px;">
+                            <button class="mockup-btn primary" disabled style="width: 100%; justify-content: center; padding: 12px;"><i class="fas fa-lock"></i> Bayar Rp 2.500.000</button>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="steps">
+                    <li class="step-item"><span class="step-number">3</span><div class="step-text">Klik tombol <strong>Bayar</strong> untuk memproses pembayaran.</div></li>
+                    <li class="step-item"><span class="step-number">4</span><div class="step-text">Tunggu <strong>konfirmasi pembayaran</strong> dari sistem.</div></li>
+                </ul>
+
+                <div class="callout info">
+                    <div class="callout-title">⚠️ Keamanan Transaksi</div>
+                    <p>Data kartu kredit Anda diamankan dengan enkripsi dan diproses melalui payment gateway yang terpercaya.</p>
+                </div>
+
+                <hr>
+
+                <h3 id="bab3-2"><i class="fas fa-university"></i> 3.2 Pembayaran via Virtual Account</h3>
+                <p>Pembayaran menggunakan <strong>Virtual Account (VA)</strong> memungkinkan pengguna melakukan transfer bank ke nomor virtual account yang digenerate secara otomatis oleh sistem.</p>
+
+                <h4><i class="fas fa-sign-in-alt"></i> Langkah-langkah</h4>
+                <ul class="steps">
+                    <li class="step-item"><span class="step-number">1</span><div class="step-text">Pada halaman pembayaran, pilih metode <strong>Virtual Account</strong>.</div></li>
+                    <li class="step-item"><span class="step-number">2</span><div class="step-text">Pilih <strong>bank tujuan</strong> yang tersedia (BCA, Mandiri, BNI, BRI, dll.).</div></li>
+                    <li class="step-item"><span class="step-number">3</span><div class="step-text">Sistem akan <strong>mengenerate</strong> nomor Virtual Account khusus untuk transaksi Anda.</div></li>
+                </ul>
+
+                <div class="mockup" style="max-width: 500px; margin: 16px auto;">
+                    <div class="mockup-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span style="font-size: 12px; color: #666; margin-left: 8px;">Pembayaran Virtual Account</span>
+                    </div>
+                    <div style="padding: 20px; text-align: center;">
+                        <div style="background: var(--primary-bg); border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+                            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Nomor Virtual Account Anda</p>
+                            <p style="font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: 3px; font-family: monospace;">12345 67890 12345</p>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">BCA Virtual Account</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border);">
+                            <span style="font-size: 13px; color: var(--text-light);">Total Pembayaran</span>
+                            <span style="font-size: 16px; font-weight: 700; color: var(--text);">Rp 2.500.000</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border);">
+                            <span style="font-size: 13px; color: var(--text-light);">Masa Berlaku VA</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--warning);">1 x 24 Jam</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                            <span style="font-size: 13px; color: var(--text-light);">Status</span>
+                            <span class="mockup-badge warning">Menunggu Pembayaran</span>
+                        </div>
+                        <div style="margin-top: 16px; padding: 12px; background: #f0f9ff; border-radius: 8px; font-size: 12px; color: var(--text-light);">
+                            <i class="fas fa-info-circle" style="color: var(--info);"></i> Silakan transfer ke nomor Virtual Account di atas melalui <strong>mobile banking</strong>, <strong>ATM</strong>, atau <strong>internet banking</strong> BCA.
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="steps">
+                    <li class="step-item"><span class="step-number">4</span><div class="step-text">Lakukan <strong>transfer</strong> ke nomor Virtual Account yang telah diberikan melalui mobile banking, ATM, atau internet banking.</div></li>
+                    <li class="step-item"><span class="step-number">5</span><div class="step-text">Sistem akan <strong>otomatis mendeteksi</strong> pembayaran yang masuk dan memperbarui status pembayaran.</div></li>
+                </ul>
+
+                <div class="callout callout-success-custom">
+                    <div class="callout-title">✅ Pembayaran Berhasil</div>
+                    <p>Setelah pembayaran terkonfirmasi, status booking akan berubah dan proses selanjutnya (issued tiket) akan diproses oleh sistem KATRINA.</p>
+                </div>
+            </section>
+
+            <!-- BAB 4: MONITORING BACKOFFICE -->
+            <section id="bab4" class="section">
+                <h2>Bab 4: Monitoring Backoffice</h2>
+                <p><span class="tag admin">Admin</span> Bab ini khusus untuk <strong>Admin Backoffice</strong> yang bertugas memonitoring bookingan yang telah dimasukkan, memastikan semua tercatat dengan baik di sistem ALVIS.</p>
+
+                <p>Backoffice digunakan untuk memonitoring beberapa hal berikut:</p>
+
+                <div class="status-cards" style="margin-bottom: 24px;">
+                    <div class="status-card info"><div class="card-icon">📋</div><strong>Record Booking</strong><p>Monitoring data booking yang masuk</p></div>
+                    <div class="status-card pending"><div class="card-icon">💳</div><strong>Status Pembayaran</strong><p>Memantau pembayaran sukses/gagal</p></div>
+                    <div class="status-card success"><div class="card-icon">✅</div><strong>Issued Tiket</strong><p>Update status issued dari KATRINA</p></div>
+                    <div class="status-card" style="background: #f3e8ff; border-left-color: var(--color-support);"><div class="card-icon">📄</div><strong>CSR & Invoice</strong><p>Penerbitan CSR number dan invoice</p></div>
+                </div>
+
+                <hr>
+
+                <h3><i class="fas fa-search"></i> 4.1 Monitoring Record Booking</h3>
+                <p>Admin dapat melihat seluruh data booking yang telah dimasukkan (baik dari ALVIS Mobile Apps maupun Web Panorama JTB) di halaman <strong>Flight Payment</strong> pada backoffice.</p>
+
+                <div class="img-container" style="max-width: 800px; margin: 1.5rem auto;">
+                    <div class="mockup">
+                        <div class="mockup-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                            <span style="font-size: 12px; color: #666; margin-left: 8px;">Backoffice ALVIS - Daftar Booking Flight</span>
+                        </div>
+                        <table class="mockup-table">
+                            <thead>
+                                <tr><th>Kode Booking</th><th>Nama Pemesan</th><th>Rute</th><th>Total</th><th>Status Bayar</th><th>Issued</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>KTR-001</strong></td>
+                                    <td>Budi Santoso</td>
+                                    <td>CGK - DPS</td>
+                                    <td>Rp 2.500.000</td>
+                                    <td><span class="mockup-badge success">Lunas</span></td>
+                                    <td><span class="mockup-badge success">Issued</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>KTR-002</strong></td>
+                                    <td>Siti Aisyah</td>
+                                    <td>CGK - KNO</td>
+                                    <td>Rp 1.800.000</td>
+                                    <td><span class="mockup-badge warning">Pending</span></td>
+                                    <td><span class="mockup-badge warning">Belum Issued</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>KTR-003</strong></td>
+                                    <td>Ahmad Fauzi</td>
+                                    <td>CGK - SUB</td>
+                                    <td>Rp 1.200.000</td>
+                                    <td><span class="mockup-badge success">Lunas</span></td>
+                                    <td><span class="mockup-badge warning">Proses</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="img-caption">Gambar 4.1: Tampilan daftar booking di backoffice ALVIS</div>
+                </div>
+
+                <hr>
+
+                <h3><i class="fas fa-credit-card"></i> 4.2 Monitoring Status Pembayaran</h3>
+                <p>Admin dapat memantau status pembayaran dari setiap booking. Status pembayaran yang tersedia:</p>
+
+                <div class="status-cards">
+                    <div class="status-card pending"><div class="card-icon">⏳</div><strong>Pending</strong><p>Menunggu pembayaran</p></div>
+                    <div class="status-card success"><div class="card-icon">✅</div><strong>Sukses</strong><p>Pembayaran berhasil</p></div>
+                    <div class="status-card danger"><div class="card-icon">❌</div><strong>Gagal</strong><p>Pembayaran gagal</p></div>
+                    <div class="status-card info"><div class="card-icon">🔄</div><strong>Refund</strong><p>Pembayaran dikembalikan</p></div>
+                </div>
+
+                <div class="callout info">
+                    <div class="callout-title">🔍 Cara Monitoring</div>
+                    <p>Pilih booking yang ingin dicek, kemudian lihat detail pembayaran untuk melihat riwayat transaksi, metode pembayaran, dan status terkini.</p>
+                </div>
+
+                <hr>
+
+                <h3><i class="fas fa-check-double"></i> 4.3 Proses Issued Tiket</h3>
+                <p><strong>Issued</strong> tiket dilakukan di sistem <strong>KATRINA</strong>. ALVIS hanya menerima <strong>update status</strong> dari KATRINA mengenai proses issued tersebut.</p>
+
+                <div class="info-box info">
+                    <i class="fas fa-sync-alt"></i>
+                    <div><strong>Alur Issued:</strong> KATRINA memproses issued tiket → Mengirim update status ke ALVIS → ALVIS memperbarui status booking di backoffice.</div>
+                </div>
+
+                <p>Status issued yang dapat dipantau di backoffice:</p>
+                <table>
+                    <thead>
+                        <tr><th>Status</th><th>Keterangan</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="mockup-badge warning">Belum Issued</span></td><td>Tiket masih menunggu proses issued dari KATRINA</td></tr>
+                        <tr><td><span class="mockup-badge info">Proses Issued</span></td><td>KATRINA sedang memproses issued tiket</td></tr>
+                        <tr><td><span class="mockup-badge success">Issued</span></td><td>Tiket berhasil di-issued oleh KATRINA</td></tr>
+                        <tr><td><span class="mockup-badge danger">Gagal Issued</span></td><td>Proses issued gagal, perlu penanganan lebih lanjut</td></tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h3><i class="fas fa-file-invoice"></i> 4.4 Penerbitan CSR Number & Invoice</h3>
+                <p>Setelah tiket berhasil di-issued, sistem akan menerbitkan:</p>
+
+                <div class="step-card" style="border-left-color: var(--info);">
+                    <div class="step-number"><i class="fas fa-hashtag"></i></div>
+                    <div class="step-content">
+                        <strong>CSR Number (Customer Service Record Number)</strong>
+                        <p>Nomor referensi yang diterbitkan sebagai bukti bahwa transaksi telah tercatat dan diproses. CSR Number digunakan untuk keperluan customer service dan pelacakan transaksi.</p>
+                    </div>
+                </div>
+
+                <div class="step-card" style="border-left-color: var(--success);">
+                    <div class="step-number"><i class="fas fa-file-invoice"></i></div>
+                    <div class="step-content">
+                        <strong>Invoice</strong>
+                        <p>Dokumen tagihan resmi yang diterbitkan setelah pembayaran lunas dan tiket di-issued. Invoice dapat di-download dan digunakan untuk keperluan administrasi dan akuntansi.</p>
+                    </div>
+                </div>
+
+                <div class="img-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <div class="mockup">
+                        <div class="mockup-header">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                            <span style="font-size: 12px; color: #666; margin-left: 8px;">Detail Transaksi - CSR & Invoice</span>
+                        </div>
+                        <div style="padding: 16px;">
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                                <span style="font-size: 13px; color: var(--text-light);">CSR Number</span>
+                                <span style="font-size: 13px; font-weight: 600; font-family: monospace;">CSR-2026-0720-001</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                                <span style="font-size: 13px; color: var(--text-light);">Invoice Number</span>
+                                <span style="font-size: 13px; font-weight: 600; font-family: monospace;">INV-2026-0720-001</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                                <span style="font-size: 13px; color: var(--text-light);">Tanggal Invoice</span>
+                                <span style="font-size: 13px; font-weight: 500;">20 Juli 2026</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                                <span style="font-size: 13px; color: var(--text-light);">Status</span>
+                                <span class="mockup-badge success">Active</span>
+                            </div>
+                            <div style="text-align: center; margin-top: 16px;">
+                                <button class="mockup-btn secondary" disabled><i class="fas fa-download"></i> Download Invoice</button>
+                                <button class="mockup-btn primary" disabled><i class="fas fa-print"></i> Cetak</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="img-caption">Gambar 4.2: Contoh tampilan CSR Number & Invoice di backoffice</div>
+                </div>
+
+                <div class="callout callout-success-custom">
+                    <div class="callout-title">✅ Selesai</div>
+                    <p>Dengan terbitnya CSR Number dan Invoice, seluruh proses flight payment telah selesai. Booking sudah tercatat, pembayaran lunas, tiket issued, dan dokumen resmi tersedia.</p>
+                </div>
+            </section>
+
+            <!-- BAB 5: TROUBLESHOOTING & FAQ -->
+            <section id="bab5" class="section">
+                <h2>Bab 5: Troubleshooting & FAQ</h2>
+
+                <h3><i class="fas fa-exclamation-triangle"></i> 5.1 Kendala & Kegagalan yang Mungkin Terjadi</h3>
+
+                <div class="step-card" style="border-left-color: var(--danger);">
+                    <div class="step-number"><i class="fas fa-times"></i></div>
+                    <div class="step-content">
+                        <strong>Pembayaran Gagal</strong>
+                        <p>Pembayaran tidak berhasil diproses. Penyebab: saldo tidak mencukupi (credit card), limit tercapai, koneksi terputus saat transaksi, atau data kartu tidak valid. <strong>Penanganan:</strong> Cek kembali metode pembayaran, pastikan data valid, dan coba lagi.</p>
+                    </div>
+                </div>
+
+                <div class="step-card" style="border-left-color: var(--warning);">
+                    <div class="step-number"><i class="fas fa-clock"></i></div>
+                    <div class="step-content">
+                        <strong>Virtual Account Expired</strong>
+                        <p>Masa berlaku Virtual Account (1x24 jam) telah habis sebelum pembayaran dilakukan. <strong>Penanganan:</strong> Admin backoffice dapat mengenerate ulang nomor Virtual Account baru atau mengubah metode pembayaran.</p>
+                    </div>
+                </div>
+
+                <div class="step-card" style="border-left-color: var(--info);">
+                    <div class="step-number"><i class="fas fa-sync-alt"></i></div>
+                    <div class="step-content">
+                        <strong>Status Issued Tidak Update</strong>
+                        <p>Status issued dari KATRINA belum masuk ke sistem ALVIS. <strong>Penanganan:</strong> Admin backoffice dapat menghubungi tim KATRINA untuk memastikan proses issued dan memicu ulang pengiriman status.</p>
+                    </div>
+                </div>
+
+                <div class="step-card" style="border-left-color: var(--color-support);">
+                    <div class="step-number"><i class="fas fa-file"></i></div>
+                    <div class="step-content">
+                        <strong>CSR Number / Invoice Tidak Terbit</strong>
+                        <p>CSR Number atau invoice tidak muncul setelah pembayaran lunas. <strong>Penanganan:</strong> Admin backoffice dapat memeriksa status transaksi dan menerbitkan ulang CSR/invoice secara manual melalui sistem.</p>
+                    </div>
+                </div>
+
+                <div class="step-card" style="border-left-color: var(--danger);">
+                    <div class="step-number"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="step-content">
+                        <strong>Data Booking Tidak Muncul</strong>
+                        <p>Booking yang sudah dimasukkan tidak muncul di daftar backoffice. <strong>Penanganan:</strong> Verifikasi data booking di KATRINA, pastikan input sudah benar, dan hubungi admin jika diperlukan.</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h3><i class="fas fa-headset"></i> 5.2 Penanganan melalui Backoffice</h3>
+                <p>Apabila terjadi kendala atau kegagalan dalam proses di atas, Admin dapat melakukan <strong>support melalui backoffice sistem</strong>. Berikut langkah-langkah umum penanganan:</p>
+
+                <ol>
+                    <li><strong>Identifikasi Masalah</strong> — Cek status booking, pembayaran, dan issued di backoffice.</li>
+                    <li><strong>Verifikasi Data</strong> — Pastikan data booking dan pembayaran sudah benar dan sesuai.</li>
+                    <li><strong>Tindak Lanjut</strong> — Lakukan tindakan sesuai jenis kendala (generate ulang VA, hubungi KATRINA, terbitkan ulang invoice, dll.).</li>
+                    <li><strong>Konfirmasi</strong> — Pastikan masalah telah terselesaikan dan status di sistem sudah benar.</li>
+                </ol>
+
+                <hr>
+
+                <h3><i class="fas fa-question-circle"></i> 5.3 FAQ</h3>
+
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Apakah bisa mengganti metode pembayaran setelah memilih?</strong><p>Ya, selama pembayaran belum diproses, Anda dapat mengganti metode pembayaran kapan saja.</p></div>
+
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Berapa lama proses issued tiket?</strong><p>Proses issued dilakukan oleh KATRINA. Waktu yang dibutuhkan bervariasi tergantung kebijakan maskapai dan ketersediaan tiket.</p></div>
+
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Bagaimana jika pembayaran sudah terpotong tapi status masih pending?</strong><p>Hubungi Admin Backoffice untuk dilakukan pengecekan dan verifikasi manual. Sertakan bukti transfer untuk mempercepat proses.</p></div>
+
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Apakah bisa refund jika pembatalan?</strong><p>Kebijakan refund mengikuti ketentuan dari KATRINA dan maskapai terkait. Admin backoffice dapat membantu memproses refund jika memenuhi syarat.</p></div>
+
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Bagaimana cara mendapatkan invoice?</strong><p>Invoice dapat di-download langsung dari halaman detail transaksi di backoffice setelah status issued selesai.</p></div>
+            </section>
+
+            <footer class="footer">
+                <p><i class="fas fa-credit-card" style="color:var(--primary);"></i> <strong>Manual Book Flight Payment ALVIS</strong> &mdash; v1.0 &mdash; Juli 2026</p>
+                <p style="margin-top:4px;">&copy; 2026 ALVIS.</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        document.getElementById('btnToggleSidebar').addEventListener('click', function() { document.getElementById('sidebar').classList.toggle('open'); });
+        document.addEventListener('click', function(e) {
+            const s=document.getElementById('sidebar'), t=document.getElementById('btnToggleSidebar');
+            if (window.innerWidth<=768 && !s.contains(e.target) && !t.contains(e.target) && s.classList.contains('open')) s.classList.remove('open');
+        });
+
+        const sections = document.querySelectorAll('.section[id]');
+        const navLinks = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(function(s) { const top=s.getBoundingClientRect().top; if (top<=150) current=s.getAttribute('id'); });
+            navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                const href=link.getAttribute('href').replace('#','');
+                if (href===current) link.classList.add('active');
+                const ps=link.closest('.nav-sub');
+                if (ps) { const pl=ps.previousElementSibling; if (pl && pl.getAttribute('href')==='#'+current) link.classList.add('active'); }
+            });
+        }
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+
+        window.addEventListener('scroll', function() { const btn=document.getElementById('scrollTop'); if (window.scrollY>300) btn.classList.add('show'); else btn.classList.remove('show'); });
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId=this.getAttribute('href').substring(1), target=document.getElementById(targetId);
+                if (target) { target.scrollIntoView({behavior:'smooth'}); if (window.innerWidth<=768) document.getElementById('sidebar').classList.remove('open'); }
+            });
+        });
+    </script>
+</body>
+</html>
