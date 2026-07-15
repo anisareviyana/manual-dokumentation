@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Book - Fitur Push Notification ALVIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #e65100; --primary-light: #fff3e0; --primary-dark: #b53d00; --primary-bg: #fff3e0;
+            --bg: #f8f9fa; --card-bg: #FFFFFF; --text: #2c3e50; --text-light: #475569; --text-muted: #7f8c8d;
+            --border: #e2e8f0; --success: #10B981; --warning: #F59E0B; --danger: #EF4444; --info: #3B82F6;
+            --shadow: 0 2px 4px rgba(0,0,0,0.05); --shadow-hover: 0 4px 12px rgba(230,81,0,0.15);
+            --radius: 12px; --radius-sm: 8px; --transition: 0.3s ease;
+            --sidebar-width: 280px; --header-height: 60px; --timeline-color: #d1d5db;
+            --color-welcome: #10B981; --color-pretrip: #3B82F6; --color-ontrip: #e65100; --color-posttrip: #8B5CF6;
+        }
+        html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-height) + 20px); }
+        body { font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; display: flex; min-height: 100vh; }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { color: var(--primary-dark); }
+        img { max-width: 100%; height: auto; }
+
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100vh; background: var(--card-bg); border-right: 1px solid var(--border); overflow-y: auto; z-index: 1000; transition: transform var(--transition); box-shadow: 2px 0 8px rgba(0,0,0,0.04); padding: 20px 0; }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 2px solid var(--border); margin-bottom: 8px; }
+        .sidebar-header .brand-logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-header .brand-sub { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+        .sidebar-nav { padding: 0; }
+        .sidebar-nav .nav-section { padding: 16px 20px 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .sidebar-nav a { display: flex; align-items: center; gap: 10px; padding: 10px 20px; font-size: 13px; font-weight: 500; color: var(--text); transition: all var(--transition); border-left: 3px solid transparent; }
+        .sidebar-nav a i { width: 18px; text-align: center; font-size: 14px; color: var(--text-muted); transition: color var(--transition); }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: var(--primary-bg); color: var(--primary); border-left-color: var(--primary); }
+        .sidebar-nav a:hover i, .sidebar-nav a.active i { color: var(--primary); }
+        .sidebar-nav .nav-sub a { padding-left: 48px; font-size: 12px; }
+
+        .main { margin-left: var(--sidebar-width); flex: 1; min-height: 100vh; }
+
+        .top-header { position: sticky; top: 0; z-index: 999; background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 0 32px; height: var(--header-height); display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .top-header .breadcrumb { font-size: 13px; color: var(--text-muted); }
+        .top-header .breadcrumb span { color: var(--text); font-weight: 500; }
+        .btn-toggle-sidebar { display: none; background: none; border: none; font-size: 20px; color: var(--text); cursor: pointer; padding: 4px; }
+        .btn-toggle-sidebar:hover { color: var(--primary); }
+        .version-badge { font-size: 13px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 6px; }
+
+        .content { padding: 32px; max-width: 1100px; margin: 0 auto; }
+
+        .cover { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius); padding: 60px 48px; color: #fff; margin-bottom: 40px; position: relative; overflow: hidden; }
+        .cover::before { content: ''; position: absolute; top: -50%; right: -20%; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+        .cover::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 300px; height: 300px; background: rgba(255,255,255,0.03); border-radius: 50%; }
+        .cover .cover-badge { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 20px; backdrop-filter: blur(4px); }
+        .cover h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; position: relative; z-index: 1; }
+        .cover p { font-size: 16px; opacity: 0.9; max-width: 600px; position: relative; z-index: 1; }
+        .cover .cover-meta { display: flex; gap: 24px; margin-top: 24px; position: relative; z-index: 1; flex-wrap: wrap; }
+        .cover .cover-meta span { font-size: 13px; opacity: 0.8; display: flex; align-items: center; gap: 6px; }
+
+        .section { background: var(--card-bg); border-radius: var(--radius); padding: 36px 40px; margin-bottom: 24px; box-shadow: var(--shadow); transition: box-shadow var(--transition); }
+        .section:hover { box-shadow: var(--shadow-hover); }
+        .section h2 { font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 10px; }
+        .section h2::before { content: ''; display: inline-block; width: 6px; height: 24px; background-color: var(--primary); border-radius: 4px; flex-shrink: 0; }
+        .section h3 { font-size: 17px; font-weight: 600; color: #334155; margin: 24px 0 12px; display: flex; align-items: center; gap: 8px; }
+        .section h3 i { color: var(--primary); font-size: 16px; }
+        .section h4 { font-size: 14px; font-weight: 600; color: var(--text); margin: 16px 0 8px; }
+        .section p { font-size: 14px; color: var(--text-light); margin-bottom: 12px; }
+        .section ul, .section ol { padding-left: 20px; margin-bottom: 12px; }
+        .section li { font-size: 14px; color: var(--text-light); margin-bottom: 6px; }
+        .section hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+        .step-card { display: flex; gap: 16px; padding: 16px 20px; background: var(--bg); border-radius: var(--radius-sm); margin-bottom: 12px; border-left: 4px solid var(--primary); transition: background var(--transition); }
+        .step-card:hover { background: var(--primary-bg); }
+        .step-card .step-number { flex-shrink: 0; width: 32px; height: 32px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+        .step-card .step-content { flex: 1; }
+        .step-card .step-content strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+        .step-card .step-content p { font-size: 13px; color: var(--text-light); margin: 0; }
+
+        .steps { list-style: none; margin-bottom: 1.5rem; }
+        .steps .step-item { position: relative; padding-left: 3rem; margin-bottom: 1.5rem; }
+        .steps .step-item .step-number { position: absolute; left: 0; top: 2px; width: 2rem; height: 2rem; background-color: var(--primary-bg); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; border: 1px solid rgba(230,81,0,0.2); }
+        .steps .step-text strong { color: #1e293b; }
+
+        .info-box { display: flex; gap: 12px; padding: 16px 20px; border-radius: var(--radius-sm); margin: 16px 0; font-size: 13px; }
+        .info-box i { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+        .info-box.info { background: #f0f9ff; border-left: 4px solid var(--info); color: #0c4a6e; }
+        .info-box.info i { color: var(--info); }
+        .info-box.success { background: #f0fdf4; border-left: 4px solid var(--success); color: #166534; }
+        .info-box.success i { color: var(--success); }
+        .info-box.warning { background: #fffbeb; border-left: 4px solid var(--warning); color: #92400E; }
+        .info-box.warning i { color: var(--warning); }
+        .info-box.danger { background: #fef2f2; border-left: 4px solid var(--danger); color: #991B1B; }
+        .info-box.danger i { color: var(--danger); }
+
+        .callout { background: #f0fdf4; border-left: 4px solid var(--success); padding: 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; box-shadow: var(--shadow); }
+        .callout .callout-title { font-weight: 700; color: #166534; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+        .callout p { color: #1e3a1e; margin-bottom: 0; font-size: 0.95rem; }
+        .callout.info { background: #f0f9ff; border-left-color: var(--info); }
+        .callout.info .callout-title { color: #0369a1; }
+        .callout.info p { color: #0c4a6e; }
+        .callout-orange { background: #fff3e0 !important; border-left-color: #e65100 !important; }
+        .callout-orange .callout-title { color: #b53d00 !important; }
+        .callout-orange p { color: #5c3a00; }
+        .callout-success-custom { background: #f0fdf4 !important; border-left-color: #10B981 !important; }
+        .callout-success-custom .callout-title { color: #065F46 !important; }
+        .callout-success-custom p { color: #1e3a1e; }
+
+        .img-container { margin: 1.5rem 0 2rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; box-shadow: var(--shadow); max-width: 100%; }
+        .img-container img { width: 100%; height: auto; border-radius: 6px; display: block; }
+        .img-caption { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem; font-weight: 500; font-style: italic; }
+
+        .section table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; box-shadow: var(--shadow); border-radius: 8px; overflow: hidden; }
+        .section table th { background: #1e293b; color: #fff; text-align: left; padding: 0.75rem 1rem; font-weight: 600; }
+        .section table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: #334155; vertical-align: top; }
+        .section table tr:nth-child(even) td { background: var(--bg); }
+        .badge-req { color: #dc2626; font-weight: bold; margin-left: 2px; }
+        .badge-example { background: #e2e8f0; padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; font-size: 0.85rem; color: #334155; }
+
+        .mockup { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; margin: 16px 0; font-size: 13px; }
+        .mockup .mockup-header { display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+        .mockup .mockup-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .mockup .mockup-header .dot.red { background: #EF4444; }
+        .mockup .mockup-header .dot.yellow { background: #F59E0B; }
+        .mockup .mockup-header .dot.green { background: #10B981; }
+        .mockup .mockup-form label { display: block; font-weight: 500; margin-bottom: 4px; color: var(--text); }
+        .mockup .mockup-form input, .mockup .mockup-form textarea, .mockup .mockup-form select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 13px; background: var(--card-bg); color: var(--text); margin-bottom: 12px; transition: border var(--transition); }
+        .mockup .mockup-form input:focus, .mockup .mockup-form textarea:focus, .mockup .mockup-form select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(230,81,0,0.1); }
+        .mockup .mockup-form textarea { min-height: 80px; resize: vertical; }
+        .mockup .mockup-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 20px; border: none; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 500; cursor: default; transition: all var(--transition); }
+        .mockup .mockup-btn.primary { background: var(--primary); color: #fff; }
+        .mockup .mockup-btn.secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+        .mockup .mockup-btn.danger { background: var(--danger); color: #fff; }
+        .mockup .mockup-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .mockup .mockup-table th, .mockup .mockup-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        .mockup .mockup-table th { background: var(--primary-bg); font-weight: 600; color: var(--primary); }
+        .mockup .mockup-table td { color: var(--text-light); }
+        .mockup .mockup-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .mockup .mockup-badge.success { background: #D1FAE5; color: #065F46; }
+        .mockup .mockup-badge.warning { background: #FEF3C7; color: #92400E; }
+        .mockup .mockup-badge.danger { background: #FEE2E2; color: #991B1B; }
+        .mockup .mockup-badge.info { background: #DBEAFE; color: #1E40AF; }
+
+        .phone-frame { position: relative; width: 100%; max-width: 280px; margin: 0 auto; background: #1a1a1a; border-radius: 40px; padding: 12px; box-shadow: 0 0 0 2px #333, 0 12px 40px rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.15); }
+        .phone-frame .phone-screen { background: #fff; border-radius: 28px; overflow: hidden; }
+        .phone-frame .phone-screen img { width: 100%; height: auto; display: block; border-radius: 28px; }
+        .phone-frame .phone-btn-left { position: absolute; left: -4px; top: 25%; width: 4px; height: 45px; background: #2a2a2a; border-radius: 2px 0 0 2px; }
+        .phone-frame .phone-btn-left::after { content: ''; position: absolute; top: 58px; left: 0; width: 4px; height: 55px; background: #2a2a2a; border-radius: 2px 0 0 2px; }
+        .phone-frame .phone-btn-right { position: absolute; right: -4px; top: 18%; width: 4px; height: 55px; background: #2a2a2a; border-radius: 0 2px 2px 0; }
+        .phone-frame .phone-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 26px; background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 2; }
+        .phone-frame .phone-notch::before { content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: #0a0a0a; border-radius: 50%; border: 2px solid #333; }
+
+        .toc { background: var(--card-bg); border-radius: var(--radius); padding: 28px 36px; box-shadow: var(--shadow); margin-bottom: 24px; }
+        .toc h2 { font-size: 18px; font-weight: 600; color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .toc ul { list-style: none; padding: 0; margin: 0; }
+        .toc ul li { padding: 6px 0; border-bottom: 1px dashed var(--border); }
+        .toc ul li:last-child { border-bottom: none; }
+        .toc ul li a { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); transition: color var(--transition); }
+        .toc ul li a:hover { color: var(--primary); }
+        .toc ul li a .toc-num { font-weight: 600; color: var(--primary); min-width: 24px; }
+        .toc ul li a i { color: var(--text-muted); font-size: 12px; }
+
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .tag.admin { background: #DBEAFE; color: #1E40AF; }
+        .tag.user { background: #D1FAE5; color: #065F46; }
+        .tag.both { background: var(--primary-bg); color: var(--primary); }
+
+        .status-cards { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+        .status-card { flex: 1; min-width: 180px; padding: 16px; border-radius: 8px; border-left: 4px solid; text-align: center; }
+        .status-card.active { background: #D1FAE5; border-left-color: #10B981; }
+        .status-card.upcoming { background: #DBEAFE; border-left-color: #3B82F6; }
+        .status-card.past { background: #F3F4F6; border-left-color: #9CA3AF; }
+        .status-card strong { display: block; font-size: 18px; margin-bottom: 4px; }
+        .status-card p { font-size: 13px; margin: 0; }
+
+        .metric-cards { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+        .metric-card { flex: 1; min-width: 140px; padding: 16px; background: var(--bg); border-radius: 8px; border-left: 4px solid; text-align: center; }
+        .metric-card .metric-icon { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+        .metric-card strong { display: block; font-size: 14px; margin-bottom: 4px; }
+        .metric-card p { font-size: 12px; margin: 0; color: #666; }
+        .metric-card.sent { border-left-color: #663399; }
+        .metric-card.sent .metric-icon { color: #663399; }
+        .metric-card.sent strong { color: #663399; }
+        .metric-card.received { border-left-color: #10B981; }
+        .metric-card.received .metric-icon { color: #065F46; }
+        .metric-card.received strong { color: #065F46; }
+        .metric-card.read { border-left-color: #3B82F6; }
+        .metric-card.read .metric-icon { color: #1E40AF; }
+        .metric-card.read strong { color: #1E40AF; }
+
+        /* ===== QUICK NAVIGATION ===== */
+        .quick-nav { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; justify-content: center; }
+        .qn-btn { flex: 1; min-width: 200px; padding: 14px 20px; border: none; border-radius: var(--radius-sm); background: var(--card-bg); color: var(--text); font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .qn-btn:hover { background: var(--primary-bg); color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .qn-btn i { font-size: 16px; }
+
+        /* ===== PROGRESS INDICATOR ===== */
+        .progress-indicator { padding: 16px 20px; margin-bottom: 8px; }
+        .progress-indicator .phase-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; }
+        .progress-indicator .phase-bar { display: flex; align-items: center; justify-content: space-between; max-width: 180px; margin: 0 auto; position: relative; }
+        .progress-indicator .phase-bar::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: var(--border); transform: translateY(-50%); z-index: 0; }
+        .progress-indicator .phase-dot { width: 16px; height: 16px; border-radius: 50%; cursor: pointer; transition: all var(--transition); border: 2px solid var(--card-bg); position: relative; z-index: 1; }
+        .progress-indicator .phase-dot:hover { transform: scale(1.3); }
+        .progress-indicator .phase-dot[data-phase="welcome"] { background: var(--color-welcome); }
+        .progress-indicator .phase-dot[data-phase="pretrip"] { background: var(--color-pretrip); }
+        .progress-indicator .phase-dot[data-phase="ontrip"] { background: var(--color-ontrip); }
+        .progress-indicator .phase-dot[data-phase="posttrip"] { background: var(--color-posttrip); }
+
+        .footer { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 40px; }
+        .footer a { color: var(--primary); }
+
+        .scroll-top { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; background: var(--primary); color: #fff; border: none; border-radius: 50%; font-size: 18px; cursor: pointer; box-shadow: 0 4px 12px rgba(230,81,0,0.3); transition: all var(--transition); opacity: 0; visibility: hidden; z-index: 999; }
+        .scroll-top.show { opacity: 1; visibility: visible; }
+        .scroll-top:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        /* ===== COLLAPSIBLE ===== */
+        .collapsible-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 500; color: var(--primary); cursor: pointer; transition: all var(--transition); margin: 12px 0; }
+        .collapsible-toggle:hover { background: var(--primary-bg); border-color: var(--primary); }
+        .collapsible-toggle i { transition: transform var(--transition); }
+        .collapsible-toggle.open i { transform: rotate(180deg); }
+        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease; opacity: 0; margin: 0; }
+        .collapsible-content.open { max-height: 2000px; opacity: 1; margin: 12px 0; }
+
+        /* ===== FLOWCHART ===== */
+        .flowchart { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 24px auto; max-width: 500px; }
+        .flowchart .flow-step { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: var(--bg); border-radius: var(--radius-sm); border-left: 4px solid var(--primary); width: 100%; position: relative; }
+        .flowchart .flow-step .flow-icon { width: 32px; height: 32px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+        .flowchart .flow-step .flow-text { font-size: 14px; color: var(--text); font-weight: 500; }
+        .flowchart .flow-step .flow-text small { font-weight: 400; color: var(--text-muted); display: block; font-size: 12px; margin-top: 2px; }
+        .flowchart .flow-arrow { color: var(--primary); font-size: 18px; padding: 4px 0; opacity: 0.7; }
+        .flowchart .flow-divider { width: 100%; text-align: center; padding: 8px 0; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+        .flowchart .flow-divider::before, .flowchart .flow-divider::after { content: ' — '; }
+
+        /* ===== TIMELINE ===== */
+        .timeline-section { background: var(--card-bg); border-radius: var(--radius); padding: 36px 40px; margin-bottom: 24px; box-shadow: var(--shadow); }
+        .timeline-intro { background: #fff3e0; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem; }
+        .timeline-intro .intro-title { font-weight: 700; color: #b53d00; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .timeline-intro p { color: #5c3a00; margin-bottom: 0; font-size: 0.95rem; }
+        .timeline-container { position: relative; padding-left: 40px; }
+        .timeline-container::before { content: ''; position: absolute; left: 18px; top: 0; bottom: 0; width: 3px; background: var(--timeline-color); border-radius: 2px; }
+        .timeline-item { position: relative; margin-bottom: 8px; cursor: pointer; transition: all var(--transition); }
+        .timeline-item .tl-dot { position: absolute; left: -28px; top: 14px; width: 20px; height: 20px; border-radius: 50%; border: 3px solid var(--card-bg); z-index: 2; transition: transform var(--transition), box-shadow var(--transition); }
+        .timeline-item:hover .tl-dot { transform: scale(1.25); box-shadow: 0 0 0 4px rgba(230,81,0,0.15); }
+        .timeline-item .tl-dot.welcome { background: var(--color-welcome); }
+        .timeline-item .tl-dot.pretrip { background: var(--color-pretrip); }
+        .timeline-item .tl-dot.ontrip { background: var(--color-ontrip); }
+        .timeline-item .tl-dot.posttrip { background: var(--color-posttrip); }
+        .timeline-item .tl-content { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 16px; transition: background var(--transition), transform var(--transition); border-left: 3px solid transparent; }
+        .timeline-item:hover .tl-content { background: var(--primary-bg); transform: translateX(4px); }
+        .timeline-item .tl-content .tl-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .timeline-item .tl-content .tl-header .tl-icon { font-size: 16px; }
+        .timeline-item .tl-content .tl-header .tl-title { font-weight: 600; font-size: 14px; color: var(--text); }
+        .timeline-item .tl-content .tl-header .tl-badge { font-size: 11px; padding: 1px 8px; border-radius: 10px; font-weight: 500; }
+        .tl-badge.welcome { background: #D1FAE5; color: #065F46; }
+        .tl-badge.pretrip { background: #DBEAFE; color: #1E40AF; }
+        .tl-badge.ontrip { background: #FEF3C7; color: #92400E; }
+        .tl-badge.posttrip { background: #E9D5FF; color: #6B21A8; }
+        .timeline-item .tl-content .tl-meta { display: flex; gap: 16px; margin-top: 4px; font-size: 12px; color: var(--text-muted); }
+        .timeline-item .tl-content .tl-meta i { margin-right: 4px; }
+        .timeline-separator { position: relative; margin: 20px 0; padding: 16px 20px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-sm); color: #fff; text-align: center; font-weight: 600; font-size: 15px; letter-spacing: 0.5px; }
+        .timeline-separator::before { content: ''; position: absolute; left: -22px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: var(--primary); border-radius: 50%; border: 3px solid var(--card-bg); z-index: 2; }
+
+        /* ===== SLIDE PANEL ===== */
+        .panel-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2000; opacity: 0; visibility: hidden; transition: opacity var(--transition), visibility var(--transition); }
+        .panel-overlay.open { opacity: 1; visibility: visible; }
+        .slide-panel { position: fixed; top: 0; right: 0; width: 55%; max-width: 720px; height: 100vh; background: var(--card-bg); z-index: 2001; box-shadow: -8px 0 24px rgba(0,0,0,0.12); transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .slide-panel.open { transform: translateX(0); }
+        .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .panel-header .panel-title { font-size: 16px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+        .panel-header .panel-title .panel-badge { font-size: 11px; padding: 2px 10px; border-radius: 10px; font-weight: 500; }
+        .panel-header .panel-close { background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all var(--transition); }
+        .panel-header .panel-close:hover { background: var(--bg); color: var(--danger); }
+        .panel-body { flex: 1; overflow-y: auto; padding: 24px; }
+        .panel-body::-webkit-scrollbar { width: 4px; }
+        .panel-body::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .panel-body .panel-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+        .panel-body .panel-table th { text-align: left; padding: 8px 12px; background: var(--bg); color: var(--text); font-weight: 600; width: 30%; border-bottom: 1px solid var(--border); }
+        .panel-body .panel-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-light); }
+        .panel-body .panel-summary { background: #f0fdf4; border-left: 4px solid var(--success); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
+        .panel-body .panel-summary strong { color: #065F46; display: block; margin-bottom: 4px; }
+        .panel-body .panel-summary p { color: #1e3a1e; font-size: 13px; margin: 0; }
+        .panel-gallery { display: flex; flex-direction: column; gap: 16px; }
+        .panel-gallery .gallery-item { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px; }
+        .panel-gallery .gallery-item img { width: 100%; height: auto; border-radius: 6px; display: block; }
+        .panel-gallery .gallery-item .gallery-caption { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 6px; font-style: italic; }
+        .panel-gallery .gallery-item.placeholder { min-height: 120px; display: flex; align-items: center; justify-content: center; background: #F3F4F6; border: 2px dashed #d1d5db; }
+        .panel-gallery .gallery-item.placeholder p { color: #9CA3AF; font-size: 13px; margin: 0; }
+        .panel-nav { display: flex; justify-content: space-between; padding: 16px 24px; border-top: 1px solid var(--border); flex-shrink: 0; background: var(--bg); }
+        .panel-nav button { padding: 8px 20px; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; gap: 6px; }
+        .panel-nav button:hover { background: var(--primary-bg); color: var(--primary); border-color: var(--primary); }
+        .panel-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .panel-nav .panel-counter { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; }
+
+        @media (max-width: 1024px) { .slide-panel { width: 70%; } }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; }
+            .btn-toggle-sidebar { display: block; }
+            .top-header { padding: 0 16px; }
+            .content { padding: 16px; }
+            .section, .timeline-section { padding: 24px 20px; }
+            .cover { padding: 32px 24px; }
+            .cover h1 { font-size: 24px; }
+            .cover .cover-meta { flex-wrap: wrap; gap: 12px; }
+            .step-card { flex-direction: column; }
+            .toc { padding: 20px; }
+            .section table { font-size: 0.8rem; }
+            .section table th, .section table td { padding: 0.5rem; }
+            .slide-panel { width: 100%; max-width: 100%; }
+            .timeline-container { padding-left: 32px; }
+            .timeline-container::before { left: 14px; }
+            .timeline-item .tl-dot { left: -22px; width: 16px; height: 16px; }
+            .timeline-separator::before { left: -18px; width: 10px; height: 10px; }
+        }
+        @media print {
+            .sidebar, .top-header, .scroll-top, .panel-overlay, .slide-panel { display: none !important; }
+            .main { margin-left: 0 !important; }
+            .section, .timeline-section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+            .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand-logo">ALVIS</div>
+            <div class="brand-sub">Manual Book Notification</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="progress-indicator">
+                <div class="phase-label">Fase Perjalanan</div>
+                <div class="phase-bar">
+                    <div class="phase-dot" data-phase="welcome" title="Welcome"></div>
+                    <div class="phase-dot" data-phase="pretrip" title="Pre-Trip"></div>
+                    <div class="phase-dot" data-phase="ontrip" title="On-Trip"></div>
+                    <div class="phase-dot" data-phase="posttrip" title="Post-Trip"></div>
+                </div>
+            </div>
+            <div class="nav-section">Pendahuluan</div>
+            <a href="#bab1" class="active"><i class="fas fa-info-circle"></i> Bab 1: Pendahuluan</a>
+            <div class="nav-section">Admin Backoffice</div>
+            <a href="#bab2"><i class="fas fa-desktop"></i> Bab 2: Panduan Admin</a>
+            <div class="nav-sub">
+                <a href="#bab2-1"><i class="fas fa-chevron-right"></i> 2.1 Template</a>
+                <a href="#bab2-2"><i class="fas fa-chevron-right"></i> 2.2 Instance</a>
+                <a href="#bab2-3"><i class="fas fa-chevron-right"></i> 2.3 Scheduler</a>
+            </div>
+            <div class="nav-section">Aplikasi Mobile</div>
+            <a href="#bab3"><i class="fas fa-mobile-alt"></i> Bab 3: Panduan Pengguna</a>
+            <div class="nav-section">Troubleshooting</div>
+            <a href="#bab4"><i class="fas fa-question-circle"></i> Bab 4: Troubleshooting & FAQ</a>
+            <div class="nav-section">Studi Kasus</div>
+            <a href="#bab5"><i class="fas fa-project-diagram"></i> Bab 5: Studi Kasus</a>
+        </nav>
+    </aside>
+
+    <div class="main">
+        <header class="top-header">
+            <div class="header-left">
+                <button class="btn-toggle-sidebar" id="btnToggleSidebar" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+                <div class="breadcrumb"><i class="fas fa-home"></i> Backoffice / Notifications / <span>Manual Book</span></div>
+            </div>
+            <div class="header-actions"><span class="version-badge"><i class="fas fa-sync-alt"></i> v2.0</span></div>
+        </header>
+
+        <div class="content">
+
+            <section class="cover">
+                <span class="cover-badge"><i class="fas fa-bell"></i> Fitur Push Notification</span>
+                <h1>Manual Book<br>Push Notification ALVIS</h1>
+                <p>Panduan lengkap penggunaan fitur push notification untuk Admin Backoffice dan Pengguna Aplikasi ALVIS (Android & iOS).</p>
+                <div class="cover-meta">
+                    <span><i class="fas fa-calendar-alt"></i> Juni 2026</span>
+                    <span><i class="fas fa-phone-alt"></i> Android & iOS</span>
+                    <span><i class="fas fa-globe"></i> Backoffice ALVIS</span>
+                    <span><i class="fas fa-tag"></i> v2.0</span>
+                </div>
+            </section>
+
+            <!-- QUICK NAVIGATION -->
+            <div class="quick-nav">
+                <button class="qn-btn" onclick="scrollToSection('bab2')"><i class="fas fa-user-shield"></i> 👨‍💼 Saya Admin — Mulai di sini</button>
+                <button class="qn-btn" onclick="scrollToSection('bab3')"><i class="fas fa-mobile-alt"></i> 📱 Saya Pengguna — Mulai di sini</button>
+                <button class="qn-btn" onclick="scrollToSection('bab4')"><i class="fas fa-search"></i> 🔍 Cari Jawaban / Troubleshooting</button>
+                <button class="qn-btn" onclick="scrollToSection('bab5')"><i class="fas fa-project-diagram"></i> 📖 Lihat Contoh Kasus</button>
+            </div>
+
+            <div class="toc">
+                <h2><i class="fas fa-list"></i> Daftar Isi</h2>
+                <ul>
+                    <li><a href="#bab1"><span class="toc-num">1</span> <i class="fas fa-info-circle"></i> Pendahuluan</a></li>
+                    <li><a href="#bab2"><span class="toc-num">2</span> <i class="fas fa-desktop"></i> Panduan Admin Backoffice</a></li>
+                    <li><a href="#bab3"><span class="toc-num">3</span> <i class="fas fa-mobile-alt"></i> Panduan Pengguna Aplikasi</a></li>
+                    <li><a href="#bab4"><span class="toc-num">4</span> <i class="fas fa-question-circle"></i> Troubleshooting & FAQ</a></li>
+                    <li><a href="#bab5"><span class="toc-num">5</span> <i class="fas fa-project-diagram"></i> Studi Kasus: Perjalanan Galuh</a></li>
+                </ul>
+            </div>
+
+            <!-- BAB 1 -->
+            <section id="bab1" class="section">
+                <h2>Bab 1: Pendahuluan</h2>
+                <h3><i class="fas fa-info-circle"></i> 1.1 Tentang Fitur Push Notification</h3>
+                <p><strong>Push Notification</strong> adalah fitur yang memungkinkan Admin Backoffice ALVIS mengirimkan pesan atau pemberitahuan secara langsung ke perangkat mobile pengguna (Android & iOS) meskipun aplikasi sedang tidak aktif.</p>
+                <h3><i class="fas fa-star"></i> 1.2 Manfaat Push Notification</h3>
+                <ul>
+                    <li><strong>Komunikasi Real-time:</strong> Pesan sampai ke pengguna dalam hitungan detik.</li>
+                    <li><strong>Meningkatkan Engagement:</strong> Pengguna tetap terhubung dengan informasi terbaru.</li>
+                    <li><strong>Targeted Audience:</strong> Kirim notifikasi spesifik ke segmen pengguna tertentu.</li>
+                    <li><strong>Otomatisasi:</strong> Jadwalkan pengiriman notifikasi di waktu yang tepat.</li>
+                    <li><strong>Analytics:</strong> Pantau jumlah notifikasi terkirim, dibaca, dan diklik.</li>
+                </ul>
+                <h3><i class="fas fa-desktop"></i> 1.3 Persyaratan Sistem</h3>
+                <table>
+                    <tr><th>Perangkat</th><th>Persyaratan</th></tr>
+                    <tr><td><i class="fas fa-desktop" style="color:var(--primary);"></i> Admin Backoffice</td><td>Browser modern (Chrome, Firefox, Edge, Safari) + koneksi internet</td></tr>
+                    <tr><td><i class="fas fa-mobile-alt" style="color:var(--primary);"></i> Android</td><td>ALVIS versi 1.0+, Android 6.0 (Marshmallow) ke atas</td></tr>
+                    <tr><td><i class="fab fa-apple" style="color:var(--primary);"></i> iOS</td><td>ALVIS versi 1.0+, iOS 13.0 ke atas</td></tr>
+                </table>
+            </section>
+
+            <!-- BAB 2: PANDUAN ADMIN (DIRINGKAS) -->
+            <section id="bab2" class="section">
+                <h2>Bab 2: Panduan Backoffice (Sisi Admin)</h2>
+                <p><span class="tag admin">Admin</span> Bab ini khusus untuk <strong>Admin Backoffice</strong> yang bertugas mengatur dan mengirim notifikasi ke pengguna aplikasi ALVIS.</p>
+                <p>Sebelum notifikasi bisa dikirim, Admin harus membuat <strong>pola notifikasi (template)</strong> terlebih dahulu. Setelah template siap, sistem akan secara otomatis mengatur jadwal pengirimannya.</p>
+
+                <hr>
+
+                <h3 id="bab2-1"><i class="fas fa-file-alt"></i> Bagian 1: Membuat Pola Notifikasi (Notification Template)</h3>
+
+                <h4><i class="fas fa-sign-in-alt"></i> Cara Masuk</h4>
+                <ul class="steps">
+                    <li class="step-item"><span class="step-number">1</span><div class="step-text">Lihat menu di sebelah kiri layar (sidebar).</div></li>
+                    <li class="step-item"><span class="step-number">2</span><div class="step-text">Cari dan klik menu <strong>Notification</strong> (icon kertas oranye).</div></li>
+                    <li class="step-item"><span class="step-number">3</span><div class="step-text">Pilih <strong>Notification Template</strong>.</div></li>
+                </ul>
+                <div class="img-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2FAkses%20menu%20notification%20template.png?alt=media&token=c4d013a4-5eb0-4911-8982-6eeaab387ded" alt="Akses Menu Notification Template">
+                    <div class="img-caption">Gambar 2.1: Cara masuk ke menu Notification Template</div>
+                </div>
+
+                <h4><i class="fas fa-th-list"></i> Tampilan Halaman & Tombol</h4>
+                <p>Setelah masuk, Anda akan melihat daftar template yang sudah ada. Berikut fungsi tombol-tombolnya:</p>
+</replace_in_file>
+                <ul>
+                    <li><strong>🔍 Kotak Pencarian (Angka 1):</strong> Mencari template yang sudah ada.</li>
+                    <li><strong>➕ Tombol Tambah Baru (Angka 2):</strong> Membuat template baru.</li>
+                    <li><strong>👁️ ✏️ 🗑️ Tombol Aksi (Angka 3):</strong> Preview, Edit, atau Delete template.</li>
+                </ul>
+                <div class="img-container">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fhalaman%20notification%20template.png?alt=media&token=a5174acf-40a9-49fa-adf8-0e199b896a01" alt="Halaman Notification Template">
+                    <div class="img-caption">Gambar 2.2: Halaman daftar template notifikasi</div>
+                </div>
+
+                <h4><i class="fas fa-plus-circle"></i> Mengisi Formulir Template Baru</h4>
+                <p>Klik <strong>+ Add Notification Template</strong>. Akan muncul pop-up untuk mengisi data template. Berikut contoh form yang sudah diisi lengkap:</p>
+                <div class="img-container" style="max-width: 650px; margin: 1.5rem auto;">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fform%20add%20notification%20template%20fill.png?alt=media&token=5d1741d9-0568-47e2-b0ee-e78912788b93" alt="Form Add Notification Template Fill">
+                    <div class="img-caption">Gambar 2.3: Contoh form template yang sudah diisi lengkap</div>
+                </div>
+
+                <button class="collapsible-toggle" onclick="toggleCollapsible(this)" id="btnFormGuide">
+                    <i class="fas fa-chevron-down"></i> Lihat Panduan Lengkap Kolom Form
+                </button>
+                <div class="collapsible-content" id="formGuide">
+                    <table>
+                        <thead><tr><th>Nama Kolom</th><th>Jenis</th><th>Penjelasan</th><th>Contoh</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Template Type<span class="badge-req">*</span></strong></td><td>Dropdown</td><td>Pilih jenis notifikasi</td><td><span class="badge-example">Tour Pre-Trip</span></td></tr>
+                            <tr><td><strong>Template Code<span class="badge-req">*</span></strong></td><td>Teks</td><td>Kode unik template (huruf kecil + underscore)</td><td><span class="badge-example">tour_on_trip_reminder_passport</span></td></tr>
+                            <tr><td><strong>Template Title<span class="badge-req">*</span></strong></td><td>Teks</td><td>Judul notifikasi di HP pengguna</td><td><span class="badge-example">Jangan lupa passport</span></td></tr>
+                            <tr><td><strong>Template Body<span class="badge-req">*</span></strong></td><td>Text Area</td><td>Isi pesan notifikasi</td><td><span class="badge-example">Jangan lupa jajan</span></td></tr>
+                            <tr><td><strong>Content (Rich)</strong></td><td>Text Area</td><td>Isi tambahan (opsional)</td><td><span class="badge-example">{outfit_note}</span></td></tr>
+                            <tr><td><strong>Delivery Mode<span class="badge-req">*</span></strong></td><td>Dropdown</td><td>Tujuan pengiriman (pilih <strong>Device</strong>)</td><td><span class="badge-example">Device</span></td></tr>
+                            <tr><td><strong>Schedule Type<span class="badge-req">*</span></strong></td><td>Dropdown</td><td>Cara hitung waktu pengiriman</td><td><span class="badge-example">Days Before</span></td></tr>
+                            <tr><td><strong>Day Offset<span class="badge-req">*</span></strong></td><td>Angka</td><td>Jumlah hari (gunakan minus untuk "hari sebelum")</td><td><span class="badge-example">-14</span></td></tr>
+                            <tr><td><strong>Is Active</strong></td><td>Checkbox</td><td>Centang jika ingin langsung aktif</td><td><span class="badge-example">Centang</span></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="callout info">
+                        <div class="callout-title">⚠️ Perhatian:</div>
+                        <p>Kolom bertanda <span class="badge-req">*</span> <strong>wajib diisi</strong>. Klik <strong>Submit</strong> untuk menyimpan atau <strong>Cancel</strong> untuk membatalkan.</p>
+                    </div>
+                </div>
+
+                <h4><i class="fas fa-code"></i> Daftar Placeholder yang Tersedia</h4>
+                <div class="info-box info">
+                    <i class="fas fa-lightbulb"></i>
+                    <div><strong>Placeholder</strong> adalah seperti <strong>"blangko kosong"</strong> yang akan diisi otomatis oleh sistem. Bayangkan seperti surat yang memiliki kata <em>"Kepada: ____"</em> — sistem akan mengisi bagian kosong tersebut dengan nama peserta yang benar setiap notifikasi dikirim.</div>
+                </div>
+
+                <p><strong>📝 Cara mudah menggunakan placeholder:</strong></p>
+                <div class="step-card" style="border-left-color: var(--success);"><div class="step-number">1</div><div class="step-content"><strong>Tulis pesan Anda</strong><p>Contoh: "Hai ____, selamat datang di ____!"</p></div></div>
+                <div class="step-card" style="border-left-color: var(--info);"><div class="step-number">2</div><div class="step-content"><strong>Ganti garis bawah dengan placeholder</strong><p>Contoh: "Hai <code>{user_name}</code>, selamat datang di <code>{tour_name}</code>!"</p></div></div>
+                <div class="step-card" style="border-left-color: var(--warning);"><div class="step-number">3</div><div class="step-content"><strong>Sistem akan mengirim dengan data asli</strong><p>Contoh: "Hai <strong>Budi Santoso</strong>, selamat datang di <strong>Tour China Populer</strong>!"</p></div></div>
+
+                <p><strong>💡 Contoh lain:</strong></p>
+                <div style="background: var(--bg); border-radius: var(--radius-sm); padding: 16px 20px; margin: 12px 0; border-left: 4px solid var(--color-pretrip);">
+                    <p style="margin: 0 0 8px 0;"><strong>Template yang Anda buat:</strong></p>
+                    <p style="margin: 0 0 12px 0; font-family: monospace; background: #fff; padding: 10px; border-radius: 4px; border: 1px dashed var(--border);">"Obatnya jangan ketinggalan, {user_name}!"</p>
+                    <p style="margin: 0 0 8px 0;"><strong>Yang dibaca peserta di HP:</strong></p>
+                    <p style="margin: 0; font-family: monospace; background: #fff; padding: 10px; border-radius: 4px; border: 1px solid var(--success);">"Obatnya jangan ketinggalan, <strong style="color: var(--success);">Budi Santoso</strong>!"</p>
+                </div>
+
+                <p><strong>📋 Daftar Lengkap Placeholder per Jenis Template:</strong></p>
+                <p style="font-size: 13px; color: var(--text-light);">Setiap jenis template memiliki placeholder yang bisa digunakan. Berikut daftarnya dengan contoh penggunaannya:</p>
+
+                <div style="background: var(--bg); border-radius: var(--radius-sm); padding: 20px; margin: 16px 0; overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>Jenis Template</th><th>Kode Placeholder</th><th>Akan Diganti Dengan (Contoh)</th></tr></thead>
+                        <tbody>
+                            <tr><td rowspan="3" style="vertical-align: top;"><strong>🎉 Tour Welcome</strong><br><small>Peserta baru bergabung</small></td><td><code>{user_name}</code></td><td>Nama lengkap peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
+                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
+                            <tr><td><code>{meals_note}</code></td><td>Catatan makanan (contoh: <em>"Bawa bekal sayur & makanan halal"</em>)</td></tr>
+                            <tr><td rowspan="5" style="vertical-align: top;"><strong>📋 Tour Pre-Trip</strong><br><small>Pengingat persiapan sebelum tour</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
+                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
+                            <tr><td><code>{outfit_note}</code></td><td>Saran pakaian (contoh: <em>"Bawa jaket tebal & sepatu gunung"</em>)</td></tr>
+                            <tr><td><code>{socket_type}</code></td><td>Tipe stopkontak (contoh: <em>"Type A"</em>)</td></tr>
+                            <tr><td><code>{socket_voltage}</code></td><td>Voltase listrik (contoh: <em>"220V"</em>)</td></tr>
+                            <tr><td></td><td><code>{socket_note}</code></td><td>Catatan stopkontak (contoh: <em>"Bawa adapter universal"</em>)</td></tr>
+                            <tr><td></td><td><code>{internet_note}</code></td><td>Saran internet (contoh: <em>"Beli SIM card lokal di airport"</em>)</td></tr>
+                            <tr><td rowspan="2" style="vertical-align: top;"><strong>🗓️ Tour On-Trip</strong><br><small>Notifikasi saat tour berlangsung</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
+                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
+                            <tr><td rowspan="2" style="vertical-align: top;"><strong>🎁 Tour Post-Trip</strong><br><small>Notifikasi setelah tour selesai</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
+                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
+                            <tr><td rowspan="2" style="vertical-align: top;"><strong>📊 Tour Submit Survey</strong><br><small>Pengingat isi survey</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
+                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
+                            <tr><td rowspan="2" style="vertical-align: top;"><strong>✅ Tour Submit Survey Done</strong><br><small>Ucapan terima kasih setelah survey</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
+                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout info" style="margin-top: 16px;">
+                    <div class="callout-title">💡 Tips Memudahkan:</div>
+                    <p>Gunakan <strong>Ctrl + H</strong> (Find & Replace) di dalam form template untuk mengganti placeholder dengan cepat. Contoh: cari <code>{user_name}</code>, ganti dengan <code>{tour_name}</code>, dst.</p>
+                </div>
+
+                <h4><i class="fas fa-images"></i> Tampilan Pop-up Form Template</h4>
+                <p>Berikut tampilan lengkap pop-up form add template beserta fitur yang tersedia:</p>
+
+                <div style="display: flex; flex-direction: column; gap: 20px; margin: 16px 0;">
+                    <div class="img-container" style="max-width: 750px; margin: 0 auto;">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2FPlaceholders.png?alt=media&token=10376e15-510e-4de6-9edc-221299d11a2a" alt="List Placeholder">
+                        <div class="img-caption">Gambar 2.3a: Daftar placeholder yang tersedia di pop-up form</div>
+                    </div>
+                    <div class="img-container" style="max-width: 750px; margin: 0 auto;">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fpreview%20device.png?alt=media&token=d1dc16f5-14ca-4cca-b865-c36965b557e8" alt="Preview Device">
+                        <div class="img-caption">Gambar 2.3b: Preview tampilan notifikasi di device</div>
+                    </div>
+                    <div class="img-container" style="max-width: 750px; margin: 0 auto;">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fconten%20preview.png?alt=media&token=0ce33c3d-fa0e-4588-8cb0-026eb015fe3e" alt="Content Preview">
+                        <div class="img-caption">Gambar 2.3c: Preview konten notifikasi (rich content)</div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h3 id="bab2-2"><i class="fas fa-clock"></i> Bagian 2: Memantau Pengiriman (Notification Instance)</h3>
+                <p>Setelah template aktif, <strong>sistem ALVIS akan otomatis membuat jadwal pengiriman</strong> berdasarkan data tour. Pantau di menu <em>Notification Instance</em>.</p>
+
+                <h4><i class="fas fa-sign-in-alt"></i> Cara Masuk</h4>
+                <ul class="steps">
+                    <li class="step-item"><span class="step-number">1</span><div class="step-text">Dari sidebar, cari bagian <strong>Notification</strong>.</div></li>
+                    <li class="step-item"><span class="step-number">2</span><div class="step-text">Klik <strong>Notification Instance</strong> (di bawah Notification Template).</div></li>
+                </ul>
+                <div class="img-container" style="max-width: 600px; margin: 1.5rem auto;">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2FAkses%20menu%20notification%20instance.png?alt=media&token=713d0310-064f-472e-b39a-20148ae7a207" alt="Akses Menu Notification Instance">
+                    <div class="img-caption">Gambar 2.4: Cara masuk ke menu Notification Instance</div>
+                </div>
+
+                <h4><i class="fas fa-route"></i> Daftar Tour & Status</h4>
+                <p>Halaman menampilkan <strong>card-card tour</strong> dengan status berbeda:</p>
+                <div class="status-cards">
+                    <div class="status-card active"><strong>✅ Active</strong><p>Tour sedang berlangsung</p></div>
+                    <div class="status-card upcoming"><strong>📅 Upcoming</strong><p>Tour akan datang</p></div>
+                    <div class="status-card past"><strong>🔙 Past Trip</strong><p>Tour sudah selesai</p></div>
+                </div>
+                <div class="img-container">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fhalaman%20notification%20instance.png?alt=media&token=40cb04f0-6dc0-42ea-8a30-0e2a75ad3ac9" alt="Halaman Notification Instance">
+                    <div class="img-caption">Gambar 2.5: Halaman daftar tour dengan berbagai status</div>
+                </div>
+
+                <h4><i class="fas fa-search"></i> Detail Notifikasi & Metrik</h4>
+                <p><strong>Klik card tour</strong> untuk melihat notifikasi per tanggal. Setiap notifikasi menampilkan metrik:</p>
+                <div class="metric-cards">
+                    <div class="metric-card sent"><div class="metric-icon">📤</div><strong>Dikirim</strong><p>Notifikasi terkirim</p></div>
+                    <div class="metric-card received"><div class="metric-icon">📥</div><strong>Diterima</strong><p>Sampai ke HP</p></div>
+                    <div class="metric-card read"><div class="metric-icon">👁️</div><strong>Dibaca</strong><p>Sudah dibaca</p></div>
+                </div>
+                <div class="img-container">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fhalaman%20instance%20notification%20detail.png?alt=media&token=38838d51-1c01-43cc-bf41-00983e85923d" alt="Detail Halaman Instance">
+                    <div class="img-caption">Gambar 2.6: Detail notifikasi per tanggal</div>
+                </div>
+
+                <h4><i class="fas fa-users"></i> Detail Penerima</h4>
+                <p><strong>Klik pada data metrik</strong> untuk melihat pop-up <strong>Recipient Details</strong> berisi daftar penerima notifikasi.</p>
+                <div class="img-container" style="max-width: 750px; margin: 1.5rem auto;">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fpop%20up%20recipient%20details.png?alt=media&token=339de6fb-15f1-44f2-aa67-fe3e153165e7" alt="Pop Up Recipient Details">
+                    <div class="img-caption">Gambar 2.7: Pop up detail penerima notifikasi</div>
+                </div>
+
+                <div class="callout callout-success-custom">
+                    <div class="callout-title">✅ Selesai</div>
+                    <p>Sekarang Anda sudah memahami alur lengkap: buat template → sistem generate jadwal → pantau di instance → lihat metrik → detail penerima.</p>
+                </div>
+
+                <hr>
+
+                <h3 id="bab2-3"><i class="fas fa-robot"></i> Bagian 3: Jadwal Otomatis Sistem (Scheduler)</h3>
+                <p>Setelah template dibuat dan diaktifkan, sistem ALVIS memiliki <strong>5 mesin otomatis (scheduler)</strong> yang bekerja di belakang layar untuk membuat jadwal dan mengirimkan notifikasi ke pengguna. Anda tidak perlu menjalankan ini secara manual — semuanya berjalan otomatis.</p>
+
+                <div class="info-box info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>Kelima mesin ini dijalankan oleh server secara periodik (cron job). Admin cukup memastikan template sudah aktif dan data tour sudah benar.</div>
+                </div>
+
+                <h4><i class="fas fa-robot"></i> Mengenal 5 Mesin Otomatis Notifikasi</h4>
+
+                <div style="display: flex; flex-direction: column; gap: 16px; margin: 20px 0;">
+                    <!-- Mesin 1 -->
+                    <div style="display: flex; gap: 16px; padding: 16px 20px; background: var(--bg); border-radius: var(--radius-sm); border-left: 4px solid var(--color-pretrip);">
+                        <div style="flex-shrink: 0; width: 48px; height: 48px; background: var(--color-pretrip); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">📋</div>
+                        <div style="flex: 1;">
+                            <strong style="font-size: 15px; color: var(--text);">1. Mesin Pre-Trip — "Si Pengingat Persiapan"</strong>
+                            <p style="font-size: 13px; color: var(--text-light); margin: 4px 0 0 0;">
+                                <strong>Kapan bekerja:</strong> 10 hari sebelum tour dimulai (H-10).<br>
+                                <strong>Apa yang dilakukan:</strong> Membuat jadwal notifikasi pengingat persiapan (seperti pakaian, obat, stopkontak) untuk dikirim H-7 sebelum keberangkatan.<br>
+                                <strong>Zona waktu:</strong> Mengikuti waktu sistem.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mesin 2 -->
+                    <div style="display: flex; gap: 16px; padding: 16px 20px; background: var(--bg); border-radius: var(--radius-sm); border-left: 4px solid var(--color-ontrip);">
+                        <div style="flex-shrink: 0; width: 48px; height: 48px; background: var(--color-ontrip); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">🗓️</div>
+                        <div style="flex: 1;">
+                            <strong style="font-size: 15px; color: var(--text);">2. Mesin On-Trip Harian — "Si Pendamping Harian"</strong>
+                            <p style="font-size: 13px; color: var(--text-light); margin: 4px 0 0 0;">
+                                <strong>Kapan bekerja:</strong> Setiap hari selama tour berlangsung (kecuali hari pertama dan terakhir).<br>
+                                <strong>Apa yang dilakukan:</strong> Membuat jadwal notifikasi harian (seperti pengingat passport, to-do list, upload foto, feedback) untuk setiap hari perjalanan.<br>
+                                <strong>Zona waktu:</strong> Mengikuti zona waktu destinasi tour (misal: China = GMT+8).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mesin 3 -->
+                    <div style="display: flex; gap: 16px; padding: 16px 20px; background: var(--bg); border-radius: var(--radius-sm); border-left: 4px solid var(--warning);">
+                        <div style="flex-shrink: 0; width: 48px; height: 48px; background: var(--warning); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">📊</div>
+                        <div style="flex: 1;">
+                            <strong style="font-size: 15px; color: var(--text);">3. Mesin Survey Submit — "Si Pengingat Survey"</strong>
+                            <p style="font-size: 13px; color: var(--text-light); margin: 4px 0 0 0;">
+                                <strong>Apa yang dilakukan:</strong><br>
+                                1. Membuat jadwal pengingat survey yang akan dikirim pada <strong>H-3, H-2, dan H-1</strong> sebelum tour berakhir — khusus untuk peserta yang <strong>belum mengisi survey</strong>.<br>
+                                2. Setelah peserta mengisi survey, sistem mengirimkan <strong>ucapan terima kasih</strong> (thank you) pada <strong>H+1</strong> (1 hari setelah submit).<br>
+                                <strong>Zona waktu:</strong> Zona waktu destinasi tour.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mesin 4 -->
+                    <div style="display: flex; gap: 16px; padding: 16px 20px; background: var(--bg); border-radius: var(--radius-sm); border-left: 4px solid var(--color-posttrip);">
+                        <div style="flex-shrink: 0; width: 48px; height: 48px; background: var(--color-posttrip); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">🎁</div>
+                        <div style="flex: 1;">
+                            <strong style="font-size: 15px; color: var(--text);">4. Mesin Post-Trip — "Si Penutup"</strong>
+                            <p style="font-size: 13px; color: var(--text-light); margin: 4px 0 0 0;">
+                                <strong>Kapan bekerja:</strong> 10 hari sebelum tour selesai (H-10 dari tanggal selesai).<br>
+                                <strong>Apa yang dilakukan:</strong> Membuat jadwal notifikasi setelah tour (ucapan terima kasih, pengingat upload foto, survey lanjutan) untuk dikirim H+1 setelah tour.<br>
+                                <strong>Zona waktu:</strong> Selalu menggunakan Asia/Jakarta (GMT+7).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mesin 5 -->
+                    <div style="display: flex; gap: 16px; padding: 16px 20px; background: var(--bg); border-radius: var(--radius-sm); border-left: 4px solid var(--success);">
+                        <div style="flex-shrink: 0; width: 48px; height: 48px; background: var(--success); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px;">🚚</div>
+                        <div style="flex: 1;">
+                            <strong style="font-size: 15px; color: var(--text);">5. Mesin Proses Kirim — "Si Kurir"</strong>
+                            <p style="font-size: 13px; color: var(--text-light); margin: 4px 0 0 0;">
+                                <strong>Kapan bekerja:</strong> Setiap saat, terus-menerus memeriksa jadwal yang sudah waktunya dikirim.<br>
+                                <strong>Apa yang dilakukan:</strong> Mengirimkan notifikasi yang sudah dijadwalkan ke HP pengguna. Prioritas utama: notifikasi yang sudah waktunya dikirim ke penerima tertentu. Prioritas kedua: instance notifikasi yang sudah waktunya dikirim.<br>
+                                <strong>Keunikan:</strong> Jika pengiriman gagal, sistem akan mencoba ulang (retry) atau menandai sebagai gagal.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4><i class="fas fa-clock"></i> Timeline Kapan Mesin Bekerja</h4>
+                <p>Berikut ilustrasi kapan setiap mesin bekerja dalam siklus sebuah tour:</p>
+
+                <div style="background: var(--bg); border-radius: var(--radius-sm); padding: 20px; margin: 16px 0; overflow-x: auto;">
+                    <div style="display: flex; align-items: center; min-width: 700px; padding: 10px 0; position: relative;">
+                        <!-- Timeline bar -->
+                        <div style="position: relative; width: 100%; height: 60px; background: var(--border); border-radius: 8px; overflow: visible;">
+                            <!-- Label waktu -->
+                            <div style="display: flex; justify-content: space-between; padding: 0 4px; margin-bottom: 4px; font-size: 11px; color: var(--text-muted);">
+                                <span>H-30</span>
+                                <span>H-10</span>
+                                <span>H-7</span>
+                                <span>H-3</span>
+                                <span style="font-weight: 700; color: var(--primary);">HARI H</span>
+                                <span>H+1</span>
+                                <span>H+3</span>
+                                <span>H+7</span>
+                                <span>H+10</span>
+                            </div>
+                            <!-- Bar utama -->
+                            <div style="position: relative; width: 100%; height: 20px; background: var(--border); border-radius: 10px; margin-top: 4px;">
+                                <!-- Pre-Trip: H-10 trigger -->
+                                <div style="position: absolute; left: 33%; width: 4px; height: 20px; background: var(--color-pretrip); border-radius: 2px; top: 0;" title="Mesin Pre-Trip bekerja di H-10"></div>
+                                <!-- Pre-Trip kirim: H-7 -->
+                                <div style="position: absolute; left: 40%; width: 4px; height: 20px; background: var(--color-pretrip); border-radius: 2px; top: 0; opacity: 0.5;" title="Notifikasi Pre-Trip dikirim H-7"></div>
+                                <!-- On-Trip: selama tour -->
+                                <div style="position: absolute; left: 50%; width: 4px; height: 20px; background: var(--color-ontrip); border-radius: 2px; top: 0;" title="Mesin On-Trip Harian"></div>
+                                <!-- Survey: H-3 trigger (H+7 dari selesai) -->
+                                <div style="position: absolute; left: 35%; width: 4px; height: 20px; background: var(--warning); border-radius: 2px; top: 0;" title="Mesin Survey Submit bekerja (H-3, H-2, H-1)"></div>
+                                <!-- Survey kirim: H-1, H-2, H-3 -->
+                                <div style="position: absolute; left: 45%; width: 4px; height: 20px; background: var(--warning); border-radius: 2px; top: 0; opacity: 0.6;" title="Notifikasi Survey dikirim H-3, H-2, H-1"></div>
+                                <!-- Survey thank you: H+1 -->
+                                <div style="position: absolute; left: 85%; width: 4px; height: 20px; background: var(--warning); border-radius: 2px; top: 0; opacity: 0.4;" title="Thank you notification H+1"></div>
+                                <!-- Post-Trip: H+10 trigger -->
+                                <div style="position: absolute; left: 77%; width: 4px; height: 20px; background: var(--color-posttrip); border-radius: 2px; top: 0;" title="Mesin Post-Trip bekerja"></div>
+                            </div>
+                            <!-- Label mesin -->
+                            <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 10px; font-weight: 600;">
+                                <span style="color: var(--color-pretrip);">📋 Pre-Trip (H-10)</span>
+                                <span style="color: var(--color-ontrip);">🗓️ On-Trip (harian)</span>
+                                <span style="color: var(--warning);">📊 Survey (H+7)</span>
+                                <span style="color: var(--color-posttrip);">🎁 Post-Trip (H+10)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4><i class="fas fa-table"></i> Ringkasan Perbedaan 5 Mesin</h4>
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>Nama Mesin</th><th>Dipicu Saat</th><th>Notifikasi Dikirim</th><th>Zona Waktu</th><th>Target Penerima</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1</strong></td>
+                            <td>Pre-Trip</td>
+                            <td>H-10 dari mulai tour</td>
+                            <td>H-7 (default)</td>
+                            <td>Sistem</td>
+                            <td>Semua peserta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2</strong></td>
+                            <td>On-Trip Harian</td>
+                            <td>Setiap hari selama tour</td>
+                            <td>H+1 sampai H-1</td>
+                            <td>Destinasi tour</td>
+                            <td>Semua peserta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3</strong></td>
+                            <td>Survey Submit</td>
+                            <td>H+7 dari selesai tour</td>
+                            <td>H-3, H-2, H-1 (pengingat) + H+1 (thank you)</td>
+                            <td>Destinasi tour</td>
+                            <td>Peserta belum isi survey (pengingat) → Semua peserta (thank you setelah submit)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td>Post-Trip</td>
+                            <td>H-10 dari selesai tour</td>
+                            <td>H+1 (default)</td>
+                            <td>Asia/Jakarta</td>
+                            <td>Semua peserta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5</strong></td>
+                            <td>Proses Kirim</td>
+                            <td>Terus-menerus</td>
+                            <td>Sesuai jadwal</td>
+                            <td>-</td>
+                            <td>Per penerima</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+        <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Kesimpulan</div>
+            <p>Admin cukup membuat template dan mengaktifkannya. <strong>5 mesin otomatis</strong> di atas akan bekerja sendiri untuk membuat jadwal, menyesuaikan zona waktu, dan mengirimkan notifikasi ke HP pengguna tepat pada waktunya. Anda tinggal memantau hasilnya di menu <strong>Notification Instance</strong>.</p>
+        </div>
+    </section>
+
+            <!-- CHECKLIST PEMAHAMAN -->
+            <section id="checklist" class="section" style="margin-top: 40px;">
+                <h2><i class="fas fa-clipboard-check"></i> Checklist Pemahaman</h2>
+                <p style="font-size: 14px; color: var(--text-light); margin-bottom: 16px;">Saya sudah mengerti dan memahami:</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg); border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition);"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"><span style="font-size: 14px;">Cara membuat notification template</span></label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg); border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition);"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"><span style="font-size: 14px;">7 jenis template notifikasi</span></label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg); border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition);"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"><span style="font-size: 14px;">5 mesin scheduler otomatis</span></label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg); border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition);"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"><span style="font-size: 14px;">Cara memantau notification instance</span></label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg); border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition);"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"><span style="font-size: 14px;">Alur notifikasi di aplikasi mobile</span></label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg); border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition);"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"><span style="font-size: 14px;">Troubleshooting dasar notifikasi</span></label>
+                </div>
+                <p style="font-size: 13px; color: var(--text-muted); margin-top: 12px; font-style: italic;">✓ Centang checklist di atas untuk mengukur pemahaman Anda tentang fitur push notification.</p>
+            </section>
+
+            <!-- BAB 3: PANDUAN PENGGUNA (DIRINGKAS - FLOWCHART) -->
+            <section id="bab3" class="section">
+                <h2>Bab 3: Panduan Pengguna Aplikasi (End User)</h2>
+                <p><span class="tag user">Pengguna</span> Bab ini untuk <strong>Pengguna Aplikasi ALVIS</strong> (Android & iOS) yang akan menerima dan membaca notifikasi di HP mereka.</p>
+
+                <hr>
+
+                <h3><i class="fas fa-bell"></i> Alur Menerima & Membaca Notifikasi</h3>
+                <p>Ada 2 cara untuk membaca notifikasi. Berikut alur lengkapnya:</p>
+
+                <div class="flowchart">
+                    <div class="flow-step">
+                        <div class="flow-icon"><i class="fas fa-bell"></i></div>
+                        <div class="flow-text">Notifikasi masuk ke layar HP <small>Muncul otomatis saat admin mengirim</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--success);">
+                        <div class="flow-icon" style="background: var(--success);"><i class="fas fa-hand-pointer"></i></div>
+                        <div class="flow-text">Tap notifikasi <small>Aplikasi ALVIS terbuka otomatis</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--info);">
+                        <div class="flow-icon" style="background: var(--info);"><i class="fas fa-file-alt"></i></div>
+                        <div class="flow-text">Baca detail notifikasi <small>Halaman detail berisi informasi lengkap</small></div>
+                    </div>
+
+                    <div class="flow-divider">ATAU (jika notifikasi terlewat)</div>
+
+                    <div class="flow-step">
+                        <div class="flow-icon"><i class="fas fa-user-circle"></i></div>
+                        <div class="flow-text">Buka Profil <small>Ikon profil di pojok kanan bawah/atas</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--warning);">
+                        <div class="flow-icon" style="background: var(--warning);"><i class="fas fa-bell"></i></div>
+                        <div class="flow-text">Tap menu "Notifikasi" <small>Di halaman profil</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--primary);">
+                        <div class="flow-icon" style="background: var(--primary);"><i class="fas fa-list"></i></div>
+                        <div class="flow-text">Lihat daftar notifikasi <small>Notifikasi belum dibaca memiliki tanda khusus</small></div>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-step" style="border-left-color: var(--success);">
+                        <div class="flow-icon" style="background: var(--success);"><i class="fas fa-hand-pointer"></i></div>
+                        <div class="flow-text">Tap notifikasi → Baca detail</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 1.5rem 0;">
+                    <div class="img-container" style="max-width: 300px; flex: 1; min-width: 200px; margin: 0;">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fterima%20notifikasi.png?alt=media&token=f1d9e1e6-5d69-462f-a574-f3defcd3808a" alt="Notifikasi di HP">
+                        <div class="img-caption">Gambar 3.1: Notifikasi muncul di layar HP</div>
+                    </div>
+                    <div class="img-container" style="max-width: 300px; flex: 1; min-width: 200px; margin: 0;">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fnotifikasi%20list.png?alt=media&token=b204ad87-3178-46de-a064-c79032080087" alt="Daftar Notifikasi">
+                        <div class="img-caption">Gambar 3.2: Daftar notifikasi di menu profil</div>
+                    </div>
+                </div>
+
+                <div class="callout callout-success-custom">
+                    <div class="callout-title">✅ Ringkasan</div>
+                    <p><strong>Cara 1 (Otomatis):</strong> Notifikasi muncul → Tap → Baca detail.<br>
+                    <strong>Cara 2 (Manual):</strong> Profil → Menu Notifikasi → Pilih notifikasi → Baca detail.</p>
+                </div>
+            </section>
+
+            <!-- BAB 4 -->
+            <section id="bab4" class="section">
+                <h2>Bab 4: Troubleshooting & FAQ</h2>
+                <h3><i class="fas fa-exclamation-triangle"></i> 4.1 Notifikasi Tidak Masuk</h3>
+                <div class="step-card"><div class="step-number"><i class="fas fa-search"></i></div><div class="step-content"><strong>Periksa Koneksi Internet</strong><p>Pastikan perangkat terhubung ke internet (WiFi / data seluler).</p></div></div>
+                <div class="step-card"><div class="step-number"><i class="fas fa-cog"></i></div><div class="step-content"><strong>Periksa Izin Notifikasi</strong><p>Pastikan notifikasi untuk ALVIS diaktifkan di pengaturan perangkat.</p></div></div>
+                <div class="step-card"><div class="step-number"><i class="fas fa-battery-three-quarters"></i></div><div class="step-content"><strong>Mode Hemat Daya / DND</strong><p>Mode ini dapat memblokir notifikasi. Nonaktifkan sementara.</p></div></div>
+                <div class="step-card"><div class="step-number"><i class="fas fa-redo-alt"></i></div><div class="step-content"><strong>Restart Aplikasi / Perangkat</strong><p>Tutup paksa ALVIS lalu buka kembali. Jika perlu, restart perangkat.</p></div></div>
+                <div class="step-card"><div class="step-number"><i class="fas fa-user-shield"></i></div><div class="step-content"><strong>Hubungi Admin</strong><p>Jika semua langkah gagal, hubungi admin backoffice untuk verifikasi.</p></div></div>
+
+                <h3><i class="fas fa-mobile-alt"></i> 4.2 Izin Notifikasi di Perangkat</h3>
+                <h4>Android</h4>
+                <ol><li><strong>Settings</strong> > <strong>Apps</strong> > <strong>ALVIS</strong></li><li>Pilih <strong>Notifications</strong></li><li>Aktifkan <strong>"Show notifications"</strong></li></ol>
+                <h4>iOS</h4>
+                <ol><li><strong>Settings</strong> > <strong>ALVIS</strong></li><li>Tap <strong>Notifications</strong></li><li>Aktifkan <strong>"Allow Notifications"</strong></li></ol>
+
+                <hr>
+                <h3><i class="fas fa-question-circle"></i> 4.3 FAQ</h3>
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Apakah pengguna bisa membalas notifikasi?</strong><p>Saat ini notifikasi bersifat <strong>one-way</strong>. Pengguna tidak dapat membalas langsung, tetapi dapat membuka halaman terkait di aplikasi.</p></div>
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Berapa lama notifikasi tersimpan?</strong><p>Notifikasi tersimpan selama pengguna tidak <strong>log out</strong>. Ketika log out, data lokal termasuk notifikasi akan terhapus.</p></div>
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Apakah ada batasan jumlah notifikasi per hari?</strong><p>Tidak ada batasan khusus. Disarankan maksimal 3-5 notifikasi per hari.</p></div>
+                <div class="callout info"><strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-question-circle"></i> Mengapa status notifikasi "Gagal"?</strong><p>Penyebab: token FCM/APNS kedaluwarsa, koneksi server bermasalah, atau format payload tidak valid.</p></div>
+            </section>
+
+            <!-- BAB 5: TIMELINE -->
+            <section id="bab5" class="timeline-section">
+                <h2 style="border-bottom:2px solid var(--border);padding-bottom:8px;display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:#1e293b;margin-bottom:16px;">
+                    <span style="display:inline-block;width:6px;height:24px;background-color:var(--primary);border-radius:4px;flex-shrink:0;"></span>
+                    Bab 5: Studi Kasus — Perjalanan Notifikasi Galuh
+                </h2>
+                <p><span class="tag both">Semua</span> Klik setiap titik pada timeline untuk melihat detail notifikasi beserta gambarnya.</p>
+
+                <div class="timeline-intro">
+                    <div class="intro-title">📖 Cerita Berawal...</div>
+                    <p>Kenalkan, namanya <strong>Galuh</strong>. Ia baru saja bergabung dengan tour <strong>"MOSLEM CHINA POPULAR"</strong> (MCPO-09 0620/MH). Tour ini berlangsung <strong>20-28 Juni 2026</strong>. Selama perjalanannya, Galuh akan menerima berbagai notifikasi otomatis dari sistem ALVIS. Mari kita ikuti perjalanan Galuh!</p>
+                </div>
+
+                <div id="timelineRoot" class="timeline-container"></div>
+
+                <hr style="margin:32px 0;">
+                <h3><i class="fas fa-list"></i> Ringkasan Seluruh Template Notifikasi</h3>
+                <table id="summaryTable">
+                    <thead><tr><th>#</th><th>Kategori</th><th>Code</th><th>Title</th><th>Waktu Kirim</th><th>Jenis</th><th>Target</th></tr></thead>
+                    <tbody id="summaryTableBody"></tbody>
+                </table>
+            </section>
+
+            <footer class="footer">
+                <p><i class="fas fa-bell" style="color:var(--primary);"></i> <strong>Manual Book Push Notification ALVIS</strong> &mdash; v2.0 &mdash; Juni 2026</p>
+                <p style="margin-top:4px;">&copy; 2026 ALVIS.</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <div class="panel-overlay" id="panelOverlay"></div>
+    <div class="slide-panel" id="slidePanel">
+        <div class="panel-header">
+            <div class="panel-title" id="panelTitle">
+                <span id="panelIcon">🎉</span>
+                <span id="panelTitleText">Judul Notifikasi</span>
+                <span class="panel-badge" id="panelBadge">Kategori</span>
+            </div>
+            <button class="panel-close" id="panelClose">&times;</button>
+        </div>
+        <div class="panel-body" id="panelBody"></div>
+        <div class="panel-nav">
+            <button id="panelPrev"><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+            <span class="panel-counter" id="panelCounter">1 / 16</span>
+            <button id="panelNext">Selanjutnya <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        const notificationData = [
+            { id:1, category:'welcome', icon:'🎉', title:'Yeay! Kamu Resmi Ikut Petualangan!', code:'tour_welcome_message', body:'Hi {user_name}, kamu berhasil masuk {tour_name}', content:'-', schedule:'Sekali (saat join)', scheduleType:'Once', actionType:'-', target:'Semua peserta', summary:'Galuh Add Tour → Terima notifikasi Welcome → Tap notifikasi → Masuk halaman Pre-Trip.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fwelcome%20-%20template.png?alt=media&token=172e068e-9844-404c-a14b-6a4157348a6d',caption:'① Setting Template Welcome di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fwelcome%20-%20scheduller.png?alt=media&token=e0017cb7-a798-47fd-9e0c-c4a31ddb14f6',caption:'② Jadwal notifikasi tergenerate di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fwelcome%20-%20notifiksi%20device.png?alt=media&token=85101735-7838-4f42-a8d5-ebcedf0b71d6',caption:'③ Notifikasi Welcome di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fwelcome%20-%20action%20tap%20notifikasi.png?alt=media&token=213e78d9-fcf1-48e4-8ac8-7505485cad94',caption:'④ Tap notifikasi → Buka halaman Pre-Trip'}]},
+            { id:2, category:'pretrip', icon:'🛂', title:'Jangan lupa passport', code:'tour_pre_trip_reminder_passport', body:'Jangan lupa paspor dan visa', content:'-', schedule:'H-14', scheduleType:'Days Before', actionType:'-', target:'Semua peserta', summary:'H-14, Galuh menerima notifikasi "Jangan lupa passport" → Tap notifikasi → Melihat detail pesan.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-passport-template.png?alt=media&token=dd9daf13-519c-4ede-a6b6-59d1e2a49d6a',caption:'① Setting Template Notifikasi Passport di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-passport-scheduller.png?alt=media&token=56454b94-9556-48b1-924c-02990d647116',caption:'② Jadwal notifikasi Passport H-14 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-passport-notifikasi-device.png?alt=media&token=e88f609a-aebe-4ed4-aac6-0a9263535ab7',caption:'③ Notifikasi Passport di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-passport-notifikasi-tap.png?alt=media&token=41853428-dc86-4b24-9e7e-9a1fee61015f',caption:'④ Galuh tap notifikasi → Melihat detail pesan'}]},
+            { id:3, category:'pretrip', icon:'💊', title:'Jangan lupa obat', code:'tour_pre_trip_reminder_medicine', body:'Obatnya jangan ketinggalan, biar tetep hidup', content:'-', schedule:'H-10', scheduleType:'Days Before', actionType:'-', target:'Semua peserta', summary:'H-10, Galuh menerima notifikasi "Jangan lupa obat" → Tap notifikasi → Melihat detail pesan.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-medicine-template.png?alt=media&token=3ae91c8d-45d1-4125-9835-2a23602f17ce',caption:'① Setting Template Notifikasi Obat di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-medicine-scheduller.png?alt=media&token=339a8d01-91d8-45e7-b5cb-4d32c8975840',caption:'② Jadwal notifikasi Obat H-10 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-medicine-notifikasi-device.png?alt=media&token=b4b9b65d-d0aa-4950-a63b-f573f52522e8',caption:'③ Notifikasi Obat di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-medicine-action-tap-notifikasi.png?alt=media&token=de980a6e-43b6-4fb3-a2b7-f943c59ae778',caption:'④ Galuh tap notifikasi → Melihat detail pesan'}]},
+            { id:4, category:'pretrip', icon:'👗', title:'Look Good, Feel Great: Packing Tips!', code:'tour_pre_trip_remainder_fashion', body:'Look Good, Feel Great: Packing Tips!', content:'{outfit_note}', schedule:'H-3', scheduleType:'Days Before', actionType:'-', target:'Semua peserta', summary:'H-3, Galuh menerima notifikasi "Look Good, Feel Great" → Tap notifikasi → Melihat detail pesan.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-fashion-template.png?alt=media&token=d57dcf27-1b04-4672-af8e-d0c1465d21c1',caption:'① Setting Template Notifikasi Fashion di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-fashion-scheduller.png?alt=media&token=b21dbf76-b723-42a2-866f-603831ec7acd',caption:'② Jadwal notifikasi Fashion H-3 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-fashion-notifikasi-device.png?alt=media&token=9c60e847-0352-4b7b-8f2b-bd133fd1f9f6',caption:'③ Notifikasi Fashion di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fpre-trip-reminder-fashion-action-tap-notifikasi.png?alt=media&token=97dc5584-bcb2-49b6-9aba-bb80c677bf47',caption:'④ Galuh tap notifikasi → Melihat detail pesan'}]},
+            { id:5, category:'ontrip', icon:'🛂', title:'Jangan lupa passport', code:'tour_on_trip_reminder_passport', body:'Passport e broooo', content:'-', schedule:'07:00 (setiap hari)', scheduleType:'Daily', actionType:'tour_ontrip_passport', target:'Semua peserta', summary:'Setiap hari pukul 07:00, Galuh mendapat notifikasi "Jangan lupa passport" → Tap notifikasi → Membuka halaman Passport.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-passport-template.png?alt=media&token=dd9daf13-519c-4ede-a6b6-59d1e2a49d6a',caption:'① Setting Template Notifikasi Passport di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-passport-scheduller.png?alt=media&token=56454b94-9556-48b1-924c-02990d647116',caption:'② Jadwal notifikasi Passport setiap hari jam 07:00 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-passport-notifikasi-device.png?alt=media&token=e88f609a-aebe-4ed4-aac6-0a9263535ab7',caption:'③ Notifikasi Passport di HP Galuh pukul 07:00'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-passport-notifikasi-tap.png?alt=media&token=41853428-dc86-4b24-9e7e-9a1fee61015f',caption:'④ Galuh tap notifikasi → Melihat halaman Passport'}]},
+            { id:6, category:'ontrip', icon:'📝', title:'Sudah buat To-do list untuk hari ini?', code:'tour_on_trip_reminder_create_todo_list', body:'Persiapkan tour hari ini dengan membuat to-do list', content:'-', schedule:'08:00 (setiap hari)', scheduleType:'Daily', actionType:'tour_ontrip_create_todo', target:'Semua peserta', summary:'Setiap hari pukul 08:00, Galuh mendapat notifikasi untuk membuat to-do list → Tap notifikasi → Scroll ke fitur To-do List.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-todolist-template.png?alt=media&token=928be99f-dc74-490a-8b1e-d47464774ea3',caption:'① Setting Template Notifikasi To-do List di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-todolist-scheduller.png?alt=media&token=4815382b-e3b2-4b4f-9b2f-909f583d4143',caption:'② Jadwal notifikasi To-do List setiap hari jam 08:00 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-todolist-notifikasi-device.png?alt=media&token=2c7301c6-a993-4f02-9e74-22facc1f7cbc',caption:'③ Notifikasi To-do List di HP Galuh pukul 08:00'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-todolist-notifikasi-tap.png?alt=media&token=e9709d20-6a62-4a8c-9f74-3ccd3863c5af',caption:'④ Galuh tap notifikasi → Scroll ke fitur To-do List'}]},
+            { id:7, category:'ontrip', icon:'📋', title:'Jangan lupa to-do list mu', code:'tour_on_trip_reminder_todo_list', body:'Percuma capek2 bikin todo list tapi gak dipake', content:'-', schedule:'12:00 (setiap hari)', scheduleType:'Daily', actionType:'tour_ontrip_todo_list', target:'Semua peserta', summary:'Setiap hari pukul 12:00, Galuh mendapat pengingat untuk mengecek to-do list → Tap notifikasi → Scroll ke To-do List.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-todolistremaind-template.png?alt=media&token=7c29f436-65ba-445d-bc1b-6ce68beba581',caption:'① Setting Template Notifikasi Cek To-do List di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-todolistremaind-scheduller.png?alt=media&token=5dd30958-ec1e-49ee-aa64-9c370e0fd50c',caption:'② Jadwal notifikasi Cek To-do List setiap hari jam 12:00 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-todolistremind-notifikasi-device.png?alt=media&token=ccf77520-2437-433d-ae03-3b212a559d02',caption:'③ Notifikasi Cek To-do List di HP Galuh pukul 12:00'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-todolistremind-notifikasi-tap.png?alt=media&token=53b7876f-a035-4889-9580-28788eea671a',caption:'④ Galuh tap notifikasi → Scroll ke To-do List'}]},
+            { id:8, category:'ontrip', icon:'📸', title:'Share dong foto-foto kece kamu ke Alvis', code:'tour_on_trip_reminder_upload_photo', body:'Share foto-foto kamu di konten today\'s moment', content:'-', schedule:'15:00 (setiap hari)', scheduleType:'Daily', actionType:'tour_ontrip_photo', target:'Semua peserta', summary:'Setiap hari pukul 15:00, Galuh mendapat notifikasi untuk mengunggah foto → Tap notifikasi → Scroll ke Today\'s Moment.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-sharefotosiang-template.png?alt=media&token=1dc175ae-f139-4770-928b-a9f5b2c0034d',caption:'① Setting Template Notifikasi Upload Foto di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-sharefotosiang-scheduller.png?alt=media&token=67628e5f-1e15-4b40-bffb-0588c89229db',caption:'② Jadwal notifikasi Upload Foto setiap hari jam 15:00 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-sharefotosiang-notifikasi-device.png?alt=media&token=b3d528c6-9752-4870-ac43-c154eb0cad2c',caption:'③ Notifikasi Upload Foto di HP Galuh pukul 15:00'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-sharefotosiang-notifikasi-tap.png?alt=media&token=077719b8-1856-47b3-82ff-baefc5cdf8be',caption:'④ Galuh tap notifikasi → Scroll ke Today\'s Moment'}]},
+            { id:9, category:'ontrip', icon:'💬', title:'Gimana tur hari ini?', code:'tour_on_trip_todays_feedback', body:'Share dong ke Alvis pengalamanmu hari ini', content:'-', schedule:'18:00 (setiap hari)', scheduleType:'Daily', actionType:'tour_ontrip_todays_feedback', target:'Semua peserta', summary:'Setiap hari pukul 18:00, Galuh mendapat notifikasi untuk memberikan feedback → Tap notifikasi → Scroll ke today\'s feedback.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-turhariini-template.png?alt=media&token=d8a5564d-f0ce-4376-ae88-88099e1a1187',caption:'① Setting Template Notifikasi Feedback di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-turhariini-scheduller.png?alt=media&token=06702558-c276-4694-9ab3-c508ff50d2d3',caption:'② Jadwal notifikasi Feedback setiap hari jam 18:00 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-turhariini-notifikasi-device.png?alt=media&token=224a430f-e90d-4ed4-b49f-32d4821ca147',caption:'③ Notifikasi Feedback di HP Galuh pukul 18:00'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-turhariini-notifikasi-tap.png?alt=media&token=5b0c79a1-107a-4815-a313-77f0a198520c',caption:'④ Tap notifikasi → Scroll today\'s feedback'}]},
+            { id:10, category:'ontrip', icon:'🔜', title:'Sudah siap untuk melanjutkan tur besok?', code:'tour_on_trip_next_day_preparation', body:'Jangan sampai kelewat momen penting karena gak per...', content:'-', schedule:'20:00 (setiap hari)', scheduleType:'Daily', actionType:'tour_ontrip_nextday_prep', target:'Semua peserta', summary:'Setiap hari pukul 20:00, Galuh mendapat notifikasi persiapan untuk hari esok → Tap notifikasi → Scroll ke Next day list.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-preparation-template.png?alt=media&token=dc7a21a4-8703-4f59-9c14-de4da6beb927',caption:'① Setting Template Notifikasi Persiapan Besok di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-preparation-scheduller.png?alt=media&token=e3b77172-5274-41cf-94ac-b01a57681036',caption:'② Jadwal notifikasi Persiapan Besok setiap hari jam 20:00 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-preparation-notifikasi-device.png?alt=media&token=f976e1fe-c7fe-42ec-8443-c1b946d0fb9d',caption:'③ Notifikasi Persiapan Besok di HP Galuh pukul 20:00'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-preparation-notifikasi-tap.png?alt=media&token=b9c09a4d-b325-4f98-b039-4bd8150646a8',caption:'④ Galuh tap notifikasi → Scroll ke Next day list'}]},
+            { id:11, category:'ontrip', icon:'📸', title:'Share dong foto-foto kece kamu ke Alvis (2)', code:'tour_on_trip_reminder_upload_photo2', body:'Upload foto', content:'-', schedule:'21:00 (setiap hari)', scheduleType:'Daily', actionType:'-', target:'Semua peserta', summary:'Setiap hari pukul 21:00, Galuh kembali diingatkan untuk mengunggah foto → Tap notifikasi → Scroll ke Today\'s Moment.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-sharefotomalam-template.png?alt=media&token=aef32f52-8434-4c05-aa89-a7fae7b2eaba',caption:'① Setting Template Notifikasi Upload Foto (2) di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-sharefotomalam-scheduller.png?alt=media&token=72933817-f318-40e3-8730-c67af7219321',caption:'② Jadwal notifikasi Upload Foto (2) setiap hari jam 21:00 di Instance'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-sharefotomalam-notifikasi-device.png?alt=media&token=dff6845d-4d20-4c42-ad03-059ff91a16fa',caption:'③ Notifikasi Upload Foto (2) di HP Galuh pukul 21:00'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2Fon-trip-reminder-sharefotomalam-notifikasi-tap.png?alt=media&token=596d46a0-b177-4347-9bee-578d3868ef81',caption:'④ Galuh tap notifikasi → Scroll ke Today\'s Moment'}]},
+            { id:12, category:'ontrip', icon:'📋', title:'Survey Tersedia', code:'tour_on_trip_survey_available', body:'Isi survey tour Anda sekarang', content:'-', schedule:'D-3, jam 10:00', scheduleType:'Days Before', actionType:'tour_ontrip_survey', target:'Semua peserta', summary:'Tiga hari sebelum tour berakhir, Galuh mendapat notifikasi bahwa survey tersedia → Tap notifikasi → Halaman Survey.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-template.png?alt=media&token=8b796c10-72b8-4a68-b6f9-945f317c2f4b',caption:'① Setting Template Notifikasi Survey di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-device.jpg?alt=media&token=8fdba626-07e7-46da-8c09-c8797c9d73e9',caption:'② Notifikasi Survey di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-device-tap.jpg?alt=media&token=f4c4d98f-ac60-43c2-9641-386d1fae865d',caption:'③ Galuh tap notifikasi → Melihat halaman Survey'}]},
+            { id:13, category:'ontrip', icon:'⏰', title:'Jangan lewatkan survey tour!', code:'tour_on_trip_end_survey_reminder', body:'Isi survey tour Anda sebelum berakhir', content:'-', schedule:'End Tour, jam 19:00', scheduleType:'Once', actionType:'tour_ontrip_survey', target:'Peserta belum isi survey', summary:'Di hari terakhir tour, Galuh mendapat notifikasi survey untuk yang belum mengisi → Tap notifikasi → Halaman Survey.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-template.png?alt=media&token=8b796c10-72b8-4a68-b6f9-945f317c2f4b',caption:'① Setting Template Notifikasi Survey di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-device.jpg?alt=media&token=8fdba626-07e7-46da-8c09-c8797c9d73e9',caption:'② Notifikasi Survey di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-device-tap.jpg?alt=media&token=f4c4d98f-ac60-43c2-9641-386d1fae865d',caption:'③ Galuh tap notifikasi → Melihat halaman Survey'}]},
+            { id:14, category:'posttrip', icon:'🎉', title:'Terima Kasih!', code:'tour_post_trip_thankyou', body:'Jangan lupa upload dan lihat-lihat memory tour', content:'-', schedule:'D+1, jam 10:00', scheduleType:'Days After', actionType:'tour_posttrip_memori', target:'Semua peserta', summary:'Sehari setelah tour berakhir, Galuh mendapat ucapan terima kasih → Tap notifikasi → Halaman Post Trip Memori.', images:[]},
+            { id:15, category:'posttrip', icon:'📋', title:'Submit Survey Yuk!', code:'tour_post_trip_survey_reminder_1', body:'Isi survey tour untuk membantu kami lebih baik', content:'-', schedule:'D+2, jam 10:00', scheduleType:'Days After', actionType:'tour_posttrip_survey', target:'Peserta belum isi survey', summary:'Dua hari setelah tour berakhir, Galuh mendapat notifikasi untuk mengisi survey → Tap notifikasi → Halaman Survey.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-template.png?alt=media&token=8b796c10-72b8-4a68-b6f9-945f317c2f4b',caption:'① Setting Template Notifikasi Survey di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-device.jpg?alt=media&token=8fdba626-07e7-46da-8c09-c8797c9d73e9',caption:'② Notifikasi Survey di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-device-tap.jpg?alt=media&token=f4c4d98f-ac60-43c2-9641-386d1fae865d',caption:'③ Galuh tap notifikasi → Melihat halaman Survey'}]},
+            { id:16, category:'posttrip', icon:'⏳', title:'Segera Submit Survey!', code:'tour_post_trip_survey_reminder_2', body:'Jangan lewatkan kesempatan mengisi survey tour', content:'-', schedule:'D+3, jam 10:00', scheduleType:'Days After', actionType:'tour_posttrip_survey', target:'Peserta belum isi survey', summary:'Tiga hari setelah tour berakhir, Galuh mendapat notifikasi terakhir untuk mengisi survey → Tap notifikasi → Halaman Survey.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-template.png?alt=media&token=8b796c10-72b8-4a68-b6f9-945f317c2f4b',caption:'① Setting Template Notifikasi Survey di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-device.jpg?alt=media&token=8fdba626-07e7-46da-8c09-c8797c9d73e9',caption:'② Notifikasi Survey di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FSubmit-survey-information-device-tap.jpg?alt=media&token=f4c4d98f-ac60-43c2-9641-386d1fae865d',caption:'③ Galuh tap notifikasi → Melihat halaman Survey'}]},
+            { id:17, category:'posttrip', icon:'🙏', title:'Terima Kasih Sudah Mengisi Survey!', code:'tour_post_trip_survey_thankyou', body:'Kami menghargai penilaian kamu untuk tour ini', content:'-', schedule:'H+1 (1 hari setelah submit)', scheduleType:'After Submit', actionType:'tour_posttrip_memori', target:'Peserta yang sudah submit survey', summary:'Setelah Galuh mengisi survey, H+1 hari kemudian ia mendapat notifikasi apresiasi → Tap notifikasi → Melihat pesan terima kasih.', images:[{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FThank\'s%20for-Submit-survey-information-template.png?alt=media&token=a80e9450-c9ec-407d-893c-620158ed00c9',caption:'① Setting Template Notifikasi Thank You Survey di Backoffice'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FThank\'s%20for-Submit-survey-information-device.jpg?alt=media&token=fd57544d-2b8f-4e6e-9a80-d9be6faf54b3',caption:'② Notifikasi Thank You Survey di HP Galuh'},{url:'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fstudi-kasus%2FThank\'s%20for-Submit-survey-information-device-tap.jpg?alt=media&token=5990d8a4-235e-448d-aecd-a64977d386d6',caption:'③ Galuh tap notifikasi → Melihat pesan terima kasih'}]}
+        ];
+
+        const categoryLabels = { welcome:{label:'Welcome',badge:'welcome'}, pretrip:{label:'Pre-Trip',badge:'pretrip'}, ontrip:{label:'On-Trip',badge:'ontrip'}, posttrip:{label:'Post-Trip',badge:'posttrip'} };
+
+        function renderTimeline() {
+            const root = document.getElementById('timelineRoot');
+            let html = '';
+            notificationData.forEach(function(item, index) {
+                const cat = categoryLabels[item.category] || {label:item.category,badge:'info'};
+                if (item.id === 5) html += '<div class="timeline-separator">🚀 HARI H — Keberangkatan! Tour Dimulai</div>';
+                if (item.id === 14) html += '<div class="timeline-separator">🎯 Tour Selesai — Memasuki Masa Post-Trip</div>';
+                if (item.id === 2 || item.id === 3) return;
+                html += '<div class="timeline-item" data-index="'+index+'" onclick="openPanel('+index+')">';
+                html += '<div class="tl-dot '+item.category+'"></div><div class="tl-content">';
+                html += '<div class="tl-header"><span class="tl-icon">'+item.icon+'</span><span class="tl-title">'+item.title+'</span><span class="tl-badge '+cat.badge+'">'+cat.label+'</span></div>';
+                html += '<div class="tl-meta"><span><i class="fas fa-hashtag"></i> No.'+item.id+'</span><span><i class="far fa-clock"></i> '+item.schedule+'</span><span><i class="fas fa-tag"></i> '+item.code+'</span></div>';
+                html += '</div></div>';
+            });
+            root.innerHTML = html;
+        }
+
+        function renderSummaryTable() {
+            const tbody = document.getElementById('summaryTableBody');
+            let html = '';
+            notificationData.forEach(function(item) {
+                const cat = categoryLabels[item.category] || {label:item.category,badge:'info'};
+                let bc = 'mockup-badge';
+                if (item.category==='welcome') bc+=' success'; else if (item.category==='pretrip') bc+=' info'; else if (item.category==='ontrip') bc+=' warning';
+                html += '<tr><td><strong>'+item.id+'</strong></td><td><span class="'+bc+'">'+cat.label+'</span></td><td><span class="badge-example">'+item.code+'</span></td><td>'+item.title+'</td><td>'+item.schedule+'</td><td>'+item.scheduleType+'</td><td>'+item.target+'</td></tr>';
+            });
+            tbody.innerHTML = html;
+        }
+
+        let currentIndex = 0;
+        function openPanel(index) {
+            currentIndex = index; updatePanel();
+            document.getElementById('panelOverlay').classList.add('open');
+            document.getElementById('slidePanel').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closePanel() {
+            document.getElementById('panelOverlay').classList.remove('open');
+            document.getElementById('slidePanel').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        function updatePanel() {
+            const item = notificationData[currentIndex];
+            const cat = categoryLabels[item.category] || {label:item.category,badge:'info'};
+            document.getElementById('panelIcon').textContent = item.icon;
+            document.getElementById('panelTitleText').textContent = item.title;
+            const badge = document.getElementById('panelBadge');
+            badge.textContent = cat.label; badge.className = 'panel-badge '+cat.badge;
+            const body = document.getElementById('panelBody');
+            let html = '<table class="panel-table">';
+            html += '<tr><th>Code</th><td><span class="badge-example">'+item.code+'</span></td></tr>';
+            html += '<tr><th>Title</th><td>'+item.title+'</td></tr>';
+            html += '<tr><th>Body</th><td>'+item.body+'</td></tr>';
+            if (item.content && item.content!=='-') html += '<tr><th>Content (Rich)</th><td><span class="badge-example">'+item.content+'</span></td></tr>';
+            html += '<tr><th>Jadwal</th><td>'+item.schedule+'</td></tr>';
+            html += '<tr><th>Tipe Jadwal</th><td>'+item.scheduleType+'</td></tr>';
+            if (item.actionType && item.actionType!=='-') html += '<tr><th>Action Type</th><td><span class="badge-example">'+item.actionType+'</span></td></tr>';
+            html += '<tr><th>Target</th><td>'+item.target+'</td></tr></table>';
+            html += '<div class="panel-summary"><strong>✅ Ringkasan</strong><p>'+item.summary+'</p></div><div class="panel-gallery">';
+            if (item.images && item.images.length>0) {
+                item.images.forEach(function(img) { html += '<div class="gallery-item"><img src="'+img.url+'" alt="'+img.caption+'" loading="lazy"><div class="gallery-caption">'+img.caption+'</div></div>'; });
+            } else {
+                html += '<div class="gallery-item placeholder"><p>🖼️ Screenshot menyusul</p></div>';
+            }
+            html += '</div>';
+            body.innerHTML = html;
+            document.getElementById('panelCounter').textContent = (currentIndex+1)+' / '+notificationData.length;
+            document.getElementById('panelPrev').disabled = (currentIndex===0);
+            document.getElementById('panelNext').disabled = (currentIndex===notificationData.length-1);
+        }
+        function prevNotification() { if (currentIndex>0) { currentIndex--; updatePanel(); document.getElementById('panelBody').scrollTop=0; } }
+        function nextNotification() { if (currentIndex<notificationData.length-1) { currentIndex++; updatePanel(); document.getElementById('panelBody').scrollTop=0; } }
+
+        document.getElementById('panelOverlay').addEventListener('click', closePanel);
+        document.getElementById('panelClose').addEventListener('click', closePanel);
+        document.getElementById('panelPrev').addEventListener('click', prevNotification);
+        document.getElementById('panelNext').addEventListener('click', nextNotification);
+        document.addEventListener('keydown', function(e) {
+            if (!document.getElementById('slidePanel').classList.contains('open')) return;
+            if (e.key==='Escape') closePanel();
+            if (e.key==='ArrowLeft') prevNotification();
+            if (e.key==='ArrowRight') nextNotification();
+        });
+
+        document.getElementById('btnToggleSidebar').addEventListener('click', function() { document.getElementById('sidebar').classList.toggle('open'); });
+        document.addEventListener('click', function(e) {
+            const s=document.getElementById('sidebar'), t=document.getElementById('btnToggleSidebar');
+            if (window.innerWidth<=768 && !s.contains(e.target) && !t.contains(e.target) && s.classList.contains('open')) s.classList.remove('open');
+        });
+
+        const sections = document.querySelectorAll('.section[id], .timeline-section[id]');
+        const navLinks = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(function(s) { const top=s.getBoundingClientRect().top; if (top<=150) current=s.getAttribute('id'); });
+            navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                const href=link.getAttribute('href').replace('#','');
+                if (href===current) link.classList.add('active');
+                const ps=link.closest('.nav-sub');
+                if (ps) { const pl=ps.previousElementSibling; if (pl && pl.getAttribute('href')==='#'+current) link.classList.add('active'); }
+            });
+        }
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+
+        window.addEventListener('scroll', function() { const btn=document.getElementById('scrollTop'); if (window.scrollY>300) btn.classList.add('show'); else btn.classList.remove('show'); });
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId=this.getAttribute('href').substring(1), target=document.getElementById(targetId);
+                if (target) { target.scrollIntoView({behavior:'smooth'}); if (window.innerWidth<=768) document.getElementById('sidebar').classList.remove('open'); }
+            });
+        });
+
+        function scrollToSection(sectionId) {
+            const target = document.getElementById(sectionId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            }
+        }
+
+        function toggleCollapsible(btn) {
+            btn.classList.toggle('open');
+            const content = btn.nextElementSibling;
+            content.classList.toggle('open');
+        }
+
+        renderTimeline();
+        renderSummaryTable();
+    </script>
+</body>
+</html>
