@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Book - Fitur Tour Leader Agreement ALVIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/asset%2FAlvis%20Logo%2072%20x%2072.png?alt=media&token=aa6dac0d-9152-4c3e-ab9e-c9e1eb895432">
+    <style>
+        /* ============================================================
+                 ROOT VARIABLES & RESET
+                 ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #D32F2F;
+            --primary-dark: #B71C1C;
+            --primary-light: #FFCDD2;
+            --primary-bg: #FFF5F5;
+            --secondary: #FF5722;
+            --accent: #FF8F00;
+            --bg: #F8F9FC;
+            --card-bg: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #475569;
+            --text-muted: #94A3B8;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --danger: #EF4444;
+            --shadow: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-hover: 0 6px 20px rgba(211,47,47,0.15);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --sidebar-width: 270px;
+            --header-height: 60px;
+            --glass-bg: rgba(255,255,255,0.12);
+            --glass-border: rgba(255,255,255,0.18);
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-height) + 24px); }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a { color: var(--primary); text-decoration: none; transition: color var(--transition); }
+        a:hover { color: var(--primary-dark); }
+
+        /* ============================================================
+                 SIDEBAR
+                 ============================================================ */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform var(--transition);
+            box-shadow: 2px 0 12px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        .sidebar-header {
+            padding: 20px 20px 16px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--secondary) 100%);
+            color: #fff;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-header::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            right: -30%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .sidebar-header .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-header .sidebar-logo .logo-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .sidebar-header .sidebar-logo .logo-wrap img {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .sidebar-header .sidebar-logo .brand-logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .sidebar-header .brand-sub {
+            font-size: 0.7rem;
+            opacity: 0.85;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-header .brand-badge {
+            display: inline-block;
+            font-size: 0.55rem;
+            font-weight: 600;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2px 10px;
+            border-radius: 10px;
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-nav {
+            padding: 8px 12px;
+            flex: 1;
+        }
+
+        .sidebar-nav .nav-section {
+            padding: 16px 10px 4px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-nav a i {
+            width: 18px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: color var(--transition);
+        }
+
+        .sidebar-nav a:hover {
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+
+        .sidebar-nav a:hover i { color: var(--primary); }
+
+        .sidebar-nav a.active {
+            background: linear-gradient(90deg, var(--primary-bg), transparent);
+            color: var(--primary-dark);
+            font-weight: 600;
+            border-left-color: var(--primary);
+        }
+
+        .sidebar-nav a.active i { color: var(--primary); }
+
+        .sidebar-nav .nav-sub a {
+            padding-left: 38px;
+            font-size: 0.75rem;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
+        .sidebar-nav .nav-sub a i { font-size: 0.6rem; width: 14px; }
+
+        .sidebar-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+                 MAIN LAYOUT
+                 ============================================================ */
+        .main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================================================
+                 TOP HEADER (STICKY)
+                 ============================================================ */
+        .top-header {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 12px; }
+
+        .btn-toggle-sidebar {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all var(--transition);
+        }
+
+        .btn-toggle-sidebar:hover { color: var(--primary); background: var(--primary-bg); }
+
+        .top-header .breadcrumb {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-header .breadcrumb i { font-size: 0.7rem; }
+        .top-header .breadcrumb span { color: var(--text); font-weight: 500; }
+
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+
+        .version-badge {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .version-badge i { font-size: 0.65rem; }
+
+        .header-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .header-progress .progress-track {
+            width: 80px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .header-progress .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* ============================================================
+                 CONTENT
+                 ============================================================ */
+        .content {
+            padding: 28px 32px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* ============================================================
+                 COVER / HERO
+                 ============================================================ */
+        .cover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 30%, var(--secondary) 70%, #FF8F00 100%);
+            border-radius: var(--radius-lg);
+            padding: 48px 44px;
+            color: #fff;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(211,47,47,0.25);
+        }
+
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cover::after {
+            content: '';
+            position: absolute;
+            bottom: -25%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cover .cover-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover .cover-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            backdrop-filter: blur(6px);
+        }
+
+        .cover .cover-logo {
+            flex-shrink: 0;
+        }
+
+        .cover .cover-logo img {
+            height: 52px;
+            width: auto;
+            border-radius: 6px;
+            background: transparent;
+            padding: 0;
+            box-shadow: none;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+        }
+
+        .cover h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.3;
+        }
+
+        .cover p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+
+        .cover .cover-meta {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+
+        .cover .cover-meta span {
+            font-size: 0.78rem;
+            opacity: 0.82;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cover .cover-meta i { font-size: 0.75rem; }
+
+        /* ============================================================
+                 SECTION
+                 ============================================================ */
+        .section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 32px 36px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            transition: box-shadow var(--transition), transform var(--transition);
+        }
+
+        .section:hover { box-shadow: var(--shadow-hover); }
+
+        .section h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            display: inline-block;
+            width: 5px;
+            height: 22px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #334155;
+            margin: 24px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section h3 i { color: var(--primary); font-size: 0.9rem; }
+
+        .section p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 12px; line-height: 1.8; }
+        .section ul, .section ol { padding-left: 20px; margin-bottom: 12px; }
+        .section li { font-size: 0.85rem; color: var(--text-light); margin-bottom: 6px; }
+
+        /* ============================================================
+                 STEP CARDS
+                 ============================================================ */
+        .step-card {
+            display: flex;
+            gap: 16px;
+            padding: 16px 20px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary);
+            transition: all var(--transition);
+        }
+
+        .step-card:hover {
+            background: var(--primary-bg);
+            transform: translateX(4px);
+        }
+
+        .step-card .step-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(211,47,47,0.2);
+        }
+
+        .step-card .step-content { flex: 1; }
+
+        .step-card .step-content strong {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .step-card .step-content p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* ============================================================
+                 INFO / CALLOUT BOXES
+                 ============================================================ */
+        .callout {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin: 16px 0;
+            font-size: 0.82rem;
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+
+        .callout:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+
+        .callout i { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+
+        .callout .callout-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .callout.info { background: #F0F9FF; border-left: 4px solid var(--info); color: #0C4A6E; }
+        .callout.info i { color: var(--info); }
+        .callout.info .callout-title { color: #0369A1; }
+
+        .callout.success { background: #F0FDF4; border-left: 4px solid var(--success); color: #166534; }
+        .callout.success i { color: var(--success); }
+        .callout.success .callout-title { color: #065F46; }
+
+        .callout.warning { background: #FFFBEB; border-left: 4px solid var(--warning); color: #92400E; }
+        .callout.warning i { color: var(--warning); }
+        .callout.warning .callout-title { color: #B45309; }
+
+        .callout.danger { background: #FEF2F2; border-left: 4px solid var(--danger); color: #991B1B; }
+        .callout.danger i { color: var(--danger); }
+        .callout.danger .callout-title { color: #DC2626; }
+
+        /* ============================================================
+                 METRIC / STATS CARDS
+                 ============================================================ */
+        .metric-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .metric-card {
+            flex: 1;
+            min-width: 120px;
+            padding: 18px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .metric-card .metric-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .metric-card .metric-value.primary { color: var(--primary); }
+        .metric-card .metric-value.success { color: var(--success); }
+        .metric-card .metric-value.info { color: var(--info); }
+        .metric-card .metric-value.warning { color: var(--warning); }
+
+        .metric-card .metric-label {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+                 COMPARISON TABLE
+                 ============================================================ */
+        .table-wrapper {
+            overflow: hidden;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            margin: 16px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+
+        .table-wrapper thead th {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: #fff;
+            text-align: left;
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .table-wrapper tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            color: var(--text-light);
+        }
+
+        .table-wrapper tbody tr:last-child td { border-bottom: none; }
+        .table-wrapper tbody tr:nth-child(even) td { background: var(--bg); }
+        .table-wrapper tbody tr:hover td { background: var(--primary-bg); }
+
+        .table-wrapper .cell-label { font-weight: 600; color: var(--text); }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tag-old { background: #FEE2E2; color: #DC2626; }
+        .tag-new { background: #D1FAE5; color: #059669; }
+
+        /* ============================================================
+                 TIMELINE
+                 ============================================================ */
+        .timeline-container {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 8px;
+            bottom: 8px;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--secondary), var(--primary), var(--accent));
+            border-radius: 2px;
+            opacity: 0.4;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 12px;
+            transition: all var(--transition);
+        }
+
+        .timeline-item .tl-dot {
+            position: absolute;
+            left: -28px;
+            top: 18px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 3px solid var(--card-bg);
+            z-index: 2;
+            background: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary);
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+
+        .timeline-item:nth-child(even) .tl-dot {
+            background: var(--secondary);
+            box-shadow: 0 0 0 3px var(--secondary);
+        }
+
+        .timeline-item:hover .tl-dot {
+            transform: scale(1.25);
+        }
+
+        .timeline-item .tl-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-item:hover .tl-content {
+            box-shadow: var(--shadow-hover);
+            transform: translateX(4px);
+        }
+
+        .timeline-item .tl-content .tl-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-item .tl-content .tl-header .tl-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .timeline-item .tl-content .tl-header .tl-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .timeline-item .tl-content .tl-header .tl-badge {
+            font-size: 0.65rem;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tl-badge.desktop { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+        .tl-badge.mobile { background: #FAF5FF; color: #7E22CE; border: 1px solid #E9D5FF; }
+
+        .timeline-item .tl-content .tl-body {
+            display: flex;
+            gap: 16px;
+        }
+
+        .timeline-item .tl-content .tl-body .tl-text { flex: 1; }
+
+        .timeline-item .tl-content .tl-body .tl-text p {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .timeline-item .tl-content .tl-body .tl-text ul {
+            padding-left: 18px;
+            list-style: none;
+            margin-bottom: 8px;
+        }
+
+        .timeline-item .tl-content .tl-body .tl-text ul li {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .timeline-item .tl-content .tl-body .tl-text ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .timeline-item .tl-content .tl-body .tl-mockup {
+            flex: 0 0 240px;
+            max-width: 240px;
+        }
+
+        /* Image container for real screenshots */
+        .img-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .img-container:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(211,47,47,0.12);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+                 LIGHTBOX
+                 ============================================================ */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 40px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .lightbox-overlay.open {
+            display: flex;
+        }
+
+        .lightbox-overlay .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 28px;
+            color: #fff;
+            font-size: 2.2rem;
+            font-weight: 300;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transition: background var(--transition);
+            z-index: 10;
+            line-height: 1;
+            border: none;
+        }
+
+        .lightbox-overlay .lightbox-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .lightbox-overlay .lightbox-img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 8px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+            object-fit: contain;
+        }
+
+        .lightbox-overlay .lightbox-caption {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+            margin-top: 16px;
+            text-align: center;
+            max-width: 600px;
+            font-weight: 400;
+        }
+
+        .lightbox-overlay .lightbox-hint {
+            position: absolute;
+            bottom: 24px;
+            color: rgba(255,255,255,0.35);
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+
+        .img-caption {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .img-desc {
+            text-align: center;
+            font-size: 0.6rem;
+            color: #A8A29E;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+                 PHONE MOCKUP
+                 ============================================================ */
+        .phone-frame {
+            position: relative;
+            width: 100%;
+            max-width: 140px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 8px 4px;
+            box-shadow: 0 0 0 2px #333, 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .phone-frame .phone-screen {
+            background: linear-gradient(180deg, #FFF5F5 0%, #FFE0E0 100%);
+            border-radius: 18px;
+            padding: 16px 8px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .phone-frame .phone-screen .mockup-icon { font-size: 1.4rem; color: var(--primary); }
+        .phone-frame .phone-screen .mockup-label {
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            text-align: center;
+        }
+
+        .phone-frame .phone-notch {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 16px;
+            background: #1a1a1a;
+            border-radius: 0 0 10px 10px;
+            z-index: 2;
+        }
+
+        .phone-frame .phone-notch::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #0a0a0a;
+            border-radius: 50%;
+            border: 1.5px solid #333;
+        }
+
+        /* Desktop mockup */
+        .desktop-frame {
+            width: 100%;
+            max-width: 160px;
+            margin: 0 auto;
+            border: 2.5px solid #1E293B;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .desktop-frame .desktop-topbar {
+            background: #1E293B;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .desktop-frame .desktop-topbar .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .desktop-frame .desktop-topbar .dot:nth-child(1) { background: #EF4444; }
+        .desktop-frame .desktop-topbar .dot:nth-child(2) { background: #F59E0B; }
+        .desktop-frame .desktop-topbar .dot:nth-child(3) { background: #10B981; }
+
+        .desktop-frame .desktop-screen {
+            background: linear-gradient(180deg, #FFF5F5 0%, #FFE0E0 100%);
+            padding: 16px 10px;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .desktop-frame .desktop-screen .mockup-icon { font-size: 1.3rem; color: var(--primary); }
+        .desktop-frame .desktop-screen .mockup-label {
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            text-align: center;
+        }
+
+        .mockup-caption {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .mockup-dimensions {
+            text-align: center;
+            font-size: 0.6rem;
+            color: #A8A29E;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+                 PROGRESS INDICATOR
+                 ============================================================ */
+        .progress-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+        }
+
+        .progress-row .progress-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .progress-row .progress-track {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-row .progress-fill {
+            height: 100%;
+            width: 16%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 6px;
+            transition: width 0.6s ease;
+        }
+
+        .progress-row .progress-count {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        /* ============================================================
+                 BACK TO TOP
+                 ============================================================ */
+        .scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(211,47,47,0.3);
+            transition: all var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .scroll-top.show { opacity: 1; visibility: visible; }
+        .scroll-top:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(211,47,47,0.4); }
+
+        /* ============================================================
+                 FOOTER
+                 ============================================================ */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            border-top: 1px solid var(--border);
+            margin-top: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer .footer-divider {
+            width: 1px;
+            height: 12px;
+            background: var(--border);
+        }
+
+        /* ============================================================
+                 RESPONSIVE
+                 ============================================================ */
+        @media (max-width: 1024px) {
+            .timeline-item .tl-content .tl-body { flex-direction: column; }
+            .timeline-item .tl-content .tl-body .tl-mockup { flex: none; max-width: 100%; }
+            .phone-frame, .desktop-frame { max-width: 120px; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; }
+            .btn-toggle-sidebar { display: flex; }
+            .top-header { padding: 0 16px; }
+            .content { padding: 16px; }
+            .section { padding: 24px 20px; }
+            .cover { padding: 32px 24px; }
+            .cover h1 { font-size: 1.4rem; }
+            .cover .cover-meta { flex-wrap: wrap; gap: 12px; }
+            .metric-cards { flex-direction: column; }
+            .metric-card { min-width: auto; }
+            .timeline-container { padding-left: 32px; }
+            .timeline-container::before { left: 14px; }
+            .timeline-item .tl-dot { left: -22px; width: 14px; height: 14px; }
+            .header-progress { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .cover { padding: 24px 16px; border-radius: var(--radius); }
+            .cover h1 { font-size: 1.2rem; }
+            .section { padding: 20px 16px; }
+            .table-wrapper { font-size: 0.72rem; }
+            .table-wrapper thead th,
+            .table-wrapper tbody td { padding: 8px 10px; }
+        }
+
+        /* ============================================================
+                 PRINT
+                 ============================================================ */
+        @media print {
+            .sidebar, .top-header, .scroll-top { display: none !important; }
+            .main { margin-left: 0 !important; }
+            .section { box-shadow: none !important; border: 1px solid #ddd; break-inside: avoid; }
+            .cover { box-shadow: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .timeline-item .tl-content { box-shadow: none !important; border-color: #ddd; }
+            .phone-frame, .desktop-frame { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .table-wrapper thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .metric-card { box-shadow: none !important; border-color: #ddd; }
+        }
+
+        /* ============================================================
+                 KEYFRAMES
+                 ============================================================ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section { animation: fadeInUp 0.5s ease forwards; }
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    SIDEBAR
+    ============================================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="logo-wrap">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/asset%2FAlvis%20Logo%2072%20x%2072.png?alt=media&token=aa6dac0d-9152-4c3e-ab9e-c9e1eb895432" alt="ALVIS Logo" loading="lazy">
+                </div>
+                <span class="brand-logo">ALVIS</span>
+            </div>
+            <div class="brand-sub">Documentation System</div>
+            <div class="brand-badge">Tour Leader Agreement v2.0</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Navigasi</div>
+            <a href="#ringkasan" class="active"><i class="fas fa-info-circle"></i> Ringkasan Fitur</a>
+            <a href="#matriks"><i class="fas fa-table"></i> Matriks Perubahan</a>
+            <a href="#alur-kerja"><i class="fas fa-route"></i> Detail Alur Kerja</a>
+
+            <div class="nav-section">Tahapan Alur</div>
+            <div class="nav-sub">
+                <a href="#step-1"><i class="fas fa-chevron-right"></i> Step 1 — Penugasan TL</a>
+                <a href="#step-2"><i class="fas fa-chevron-right"></i> Step 2 — Push Notification</a>
+                <a href="#step-3"><i class="fas fa-chevron-right"></i> Step 3 — Card Tour Active</a>
+                <a href="#step-4"><i class="fas fa-chevron-right"></i> Step 4 — Halaman Agreement</a>
+                <a href="#step-5"><i class="fas fa-chevron-right"></i> Step 5 — Reload & Status</a>
+                <a href="#step-6"><i class="fas fa-chevron-right"></i> Step 6 — Tour Detail</a>
+                <a href="#step-7"><i class="fas fa-chevron-right"></i> Step 7 — Verifikasi Status</a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">All Rights Reserved &copy; 2026</div>
+    </aside>
+
+    <!-- ============================================================
+    MAIN CONTENT
+    ============================================================ -->
+    <div class="main">
+
+        <!-- TOP HEADER -->
+        <header class="top-header" id="topHeader">
+            <div class="header-left">
+                <button class="btn-toggle-sidebar" id="btnToggleSidebar" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="breadcrumb">
+                    <i class="fas fa-home"></i> Operations / Tour Leader / <span>Agreement</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="header-progress" id="headerProgress">
+                    <span>Progress</span>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                    </div>
+                    <span id="progressText">0/7</span>
+                </div>
+                <span class="version-badge"><i class="fas fa-sync-alt"></i> v2.0</span>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <!-- ============================================================
+            COVER
+            ============================================================ -->
+            <section class="cover">
+                <div class="cover-top">
+                    <span class="cover-badge"><i class="fas fa-file-signature"></i> Fitur Tour Leader Agreement</span>
+                    <div class="cover-logo">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/asset%2FAlvis%20Logo%2072%20x%2072.png?alt=media&token=aa6dac0d-9152-4c3e-ab9e-c9e1eb895432" alt="ALVIS Logo" loading="lazy">
+                    </div>
+                </div>
+                <h1>Manual Book<br>Tour Leader Agreement ALVIS</h1>
+                <p>Panduan lengkap alur konfirmasi penugasan digital Tour Leader — mulai dari notifikasi, persetujuan agreement, hingga akses penuh data perjalanan.</p>
+                <div class="cover-meta">
+                    <span><i class="fas fa-calendar-alt"></i> Juli 2026</span>
+                    <span><i class="fas fa-mobile-alt"></i> Android & iOS</span>
+                    <span><i class="fas fa-globe"></i> Backoffice ALVIS</span>
+                    <span><i class="fas fa-tag"></i> v2.0</span>
+                </div>
+            </section>
+
+            <!-- ============================================================
+            SECTION 1: RINGKASAN FITUR
+            ============================================================ -->
+            <section class="section" id="ringkasan">
+                <h2>Ringkasan Fitur</h2>
+                <p>
+                    <strong>Tour Leader Agreement</strong> merupakan fitur konfirmasi penugasan digital pada aplikasi ALVIS.
+                    Fitur ini dirancang untuk memastikan bahwa setiap Tour Leader (TL) secara resmi membaca, memahami,
+                    dan menyetujui seluruh syarat & ketentuan penugasan sebelum diberikan akses penuh ke data detail
+                    perjalanan grup tour.
+                </p>
+
+                <div class="callout info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <div class="callout-title">Tujuan Fitur</div>
+                        <p>Meningkatkan akuntabilitas Tour Leader dengan menyimpan log persetujuan digital yang tercatat waktu dan identitas pengguna.</p>
+                    </div>
+                </div>
+
+                <div class="metric-cards">
+                    <div class="metric-card">
+                        <div class="metric-value primary">3</div>
+                        <div class="metric-label">Tahapan Utama</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value info">2</div>
+                        <div class="metric-label">Platform</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value warning">7</div>
+                        <div class="metric-label">Langkah Alur</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value success"><i class="fas fa-check"></i></div>
+                        <div class="metric-label">Auto-Logging</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+            SECTION 2: MATRIKS PERUBAHAN
+            ============================================================ -->
+            <section class="section" id="matriks">
+                <h2>Matriks Perubahan Alur (Sebelum vs Sesudah)</h2>
+                <p>Tabel berikut menunjukkan perbandingan antara alur lama dan alur baru setelah implementasi fitur <em>Tour Leader Agreement</em>.</p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:20%;">Tahapan</th>
+                                <th style="width:38%;">Alur Lama</th>
+                                <th style="width:42%;">Alur Baru <span style="font-weight:400; opacity:0.8;">(Tour Leader Agreement)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="cell-label">Notifikasi Tap</span></td>
+                                <td>ALVIS membuka Halaman landing TL. TL bisa langsung mengakses <strong>Tour Detail</strong> melalui <strong>Card Tour Active</strong> yang ditampilkan.</td>
+                                <td>ALVIS membuka Halaman TL & menampilkan <strong>Card Tour Active</strong>.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cell-label">Akses Tour Detail</span></td>
+                                <td><span class="tag tag-old">✅ Langsung terbuka</span> setelah tap card, tanpa konfirmasi.</td>
+                                <td><span class="tag tag-new">🔒 Terkunci.</span> Saat Card di-tap, ALVIS menampilkan <strong>Halaman Agreement</strong>. TL harus setujui agreement terlebih dahulu.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cell-label">Status Persetujuan</span></td>
+                                <td><span class="tag tag-old">⚠️ Tidak tersimpan</span> di database persetujuan.</td>
+                                <td><span class="tag tag-new">✅ Log tersimpan</span> (timestamp & user ID), kemudian <em>reload</em> & mengaktifkan akses ke Tour Detail.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <div class="callout-title">Perubahan Kritis</div>
+                        <p>Alur baru mewajibkan setiap Tour Leader untuk menyetujui agreement digital sebelum dapat mengakses data perjalanan. Data persetujuan disimpan sebagai bukti audit.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+            SECTION 3: DETAIL ALUR KERJA
+            ============================================================ -->
+            <section class="section" id="alur-kerja">
+                <h2>Detail Alur Kerja & Dokumentasi Visual</h2>
+                <p>Berikut adalah alur lengkap fitur Tour Leader Agreement dari awal hingga akhir, terdiri dari <strong>7 langkah</strong> yang terbagi dalam <strong>3 tahapan utama</strong>.</p>
+
+                <!-- Progress -->
+                <div class="progress-row">
+                    <span class="progress-label">Progress Alur</span>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="alurProgressFill" style="width:16%;"></div>
+                    </div>
+                    <span class="progress-count">7 Langkah</span>
+                </div>
+
+                <!-- Timeline -->
+                <div class="timeline-container">
+
+                    <!-- STEP 1 -->
+                    <div class="timeline-item" id="step-1">
+                        <div class="tl-dot"></div>
+                        <div class="tl-content">
+                            <div class="tl-header">
+                                <div class="tl-icon"><i class="fas fa-user-tie"></i></div>
+                                <div class="tl-title">Penugasan TL via Backoffice ALVIS</div>
+                                <span class="tl-badge desktop"><i class="fas fa-desktop"></i> Desktop</span>
+                            </div>
+                            <div class="tl-body">
+                                <div class="tl-text">
+                                    <p><strong>Aksi Admin:</strong> Admin melakukan pengalokasian dan penugasan nama Tour Leader ke grup tour tertentu melalui panel web Backoffice.</p>
+                                    <ul>
+                                        <li>Pilih Grup Tour target.</li>
+                                        <li>Assign Tour Leader yang sudah terdaftar di sistem ALVIS.</li>
+                                        <li>Sistem memicu trigger notifikasi push ke aplikasi mobile TL.</li>
+                                    </ul>
+                                </div>
+                                <div class="tl-mockup">
+                                    <div class="img-container">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-tl-agreement%2Fbackoffice-status-agreement.png?alt=media&token=53ed682f-d07a-45f1-9407-f27e51125cf0" alt="Backoffice status agreement" loading="lazy">
+                                    </div>
+                                    <div class="img-caption">Status agreement "Not Approved" ketika TL belum menyetujui (ditandai kotak merah)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div class="timeline-item" id="step-2">
+                        <div class="tl-dot"></div>
+                        <div class="tl-content">
+                            <div class="tl-header">
+                                <div class="tl-icon"><i class="fas fa-bell"></i></div>
+                                <div class="tl-title">Penerimaan Push Notification</div>
+                                <span class="tl-badge mobile"><i class="fas fa-mobile-alt"></i> Mobile</span>
+                            </div>
+                            <div class="tl-body">
+                                <div class="tl-text">
+                                    <p><strong>Aksi Tour Leader:</strong> Tour Leader yang telah mengunduh & login ke aplikasi ALVIS akan menerima push notification penugasan baru.</p>
+                                    <ul>
+                                        <li>Notifikasi berisi informasi judul grup tour.</li>
+                                        <li>Muncul pada tray notification smartphone TL.</li>
+                                    </ul>
+                                </div>
+                                <div class="tl-mockup">
+                                    <div class="img-container">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-tl-agreement%2Fnotifikasi-penugasan-tl.png?alt=media&token=f9d11be7-3883-4bfd-9374-581d3fc0e13c" alt="Notifikasi penugasan TL" loading="lazy">
+                                    </div>
+                                    <div class="img-caption">Notifikasi penugasan muncul di tray device TL (TL harus sudah download & login aplikasi ALVIS)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div class="timeline-item" id="step-3">
+                        <div class="tl-dot"></div>
+                        <div class="tl-content">
+                            <div class="tl-header">
+                                <div class="tl-icon"><i class="fas fa-credit-card"></i></div>
+                                <div class="tl-title">Membuka Halaman Utama & Card Tour Active</div>
+                                <span class="tl-badge mobile"><i class="fas fa-mobile-alt"></i> Mobile</span>
+                            </div>
+                            <div class="tl-body">
+                                <div class="tl-text">
+                                    <p><strong>Aksi Tour Leader:</strong> TL men-tap notifikasi tersebut. Aplikasi ALVIS akan terbuka dan langsung menampilkan Halaman Tour Leader.</p>
+                                    <ul>
+                                        <li>Menampilkan <strong>Card Tour Active</strong> yang berisi ringkasan data singkat tour.</li>
+                                        <li>Pada tahap ini, detail lengkap belum dapat diakses sebelum persetujuan diselesaikan.</li>
+                                    </ul>
+                                </div>
+                                <div class="tl-mockup">
+                                    <div class="img-container">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-tl-agreement%2Ftap-notifikasi-penugasan-tl.png?alt=media&token=aeac5d89-ceb2-4b0a-b50a-18b65cf9f46f" alt="Tap notifikasi penugasan TL" loading="lazy">
+                                    </div>
+                                    <div class="img-caption">ALVIS menampilkan halaman landing TL setelah notifikasi di-tap</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4 -->
+                    <div class="timeline-item" id="step-4">
+                        <div class="tl-dot"></div>
+                        <div class="tl-content">
+                            <div class="tl-header">
+                                <div class="tl-icon"><i class="fas fa-file-signature"></i></div>
+                                <div class="tl-title">Persetujuan Halaman Agreement</div>
+                                <span class="tl-badge mobile"><i class="fas fa-mobile-alt"></i> Mobile</span>
+                            </div>
+                            <div class="tl-body">
+                                <div class="tl-text">
+                                    <p><strong>Aksi Tour Leader:</strong> Saat <em>Card Tour Active</em> di-tap, ALVIS menampilkan <strong>Halaman Agreement</strong> kepada TL.</p>
+                                    <ul>
+                                        <li>TL membaca seluruh poin syarat, ketentuan, & tanggung jawab.</li>
+                                        <li>TL menekan tombol <strong>"Agree & Continue"</strong> untuk menyetujui.</li>
+                                    </ul>
+                                    <div class="callout success" style="margin: 8px 0 0;">
+                                        <i class="fas fa-database"></i>
+                                        <div>
+                                            <div class="callout-title">Penyimpanan Data</div>
+                                            <p>Data persetujuan (timestamp & user ID) akan langsung disimpan oleh backend ALVIS sebagai bukti audit digital.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tl-mockup">
+                                    <div class="img-container">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-tl-agreement%2Fhalaman-agreement.png?alt=media&token=ec5720bb-4650-4547-9dcb-b185780c4bda" alt="Halaman agreement" loading="lazy">
+                                    </div>
+                                    <div class="img-caption">Halaman Agreement — tap "Agree & Continue" untuk menyetujui</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5 -->
+                    <div class="timeline-item" id="step-5">
+                        <div class="tl-dot"></div>
+                        <div class="tl-content">
+                            <div class="tl-header">
+                                <div class="tl-icon"><i class="fas fa-sync-alt"></i></div>
+                                <div class="tl-title">Sistem Reload & Pembaharuan Status</div>
+                                <span class="tl-badge mobile"><i class="fas fa-mobile-alt"></i> Mobile</span>
+                            </div>
+                            <div class="tl-body">
+                                <div class="tl-text">
+                                    <p><strong>Sistem Response:</strong> Setelah tombol setuju ditekan, aplikasi ALVIS akan melakukan pembaharuan status secara otomatis.</p>
+                                    <ul>
+                                        <li>Aplikasi mereload Halaman Tour Leader.</li>
+                                        <li>Status card active tour terupdate dengan memunculkan beberapa <strong>button</strong> di bawah card active tour.</li>
+                                    </ul>
+                                </div>
+                                <div class="tl-mockup">
+                                    <div class="img-container">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-tl-agreement%2Flanding-TL-after-agreement.png?alt=media&token=4be7bf7f-95f3-42b9-94a5-196d4d530da3" alt="Landing TL after agreement" loading="lazy">
+                                    </div>
+                                    <div class="img-caption">ALVIS menampilkan kembali halaman landing TL dengan Card Active yang sudah aktif. Halaman Tour Detail dapat diakses setelah TL menyetujui agreement.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 6 -->
+                    <div class="timeline-item" id="step-6">
+                        <div class="tl-dot"></div>
+                        <div class="tl-content">
+                            <div class="tl-header">
+                                <div class="tl-icon"><i class="fas fa-map-marked-alt"></i></div>
+                                <div class="tl-title">Akses Penuh ke Halaman Tour Detail</div>
+                                <span class="tl-badge mobile"><i class="fas fa-mobile-alt"></i> Mobile</span>
+                            </div>
+                            <div class="tl-body">
+                                <div class="tl-text">
+                                    <p><strong>Aksi Tour Leader:</strong> Saat TL men-tap kembali Card Tour Active, sistem langsung membuka <strong>Halaman Tour Detail</strong>.</p>
+                                    <ul>
+                                        <li>Tour Leader dapat mengakses seluruh data pada halaman detail tour.</li>
+                                    </ul>
+                                </div>
+                                <div class="tl-mockup">
+                                    <div class="img-container">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-tl-agreement%2FTL-detail-after-agreement.png?alt=media&token=b155f474-dac3-4c5f-bcf7-c9298d0cded6" alt="Tour detail after agreement" loading="lazy">
+                                    </div>
+                                    <div class="img-caption">Halaman Tour Detail — TL dapat mengakses data perjalanan lengkap setelah menyetujui agreement</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 7 -->
+                    <div class="timeline-item" id="step-7">
+                        <div class="tl-dot"></div>
+                        <div class="tl-content">
+                            <div class="tl-header">
+                                <div class="tl-icon"><i class="fas fa-clipboard-check"></i></div>
+                                <div class="tl-title">Verifikasi Status Approval di Backoffice ALVIS</div>
+                                <span class="tl-badge desktop"><i class="fas fa-desktop"></i> Desktop</span>
+                            </div>
+                            <div class="tl-body">
+                                <div class="tl-text">
+                                    <p><strong>Aksi Admin:</strong> Admin dapat melakukan pengecekan status persetujuan TL melalui panel Backoffice ALVIS.</p>
+                                    <ul>
+                                        <li>Status berubah dari <strong>"Not Approved"</strong> menjadi <strong>"Approved"</strong>.</li>
+                                        <li>Data persetujuan (timestamp & user ID) tercatat sebagai bukti audit digital.</li>
+                                    </ul>
+                                </div>
+                                <div class="tl-mockup">
+                                    <div class="img-container">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-tl-agreement%2Fbackoffice-status-agreement-approved.png?alt=media&token=be34cf92-ae3e-4892-8730-e9251a1630c1" alt="Backoffice status approved" loading="lazy">
+                                    </div>
+                                    <div class="img-caption">Backoffice — Status berubah menjadi "Approved" setelah TL menyetujui agreement</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /timeline-container -->
+
+                <div class="callout success" style="margin-top:20px;">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <div class="callout-title">Alur Selesai</div>
+                        <p>Setelah TL menyetujui agreement dan admin memverifikasi status, seluruh alur Tour Leader Agreement selesai. TL memiliki akses penuh ke data perjalanan dan bukti persetujuan tercatat di sistem.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /content -->
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <span>Dokumen ini dibuat untuk Alur Operasional Fitur ALVIS Application</span>
+            <span class="footer-divider"></span>
+            <span>All Rights Reserved &copy; 2026</span>
+        </div>
+
+    </div><!-- /main -->
+
+    <!-- BACK TO TOP -->
+    <a href="#" class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></a>
+
+    <!-- ============================================================
+    LIGHTBOX
+    ============================================================ -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="Preview">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+        <div class="lightbox-hint">Klik di luar gambar atau tekan ESC untuk menutup</div>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // --- Sidebar toggle ---
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('btnToggleSidebar');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    sidebar.classList.toggle('open');
+                });
+                document.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== toggleBtn) {
+                        sidebar.classList.remove('open');
+                    }
+                });
+            }
+
+            // --- Scroll spy for sidebar ---
+            const sections = document.querySelectorAll('.section, .timeline-item');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+            function updateActiveLink() {
+                let current = '';
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    const href = link.getAttribute('href');
+                    if (href === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+
+            // --- Back to top ---
+            const scrollTopBtn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.classList.add('show');
+                } else {
+                    scrollTopBtn.classList.remove('show');
+                }
+            });
+
+            // --- Header progress ---
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const totalSteps = timelineItems.length;
+
+            function updateProgress() {
+                let visibleCount = 0;
+                timelineItems.forEach(item => {
+                    const rect = item.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100) {
+                        visibleCount++;
+                    }
+                });
+                const pct = Math.min(Math.round((visibleCount / totalSteps) * 100), 100);
+                if (progressFill) progressFill.style.width = pct + '%';
+                if (progressText) progressText.textContent = Math.min(visibleCount, totalSteps) + '/' + totalSteps;
+            }
+
+            window.addEventListener('scroll', updateProgress);
+            updateProgress();
+
+            // --- Smooth hash scroll ---
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                            sidebar.classList.remove('open');
+                        }
+                    }
+                });
+            });
+
+            // ============================================================
+            // LIGHTBOX
+            // ============================================================
+            const lightbox = document.getElementById('lightboxOverlay');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            const lightboxClose = document.getElementById('lightboxClose');
+
+            function openLightbox(imgSrc, caption) {
+                lightboxImg.src = imgSrc;
+                lightboxCaption.textContent = caption || '';
+                lightbox.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            // Click on any img-container to open lightbox
+            document.querySelectorAll('.img-container').forEach(container => {
+                container.addEventListener('click', function(e) {
+                    const img = this.querySelector('img');
+                    const captionEl = this.closest('.tl-mockup')?.querySelector('.img-caption')
+                        || this.parentElement?.querySelector('.img-caption');
+                    const caption = captionEl ? captionEl.textContent : '';
+                    if (img && img.src) {
+                        openLightbox(img.src, caption);
+                    }
+                });
+            });
+
+            // Close on X button
+            if (lightboxClose) {
+                lightboxClose.addEventListener('click', closeLightbox);
+            }
+
+            // Close on overlay click (outside image)
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+                    closeLightbox();
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

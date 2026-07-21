@@ -1,512 +1,1142 @@
-import os
-from weasyprint import HTML
-
-html_content = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <title>Dokumentasi Alur Fitur Tour Leader Agreement - ALVIS</title>
     <style>
-        @page {
-            size: A4 portrait;
-            margin: 12mm 10mm 15mm 10mm;
-            background-color: #fcfcfc;
-            @bottom-right {
-                content: "Halaman " counter(page) " dari " counter(pages);
-                font-family: 'Helvetica Neue', Arial, sans-serif;
-                font-size: 8pt;
-                color: #888888;
-            }
-            @bottom-left {
-                content: "ALVIS Documentation System • Tour Leader Agreement";
-                font-family: 'Helvetica Neue', Arial, sans-serif;
-                font-size: 8pt;
-                color: #888888;
-            }
-        }
-
+        /* ============================================================
+                 GLOBAL RESET & BASE
+                 ============================================================ */
         *, *::before, *::after {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 14mm 12mm 18mm 12mm;
+            background-color: #FAFAFA;
+            @bottom-right {
+                content: "Halaman " counter(page) " dari " counter(pages);
+                font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+                font-size: 7.5pt;
+                color: #94A3B8;
+            }
+            @bottom-left {
+                content: "ALVIS Documentation System • Tour Leader Agreement v2.0";
+                font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+                font-size: 7.5pt;
+                color: #94A3B8;
+            }
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            margin: 0;
+            font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            color: #1E293B;
+            background-color: #FAFAFA;
+            font-size: 9pt;
+            line-height: 1.6;
             padding: 0;
-            color: #2D3748;
-            background-color: #fcfcfc;
-            font-size: 9.5pt;
-            line-height: 1.45;
         }
 
-        /* Color Palette Constants: 
-           Primary: #FF5722 (ALVIS Vibrant Orange)
-           Secondary: #D32F2F (ALVIS Deep Red)
-           Gradient / Accents: #FF8F00, #FFE0B2
-           Dark Text: #2D3748
-           Light BG: #FFF8F5
-        */
+        /* ============================================================
+                 COLOR PALETTE
+                 Primary:    #D32F2F (Deep Red)
+                 Secondary:  #FF5722 (Vibrant Orange)
+                 Accent:     #FF8F00 (Amber)
+                 Light:      #FFF5F0 (Warm off-white)
+                 Dark:       #1E293B (Slate 800)
+                 Muted:      #64748B (Slate 500)
+                 Border:     #E2E8F0 (Slate 200)
+                 Success:    #10B981 (Emerald)
+                 ============================================================ */
 
+        /* ============================================================
+                 HEADER BANNER
+                 ============================================================ */
         .header-banner {
-            background: linear-gradient(135deg, #D32F2F 0%, #FF5722 100%);
+            background: linear-gradient(135deg, #C62828 0%, #D32F2F 35%, #FF5722 100%);
             color: #FFFFFF;
-            padding: 18px 20px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            padding: 22px 28px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(211, 47, 47, 0.25);
+        }
+
+        .header-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .header-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: 10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .header-title {
-            font-size: 18pt;
+            font-size: 20pt;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            margin: 0 0 4px 0;
+            letter-spacing: -0.8px;
+            margin: 0 0 6px 0;
             text-transform: uppercase;
+            position: relative;
+            z-index: 1;
         }
 
         .header-subtitle {
-            font-size: 10.5pt;
+            font-size: 11pt;
             font-weight: 400;
             opacity: 0.92;
-            margin: 0;
+            margin: 0 0 14px 0;
+            position: relative;
+            z-index: 1;
         }
 
         .meta-grid {
-            display: table;
-            width: 100%;
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 28px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            position: relative;
+            z-index: 1;
         }
 
         .meta-item {
-            display: table-cell;
-            font-size: 8.5pt;
+            font-size: 8pt;
             color: #FFE0B2;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .meta-item strong {
             color: #FFFFFF;
+            font-weight: 600;
         }
 
-        .section-title {
-            font-size: 12pt;
-            font-weight: 700;
-            color: #D32F2F;
-            border-left: 4px solid #FF5722;
-            padding-left: 8px;
-            margin: 16px 0 10px 0;
+        .meta-item .meta-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+            font-size: 10pt;
+        }
+
+        /* ============================================================
+                 STATUS BADGE / TAG
+                 ============================================================ */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.22);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 7.5pt;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
+            color: #FFFFFF;
+            margin-left: auto;
         }
 
+        .status-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ADE80;
+            display: inline-block;
+        }
+
+        /* ============================================================
+                 SECTION TITLES
+                 ============================================================ */
+        .section-title {
+            font-size: 13pt;
+            font-weight: 700;
+            color: #C62828;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 24px 0 14px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #FEE2E2;
+        }
+
+        .section-title .title-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #D32F2F, #FF5722);
+            color: #FFFFFF;
+            border-radius: 8px;
+            font-size: 11pt;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .section-title .title-text {
+            flex: 1;
+        }
+
+        /* ============================================================
+                 INTRO BOX
+                 ============================================================ */
         .intro-box {
-            background-color: #FFF8F5;
-            border: 1px solid #FFCCBC;
-            border-radius: 6px;
-            padding: 10px 14px;
-            margin-bottom: 15px;
+            background: linear-gradient(135deg, #FFF5F0, #FFF8F5);
+            border: 1px solid #FFCDB2;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(255, 87, 34, 0.06);
         }
 
         .intro-box p {
-            margin: 0 0 6px 0;
+            margin: 0 0 8px 0;
+            line-height: 1.7;
         }
 
         .intro-box p:last-child {
             margin-bottom: 0;
         }
 
-        /* Table Rules */
+        .intro-box .intro-icon {
+            font-size: 14pt;
+            margin-right: 6px;
+        }
+
+        /* ============================================================
+                 KEY STATS / HIGHLIGHT ROW
+                 ============================================================ */
+        .stats-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 120px;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .stat-card .stat-value {
+            font-size: 16pt;
+            font-weight: 800;
+            color: #D32F2F;
+            line-height: 1.2;
+        }
+
+        .stat-card .stat-label {
+            font-size: 7.5pt;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        /* ============================================================
+                 COMPARISON TABLE — MODERN
+                 ============================================================ */
+        .table-wrapper {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
-            font-size: 9pt;
+            font-size: 8.5pt;
         }
 
-        .comparison-table th {
-            background-color: #FF5722;
+        .comparison-table thead th {
+            background: linear-gradient(135deg, #D32F2F, #FF5722);
             color: #FFFFFF;
             text-align: left;
-            padding: 7px 10px;
+            padding: 10px 14px;
             font-weight: 600;
+            font-size: 8.5pt;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
 
-        .comparison-table td {
-            padding: 7px 10px;
-            border-bottom: 1px solid #FFE0B2;
+        .comparison-table tbody td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #F1F5F9;
             vertical-align: top;
+            line-height: 1.5;
         }
 
-        .comparison-table tr:nth-child(even) td {
-            background-color: #FFF8F5;
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
         }
 
-        /* Timeline / Workflow Steps */
+        .comparison-table tbody tr:nth-child(even) td {
+            background-color: #FAFAFA;
+        }
+
+        .comparison-table .cell-label {
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .comparison-table .tag-old {
+            display: inline-block;
+            background: #FEE2E2;
+            color: #DC2626;
+            font-size: 7pt;
+            font-weight: 600;
+            padding: 1px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .comparison-table .tag-new {
+            display: inline-block;
+            background: #D1FAE5;
+            color: #059669;
+            font-size: 7pt;
+            font-weight: 600;
+            padding: 1px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* ============================================================
+                 TIMELINE / WORKFLOW STEPS
+                 ============================================================ */
+        .timeline {
+            position: relative;
+            padding-left: 36px;
+        }
+
+        /* Vertical connecting line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 16px;
+            top: 12px;
+            bottom: 12px;
+            width: 2.5px;
+            background: linear-gradient(to bottom, #FF5722, #D32F2F, #FF8F00);
+            border-radius: 2px;
+            opacity: 0.4;
+        }
+
         .step-card {
+            position: relative;
             background: #FFFFFF;
             border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            margin-bottom: 18px;
             page-break-inside: avoid;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
         }
 
+        /* Timeline dot connector */
+        .step-card::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 22px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #FF5722;
+            border: 3px solid #FFF5F0;
+            box-shadow: 0 0 0 2px #FF5722;
+            z-index: 2;
+        }
+
+        .step-card:nth-child(even)::before {
+            background: #D32F2F;
+            box-shadow: 0 0 0 2px #D32F2F;
+        }
+
+        /* ============================================================
+                 STEP HEADER
+                 ============================================================ */
         .step-header {
-            background: linear-gradient(90deg, #FFF3E0 0%, #FFFFFF 100%);
-            border-bottom: 1px solid #FFE0B2;
-            padding: 8px 12px;
-            display: table;
-            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: linear-gradient(90deg, #FFF8F5 0%, #FFFFFF 80%);
+            border-bottom: 1px solid #FEE2E2;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .step-number-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
         }
 
         .step-number {
-            display: table-cell;
-            width: 26px;
-            height: 26px;
-            background-color: #D32F2F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #D32F2F, #FF5722);
             color: #FFFFFF;
-            font-weight: bold;
-            font-size: 10pt;
-            text-align: center;
-            vertical-align: middle;
+            font-weight: 800;
+            font-size: 11pt;
             border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(211, 47, 47, 0.2);
         }
 
         .step-title-text {
-            display: table-cell;
-            vertical-align: middle;
-            padding-left: 10px;
             font-weight: 700;
-            font-size: 10pt;
-            color: #C62828;
+            font-size: 10.5pt;
+            color: #B71C1C;
+        }
+
+        .step-badge-group {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
         }
 
         .step-badge {
-            display: table-cell;
-            text-align: right;
-            vertical-align: middle;
-            font-size: 7.5pt;
-            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 7pt;
+            font-weight: 700;
             text-transform: uppercase;
-            padding: 2px 8px;
-            border-radius: 4px;
+            letter-spacing: 0.4px;
+            padding: 3px 10px;
+            border-radius: 6px;
         }
 
         .badge-desktop {
-            background-color: #E3F2FD;
-            color: #1565C0;
-            border: 1px solid #BBDEFB;
+            background: #EFF6FF;
+            color: #1D4ED8;
+            border: 1px solid #BFDBFE;
+        }
+
+        .badge-desktop .badge-icon {
+            font-size: 9pt;
         }
 
         .badge-mobile {
-            background-color: #F3E5F5;
-            color: #7B1FA2;
-            border: 1px solid #E1BEE7;
+            background: #FAF5FF;
+            color: #7E22CE;
+            border: 1px solid #E9D5FF;
         }
 
+        .badge-mobile .badge-icon {
+            font-size: 9pt;
+        }
+
+        /* ============================================================
+                 STEP BODY
+                 ============================================================ */
         .step-body {
-            padding: 10px 12px;
-            display: table;
-            width: 100%;
+            display: flex;
+            gap: 18px;
+            padding: 16px 18px;
         }
 
         .step-desc {
-            display: table-cell;
-            width: 55%;
-            vertical-align: top;
-            padding-right: 12px;
+            flex: 1;
+            min-width: 0;
         }
 
         .step-desc p {
-            margin: 0 0 6px 0;
-            color: #4A5568;
+            margin: 0 0 8px 0;
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        .step-desc p strong {
+            color: #1E293B;
         }
 
         .step-desc ul {
-            margin: 0;
+            margin: 0 0 8px 0;
+            padding-left: 20px;
+            color: #475569;
+            list-style: none;
+        }
+
+        .step-desc ul li {
+            position: relative;
+            margin-bottom: 5px;
             padding-left: 16px;
-            color: #4A5568;
+            line-height: 1.6;
         }
 
-        .step-desc li {
-            margin-bottom: 4px;
+        .step-desc ul li::before {
+            content: '\\2192';
+            position: absolute;
+            left: 0;
+            color: #FF5722;
+            font-weight: 700;
         }
 
+        .step-desc ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ============================================================
+                 HIGHLIGHT NOTE
+                 ============================================================ */
+        .highlight-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            background: #FFF7ED;
+            border-left: 3px solid #F97316;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 8pt;
+            color: #9A3412;
+        }
+
+        .highlight-note .note-icon {
+            font-size: 12pt;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ============================================================
+                 IMAGE PLACEHOLDER — DEVICE MOCKUP STYLE
+                 ============================================================ */
         .image-placeholder-box {
-            display: table-cell;
-            width: 45%;
-            vertical-align: top;
+            flex: 0 0 240px;
+            max-width: 240px;
         }
 
         .img-container {
-            border: 2px dashed #FFB74D;
-            background-color: #FFFDE7;
-            border-radius: 6px;
-            padding: 8px;
+            border: 2px solid #FED7AA;
+            background: linear-gradient(160deg, #FFF7ED, #FFFDF5);
+            border-radius: 10px;
+            padding: 12px;
             text-align: center;
-            min-height: 95px;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 6px rgba(251, 146, 60, 0.06);
         }
 
-        .img-container .icon {
-            font-size: 14pt;
-            color: #FF9800;
-            margin-bottom: 2px;
+        /* Mockup frame for mobile */
+        .mockup-mobile {
+            position: relative;
+            width: 100%;
+            max-width: 120px;
+            margin: 0 auto 8px;
+            border: 2.5px solid #1E293B;
+            border-radius: 16px;
+            padding: 6px 3px;
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        .img-container .label {
-            font-weight: bold;
-            font-size: 8pt;
-            color: #E65100;
-            margin-bottom: 2px;
+        .mockup-mobile .mockup-screen {
+            background: linear-gradient(180deg, #FFF5F0 0%, #FFEAD5 100%);
+            border-radius: 10px;
+            padding: 12px 6px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
 
-        .img-container .dimensions {
-            font-size: 7pt;
-            color: #795548;
+        .mockup-mobile .mockup-screen .mockup-icon {
+            font-size: 18pt;
+        }
+
+        .mockup-mobile .mockup-screen .mockup-label {
+            font-size: 6.5pt;
+            font-weight: 700;
+            color: #9A3412;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .mockup-mobile .mockup-notch {
+            width: 30%;
+            height: 4px;
+            background: #1E293B;
+            border-radius: 4px;
+            margin: 0 auto 4px;
+        }
+
+        /* Mockup for desktop */
+        .mockup-desktop {
+            width: 100%;
+            max-width: 180px;
+            margin: 0 auto 8px;
+            border: 2.5px solid #1E293B;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .mockup-desktop .mockup-topbar {
+            background: #1E293B;
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mockup-desktop .mockup-topbar .mockup-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+        }
+
+        .mockup-desktop .mockup-topbar .mockup-dot:nth-child(1) { background: #EF4444; }
+        .mockup-desktop .mockup-topbar .mockup-dot:nth-child(2) { background: #F59E0B; }
+        .mockup-desktop .mockup-topbar .mockup-dot:nth-child(3) { background: #10B981; }
+
+        .mockup-desktop .mockup-screen {
+            background: linear-gradient(180deg, #FFF5F0 0%, #FFEAD5 100%);
+            padding: 12px 8px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .mockup-desktop .mockup-screen .mockup-icon {
+            font-size: 18pt;
+        }
+
+        .mockup-desktop .mockup-screen .mockup-label {
+            font-size: 6.5pt;
+            font-weight: 700;
+            color: #9A3412;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .img-container .img-caption {
+            font-size: 7.5pt;
+            color: #78716C;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .img-container .img-dimensions {
+            font-size: 6.5pt;
+            color: #A8A29E;
             font-style: italic;
+            margin-top: 2px;
         }
 
-        .highlight-note {
-            background-color: #FFF3E0;
-            border-left: 3px solid #FF9800;
-            padding: 6px 10px;
-            font-size: 8.5pt;
-            margin-top: 6px;
-            color: #E65100;
+        /* ============================================================
+                 RESPONSIVE ADJUSTMENTS FOR PRINT
+                 ============================================================ */
+        @media print {
+            body {
+                background: #FFFFFF;
+            }
+            .step-card {
+                box-shadow: none;
+                border-color: #D1D5DB;
+            }
+            .header-banner {
+                box-shadow: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .comparison-table thead th {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .step-number {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .step-badge {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .mockup-mobile, .mockup-desktop {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
 
+        /* ============================================================
+                 FOOTER
+                 ============================================================ */
         .footer-info {
-            margin-top: 15px;
-            padding-top: 8px;
+            margin-top: 24px;
+            padding: 12px 0 0;
             border-top: 1px solid #E2E8F0;
-            font-size: 8pt;
-            color: #A0AEC0;
+            font-size: 7.5pt;
+            color: #94A3B8;
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-info .footer-divider {
+            width: 1px;
+            height: 12px;
+            background: #CBD5E1;
+        }
+
+        /* ============================================================
+                 STEP COUNTER / PROGRESS
+                 ============================================================ */
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 16px;
+            font-size: 8pt;
+            color: #64748B;
+        }
+
+        .progress-indicator .progress-bar-track {
+            flex: 1;
+            height: 4px;
+            background: #E2E8F0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-indicator .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #D32F2F, #FF5722);
+            border-radius: 4px;
+        }
+
+        .progress-indicator .progress-text {
+            font-weight: 600;
+            color: #D32F2F;
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Banner -->
+    <!-- ============================================================
+    HEADER BANNER
+    ============================================================ -->
     <div class="header-banner">
         <div class="header-title">ALVIS System Documentation</div>
-        <div class="header-subtitle">Panduan Operasional & Alur Kerja Fitur: Tour Leader Agreement</div>
-        
+        <div class="header-subtitle">Panduan Operasional & Alur Kerja — Tour Leader Agreement</div>
+
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; position:relative; z-index:1; flex-wrap:wrap;">
+            <span class="status-badge">
+                <span class="dot"></span>
+                Active Feature v2.0
+            </span>
+        </div>
+
         <div class="meta-grid">
-            <div class="meta-item"><strong>Modul:</strong> Operations & Backoffice</div>
-            <div class="meta-item"><strong>Platform:</strong> Mobile (App) & Web (Backoffice)</div>
-            <div class="meta-item"><strong>Versi Fitur:</strong> v2.0 (Updated Flow)</div>
+            <div class="meta-item">
+                <span class="meta-icon">\\ud83d\\udce6</span>
+                <span><strong>Modul:</strong> Operations & Backoffice</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-icon">\\ud83d\\udcf1</span>
+                <span><strong>Platform:</strong> Mobile (App) & Web (Backoffice)</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-icon">\\ud83d\\udd04</span>
+                <span><strong>Versi:</strong> v2.0 (Updated Flow)</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-icon">\\ud83d\\udcc5</span>
+                <span><strong>Terakhir diperbarui:</strong> Juli 2026</span>
+            </div>
         </div>
     </div>
 
-    <!-- Overview Section -->
-    <div class="section-title">1. Ringkasan Fitur</div>
+    <!-- ============================================================
+    SECTION 1: RINGKASAN FITUR
+    ============================================================ -->
+    <div class="section-title">
+        <span class="title-number">1</span>
+        <span class="title-text">Ringkasan Fitur</span>
+    </div>
+
     <div class="intro-box">
-        <p><strong>Tour Leader Agreement</strong> merupakan fitur konfirmasi penugasan digital pada aplikasi ALVIS. Fitur ini dirancang untuk memastikan bahwa setiap Tour Leader (TL) secara resmi membaca, memahami, dan menyetujui seluruh syarat & ketentuan penugasan sebelum diberikan akses penuh ke data detail perjalanan grup tour.</p>
+        <p>
+            <span class="intro-icon">\\ud83d\\udccb</span>
+            <strong>Tour Leader Agreement</strong> merupakan fitur konfirmasi penugasan digital pada aplikasi ALVIS. 
+            Fitur ini dirancang untuk memastikan bahwa setiap Tour Leader (TL) secara resmi membaca, memahami, 
+            dan menyetujui seluruh syarat & ketentuan penugasan sebelum diberikan akses penuh ke data detail 
+            perjalanan grup tour.
+        </p>
     </div>
 
-    <div class="section-title">2. Matriks Perubahan Alur (sebelum vs sesudah)</div>
-    <table class="comparison-table">
-        <thead>
-            <tr>
-                <th style="width: 25%;">Tahapan</th>
-                <th style="width: 37%;">Alur Lama</th>
-                <th style="width: 38%;">Alur Baru (Tour Leader Agreement)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Notifikasi Tap</strong></td>
-                <td>Membuka Halaman TL & langsung menampilkan Tour Detail.</td>
-                <td>Membuka Halaman TL dengan <strong>Card Tour Active</strong> singkat.</td>
-            </tr>
-            <tr>
-                <td><strong>Akses Tour Detail</strong></td>
-                <td>Dapat langsung diakses tanpa konfirmasi agreement.</td>
-                <td>Terkunci. TL wajib menekan Card Active untuk membuka <strong>Halaman Agreement</strong>.</td>
-            </tr>
-            <tr>
-                <td><strong>Status Persetujuan</strong></td>
-                <td>Tidak tersimpan di database persetujuan.</td>
-                <td>Sistem menyimpan log persetujuan, melakukan <em>reload</em>, lalu mengaktifkan akses Tour Detail.</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="section-title">3. Detail Alur Kerja & Dokumentasi Visual</div>
-
-    <!-- Step 1 -->
-    <div class="step-card">
-        <div class="step-header">
-            <div class="step-number">1</div>
-            <div class="step-title-text">Penugasan TL via Backoffice ALVIS</div>
-            <div class="step-badge badge-desktop">Layar Desktop</div>
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Tahapan Utama</div>
         </div>
-        <div class="step-body">
-            <div class="step-desc">
-                <p><strong>Aksi Admin:</strong> Admin melakukan pengalokasian dan penugasan nama Tour Leader ke grup tour tertentu melalui panel web Backoffice.</p>
-                <ul>
-                    <li>Pilih Grup Tour target.</li>
-                    <li>Assign Tour Leader yang sudah terdaftar di sistem ALVIS.</li>
-                    <li>Sistem memicu trigger notifikasi push ke aplikasi mobile TL.</li>
-                </ul>
-            </div>
-            <div class="image-placeholder-box">
-                <div class="img-container">
-                    <div class="icon">💻</div>
-                    <div class="label">[AREA GAMBAR 1]</div>
-                    <div>Setup TL di grup tour via Backoffice ALVIS</div>
-                    <div class="dimensions">Rasio Recommended: 16:9 (Desktop Screen)</div>
-                </div>
-            </div>
+        <div class="stat-card">
+            <div class="stat-value">2</div>
+            <div class="stat-label">Platform</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">6</div>
+            <div class="stat-label">Langkah Alur</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">\\u2713</div>
+            <div class="stat-label">Auto-Logging</div>
         </div>
     </div>
 
-    <!-- Step 2 -->
-    <div class="step-card">
-        <div class="step-header">
-            <div class="step-number">2</div>
-            <div class="step-title-text">Penerimaan Push Notification</div>
-            <div class="step-badge badge-mobile">Layar Smartphone</div>
-        </div>
-        <div class="step-body">
-            <div class="step-desc">
-                <p><strong>Aksi Tour Leader:</strong> Tour Leader yang telah mengunduh & login ke aplikasi ALVIS akan menerima push notification penugasan baru.</p>
-                <ul>
-                    <li>Notifikasi berisi informasi judul grup tour.</li>
-                    <li>Muncul pada tray notification smartphone TL.</li>
-                </ul>
-            </div>
-            <div class="image-placeholder-box">
-                <div class="img-container">
-                    <div class="icon">📱</div>
-                    <div class="label">[AREA GAMBAR 2]</div>
-                    <div>Penerimaan Notifikasi Penugasan Tour</div>
-                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
-                </div>
-            </div>
-        </div>
+    <!-- ============================================================
+    SECTION 2: MATRIKS PERUBAHAN
+    ============================================================ -->
+    <div class="section-title">
+        <span class="title-number">2</span>
+        <span class="title-text">Matriks Perubahan Alur (Sebelum vs Sesudah)</span>
     </div>
 
-    <!-- Step 3 -->
-    <div class="step-card">
-        <div class="step-header">
-            <div class="step-number">3</div>
-            <div class="step-title-text">Membuka Halaman Utama & Card Tour Active</div>
-            <div class="step-badge badge-mobile">Layar Smartphone</div>
-        </div>
-        <div class="step-body">
-            <div class="step-desc">
-                <p><strong>Aksi Tour Leader:</strong> TL men-tap notifikasi tersebut. Aplikasi ALVIS akan terbuka dan langsung menampilkan Halaman Tour Leader.</p>
-                <ul>
-                    <li>Menampilkan <strong>Card Tour Active</strong> yang berisi ringkasan data singkat tour.</li>
-                    <li>Pada tahap ini, detail lengkap belum dapat diakses sebelum persetujuan diselesaikan.</li>
-                </ul>
-            </div>
-            <div class="image-placeholder-box">
-                <div class="img-container">
-                    <div class="icon">📱</div>
-                    <div class="label">[AREA GAMBAR 3]</div>
-                    <div>Tampilan Card Tour Active saat Notifikasi Di-tap</div>
-                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
-                </div>
-            </div>
-        </div>
+    <div class="table-wrapper">
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th style="width:22%;">Tahapan</th>
+                    <th style="width:37%;">Alur Lama</th>
+                    <th style="width:41%;">Alur Baru <span style="font-weight:400; opacity:0.85;">(Tour Leader Agreement)</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="cell-label">Notifikasi Tap</span></td>
+                    <td>Membuka Halaman TL & langsung menampilkan Tour Detail.</td>
+                    <td>Membuka Halaman TL dengan <strong>Card Tour Active</strong> singkat.</td>
+                </tr>
+                <tr>
+                    <td><span class="cell-label">Akses Tour Detail</span></td>
+                    <td><span class="tag-old">\\u274c Dapat langsung diakses</span> tanpa konfirmasi agreement.</td>
+                    <td><span class="tag-new">\\ud83d\\udd12 Terkunci.</span> TL wajib menekan Card Active untuk membuka <strong>Halaman Agreement</strong>.</td>
+                </tr>
+                <tr>
+                    <td><span class="cell-label">Status Persetujuan</span></td>
+                    <td><span class="tag-old">\\u26a0\\ufe0f Tidak tersimpan</span> di database persetujuan.</td>
+                    <td><span class="tag-new">\\u2705 Sistem menyimpan log</span> persetujuan, melakukan <em>reload</em>, lalu mengaktifkan akses Tour Detail.</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <!-- Step 4 -->
-    <div class="step-card">
-        <div class="step-header">
-            <div class="step-number">4</div>
-            <div class="step-title-text">Persetujuan Halaman Agreement</div>
-            <div class="step-badge badge-mobile">Layar Smartphone</div>
-        </div>
-        <div class="step-body">
-            <div class="step-desc">
-                <p><strong>Aksi Tour Leader:</strong> Saat <em>Card Tour Active</em> di-tap, sistem secara otomatis mengarahkan TL ke <strong>Halaman Agreement</strong>.</p>
-                <ul>
-                    <li>TL membaca seluruh poin syarat, ketentuan, & tanggung jawab.</li>
-                    <li>TL menekan tombol <strong>"Setujui Agreement"</strong> untuk konfirmasi.</li>
-                </ul>
-                <div class="highlight-note">
-                    <strong>Catatan:</strong> Data persetujuan (timestamp & user ID) akan langsung disimpan oleh backend ALVIS.
-                </div>
-            </div>
-            <div class="image-placeholder-box">
-                <div class="img-container">
-                    <div class="icon">📱</div>
-                    <div class="label">[AREA GAMBAR 4]</div>
-                    <div>Halaman Tour Leader Agreement</div>
-                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
-                </div>
-            </div>
-        </div>
+    <!-- ============================================================
+    SECTION 3: DETAIL ALUR KERJA
+    ============================================================ -->
+    <div class="section-title">
+        <span class="title-number">3</span>
+        <span class="title-text">Detail Alur Kerja & Dokumentasi Visual</span>
     </div>
 
-    <!-- Step 5 -->
-    <div class="step-card">
-        <div class="step-header">
-            <div class="step-number">5</div>
-            <div class="step-title-text">Sistem Reload & Pembaharuan Status</div>
-            <div class="step-badge badge-mobile">Layar Smartphone</div>
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+        <span class="progress-text">Progress Alur</span>
+        <div class="progress-bar-track">
+            <div class="progress-bar-fill" style="width:16%;"></div>
         </div>
-        <div class="step-body">
-            <div class="step-desc">
-                <p><strong>Sistem Response:</strong> Setelah tombol setuju ditekan, aplikasi ALVIS akan melakukan pembaharuan status secara otomatis.</p>
-                <ul>
-                    <li>Aplikasi mereload Halaman Tour Leader.</li>
-                    <li>Status Card Active terupdate menjadi <em>Approved/Verified</em>.</li>
-                </ul>
+        <span class="progress-text">6 Langkah</span>
+    </div>
+
+    <!-- Timeline wrapper -->
+    <div class="timeline">
+
+        <!-- STEP 1 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number-wrap">
+                    <span class="step-number">1</span>
+                    <span class="step-title-text">Penugasan TL via Backoffice ALVIS</span>
+                </div>
+                <div class="step-badge-group">
+                    <span class="step-badge badge-desktop">
+                        <span class="badge-icon">\\ud83d\\udcbb</span> Desktop
+                    </span>
+                </div>
             </div>
-            <div class="image-placeholder-box">
-                <div class="img-container">
-                    <div class="icon">📱</div>
-                    <div class="label">[AREA GAMBAR 5]</div>
-                    <div>Halaman ALVIS setelah Agreement Disetujui</div>
-                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+            <div class="step-body">
+                <div class="step-desc">
+                    <p><strong>Aksi Admin:</strong> Admin melakukan pengalokasian dan penugasan nama Tour Leader ke grup tour tertentu melalui panel web Backoffice.</p>
+                    <ul>
+                        <li>Pilih Grup Tour target.</li>
+                        <li>Assign Tour Leader yang sudah terdaftar di sistem ALVIS.</li>
+                        <li>Sistem memicu trigger notifikasi push ke aplikasi mobile TL.</li>
+                    </ul>
+                </div>
+                <div class="image-placeholder-box">
+                    <div class="img-container">
+                        <div class="mockup-desktop">
+                            <div class="mockup-topbar">
+                                <span class="mockup-dot"></span>
+                                <span class="mockup-dot"></span>
+                                <span class="mockup-dot"></span>
+                            </div>
+                            <div class="mockup-screen">
+                                <div class="mockup-icon">\\ud83d\\udcbb</div>
+                                <div class="mockup-label">Backoffice ALVIS</div>
+                            </div>
+                        </div>
+                        <div class="img-caption">Setup TL di grup tour via Backoffice ALVIS</div>
+                        <div class="img-dimensions">Rasio Recommended: 16:9 (Desktop Screen)</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Step 6 -->
-    <div class="step-card">
-        <div class="step-header">
-            <div class="step-number">6</div>
-            <div class="step-title-text">Akses Penuh ke Halaman Tour Detail</div>
-            <div class="step-badge badge-mobile">Layar Smartphone</div>
-        </div>
-        <div class="step-body">
-            <div class="step-desc">
-                <p><strong>Aksi Tour Leader:</strong> Saat TL men-tap kembali Card Tour Active, sistem langsung membuka <strong>Halaman Tour Detail</strong>.</p>
-                <ul>
-                    <li>TL dapat mengakses daftar manifest peserta, itinerary lengkap, serta dokumen perjalanan.</li>
-                    <li>Fitur operasional tour resmi aktif dan siap digunakan.</li>
-                </ul>
+        <!-- STEP 2 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number-wrap">
+                    <span class="step-number">2</span>
+                    <span class="step-title-text">Penerimaan Push Notification</span>
+                </div>
+                <div class="step-badge-group">
+                    <span class="step-badge badge-mobile">
+                        <span class="badge-icon">\\ud83d\\udcf1</span> Mobile
+                    </span>
+                </div>
             </div>
-            <div class="image-placeholder-box">
-                <div class="img-container">
-                    <div class="icon">📱</div>
-                    <div class="label">[AREA GAMBAR 6]</div>
-                    <div>Halaman Tour Detail Lengkap</div>
-                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+            <div class="step-body">
+                <div class="step-desc">
+                    <p><strong>Aksi Tour Leader:</strong> Tour Leader yang telah mengunduh & login ke aplikasi ALVIS akan menerima push notification penugasan baru.</p>
+                    <ul>
+                        <li>Notifikasi berisi informasi judul grup tour.</li>
+                        <li>Muncul pada tray notification smartphone TL.</li>
+                    </ul>
+                </div>
+                <div class="image-placeholder-box">
+                    <div class="img-container">
+                        <div class="mockup-mobile">
+                            <div class="mockup-notch"></div>
+                            <div class="mockup-screen">
+                                <div class="mockup-icon">\\ud83d\\udd14</div>
+                                <div class="mockup-label">Push Notification</div>
+                            </div>
+                        </div>
+                        <div class="img-caption">Penerimaan Notifikasi Penugasan Tour</div>
+                        <div class="img-dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+        <!-- STEP 3 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number-wrap">
+                    <span class="step-number">3</span>
+                    <span class="step-title-text">Membuka Halaman Utama & Card Tour Active</span>
+                </div>
+                <div class="step-badge-group">
+                    <span class="step-badge badge-mobile">
+                        <span class="badge-icon">\\ud83d\\udcf1</span> Mobile
+                    </span>
+                </div>
+            </div>
+            <div class="step-body">
+                <div class="step-desc">
+                    <p><strong>Aksi Tour Leader:</strong> TL men-tap notifikasi tersebut. Aplikasi ALVIS akan terbuka dan langsung menampilkan Halaman Tour Leader.</p>
+                    <ul>
+                        <li>Menampilkan <strong>Card Tour Active</strong> yang berisi ringkasan data singkat tour.</li>
+                        <li>Pada tahap ini, detail lengkap belum dapat diakses sebelum persetujuan diselesaikan.</li>
+                    </ul>
+                </div>
+                <div class="image-placeholder-box">
+                    <div class="img-container">
+                        <div class="mockup-mobile">
+                            <div class="mockup-notch"></div>
+                            <div class="mockup-screen">
+                                <div class="mockup-icon">\\ud83d\\udccb</div>
+                                <div class="mockup-label">Card Active</div>
+                            </div>
+                        </div>
+                        <div class="img-caption">Tampilan Card Tour Active saat Notifikasi Di-tap</div>
+                        <div class="img-dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number-wrap">
+                    <span class="step-number">4</span>
+                    <span class="step-title-text">Persetujuan Halaman Agreement</span>
+                </div>
+                <div class="step-badge-group">
+                    <span class="step-badge badge-mobile">
+                        <span class="badge-icon">\\ud83d\\udcf1</span> Mobile
+                    </span>
+                </div>
+            </div>
+            <div class="step-body">
+                <div class="step-desc">
+                    <p><strong>Aksi Tour Leader:</strong> Saat <em>Card Tour Active</em> di-tap, sistem secara otomatis mengarahkan TL ke <strong>Halaman Agreement</strong>.</p>
+                    <ul>
+                        <li>TL membaca seluruh poin syarat, ketentuan, & tanggung jawab.</li>
+                        <li>TL menekan tombol <strong>"Setujui Agreement"</strong> untuk konfirmasi.</li>
+                    </ul>
+                    <div class="highlight-note">
+                        <span class="note-icon">\\ud83d\\udccc</span>
+                        <span><strong>Catatan:</strong> Data persetujuan (timestamp & user ID) akan langsung disimpan oleh backend ALVIS.</span>
+                    </div>
+                </div>
+                <div class="image-placeholder-box">
+                    <div class="img-container">
+                        <div class="mockup-mobile">
+                            <div class="mockup-notch"></div>
+                            <div class="mockup-screen">
+                                <div class="mockup-icon">\\u270d\\ufe0f</div>
+                                <div class="mockup-label">Agreement</div>
+                            </div>
+                        </div>
+                        <div class="img-caption">Halaman Tour Leader Agreement</div>
+                        <div class="img-dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number-wrap">
+                    <span class="step-number">5</span>
+                    <span class="step-title-text">Sistem Reload & Pembaharuan Status</span>
+                </div>
+                <div class="step-badge-group">
+                    <span class="step-badge badge-mobile">
+                        <span class="badge-icon">\\ud83d\\udcf1</span> Mobile
+                    </span>
+                </div>
+            </div>
+            <div class="step-body">
+                <div class="step-desc">
+                    <p><strong>Sistem Response:</strong> Setelah tombol setuju ditekan, aplikasi ALVIS akan melakukan pembaharuan status secara otomatis.</p>
+                    <ul>
+                        <li>Aplikasi mereload Halaman Tour Leader.</li>
+                        <li>Status Card Active terupdate menjadi <em>Approved/Verified</em>.</li>
+                    </ul>
+                </div>
+                <div class="image-placeholder-box">
+                    <div class="img-container">
+                        <div class="mockup-mobile">
+                            <div class="mockup-notch"></div>
+                            <div class="mockup-screen">
+                                <div class="mockup-icon">\\u2705</div>
+                                <div class="mockup-label">Approved</div>
+                            </div>
+                        </div>
+                        <div class="img-caption">Halaman ALVIS setelah Agreement Disetujui</div>
+                        <div class="img-dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 6 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number-wrap">
+                    <span class="step-number">6</span>
+                    <span class="step-title-text">Akses Penuh ke Halaman Tour Detail</span>
+                </div>
+                <div class="step-badge-group">
+                    <span class="step-badge badge-mobile">
+                        <span class="badge-icon">\\ud83d\\udcf1</span> Mobile
+                    </span>
+                </div>
+            </div>
+            <div class="step-body">
+                <div class="step-desc">
+                    <p><strong>Aksi Tour Leader:</strong> Saat TL men-tap kembali Card Tour Active, sistem langsung membuka <strong>Halaman Tour Detail</strong>.</p>
+                    <ul>
+                        <li>TL dapat mengakses daftar manifest peserta, itinerary lengkap, serta dokumen perjalanan.</li>
+                        <li>Fitur operasional tour resmi aktif dan siap digunakan.</li>
+                    </ul>
+                </div>
+                <div class="image-placeholder-box">
+                    <div class="img-container">
+                        <div class="mockup-mobile">
+                            <div class="mockup-notch"></div>
+                            <div class="mockup-screen">
+                                <div class="mockup-icon">\\ud83d\\uddfa\\ufe0f</div>
+                                <div class="mockup-label">Tour Detail</div>
+                            </div>
+                        </div>
+                        <div class="img-caption">Halaman Tour Detail Lengkap</div>
+                        <div class="img-dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /timeline -->
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
     <div class="footer-info">
-        Dokumen ini dibuat otomatis untuk Alur Operasional Fitur ALVIS Application &bull; All Rights Reserved
+        <span>Dokumen ini dibuat otomatis untuk Alur Operasional Fitur ALVIS Application</span>
+        <span class="footer-divider"></span>
+        <span>All Rights Reserved &copy; 2026</span>
     </div>
 
 </body>
 </html>
-"""
-
-# Save HTML file
-with open("dokumentasi_tour_leader_agreement.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
-
-# Convert HTML to PDF using WeasyPrint
-HTML(string=html_content).write_pdf("dokumentasi_tour_leader_agreement.pdf")
-print("Files generated successfully.")
