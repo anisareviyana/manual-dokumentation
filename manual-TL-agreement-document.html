@@ -1,0 +1,512 @@
+import os
+from weasyprint import HTML
+
+html_content = """<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dokumentasi Alur Fitur Tour Leader Agreement - ALVIS</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 12mm 10mm 15mm 10mm;
+            background-color: #fcfcfc;
+            @bottom-right {
+                content: "Halaman " counter(page) " dari " counter(pages);
+                font-family: 'Helvetica Neue', Arial, sans-serif;
+                font-size: 8pt;
+                color: #888888;
+            }
+            @bottom-left {
+                content: "ALVIS Documentation System • Tour Leader Agreement";
+                font-family: 'Helvetica Neue', Arial, sans-serif;
+                font-size: 8pt;
+                color: #888888;
+            }
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #2D3748;
+            background-color: #fcfcfc;
+            font-size: 9.5pt;
+            line-height: 1.45;
+        }
+
+        /* Color Palette Constants: 
+           Primary: #FF5722 (ALVIS Vibrant Orange)
+           Secondary: #D32F2F (ALVIS Deep Red)
+           Gradient / Accents: #FF8F00, #FFE0B2
+           Dark Text: #2D3748
+           Light BG: #FFF8F5
+        */
+
+        .header-banner {
+            background: linear-gradient(135deg, #D32F2F 0%, #FF5722 100%);
+            color: #FFFFFF;
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .header-title {
+            font-size: 18pt;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+        }
+
+        .header-subtitle {
+            font-size: 10.5pt;
+            font-weight: 400;
+            opacity: 0.92;
+            margin: 0;
+        }
+
+        .meta-grid {
+            display: table;
+            width: 100%;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .meta-item {
+            display: table-cell;
+            font-size: 8.5pt;
+            color: #FFE0B2;
+        }
+
+        .meta-item strong {
+            color: #FFFFFF;
+        }
+
+        .section-title {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #D32F2F;
+            border-left: 4px solid #FF5722;
+            padding-left: 8px;
+            margin: 16px 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .intro-box {
+            background-color: #FFF8F5;
+            border: 1px solid #FFCCBC;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 15px;
+        }
+
+        .intro-box p {
+            margin: 0 0 6px 0;
+        }
+
+        .intro-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Table Rules */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 9pt;
+        }
+
+        .comparison-table th {
+            background-color: #FF5722;
+            color: #FFFFFF;
+            text-align: left;
+            padding: 7px 10px;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #FFE0B2;
+            vertical-align: top;
+        }
+
+        .comparison-table tr:nth-child(even) td {
+            background-color: #FFF8F5;
+        }
+
+        /* Timeline / Workflow Steps */
+        .step-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .step-header {
+            background: linear-gradient(90deg, #FFF3E0 0%, #FFFFFF 100%);
+            border-bottom: 1px solid #FFE0B2;
+            padding: 8px 12px;
+            display: table;
+            width: 100%;
+        }
+
+        .step-number {
+            display: table-cell;
+            width: 26px;
+            height: 26px;
+            background-color: #D32F2F;
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 10pt;
+            text-align: center;
+            vertical-align: middle;
+            border-radius: 50%;
+        }
+
+        .step-title-text {
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 10px;
+            font-weight: 700;
+            font-size: 10pt;
+            color: #C62828;
+        }
+
+        .step-badge {
+            display: table-cell;
+            text-align: right;
+            vertical-align: middle;
+            font-size: 7.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .badge-desktop {
+            background-color: #E3F2FD;
+            color: #1565C0;
+            border: 1px solid #BBDEFB;
+        }
+
+        .badge-mobile {
+            background-color: #F3E5F5;
+            color: #7B1FA2;
+            border: 1px solid #E1BEE7;
+        }
+
+        .step-body {
+            padding: 10px 12px;
+            display: table;
+            width: 100%;
+        }
+
+        .step-desc {
+            display: table-cell;
+            width: 55%;
+            vertical-align: top;
+            padding-right: 12px;
+        }
+
+        .step-desc p {
+            margin: 0 0 6px 0;
+            color: #4A5568;
+        }
+
+        .step-desc ul {
+            margin: 0;
+            padding-left: 16px;
+            color: #4A5568;
+        }
+
+        .step-desc li {
+            margin-bottom: 4px;
+        }
+
+        .image-placeholder-box {
+            display: table-cell;
+            width: 45%;
+            vertical-align: top;
+        }
+
+        .img-container {
+            border: 2px dashed #FFB74D;
+            background-color: #FFFDE7;
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            min-height: 95px;
+        }
+
+        .img-container .icon {
+            font-size: 14pt;
+            color: #FF9800;
+            margin-bottom: 2px;
+        }
+
+        .img-container .label {
+            font-weight: bold;
+            font-size: 8pt;
+            color: #E65100;
+            margin-bottom: 2px;
+        }
+
+        .img-container .dimensions {
+            font-size: 7pt;
+            color: #795548;
+            font-style: italic;
+        }
+
+        .highlight-note {
+            background-color: #FFF3E0;
+            border-left: 3px solid #FF9800;
+            padding: 6px 10px;
+            font-size: 8.5pt;
+            margin-top: 6px;
+            color: #E65100;
+        }
+
+        .footer-info {
+            margin-top: 15px;
+            padding-top: 8px;
+            border-top: 1px solid #E2E8F0;
+            font-size: 8pt;
+            color: #A0AEC0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <div class="header-banner">
+        <div class="header-title">ALVIS System Documentation</div>
+        <div class="header-subtitle">Panduan Operasional & Alur Kerja Fitur: Tour Leader Agreement</div>
+        
+        <div class="meta-grid">
+            <div class="meta-item"><strong>Modul:</strong> Operations & Backoffice</div>
+            <div class="meta-item"><strong>Platform:</strong> Mobile (App) & Web (Backoffice)</div>
+            <div class="meta-item"><strong>Versi Fitur:</strong> v2.0 (Updated Flow)</div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="section-title">1. Ringkasan Fitur</div>
+    <div class="intro-box">
+        <p><strong>Tour Leader Agreement</strong> merupakan fitur konfirmasi penugasan digital pada aplikasi ALVIS. Fitur ini dirancang untuk memastikan bahwa setiap Tour Leader (TL) secara resmi membaca, memahami, dan menyetujui seluruh syarat & ketentuan penugasan sebelum diberikan akses penuh ke data detail perjalanan grup tour.</p>
+    </div>
+
+    <div class="section-title">2. Matriks Perubahan Alur (sebelum vs sesudah)</div>
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th style="width: 25%;">Tahapan</th>
+                <th style="width: 37%;">Alur Lama</th>
+                <th style="width: 38%;">Alur Baru (Tour Leader Agreement)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Notifikasi Tap</strong></td>
+                <td>Membuka Halaman TL & langsung menampilkan Tour Detail.</td>
+                <td>Membuka Halaman TL dengan <strong>Card Tour Active</strong> singkat.</td>
+            </tr>
+            <tr>
+                <td><strong>Akses Tour Detail</strong></td>
+                <td>Dapat langsung diakses tanpa konfirmasi agreement.</td>
+                <td>Terkunci. TL wajib menekan Card Active untuk membuka <strong>Halaman Agreement</strong>.</td>
+            </tr>
+            <tr>
+                <td><strong>Status Persetujuan</strong></td>
+                <td>Tidak tersimpan di database persetujuan.</td>
+                <td>Sistem menyimpan log persetujuan, melakukan <em>reload</em>, lalu mengaktifkan akses Tour Detail.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">3. Detail Alur Kerja & Dokumentasi Visual</div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-number">1</div>
+            <div class="step-title-text">Penugasan TL via Backoffice ALVIS</div>
+            <div class="step-badge badge-desktop">Layar Desktop</div>
+        </div>
+        <div class="step-body">
+            <div class="step-desc">
+                <p><strong>Aksi Admin:</strong> Admin melakukan pengalokasian dan penugasan nama Tour Leader ke grup tour tertentu melalui panel web Backoffice.</p>
+                <ul>
+                    <li>Pilih Grup Tour target.</li>
+                    <li>Assign Tour Leader yang sudah terdaftar di sistem ALVIS.</li>
+                    <li>Sistem memicu trigger notifikasi push ke aplikasi mobile TL.</li>
+                </ul>
+            </div>
+            <div class="image-placeholder-box">
+                <div class="img-container">
+                    <div class="icon">💻</div>
+                    <div class="label">[AREA GAMBAR 1]</div>
+                    <div>Setup TL di grup tour via Backoffice ALVIS</div>
+                    <div class="dimensions">Rasio Recommended: 16:9 (Desktop Screen)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-number">2</div>
+            <div class="step-title-text">Penerimaan Push Notification</div>
+            <div class="step-badge badge-mobile">Layar Smartphone</div>
+        </div>
+        <div class="step-body">
+            <div class="step-desc">
+                <p><strong>Aksi Tour Leader:</strong> Tour Leader yang telah mengunduh & login ke aplikasi ALVIS akan menerima push notification penugasan baru.</p>
+                <ul>
+                    <li>Notifikasi berisi informasi judul grup tour.</li>
+                    <li>Muncul pada tray notification smartphone TL.</li>
+                </ul>
+            </div>
+            <div class="image-placeholder-box">
+                <div class="img-container">
+                    <div class="icon">📱</div>
+                    <div class="label">[AREA GAMBAR 2]</div>
+                    <div>Penerimaan Notifikasi Penugasan Tour</div>
+                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-number">3</div>
+            <div class="step-title-text">Membuka Halaman Utama & Card Tour Active</div>
+            <div class="step-badge badge-mobile">Layar Smartphone</div>
+        </div>
+        <div class="step-body">
+            <div class="step-desc">
+                <p><strong>Aksi Tour Leader:</strong> TL men-tap notifikasi tersebut. Aplikasi ALVIS akan terbuka dan langsung menampilkan Halaman Tour Leader.</p>
+                <ul>
+                    <li>Menampilkan <strong>Card Tour Active</strong> yang berisi ringkasan data singkat tour.</li>
+                    <li>Pada tahap ini, detail lengkap belum dapat diakses sebelum persetujuan diselesaikan.</li>
+                </ul>
+            </div>
+            <div class="image-placeholder-box">
+                <div class="img-container">
+                    <div class="icon">📱</div>
+                    <div class="label">[AREA GAMBAR 3]</div>
+                    <div>Tampilan Card Tour Active saat Notifikasi Di-tap</div>
+                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-number">4</div>
+            <div class="step-title-text">Persetujuan Halaman Agreement</div>
+            <div class="step-badge badge-mobile">Layar Smartphone</div>
+        </div>
+        <div class="step-body">
+            <div class="step-desc">
+                <p><strong>Aksi Tour Leader:</strong> Saat <em>Card Tour Active</em> di-tap, sistem secara otomatis mengarahkan TL ke <strong>Halaman Agreement</strong>.</p>
+                <ul>
+                    <li>TL membaca seluruh poin syarat, ketentuan, & tanggung jawab.</li>
+                    <li>TL menekan tombol <strong>"Setujui Agreement"</strong> untuk konfirmasi.</li>
+                </ul>
+                <div class="highlight-note">
+                    <strong>Catatan:</strong> Data persetujuan (timestamp & user ID) akan langsung disimpan oleh backend ALVIS.
+                </div>
+            </div>
+            <div class="image-placeholder-box">
+                <div class="img-container">
+                    <div class="icon">📱</div>
+                    <div class="label">[AREA GAMBAR 4]</div>
+                    <div>Halaman Tour Leader Agreement</div>
+                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-number">5</div>
+            <div class="step-title-text">Sistem Reload & Pembaharuan Status</div>
+            <div class="step-badge badge-mobile">Layar Smartphone</div>
+        </div>
+        <div class="step-body">
+            <div class="step-desc">
+                <p><strong>Sistem Response:</strong> Setelah tombol setuju ditekan, aplikasi ALVIS akan melakukan pembaharuan status secara otomatis.</p>
+                <ul>
+                    <li>Aplikasi mereload Halaman Tour Leader.</li>
+                    <li>Status Card Active terupdate menjadi <em>Approved/Verified</em>.</li>
+                </ul>
+            </div>
+            <div class="image-placeholder-box">
+                <div class="img-container">
+                    <div class="icon">📱</div>
+                    <div class="label">[AREA GAMBAR 5]</div>
+                    <div>Halaman ALVIS setelah Agreement Disetujui</div>
+                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step-card">
+        <div class="step-header">
+            <div class="step-number">6</div>
+            <div class="step-title-text">Akses Penuh ke Halaman Tour Detail</div>
+            <div class="step-badge badge-mobile">Layar Smartphone</div>
+        </div>
+        <div class="step-body">
+            <div class="step-desc">
+                <p><strong>Aksi Tour Leader:</strong> Saat TL men-tap kembali Card Tour Active, sistem langsung membuka <strong>Halaman Tour Detail</strong>.</p>
+                <ul>
+                    <li>TL dapat mengakses daftar manifest peserta, itinerary lengkap, serta dokumen perjalanan.</li>
+                    <li>Fitur operasional tour resmi aktif dan siap digunakan.</li>
+                </ul>
+            </div>
+            <div class="image-placeholder-box">
+                <div class="img-container">
+                    <div class="icon">📱</div>
+                    <div class="label">[AREA GAMBAR 6]</div>
+                    <div>Halaman Tour Detail Lengkap</div>
+                    <div class="dimensions">Rasio Recommended: 9:16 (Mobile Screen)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-info">
+        Dokumen ini dibuat otomatis untuk Alur Operasional Fitur ALVIS Application &bull; All Rights Reserved
+    </div>
+
+</body>
+</html>
+"""
+
+# Save HTML file
+with open("dokumentasi_tour_leader_agreement.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+# Convert HTML to PDF using WeasyPrint
+HTML(string=html_content).write_pdf("dokumentasi_tour_leader_agreement.pdf")
+print("Files generated successfully.")

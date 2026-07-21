@@ -332,10 +332,10 @@
             <div class="progress-indicator">
                 <div class="phase-label">Fase Perjalanan</div>
                 <div class="phase-bar">
-                    <div class="phase-dot" data-phase="welcome" title="Welcome"></div>
-                    <div class="phase-dot" data-phase="pretrip" title="Pre-Trip"></div>
-                    <div class="phase-dot" data-phase="ontrip" title="On-Trip"></div>
-                    <div class="phase-dot" data-phase="posttrip" title="Post-Trip"></div>
+                    <div class="phase-dot" data-phase="welcome" onclick="navigateToPhase('welcome')"></div>
+                    <div class="phase-dot" data-phase="pretrip" onclick="navigateToPhase('pretrip')"></div>
+                    <div class="phase-dot" data-phase="ontrip" onclick="navigateToPhase('ontrip')"></div>
+                    <div class="phase-dot" data-phase="posttrip" onclick="navigateToPhase('posttrip')"></div>
                 </div>
             </div>
             <div class="nav-section">Pendahuluan</div>
@@ -511,16 +511,16 @@
                     <table>
                         <thead><tr><th>Jenis Template</th><th>Kode Placeholder</th><th>Akan Diganti Dengan (Contoh)</th></tr></thead>
                         <tbody>
-                            <tr><td rowspan="3" style="vertical-align: top;"><strong>🎉 Tour Welcome</strong><br><small>Peserta baru bergabung</small></td><td><code>{user_name}</code></td><td>Nama lengkap peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
+                            <tr><td rowspan="2" style="vertical-align: top;"><strong>🎉 Tour Welcome</strong><br><small>Peserta baru bergabung</small></td><td><code>{user_name}</code></td><td>Nama lengkap peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
                             <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
-                            <tr><td><code>{meals_note}</code></td><td>Catatan makanan (contoh: <em>"Bawa bekal sayur & makanan halal"</em>)</td></tr>
-                            <tr><td rowspan="5" style="vertical-align: top;"><strong>📋 Tour Pre-Trip</strong><br><small>Pengingat persiapan sebelum tour</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
+                            <tr><td rowspan="8" style="vertical-align: top;"><strong>📋 Tour Pre-Trip</strong><br><small>Pengingat persiapan sebelum tour</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
                             <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
+                            <tr><td><code>{meals_note}</code></td><td>Catatan tentang hari apa saja mendapatkan meals baik breakfast, lunch, atau dinner</td></tr>
                             <tr><td><code>{outfit_note}</code></td><td>Saran pakaian (contoh: <em>"Bawa jaket tebal & sepatu gunung"</em>)</td></tr>
                             <tr><td><code>{socket_type}</code></td><td>Tipe stopkontak (contoh: <em>"Type A"</em>)</td></tr>
                             <tr><td><code>{socket_voltage}</code></td><td>Voltase listrik (contoh: <em>"220V"</em>)</td></tr>
-                            <tr><td></td><td><code>{socket_note}</code></td><td>Catatan stopkontak (contoh: <em>"Bawa adapter universal"</em>)</td></tr>
-                            <tr><td></td><td><code>{internet_note}</code></td><td>Saran internet (contoh: <em>"Beli SIM card lokal di airport"</em>)</td></tr>
+                            <tr><td><code>{socket_note}</code></td><td>Catatan stopkontak (contoh: <em>"Bawa adapter universal"</em>)</td></tr>
+                            <tr><td><code>{internet_note}</code></td><td>Saran internet (contoh: <em>"Beli SIM card lokal di airport"</em>)</td></tr>
                             <tr><td rowspan="2" style="vertical-align: top;"><strong>🗓️ Tour On-Trip</strong><br><small>Notifikasi saat tour berlangsung</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
                             <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
                             <tr><td rowspan="2" style="vertical-align: top;"><strong>🎁 Tour Post-Trip</strong><br><small>Notifikasi setelah tour selesai</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
@@ -639,7 +639,7 @@
                         <div style="flex: 1;">
                             <strong style="font-size: 15px; color: var(--text);">2. Mesin On-Trip Harian — "Si Pendamping Harian"</strong>
                             <p style="font-size: 13px; color: var(--text-light); margin: 4px 0 0 0;">
-                                <strong>Kapan bekerja:</strong> Setiap hari selama tour berlangsung (kecuali hari pertama dan terakhir).<br>
+                            <strong>Kapan bekerja:</strong> Pada hari keberangkatan.<br>
                                 <strong>Apa yang dilakukan:</strong> Membuat jadwal notifikasi harian (seperti pengingat passport, to-do list, upload foto, feedback) untuk setiap hari perjalanan.<br>
                                 <strong>Zona waktu:</strong> Mengikuti zona waktu destinasi tour (misal: China = GMT+8).
                             </p>
@@ -691,44 +691,57 @@
                 <p>Berikut ilustrasi kapan setiap mesin bekerja dalam siklus sebuah tour:</p>
 
                 <div style="background: var(--bg); border-radius: var(--radius-sm); padding: 20px; margin: 16px 0; overflow-x: auto;">
-                    <div style="display: flex; align-items: center; min-width: 700px; padding: 10px 0; position: relative;">
+                    <div style="display: flex; align-items: center; min-width: 800px; padding: 10px 0; position: relative;">
                         <!-- Timeline bar -->
-                        <div style="position: relative; width: 100%; height: 60px; background: var(--border); border-radius: 8px; overflow: visible;">
-                            <!-- Label waktu -->
-                            <div style="display: flex; justify-content: space-between; padding: 0 4px; margin-bottom: 4px; font-size: 11px; color: var(--text-muted);">
-                                <span>H-30</span>
-                                <span>H-10</span>
-                                <span>H-7</span>
-                                <span>H-3</span>
-                                <span style="font-weight: 700; color: var(--primary);">HARI H</span>
-                                <span>H+1</span>
-                                <span>H+3</span>
-                                <span>H+7</span>
-                                <span>H+10</span>
+                        <div style="position: relative; width: 100%; height: 80px; background: var(--border); border-radius: 8px; overflow: visible;">
+                            <!-- Label waktu utama -->
+                            <div style="display: flex; justify-content: space-between; padding: 0 2%; margin-bottom: 4px; font-size: 11px; color: var(--text-muted); font-weight: 500;">
+                                <span style="text-align: center; width: 60px;">H-10</span>
+                                <span style="text-align: center; width: 60px;">H-7</span>
+                                <span style="text-align: center; width: 60px;">H-3</span>
+                                <span style="text-align: center; width: 60px; font-weight: 700; color: var(--primary);">HARI H</span>
+                                <span style="text-align: center; width: 60px;">H+1</span>
+                                <span style="text-align: center; width: 60px;">H+3</span>
+                                <span style="text-align: center; width: 60px;">H+7</span>
+                                <span style="text-align: center; width: 60px;">H+10</span>
                             </div>
                             <!-- Bar utama -->
-                            <div style="position: relative; width: 100%; height: 20px; background: var(--border); border-radius: 10px; margin-top: 4px;">
-                                <!-- Pre-Trip: H-10 trigger -->
-                                <div style="position: absolute; left: 33%; width: 4px; height: 20px; background: var(--color-pretrip); border-radius: 2px; top: 0;" title="Mesin Pre-Trip bekerja di H-10"></div>
-                                <!-- Pre-Trip kirim: H-7 -->
-                                <div style="position: absolute; left: 40%; width: 4px; height: 20px; background: var(--color-pretrip); border-radius: 2px; top: 0; opacity: 0.5;" title="Notifikasi Pre-Trip dikirim H-7"></div>
-                                <!-- On-Trip: selama tour -->
-                                <div style="position: absolute; left: 50%; width: 4px; height: 20px; background: var(--color-ontrip); border-radius: 2px; top: 0;" title="Mesin On-Trip Harian"></div>
-                                <!-- Survey: H-3 trigger (H+7 dari selesai) -->
-                                <div style="position: absolute; left: 35%; width: 4px; height: 20px; background: var(--warning); border-radius: 2px; top: 0;" title="Mesin Survey Submit bekerja (H-3, H-2, H-1)"></div>
-                                <!-- Survey kirim: H-1, H-2, H-3 -->
-                                <div style="position: absolute; left: 45%; width: 4px; height: 20px; background: var(--warning); border-radius: 2px; top: 0; opacity: 0.6;" title="Notifikasi Survey dikirim H-3, H-2, H-1"></div>
-                                <!-- Survey thank you: H+1 -->
-                                <div style="position: absolute; left: 85%; width: 4px; height: 20px; background: var(--warning); border-radius: 2px; top: 0; opacity: 0.4;" title="Thank you notification H+1"></div>
-                                <!-- Post-Trip: H+10 trigger -->
-                                <div style="position: absolute; left: 77%; width: 4px; height: 20px; background: var(--color-posttrip); border-radius: 2px; top: 0;" title="Mesin Post-Trip bekerja"></div>
+                            <div style="position: relative; width: 100%; height: 24px; background: #e5e7eb; border-radius: 12px; margin-top: 4px;">
+                                <!-- Pre-Trip Zone (H-10) -->
+                                <div style="position: absolute; left: 0%; width: 12%; height: 100%; background: rgba(59, 130, 246, 0.15); border-radius: 12px 0 0 12px;"></div>
+                                <!-- On-Trip Zone (H-7 s/d H+7) -->
+                                <div style="position: absolute; left: 12%; width: 70%; height: 100%; background: rgba(230, 81, 0, 0.15);"></div>
+                                <!-- Post-Trip Zone (H+7 s/d H+10) -->
+                                <div style="position: absolute; left: 82%; width: 18%; height: 100%; background: rgba(139, 92, 246, 0.15); border-radius: 0 12px 12px 0;"></div>
+                                
+                                <!-- Pre-Trip trigger: H-10 (12%) -->
+                                <div style="position: absolute; left: 10%; width: 6px; height: 24px; background: var(--color-pretrip); border-radius: 3px; top: 0;" title="Mesin Pre-Trip bekerja (H-10)"></div>
+                                <!-- Pre-Trip kirim: H-7 (25%) -->
+                                <div style="position: absolute; left: 24%; width: 6px; height: 24px; background: var(--color-pretrip); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Pre-Trip dikirim (H-7)"></div>
+                                
+                                <!-- Survey trigger: H+7 selesai (H-3 sebelum selesai = 65%) -->
+                                <div style="position: absolute; left: 64%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0;" title="Mesin Survey Submit trigger (H-3 dari selesai tour)"></div>
+                                <!-- Survey kirim: H-3, H-2, H-1 (68%, 72%, 76%) -->
+                                <div style="position: absolute; left: 67%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Survey Pengingat (H-3)"></div>
+                                <div style="position: absolute; left: 71%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Survey Pengingat (H-2)"></div>
+                                <div style="position: absolute; left: 75%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Survey Pengingat (H-1)"></div>
+                                
+                                <!-- On-Trip daily trigger: setiap hari tour (50%) -->
+                                <div style="position: absolute; left: 48%; width: 6px; height: 24px; background: var(--color-ontrip); border-radius: 3px; top: 0;" title="Mesin On-Trip Harian bekerja"></div>
+                                
+                                <!-- Survey thank you: H+1 setelah submit (87%) -->
+                                <div style="position: absolute; left: 86%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0; opacity: 0.4;" title="Survey Thank You (H+1 setelah submit)"></div>
+                                
+                                <!-- Post-Trip trigger: H+7 selesai - 10 = H-10 dari selesai (H+7 - 82%) -->
+                                <div style="position: absolute; left: 82%; width: 6px; height: 24px; background: var(--color-posttrip); border-radius: 3px; top: 0;" title="Mesin Post-Trip trigger (H-10 dari selesai tour)"></div>
+                                <!-- Post-Trip kirim: H+1 setelah tour selesai (92%) -->
+                                <div style="position: absolute; left: 92%; width: 6px; height: 24px; background: var(--color-posttrip); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Post-Trip dikirim (H+1 dari selesai)"></div>
                             </div>
-                            <!-- Label mesin -->
-                            <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 10px; font-weight: 600;">
-                                <span style="color: var(--color-pretrip);">📋 Pre-Trip (H-10)</span>
-                                <span style="color: var(--color-ontrip);">🗓️ On-Trip (harian)</span>
-                                <span style="color: var(--warning);">📊 Survey (H+7)</span>
-                                <span style="color: var(--color-posttrip);">🎁 Post-Trip (H+10)</span>
+                            <!-- Zona label -->
+                            <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 9px; font-weight: 500; color: var(--text-muted);">
+                                <span style="width: 12%; text-align: left; padding-left: 4px;">📋 Pre-Trip</span>
+                                <span style="width: 70%; text-align: center;">🗓️ On-Trip (Tour Berlangsung)</span>
+                                <span style="width: 18%; text-align: right; padding-right: 4px;">🎁 Post-Trip</span>
                             </div>
                         </div>
                     </div>
@@ -751,15 +764,15 @@
                         <tr>
                             <td><strong>2</strong></td>
                             <td>On-Trip Harian</td>
-                            <td>Setiap hari selama tour</td>
-                            <td>H+1 sampai H-1</td>
+                            <td>Pada hari keberangkatan</td>
+                            <td>H+1 sampai H-1 (setiap hari selama tour)</td>
                             <td>Destinasi tour</td>
                             <td>Semua peserta</td>
                         </tr>
                         <tr>
                             <td><strong>3</strong></td>
                             <td>Survey Submit</td>
-                            <td>H+7 dari selesai tour</td>
+                            <td>H-7 dari tour selesai</td>
                             <td>H-3, H-2, H-1 (pengingat) + H+1 (thank you)</td>
                             <td>Destinasi tour</td>
                             <td>Peserta belum isi survey (pengingat) → Semua peserta (thank you setelah submit)</td>
@@ -1102,6 +1115,57 @@
 
         renderTimeline();
         renderSummaryTable();
+
+        // ===== PHASE NAVIGATION & TOOLTIP =====
+        function showPhaseTooltip(dotElement) {
+            const tooltip = dotElement.querySelector('.phase-tooltip');
+            if (tooltip) {
+                tooltip.style.opacity = '1';
+                tooltip.style.visibility = 'visible';
+            }
+        }
+
+        function hidePhaseTooltip(dotElement) {
+            const tooltip = dotElement.querySelector('.phase-tooltip');
+            if (tooltip) {
+                tooltip.style.opacity = '0';
+                tooltip.style.visibility = 'hidden';
+            }
+        }
+
+        function navigateToPhase(phase) {
+            const bab5Section = document.getElementById('bab5');
+            if (!bab5Section) return;
+
+            // Scroll to Bab 5 first
+            bab5Section.scrollIntoView({ behavior: 'smooth' });
+
+            // Find the first timeline item with matching category
+            // Welcome = id 1 (index 0), Pre-Trip = id 4 (index 3), On-Trip = id 5 (index 4), Post-Trip = id 14 (index 12)
+            const phaseToIndex = {
+                'welcome': 0,   // First item (index 0 after filtering)
+                'pretrip': 3,   // First pretrip item (index 3 after filtering - item id 4)
+                'ontrip': 4,    // First ontrip item (index 4 after filtering - item id 5)
+                'posttrip': 12  // First posttrip item (index 12 after filtering - item id 14)
+            };
+
+            // Small delay to allow scroll animation to complete
+            setTimeout(function() {
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                const targetIndex = phaseToIndex[phase];
+
+                if (targetIndex !== undefined && timelineItems[targetIndex]) {
+                    timelineItems[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Add highlight effect
+                    timelineItems[targetIndex].style.background = 'var(--primary-bg)';
+                    timelineItems[targetIndex].style.transform = 'translateX(4px)';
+                    setTimeout(function() {
+                        timelineItems[targetIndex].style.background = '';
+                        timelineItems[targetIndex].style.transform = '';
+                    }, 2000);
+                }
+            }, 500);
+        }
     </script>
 </body>
 </html>

@@ -474,48 +474,61 @@
                 <p style="font-size: 13px; color: var(--text-light);">Setiap jenis template memiliki placeholder yang bisa digunakan. Berikut daftarnya dengan contoh penggunaannya:</p>
 
                 <div style="background: var(--bg); border-radius: var(--radius-sm); padding: 20px; margin: 16px 0; overflow-x: auto;">
-                    <table>
-                        <thead><tr><th>Jenis Template</th><th>Kode Placeholder</th><th>Akan Diganti Dengan (Contoh)</th></tr></thead>
-                        <tbody>
-                            <tr><td rowspan="3" style="vertical-align: top;"><strong>🎉 Tour Welcome</strong><br><small>Peserta baru bergabung</small></td><td><code>{user_name}</code></td><td>Nama lengkap peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
-                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
-                            <tr><td><code>{meals_note}</code></td><td>Catatan makanan (contoh: <em>"Bawa bekal sayur & makanan halal"</em>)</td></tr>
-                            <tr><td rowspan="5" style="vertical-align: top;"><strong>📋 Tour Pre-Trip</strong><br><small>Pengingat persiapan sebelum tour</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
-                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
-                            <tr><td><code>{outfit_note}</code></td><td>Saran pakaian (contoh: <em>"Bawa jaket tebal & sepatu gunung"</em>)</td></tr>
-                            <tr><td><code>{socket_type}</code></td><td>Tipe stopkontak (contoh: <em>"Type A"</em>)</td></tr>
-                            <tr><td><code>{socket_voltage}</code></td><td>Voltase listrik (contoh: <em>"220V"</em>)</td></tr>
-                            <tr><td></td><td><code>{socket_note}</code></td><td>Catatan stopkontak (contoh: <em>"Bawa adapter universal"</em>)</td></tr>
-                            <tr><td></td><td><code>{internet_note}</code></td><td>Saran internet (contoh: <em>"Beli SIM card lokal di airport"</em>)</td></tr>
-                            <tr><td rowspan="2" style="vertical-align: top;"><strong>🗓️ Tour On-Trip</strong><br><small>Notifikasi saat tour berlangsung</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
-                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
-                            <tr><td rowspan="2" style="vertical-align: top;"><strong>🎁 Tour Post-Trip</strong><br><small>Notifikasi setelah tour selesai</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
-                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
-                            <tr><td rowspan="2" style="vertical-align: top;"><strong>📊 Tour Submit Survey</strong><br><small>Pengingat isi survey</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
-                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
-                            <tr><td rowspan="2" style="vertical-align: top;"><strong>✅ Tour Submit Survey Done</strong><br><small>Ucapan terima kasih setelah survey</small></td><td><code>{user_name}</code></td><td>Nama peserta (contoh: <em>"Budi Santoso"</em>)</td></tr>
-                            <tr><td><code>{tour_name}</code></td><td>Nama tour (contoh: <em>"Tour China Populer 7D"</em>)</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="callout info" style="margin-top: 16px;">
-                    <div class="callout-title">💡 Tips Memudahkan:</div>
-                    <p>Gunakan <strong>Ctrl + H</strong> (Find & Replace) di dalam form template untuk mengganti placeholder dengan cepat. Contoh: cari <code>{user_name}</code>, ganti dengan <code>{tour_name}</code>, dst.</p>
-                </div>
-
-                <h4><i class="fas fa-images"></i> Tampilan Pop-up Form Template</h4>
-                <p>Berikut tampilan lengkap pop-up form add template beserta fitur yang tersedia:</p>
-
-                <div style="display: flex; flex-direction: column; gap: 20px; margin: 16px 0;">
-                    <div class="img-container" style="max-width: 750px; margin: 0 auto;">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2FPlaceholders.png?alt=media&token=10376e15-510e-4de6-9edc-221299d11a2a" alt="List Placeholder">
-                        <div class="img-caption">Gambar 2.3a: Daftar placeholder yang tersedia di pop-up form</div>
+                    <div style="display: flex; align-items: center; min-width: 800px; padding: 10px 0; position: relative;">
+                        <!-- Timeline bar -->
+                        <div style="position: relative; width: 100%; height: 80px; background: var(--border); border-radius: 8px; overflow: visible;">
+                            <!-- Label waktu utama -->
+                            <div style="display: flex; justify-content: space-between; padding: 0 2%; margin-bottom: 4px; font-size: 11px; color: var(--text-muted); font-weight: 500;">
+                                <span style="text-align: center; width: 60px;">H-10</span>
+                                <span style="text-align: center; width: 60px;">H-7</span>
+                                <span style="text-align: center; width: 60px;">H-3</span>
+                                <span style="text-align: center; width: 60px; font-weight: 700; color: var(--primary);">HARI H</span>
+                                <span style="text-align: center; width: 60px;">H+1</span>
+                                <span style="text-align: center; width: 60px;">H+3</span>
+                                <span style="text-align: center; width: 60px;">H+7</span>
+                                <span style="text-align: center; width: 60px;">H+10</span>
+                            </div>
+                            <!-- Bar utama -->
+                            <div style="position: relative; width: 100%; height: 24px; background: #e5e7eb; border-radius: 12px; margin-top: 4px;">
+                                <!-- Pre-Trip Zone (H-10) -->
+                                <div style="position: absolute; left: 0%; width: 12%; height: 100%; background: rgba(59, 130, 246, 0.15); border-radius: 12px 0 0 12px;"></div>
+                                <!-- On-Trip Zone (H-7 s/d H+7) -->
+                                <div style="position: absolute; left: 12%; width: 70%; height: 100%; background: rgba(230, 81, 0, 0.15);"></div>
+                                <!-- Post-Trip Zone (H+7 s/d H+10) -->
+                                <div style="position: absolute; left: 82%; width: 18%; height: 100%; background: rgba(139, 92, 246, 0.15); border-radius: 0 12px 12px 0;"></div>
+                                
+                                <!-- Pre-Trip trigger: H-10 (12%) -->
+                                <div style="position: absolute; left: 10%; width: 6px; height: 24px; background: var(--color-pretrip); border-radius: 3px; top: 0;" title="Mesin Pre-Trip bekerja (H-10)"></div>
+                                <!-- Pre-Trip kirim: H-7 (25%) -->
+                                <div style="position: absolute; left: 24%; width: 6px; height: 24px; background: var(--color-pretrip); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Pre-Trip dikirim (H-7)"></div>
+                                
+                                <!-- Survey trigger: H+7 selesai (H-3 sebelum selesai = 65%) -->
+                                <div style="position: absolute; left: 64%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0;" title="Mesin Survey Submit trigger (H-3 dari selesai tour)"></div>
+                                <!-- Survey kirim: H-3, H-2, H-1 (68%, 72%, 76%) -->
+                                <div style="position: absolute; left: 67%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Survey Pengingat (H-3)"></div>
+                                <div style="position: absolute; left: 71%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Survey Pengingat (H-2)"></div>
+                                <div style="position: absolute; left: 75%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Survey Pengingat (H-1)"></div>
+                                
+                                <!-- On-Trip daily trigger: setiap hari tour (50%) -->
+                                <div style="position: absolute; left: 48%; width: 6px; height: 24px; background: var(--color-ontrip); border-radius: 3px; top: 0;" title="Mesin On-Trip Harian bekerja"></div>
+                                
+                                <!-- Survey thank you: H+1 setelah submit (87%) -->
+                                <div style="position: absolute; left: 86%; width: 6px; height: 24px; background: var(--warning); border-radius: 3px; top: 0; opacity: 0.4;" title="Survey Thank You (H+1 setelah submit)"></div>
+                                
+                                <!-- Post-Trip trigger: H+7 selesai - 10 = H-10 dari selesai (H+7 - 82%) -->
+                                <div style="position: absolute; left: 82%; width: 6px; height: 24px; background: var(--color-posttrip); border-radius: 3px; top: 0;" title="Mesin Post-Trip trigger (H-10 dari selesai tour)"></div>
+                                <!-- Post-Trip kirim: H+1 setelah tour selesai (92%) -->
+                                <div style="position: absolute; left: 92%; width: 6px; height: 24px; background: var(--color-posttrip); border-radius: 3px; top: 0; opacity: 0.6;" title="Notifikasi Post-Trip dikirim (H+1 dari selesai)"></div>
+                            </div>
+                            <!-- Zona label -->
+                            <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 9px; font-weight: 500; color: var(--text-muted);">
+                                <span style="width: 12%; text-align: left; padding-left: 4px;">📋 Pre-Trip</span>
+                                <span style="width: 70%; text-align: center;">🗓️ On-Trip (Tour Berlangsung)</span>
+                                <span style="width: 18%; text-align: right; padding-right: 4px;">🎁 Post-Trip</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="img-container" style="max-width: 750px; margin: 0 auto;">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fpreview%20device.png?alt=media&token=d1dc16f5-14ca-4cca-b865-c36965b557e8" alt="Preview Device">
-                        <div class="img-caption">Gambar 2.3b: Preview tampilan notifikasi di device</div>
-                    </div>
+                </div>
                     <div class="img-container" style="max-width: 750px; margin: 0 auto;">
                         <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-notification%2Fconten%20preview.png?alt=media&token=0ce33c3d-fa0e-4588-8cb0-026eb015fe3e" alt="Content Preview">
                         <div class="img-caption">Gambar 2.3c: Preview konten notifikasi (rich content)</div>
