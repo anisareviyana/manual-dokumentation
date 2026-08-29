@@ -767,6 +767,161 @@
             color: var(--text-light);
             margin: 0;
         }
+
+        /* ===== COMPACT STEPS P3 STYLES (Section 3.1 - Credit Card) ===== */
+        .compact-steps-p3 {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .compact-step-p3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .compact-step-p3:hover {
+            background: var(--primary-bg);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .compact-step-p3.active {
+            background: #f59e0b;
+            border-color: #f59e0b;
+            color: #fff;
+        }
+        .compact-step-p3 .step-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: var(--primary);
+        }
+        .compact-step-p3.active .step-icon {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        .compact-step-p3 .step-icon i {
+            font-size: 10px;
+        }
+
+        /* ===== INLINE STEP DETAIL P3 (Section 3.1 - Credit Card) ===== */
+        .step-detail-p3 {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin: 12px 0;
+            display: none;
+        }
+        .step-detail-p3.active {
+            display: block;
+        }
+        .step-detail-p3 h5 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f59e0b;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .step-detail-p3 p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* ===== CAROUSEL P3 STYLES (Section 3.1 - Credit Card) ===== */
+        .app-carousel-p3 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 24px 0;
+        }
+        .carousel-container-p3 {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        .carousel-slides-p3 {
+            display: flex;
+            transition: transform 0.4s ease;
+        }
+        .carousel-slide-p3 {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0 20px;
+        }
+        .carousel-caption-p3 {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 12px;
+            padding: 0 20px;
+        }
+        .carousel-caption-p3 strong {
+            color: #f59e0b;
+        }
+        .carousel-dots-p3 {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .carousel-dot-p3 {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .carousel-dot-p3.active {
+            background: #f59e0b;
+            width: 24px;
+            border-radius: 4px;
+        }
+        .carousel-nav-btn-p3 {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .carousel-nav-btn-p3:hover {
+            background: #fff3e0;
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+        .carousel-nav-btn-p3.prev { left: -18px; }
+        .carousel-nav-btn-p3.next { right: -18px; }
     </style>
 </head>
 <body>
@@ -1211,48 +1366,195 @@
                 <hr>
 
                 <h3 id="bab3-1"><i class="fas fa-credit-card"></i> 3.1 Pembayaran via Credit Card</h3>
-                <p>Pembayaran menggunakan <strong>Credit Card</strong> memungkinkan pengguna membayar tiket pesawat secara langsung menggunakan kartu kredit yang valid.</p>
+                <p>Pembayaran menggunakan <strong>Credit Card</strong> memungkinkan pengguna membayar tiket pesawat melalui website <strong>Panorama JTB</strong>. Berikut langkah-langkah pembayaran via Credit Card:</p>
 
-                <h4><i class="fas fa-sign-in-alt"></i> Langkah-langkah</h4>
-                <ul class="steps">
-                    <li class="step-item"><span class="step-number">1</span><div class="step-text">Pada halaman pembayaran, pilih metode <strong>Credit Card</strong>.</div></li>
-                    <li class="step-item"><span class="step-number">2</span><div class="step-text">Masukkan <strong>data kartu kredit</strong> Anda:</div></li>
-                </ul>
+                <!-- Compact Steps Tabs -->
+                <div class="compact-steps-p3">
+                    <button class="compact-step-p3 active" data-step-p3="0"><span class="step-icon"><i class="fas fa-list"></i></span> Payment Progress</button>
+                    <button class="compact-step-p3" data-step-p3="1"><span class="step-icon"><i class="fas fa-credit-card"></i></span> Select Method</button>
+                    <button class="compact-step-p3" data-step-p3="2"><span class="step-icon"><i class="fas fa-keyboard"></i></span> Card Number</button>
+                    <button class="compact-step-p3" data-step-p3="3"><span class="step-icon"><i class="fas fa-lock"></i></span> Password</button>
+                    <button class="compact-step-p3" data-step-p3="4"><span class="step-icon"><i class="fas fa-check-circle"></i></span> Sukses</button>
+                    <button class="compact-step-p3" data-step-p3="5"><span class="step-icon"><i class="fas fa-clipboard-check"></i></span> My Booking</button>
+                </div>
 
-                <div class="mockup" style="max-width: 500px; margin: 16px auto;">
-                    <div class="mockup-header">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
-                        <span style="font-size: 12px; color: #666; margin-left: 8px;">Pembayaran Credit Card</span>
+                <!-- Step Details -->
+                <div class="step-detail-p3 active" data-detail-p3="0">
+                    <h5><i class="fas fa-list"></i> Langkah 1: Akses Payment Progress</h5>
+                    <p>Akses halaman <strong>Payment Progress</strong> melalui menu di website Panorama JTB. Klik pada <strong>card transaksi</strong> yang akan dibayar.</p>
+                </div>
+                <div class="step-detail-p3" data-detail-p3="1">
+                    <h5><i class="fas fa-credit-card"></i> Langkah 2: Select Payment Method</h5>
+                    <p>Sistem menampilkan halaman <strong>Select Payment Method</strong>. Swipe button untuk melanjutkan pembayaran menggunakan <strong>Credit Card</strong>.</p>
+                </div>
+                <div class="step-detail-p3" data-detail-p3="2">
+                    <h5><i class="fas fa-keyboard"></i> Langkah 3: Input Card Number</h5>
+                    <p>Masukkan <strong>nomor kartu kredit</strong> Anda pada form input yang tersedia di dalam webview.</p>
+                </div>
+                <div class="step-detail-p3" data-detail-p3="3">
+                    <h5><i class="fas fa-lock"></i> Langkah 4: Input Password/OTP</h5>
+                    <p>Masukkan <strong>password atau OTP</strong> untuk verifikasi transaksi Credit Card.</p>
+                </div>
+                <div class="step-detail-p3" data-detail-p3="4">
+                    <h5><i class="fas fa-check-circle"></i> Langkah 5: Payment Sukses</h5>
+                    <p>Sistem menampilkan halaman <strong>Payment via CC Sukses</strong> sebagai konfirmasi bahwa pembayaran berhasil dilakukan.</p>
+                </div>
+                <div class="step-detail-p3" data-detail-p3="5">
+                    <h5><i class="fas fa-clipboard-check"></i> Langkah 6: My Booking</h5>
+                    <p>Setelah selesai melakukan pembayaran, sistem menampilkan halaman <strong>My Booking</strong> dengan menampilkan data transaksi yang sudah dibayar.</p>
+                </div>
+
+                <!-- Browser Mockup Carousel -->
+                <div class="app-carousel-p3">
+                    <div class="carousel-container-p3">
+                        <button class="carousel-nav-btn-p3 prev" onclick="moveSlideP3(-1)"><i class="fas fa-chevron-left"></i></button>
+                        <div class="carousel-slides-p3" id="carouselSlidesP3">
+                            <div class="carousel-slide-p3">
+                                <div class="browser-mockup">
+                                    <div class="browser-header">
+                                        <div class="browser-buttons">
+                                            <span class="browser-btn red"></span>
+                                            <span class="browser-btn yellow"></span>
+                                            <span class="browser-btn green"></span>
+                                        </div>
+                                        <div class="browser-address-bar">
+                                            <i class="fas fa-lock"></i>
+                                            <span>panorama-jtb.com/payment-progress</span>
+                                        </div>
+                                        <div class="browser-menu">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                    </div>
+                                    <div class="browser-screen">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC%20paymnet%20progress.png?alt=media&token=53c38ac0-5f70-4243-ae70-36978a1d86f4" alt="Halaman Payment Progress">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide-p3">
+                                <div class="browser-mockup">
+                                    <div class="browser-header">
+                                        <div class="browser-buttons">
+                                            <span class="browser-btn red"></span>
+                                            <span class="browser-btn yellow"></span>
+                                            <span class="browser-btn green"></span>
+                                        </div>
+                                        <div class="browser-address-bar">
+                                            <i class="fas fa-lock"></i>
+                                            <span>panorama-jtb.com/payment/select</span>
+                                        </div>
+                                        <div class="browser-menu">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                    </div>
+                                    <div class="browser-screen">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20select%20cc.png?alt=media&token=7bcbd9f9-55e3-48e0-9ae6-34c7ba683af2" alt="Select Payment Method">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide-p3">
+                                <div class="browser-mockup">
+                                    <div class="browser-header">
+                                        <div class="browser-buttons">
+                                            <span class="browser-btn red"></span>
+                                            <span class="browser-btn yellow"></span>
+                                            <span class="browser-btn green"></span>
+                                        </div>
+                                        <div class="browser-address-bar">
+                                            <i class="fas fa-lock"></i>
+                                            <span>panorama-jtb.com/payment/cc</span>
+                                        </div>
+                                        <div class="browser-menu">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                    </div>
+                                    <div class="browser-screen">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20input%20card%20number.png?alt=media&token=5272d3ae-82a6-41fa-8d7b-4c933dbd541b" alt="Input Card Number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide-p3">
+                                <div class="browser-mockup">
+                                    <div class="browser-header">
+                                        <div class="browser-buttons">
+                                            <span class="browser-btn red"></span>
+                                            <span class="browser-btn yellow"></span>
+                                            <span class="browser-btn green"></span>
+                                        </div>
+                                        <div class="browser-address-bar">
+                                            <i class="fas fa-lock"></i>
+                                            <span>panorama-jtb.com/payment/cc</span>
+                                        </div>
+                                        <div class="browser-menu">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                    </div>
+                                    <div class="browser-screen">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20input%20card%20number%20password.png?alt=media&token=303d9b7e-aee5-4430-ab52-42745d677c19" alt="Input Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide-p3">
+                                <div class="browser-mockup">
+                                    <div class="browser-header">
+                                        <div class="browser-buttons">
+                                            <span class="browser-btn red"></span>
+                                            <span class="browser-btn yellow"></span>
+                                            <span class="browser-btn green"></span>
+                                        </div>
+                                        <div class="browser-address-bar">
+                                            <i class="fas fa-lock"></i>
+                                            <span>panorama-jtb.com/payment/success</span>
+                                        </div>
+                                        <div class="browser-menu">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                    </div>
+                                    <div class="browser-screen">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20paymnet%20cc%20sukses.png?alt=media&token=8e53eaeb-40f3-4368-83eb-907715eb4c06" alt="Payment Sukses">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide-p3">
+                                <div class="browser-mockup">
+                                    <div class="browser-header">
+                                        <div class="browser-buttons">
+                                            <span class="browser-btn red"></span>
+                                            <span class="browser-btn yellow"></span>
+                                            <span class="browser-btn green"></span>
+                                        </div>
+                                        <div class="browser-address-bar">
+                                            <i class="fas fa-lock"></i>
+                                            <span>panorama-jtb.com/my-bookings</span>
+                                        </div>
+                                        <div class="browser-menu">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </div>
+                                    </div>
+                                    <div class="browser-screen">
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20active%20trip%20with%20sukses%20paymnet.png?alt=media&token=b5be1d7f-4c62-4b9a-afc1-a250c0a13254" alt="My Booking Sukses">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-nav-btn-p3 next" onclick="moveSlideP3(1)"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <div class="mockup-form">
-                        <label><i class="fas fa-credit-card"></i> Nomor Kartu <span class="badge-req">*</span></label>
-                        <input type="text" placeholder="1234 5678 9012 3456" readonly>
-                        <div style="display: flex; gap: 12px;">
-                            <div style="flex: 1;">
-                                <label><i class="fas fa-calendar"></i> Masa Berlaku <span class="badge-req">*</span></label>
-                                <input type="text" placeholder="MM / YY" readonly>
-                            </div>
-                            <div style="flex: 1;">
-                                <label><i class="fas fa-lock"></i> CVV <span class="badge-req">*</span></label>
-                                <input type="text" placeholder="123" readonly>
-                            </div>
-                        </div>
-                        <label><i class="fas fa-user"></i> Nama di Kartu <span class="badge-req">*</span></label>
-                        <input type="text" placeholder="NAMA PEMEGANG KARTU" readonly>
-                        <label><i class="fas fa-calculator"></i> Total Pembayaran</label>
-                        <input type="text" placeholder="Rp 2.500.000" readonly style="font-weight: 600; font-size: 15px;">
-                        <div style="text-align: center; margin-top: 12px;">
-                            <button class="mockup-btn primary" disabled style="width: 100%; justify-content: center; padding: 12px;"><i class="fas fa-lock"></i> Bayar Rp 2.500.000</button>
-                        </div>
+                    <div class="carousel-dots-p3" id="carouselDotsP3">
+                        <span class="carousel-dot-p3 active" onclick="goToSlideP3(0)"></span>
+                        <span class="carousel-dot-p3" onclick="goToSlideP3(1)"></span>
+                        <span class="carousel-dot-p3" onclick="goToSlideP3(2)"></span>
+                        <span class="carousel-dot-p3" onclick="goToSlideP3(3)"></span>
+                        <span class="carousel-dot-p3" onclick="goToSlideP3(4)"></span>
+                        <span class="carousel-dot-p3" onclick="goToSlideP3(5)"></span>
+                    </div>
+                    <div class="carousel-caption-p3" id="carouselCaptionP3">
+                        <strong>Langkah 1:</strong> Akses halaman <strong>Payment Progress</strong>, klik card transaksi
                     </div>
                 </div>
 
-                <ul class="steps">
-                    <li class="step-item"><span class="step-number">3</span><div class="step-text">Klik tombol <strong>Bayar</strong> untuk memproses pembayaran.</div></li>
-                    <li class="step-item"><span class="step-number">4</span><div class="step-text">Tunggu <strong>konfirmasi pembayaran</strong> dari sistem.</div></li>
-                </ul>
+                <div class="callout callout-success-custom">
+                    <div class="callout-title">✅ Selesai</div>
+                    <p>Pembayaran via Credit Card berhasil dilakukan. Data transaksi akan tampil di halaman <strong>My Booking</strong> dengan status sukses.</p>
+                </div>
 
                 <div class="callout info">
                     <div class="callout-title">⚠️ Keamanan Transaksi</div>
@@ -1845,6 +2147,80 @@
             step.addEventListener('click', function() {
                 carouselIndexP2 = index;
                 updateCarouselP2();
+            });
+        });
+
+        // ===== CAROUSEL P3 & COMPACT STEPS P3 JAVASCRIPT (Section 3.1 - Credit Card) =====
+        var carouselIndexP3 = 0;
+        var totalSlidesP3 = 6;
+        var carouselCaptionsP3 = [
+            '<strong>Langkah 1:</strong> Akses halaman <strong>Payment Progress</strong>, klik card transaksi',
+            '<strong>Langkah 2:</strong> Pilih metode <strong>Credit Card</strong>, swipe button untuk melanjutkan',
+            '<strong>Langkah 3:</strong> Masukkan <strong>nomor kartu kredit</strong> Anda',
+            '<strong>Langkah 4:</strong> Masukkan <strong>password atau OTP</strong> untuk verifikasi',
+            '<strong>Langkah 5:</strong> Sistem menampilkan halaman <strong>Payment via CC Sukses</strong>',
+            '<strong>Langkah 6:</strong> Sistem menampilkan halaman <strong>My Booking</strong> dengan status sukses'
+        ];
+
+        function updateCarouselP3() {
+            var slidesP3 = document.getElementById('carouselSlidesP3');
+            if (slidesP3) {
+                slidesP3.style.transform = 'translateX(-' + (carouselIndexP3 * 100) + '%)';
+            }
+            
+            // Update dots
+            var dotsP3 = document.querySelectorAll('.carousel-dot-p3');
+            dotsP3.forEach(function(dot, i) {
+                dot.classList.remove('active');
+                if (i === carouselIndexP3) dot.classList.add('active');
+            });
+            
+            // Update caption
+            var captionP3 = document.getElementById('carouselCaptionP3');
+            if (captionP3) captionP3.innerHTML = carouselCaptionsP3[carouselIndexP3];
+            
+            // Update compact steps P3
+            var stepsP3 = document.querySelectorAll('.compact-step-p3');
+            stepsP3.forEach(function(step, i) {
+                step.classList.remove('active');
+                if (i === carouselIndexP3) {
+                    step.classList.add('active');
+                }
+            });
+            
+            // Map carousel index to step detail P3
+            var stepDetailsP3 = document.querySelectorAll('.step-detail-p3');
+            stepDetailsP3.forEach(function(detail) {
+                detail.classList.remove('active');
+            });
+            
+            var activeDetailP3 = document.querySelector('.step-detail-p3[data-detail-p3="' + carouselIndexP3 + '"]');
+            if (activeDetailP3) activeDetailP3.classList.add('active');
+        }
+
+        function moveSlideP3(direction) {
+            carouselIndexP3 += direction;
+            if (carouselIndexP3 < 0) carouselIndexP3 = totalSlidesP3 - 1;
+            if (carouselIndexP3 >= totalSlidesP3) carouselIndexP3 = 0;
+            updateCarouselP3();
+        }
+
+        function goToSlideP3(index) {
+            carouselIndexP3 = index;
+            updateCarouselP3();
+        }
+
+        // Initialize carousel P3
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCarouselP3();
+        });
+
+        // Compact steps P3 click handler
+        var compactStepsP3 = document.querySelectorAll('.compact-step-p3');
+        compactStepsP3.forEach(function(step, index) {
+            step.addEventListener('click', function() {
+                carouselIndexP3 = index;
+                updateCarouselP3();
             });
         });
 
