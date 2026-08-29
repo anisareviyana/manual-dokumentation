@@ -1,0 +1,2411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRD - Tour Leader Profiling | ALVIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ============================================
+           THEME TOKENS (Orange / Panorama JTB)
+           ============================================ */
+        :root {
+            --primary: #ea580c;
+            --primary-light: #fff7ed;
+            --primary-dark: #c2410c;
+            --primary-deeper: #9a3412;
+            --primary-bg: #ffedd5;
+            --bg: #fffaf5;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #475569;
+            --text-muted: #64748b;
+            --border: #fed7aa;
+            --border-soft: #fde68a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --shadow: 0 2px 4px rgba(234, 88, 12, 0.05);
+            --shadow-hover: 0 8px 24px rgba(234, 88, 12, 0.12);
+            --radius: 14px;
+            --radius-sm: 10px;
+            --transition: 0.3s ease;
+            --sidebar-width: 280px;
+            --header-height: 64px;
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-height) + 20px); }
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            display: flex;
+            min-height: 100vh;
+        }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { color: var(--primary-dark); }
+        img { max-width: 100%; height: auto; }
+
+        /* Background pattern (subtle orange radial gradients) */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(234, 88, 12, 0.04) 0px, transparent 25px),
+                radial-gradient(circle at 90% 30%, rgba(234, 88, 12, 0.03) 0px, transparent 30px),
+                radial-gradient(circle at 50% 80%, rgba(194, 65, 12, 0.03) 0px, transparent 30px),
+                radial-gradient(circle at 20% 60%, rgba(234, 88, 12, 0.02) 0px, transparent 20px),
+                radial-gradient(circle at 80% 70%, rgba(194, 65, 12, 0.02) 0px, transparent 20px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ============================================
+           SIDEBAR
+           ============================================ */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform var(--transition);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+            padding: 20px 0;
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--warning), var(--primary));
+            border-radius: 2px;
+        }
+        .sidebar-header .brand-logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sidebar-header .brand-logo i { font-size: 1.5rem; }
+        .sidebar-header .brand-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .sidebar-header .brand-meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border);
+        }
+
+.brand-logo-img {
+            max-width: 180px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .sidebar-header .brand-logo-img {
+            max-width: 200px;
+            margin: 0 auto 4px auto;
+        }
+        .sidebar-nav { padding: 0; }
+        .sidebar-nav .nav-section {
+            padding: 16px 20px 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+        }
+        .sidebar-nav a i {
+            width: 18px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: color var(--transition);
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: var(--primary-bg);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        .sidebar-nav a:hover i, .sidebar-nav a.active i { color: var(--primary); }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================
+           TOP HEADER
+           ============================================ */
+        .top-header {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 0 32px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .top-header .breadcrumb { font-size: 13px; color: var(--text-muted); }
+        .top-header .breadcrumb span { color: var(--text); font-weight: 500; }
+        .btn-toggle-sidebar {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: var(--text);
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .btn-toggle-sidebar:hover { color: var(--primary); }
+        .version-badge {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--primary-light);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+        .version-badge i { color: var(--primary); }
+
+        /* ============================================
+           CONTENT
+           ============================================ */
+        .content {
+            padding: 32px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           COVER SECTION
+           ============================================ */
+        .cover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-deeper) 100%);
+            border-radius: var(--radius);
+            padding: 60px 48px;
+            color: #fff;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
+        }
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+        .cover::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+        .cover .aircraft-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 200px;
+            opacity: 0.06;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .cover .cover-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1;
+        }
+        .cover h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.2;
+        }
+        .cover h1 .subtitle-text {
+            display: block;
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 6px;
+        }
+        .cover p {
+            font-size: 15px;
+            opacity: 0.92;
+            max-width: 640px;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0;
+        }
+        .cover .cover-meta {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        .cover .cover-meta span {
+            font-size: 13px;
+            opacity: 0.88;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cover .cover-meta i { opacity: 0.85; }
+
+        /* ============================================
+           SECTION CARDS
+           ============================================ */
+        .section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 36px 40px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            transition: box-shadow var(--transition), transform var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--warning), var(--primary));
+            opacity: 0.4;
+        }
+        .section:hover { box-shadow: var(--shadow-hover); }
+        .section h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section h2::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 26px;
+            background: linear-gradient(180deg, var(--primary), var(--warning));
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .section h2 i {
+            color: var(--primary);
+            font-size: 22px;
+            margin-right: -4px;
+        }
+        .section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 24px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section h3 i {
+            color: var(--primary);
+            font-size: 15px;
+            width: 22px;
+            height: 22px;
+            background: var(--primary-bg);
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 16px 0 8px;
+        }
+        .section p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        .section ul, .section ol { padding-left: 22px; margin-bottom: 12px; }
+        .section li {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+        .section hr {
+            border: none;
+            border-top: 1px dashed var(--border);
+            margin: 24px 0;
+            position: relative;
+        }
+        .section code {
+            background: var(--primary-light);
+            color: var(--primary-deeper);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 0.85em;
+            border: 1px solid var(--border);
+        }
+
+        /* ============================================
+           TABLES
+           ============================================ */
+        .section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 13px;
+            box-shadow: var(--shadow);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .section table th {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            text-align: left;
+            padding: 12px 14px;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.3px;
+        }
+        .section table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: top;
+            background: var(--card-bg);
+        }
+        .section table tr:nth-child(even) td { background: var(--primary-light); }
+        .section table tr:last-child td { border-bottom: none; }
+
+        /* ============================================
+           INFO BOXES (Color-coded Callouts)
+           ============================================ */
+        .info-box {
+            display: flex;
+            gap: 14px;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin: 16px 0;
+            font-size: 13px;
+            position: relative;
+        }
+        .info-box i {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .info-box .info-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .info-box p { margin: 0; }
+        .info-box.info {
+            background: #f0f9ff;
+            border-left: 4px solid var(--info);
+            color: #0c4a6e;
+        }
+        .info-box.info i, .info-box.info .info-title { color: var(--info); }
+        .info-box.success {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            color: #166534;
+        }
+        .info-box.success i, .info-box.success .info-title { color: var(--success); }
+        .info-box.warning {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            color: #92400e;
+        }
+        .info-box.warning i, .info-box.warning .info-title { color: var(--warning); }
+        .info-box.danger {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            color: #991b1b;
+        }
+        .info-box.danger i, .info-box.danger .info-title { color: var(--danger); }
+        .info-box.primary {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            color: var(--primary-deeper);
+        }
+        .info-box.primary i, .info-box.primary .info-title { color: var(--primary); }
+
+        /* ============================================
+           STATUS CARDS (Horizontal color cards)
+           ============================================ */
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 18px 0;
+        }
+        .status-card {
+            padding: 18px 16px;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid;
+            text-align: left;
+            transition: transform var(--transition), box-shadow var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .status-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        .status-card .card-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .status-card strong {
+            display: block;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+        .status-card p { font-size: 13px; margin: 0; }
+        .status-card.danger {
+            background: #fef2f2;
+            border-left-color: var(--danger);
+        }
+        .status-card.danger strong { color: #991b1b; }
+        .status-card.danger i, .status-card.danger p { color: #991b1b; }
+        .status-card.info {
+            background: #f0f9ff;
+            border-left-color: var(--info);
+        }
+        .status-card.info strong { color: #0c4a6e; }
+        .status-card.info i, .status-card.info p { color: #0c4a6e; }
+        .status-card.success {
+            background: #f0fdf4;
+            border-left-color: var(--success);
+        }
+        .status-card.success strong { color: #166534; }
+        .status-card.success i, .status-card.success p { color: #166534; }
+        .status-card.primary {
+            background: var(--primary-light);
+            border-left-color: var(--primary);
+        }
+        .status-card.primary strong { color: var(--primary-deeper); }
+        .status-card.primary i, .status-card.primary p { color: var(--primary-deeper); }
+        .status-card.warning {
+            background: #fffbeb;
+            border-left-color: var(--warning);
+        }
+        .status-card.warning strong { color: #92400e; }
+        .status-card.warning i, .status-card.warning p { color: #92400e; }
+
+        /* ============================================
+           BADGES
+           ============================================ */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge-orange {
+            background: var(--primary-light);
+            color: var(--primary-deeper);
+            border: 1px solid var(--border);
+        }
+        .badge-green {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .badge-blue {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+        .badge-red {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* ============================================
+           FLOW BOX (ASCII diagram)
+           ============================================ */
+        .flow-box {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin: 14px 0;
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 11px;
+            color: var(--primary-deeper);
+            line-height: 1.5;
+            white-space: pre;
+            overflow-x: auto;
+            position: relative;
+        }
+        .flow-box::before {
+            content: '\f126';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 12px;
+            color: var(--primary);
+            opacity: 0.15;
+        }
+
+        /* ============================================
+           PHONE MOCKUP (untuk Section Design Spec)
+           ============================================ */
+        .phone-frame {
+            width: 380px;
+            max-width: 100%;
+            margin: 24px auto;
+            background: #fff;
+            border-radius: 36px;
+            padding: 14px 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+        }
+        .phone-screen {
+            background: #f8fafc;
+            border-radius: 26px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-statusbar {
+            background: #fff;
+            padding: 6px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .phone-statusbar .icons { display: flex; gap: 4px; font-size: 10px; }
+        .phone-header {
+            background: #fff;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            text-align: center;
+        }
+        .phone-content {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .weather-strip {
+            background: #fff;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .tab-pills {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: #fff;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+        .tab-pill {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .tab-pill.active { background: var(--text); color: #fff; }
+        .tour-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+        .tour-card .thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            flex-shrink: 0;
+        }
+        .tour-card .info { flex: 1; min-width: 0; }
+        .tour-card .title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .tour-card .date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .tour-card .meta { font-size: 10px; color: var(--text-muted); margin-top: 4px; display: flex; flex-direction: column; gap: 2px; }
+        .bottom-nav {
+            background: #fff;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 4px 12px;
+        }
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .bottom-nav-item.active { color: var(--primary); }
+        .bottom-nav-item i { font-size: 14px; }
+        .avatar-block {
+            background: #fff;
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fed7aa, #fdba);
+            flex-shrink: 0;
+        }
+        .avatar-info .name { font-size: 14px; font-weight: 600; color: var(--text); }
+        .avatar-info .meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+        .pp-card {
+            background: linear-gradient(135deg, #fff, #f8fafc);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .pp-card .pp-header { display: flex; align-items: center; gap: 12px; }
+        .pp-card .pp-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pp-card .pp-num { font-size: 22px; font-weight: 700; color: var(--text); }
+        .pp-card .pp-label { font-size: 11px; color: var(--text-muted); }
+        .pp-card .pp-sub { font-size: 10px; color: var(--text-muted); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
+        .claim-banner {
+            background: var(--primary-light);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .settings-list {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .settings-item {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text);
+        }
+        .settings-item:last-child { border-bottom: none; }
+        .settings-item .chev { color: var(--text-light); }
+
+        /* Concept 2 (chosen): Landing TL - Full Progress Card */
+        .c2-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(234, 88, 12, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .c2-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+        .c2-card .progress-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0% 60%, var(--primary-bg) 60% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .c2-card .progress-circle::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #fff;
+        }
+        .c2-card .progress-circle .pct {
+            position: relative;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .c2-card .content { flex: 1; min-width: 0; }
+        .c2-card .title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .c2-card .desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .c2-card .cta {
+            background: var(--primary);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        /* Concept 1 (chosen): Profile - Settings List Item */
+        .pc1-item {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+            background: var(--primary-light);
+        }
+        .pc1-item .icon-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .pc1-item .content { flex: 1; min-width: 0; }
+        .pc1-item .title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .pc1-item .subtitle { font-size: 10px; color: var(--text-muted); }
+        .pc1-item .mini-progress {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0% 60%, #e2e8f0 60% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .pc1-item .mini-progress::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: #fff;
+        }
+        .pc1-item .mini-progress .pct {
+            position: relative;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .pc1-item .chev { color: var(--text-light); }
+
+        /* Mockup side-by-side grid */
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 24px;
+            margin: 20px 0;
+            align-items: start;
+        }
+        .mockup-card {
+            background: var(--primary-light);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .mockup-card .mockup-label {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .mockup-card .mockup-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-deeper);
+            margin-bottom: 4px;
+        }
+        .mockup-card .mockup-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        /* ============================================
+           BACKOFFICE MOCKUP IMAGES
+           ============================================ */
+        .bo-mockup-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            margin: 20px 0;
+        }
+        .bo-mockup-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            transition: box-shadow var(--transition);
+        }
+        .bo-mockup-card:hover { box-shadow: var(--shadow-hover); }
+        .bo-mockup-card .bo-mockup-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .bo-mockup-image {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: #f8fafc;
+        }
+        .bo-mockup-caption {
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 6px 6px 0;
+            font-size: 12px;
+            color: var(--primary-deeper);
+        }
+        .bo-mockup-caption strong { color: var(--primary-deeper); font-weight: 700; }
+
+        /* ============================================
+           BACKOFFICE MOCKUP IMAGES
+           ============================================ */
+        .bo-mockup-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            margin: 20px 0;
+        }
+        .bo-mockup-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            transition: box-shadow var(--transition);
+        }
+        .bo-mockup-card:hover { box-shadow: var(--shadow-hover); }
+        .bo-mockup-card .bo-mockup-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .bo-mockup-image {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: #f8fafc;
+        }
+        .bo-mockup-caption {
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 6px 6px 0;
+            font-size: 12px;
+            color: var(--primary-deeper);
+        }
+        .bo-mockup-caption strong { color: var(--primary-deeper); font-weight: 700; }
+
+        /* ============================================
+           BACKOFFICE MOCKUP IMAGES
+           ============================================ */
+        .bo-mockup-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            margin: 20px 0;
+        }
+        .bo-mockup-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            transition: box-shadow var(--transition);
+        }
+        .bo-mockup-card:hover { box-shadow: var(--shadow-hover); }
+        .bo-mockup-card .bo-mockup-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .bo-mockup-card .bo-mockup-header .bo-mockup-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .bo-mockup-image {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: #f8fafc;
+        }
+        .bo-mockup-caption {
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 6px 6px 0;
+            font-size: 12px;
+            color: var(--primary-deeper);
+        }
+        .bo-mockup-caption strong { color: var(--primary-deeper); font-weight: 700; }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+            position: relative;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--warning), var(--primary));
+            border-radius: 2px;
+        }
+        .footer p { margin: 0; }
+        .footer .footer-brand {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ============================================
+           SCROLL TO TOP
+           ============================================ */
+        .scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+            transition: all var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+        }
+        .scroll-top.show { opacity: 1; visibility: visible; }
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           COMPACT STATS (Ringkasan metric)
+           ============================================ */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .stat-item {
+            background: var(--primary-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            text-align: center;
+        }
+        .stat-item .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .stat-item .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* ============================================
+           SPEC GRID (Design spec)
+           ============================================ */
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 0;
+            margin: 12px 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        .spec-grid .spec-label {
+            background: var(--primary-light);
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--primary-deeper);
+            border-bottom: 1px solid var(--border);
+        }
+        .spec-grid .spec-value {
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+        }
+        .spec-grid > div:nth-last-child(-n+2) { border-bottom: none; }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .section { padding: 28px 24px; }
+            .cover { padding: 40px 28px; }
+            .cover h1 { font-size: 26px; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1); }
+            .main { margin-left: 0; }
+            .btn-toggle-sidebar { display: block; }
+            .top-header { padding: 0 16px; }
+            .content { padding: 16px; }
+            .section { padding: 24px 18px; }
+            .cover { padding: 32px 20px; }
+            .cover h1 { font-size: 22px; }
+            .cover .cover-meta { flex-wrap: wrap; gap: 12px; }
+            .section h2 { font-size: 18px; }
+            .section table { font-size: 12px; }
+            .section table th, .section table td { padding: 8px; }
+            .status-cards { grid-template-columns: 1fr; }
+            .spec-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           PRINT
+           ============================================ */
+        @media print {
+            .sidebar, .top-header, .scroll-top { display: none !important; }
+            .main { margin-left: 0 !important; }
+            .section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+            .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-shadow: none; }
+            .section::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body { background: #fff; }
+            body::before { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/asset%2FALVIS%20LOGO%20PJTI%201.png?alt=media&token=2fb35698-7ca2-4f41-8bb3-dbe2b7e1f03c" alt="ALVIS Logo" class="brand-logo-img" />
+            <div class="brand-sub">BRD • TL Profiling</div>
+            <div class="brand-meta">
+                <i class="fas fa-circle-info"></i> Business Requirement Document<br>
+                v1.0 • 27 Agustus 2026
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Ringkasan</div>
+            <a href="#cover" class="active"><i class="fas fa-file-contract"></i> Overview</a>
+            <a href="#exec"><i class="fas fa-chart-line"></i> Eksekutif</a>
+
+            <div class="nav-section">Dokumen BRD</div>
+            <a href="#sec0"><i class="fas fa-history"></i> 0. Kontrol &amp; Revisi</a>
+            <a href="#sec1"><i class="fas fa-info-circle"></i> 1. Pendahuluan</a>
+            <a href="#sec2"><i class="fas fa-bullseye"></i> 2. Lingkup Fitur</a>
+            <a href="#sec3"><i class="fas fa-cogs"></i> 3. Functional Req</a>
+            <a href="#sec4"><i class="fas fa-project-diagram"></i> 4. User Flow</a>
+            <a href="#sec5"><i class="fas fa-percentage"></i> 5. Logika %</a>
+            <a href="#sec6"><i class="fas fa-database"></i> 6. DB Schema</a>
+            <a href="#sec7"><i class="fas fa-check-double"></i> 7. Acceptance</a><a href="#sec8"><i class="fas fa-shield-alt"></i> 8. Edge Cases</a>
+            <a href="#sec9"><i class="fas fa-book"></i> 9. Glossary</a>
+            <a href="#sec10"><i class="fas fa-palette"></i> 10. Design Spec</a>
+        </nav>
+    </aside>
+
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <div class="main">
+
+        <!-- TOP HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="btn-toggle-sidebar" id="btnToggleSidebar" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="breadcrumb">
+                    ALVIS Documentation <span>› Business Requirement Document</span>
+                </div>
+            </div>
+            <div class="version-badge">
+                <i class="fas fa-tag"></i> v1.0 • 27 Agustus 2026
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <!-- ============================================ -->
+            <!-- COVER -->
+            <!-- ============================================ -->
+            <section id="cover" class="cover">
+                <i class="fas fa-users aircraft-watermark"></i>
+                <span class="cover-badge"><i class="fas fa-file-contract"></i> Business Requirement Document</span>
+                <h1>
+                    Tour Leader Profiling
+                    <span class="subtitle-text">Modul ALVIS Backoffice &amp; Mobile Apps</span>
+                </h1>
+                <p>Sistem kuesioner profil dinamis untuk meningkatkan kualitas penugasan tur (tour matching &amp; assignment) sesuai kapabilitas Tour Leader Panorama JTB. Mengintegrasikan kemudahan pengelolaan pertanyaan oleh Admin di Backoffice dengan alur pengisian intuitif di Mobile Apps.</p>
+                <div class="cover-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 27 Agustus 2026</span>
+                    <span><i class="fas fa-layer-group"></i> Backoffice + Mobile</span>
+                    <span><i class="fas fa-vial"></i> Status: Approved for Dev</span>
+                    <span><i class="fas fa-code-branch"></i> Dokumen ID: BRD-ALVIS-TLP-2026-V1</span>
+                </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- RINGKASAN EKSEKUTIF -->
+            <!-- ============================================ -->
+            <section id="exec" class="section">
+                <h2><i class="fas fa-chart-line"></i> Ringkasan Eksekutif</h2>
+                <p>Ringkasan 1 halaman untuk manajemen &amp; stakeholder. Berisi intisari masalah, solusi, dan dampak bisnis yang diharapkan dari proyek ini.</p>
+
+                <div class="status-cards">
+                    <div class="status-card warning">
+                        <i class="fas fa-folder-open card-icon"></i>
+                        <strong>Kondisi Saat Ini</strong>
+                        <p>Data profil TL (keahlian, bahasa, lisensi, kondisi kesehatan) saat ini dikumpulkan secara <strong>manual</strong> menggunakan spreadsheet atau formulir terpisah, dan belum terintegrasi dengan ALVIS.</p>
+                    </div>
+                    <div class="status-card primary">
+                        <i class="fas fa-laptop-code card-icon"></i>
+                        <strong>Solusi Digitalisasi</strong>
+                        <p>Sistem profiling terpusat: Admin mengelola pertanyaan via <strong>Backoffice</strong> (CRUD tanpa deploy app), TL mengisi via <strong>Mobile Apps</strong> dengan auto-save dan progress tracking.</p>
+                    </div>
+                    <div class="status-card success">
+                        <i class="fas fa-check-circle card-icon"></i>
+                        <strong>Hasil yang Diharapkan</strong>
+                        <p>Pengumpulan data <strong>lebih mudah</strong> dan <strong>lebih efisien</strong>. Data TL tersimpan terstruktur di ALVIS. Admin leluasa mengubah pertanyaan, TL nyaman mengisi lewat HP.</p>
+                    </div>
+                </div>
+
+                <div class="info-box primary">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <span class="info-title">Tujuan Inti</span>
+                        <p>Mendigitalisasi proses pengumpulan data profil TL yang selama ini manual, agar lebih mudah, terstruktur, dan efisien — baik dari sisi Admin (pengelola pertanyaan) maupun TL (pengisian jawaban).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 0. DOKUMEN KONTROL & REVISI -->
+            <!-- ============================================ -->
+            <section id="sec0" class="section">
+                <h2><i class="fas fa-history"></i> 0. Dokumen Kontrol &amp; Revisi</h2>
+                <p>Bagian ini mencatat siklus hidup dokumen BRD, mulai dari drafting awal hingga status approval untuk development.</p>
+
+                <h3><i class="fas fa-timeline"></i> 0.1 Riwayat Revisi (Revision History)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">Versi</th>
+                            <th style="width: 14%;">Tanggal</th>
+                            <th style="width: 16%;">Author</th>
+                            <th style="width: 14%;">Status</th>
+                            <th>Ringkasan Perubahan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>0.1</strong></td>
+                            <td>10 Agustus 2026</td>
+                            <td>BA Team</td>
+                            <td><span class="badge badge-orange">Draft</span></td>
+                            <td>Inisial dokumen — Pendahuluan, Scope, dan Functional Requirement Backoffice.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>0.5</strong></td>
+                            <td>18 Agustus 2026</td>
+                            <td>BA Team</td>
+                            <td><span class="badge badge-orange">Draft</span></td>
+                            <td>Penambahan Mobile Requirements, User Flow, dan DB Schema High-Level.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>0.9</strong></td>
+                            <td>24 Agustus 2026</td>
+                            <td>BA + Tech Lead</td>
+                            <td><span class="badge badge-blue">Review</span></td>
+                            <td>Penambahan Acceptance Criteria, formula % Completeness, dan validasi teknis.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1.0</strong></td>
+                            <td>27 Agustus 2026</td>
+                            <td>Product Owner</td>
+                            <td><span class="badge badge-green">Approved</span></td>
+                            <td>Finalisasi: penambahan Dokumen Kontrol, Asumsi, NFR, Edge Cases, dan Glossary.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3><i class="fas fa-signature"></i> 0.2 Tim Penyusun &amp; Persetujuan</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Peran (Role)</th>
+                            <th>Penanggung Jawab</th>
+                            <th>Tanggal</th>
+                            <th>Status</th>
+                            <th>Tanda Tangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Business Analyst</strong></td>
+                            <td>[Nama BA PIC]</td>
+                            <td>27 Agustus 2026</td>
+                            <td><span class="badge badge-green">Disusun</span></td>
+                            <td>________</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Product Owner</strong></td>
+                            <td>[Nama PO]</td>
+                            <td>27 Agustus 2026</td>
+                            <td><span class="badge badge-green">Disetujui</span></td>
+                            <td>________</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tech Lead / Engineering</strong></td>
+                            <td>[Nama Tech Lead]</td>
+                            <td>27 Agustus 2026</td>
+                            <td><span class="badge badge-blue">Direview</span></td>
+                            <td>________</td>
+                        </tr>
+                        <tr>
+                            <td><strong>QA Lead</strong></td>
+                            <td>[Nama QA Lead]</td>
+                            <td>27 Agustus 2026</td>
+                            <td><span class="badge badge-blue">Direview</span></td>
+                            <td>________</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stakeholder (HR / Operations)</strong></td>
+                            <td>[Nama Stakeholder]</td>
+                            <td>27 Agustus 2026</td>
+                            <td><span class="badge badge-blue">Acknowledged</span></td>
+                            <td>________</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box info">
+                    <i class="fas fa-paper-plane"></i>
+                    <div>
+                        <span class="info-title">Distribusi Dokumen</span>
+                        <p>Dokumen ini didistribusikan kepada: Product Team, Engineering Team (Mobile &amp; Backoffice), QA Team, dan HR/Operations. Perubahan substantif wajib melalui siklus review dan approval ulang.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 1. PENDAHULUAN -->
+            <!-- ============================================ -->
+            <section id="sec1" class="section">
+                <h2><i class="fas fa-info-circle"></i> 1. Pendahuluan</h2>
+
+                <h3><i class="fas fa-question"></i> 1.1 Latar Belakang</h3>
+                <p>Tour Leader (TL) merupakan garda terdepan dalam operasional tur Panorama JTB. Saat ini, pengumpulan data kualitatif TL — seperti keahlian khusus, penguasaan bahasa asing, riwayat lisensi/sertifikasi, hingga catatan diet atau kondisi kesehatan khusus — masih dilakukan secara manual menggunakan spreadsheet atau formulir terpisah, dan belum terintegrasi dengan ALVIS.</p>
+
+                <p>Untuk mendigitalisasi proses pengumpulan data tersebut agar lebih mudah, terstruktur, dan efisien, diperlukan sebuah sistem kuesioner profil dinamis (<em>Tour Leader Profiling</em>). Sistem ini memungkinkan Admin mengelola pertanyaan secara mandiri di Backoffice dan TL mengisi profil dengan nyaman melalui ALVIS Mobile Apps.</p>
+
+                <h3><i class="fas fa-bullseye"></i> 1.2 Tujuan Proyek</h3>
+                <ul>
+                    <li><strong>Dinamisasi Pengaturan:</strong> Memungkinkan Admin/Operations mengelola pertanyaan profiling (CRUD) tanpa perlu merilis pembaruan (<em>deployment</em>) aplikasi mobile secara berkala.</li>
+                    <li><strong>Alur Pengisian Tanpa Hambatan:</strong> Menyediakan alur pengisian berkonsep <em>Auto-Save on Transition</em> di Mobile Apps agar TL dapat melengkapi kuesioner secara intuitif tanpa khawatir kehilangan data.</li>
+                    <li><strong>Transparansi Data Operator:</strong> Menyediakan visualisasi jawaban profiling secara komprehensif pada Halaman Detail Tour Leader di ALVIS Backoffice.</li>
+                    <li><strong>Potensi Pengembangan Lanjutan:</strong> Struktur data profil yang dibangun dapat menjadi dasar untuk fitur tambahan di masa depan (misalnya: filter atau laporan kapabilitas TL).<br><em>Catatan: pengembangan fitur lanjutan berada di luar lingkup dokumen ini.</em></li>
+                </ul>
+
+                <h3><i class="fas fa-list-check"></i> 1.3 Asumsi &amp; Ketergantungan</h3>
+
+                <h4>A. Asumsi</h4>
+                <ul>
+                    <li>Seluruh TL aktif memiliki akses ke ALVIS Mobile Apps versi terbaru yang kompatibel dengan fitur auto-save.</li>
+                    <li>Koneksi internet TL dianggap tersedia pada umumnya; skenario offline ditangani secara terbatas (lihat Section 9).</li>
+                    <li>Admin/Operations memiliki pemahaman dasar mengenai kategori pertanyaan yang relevan untuk kebutuhan operasional.</li>
+                    <li>Perangkat TL memenuhi kapasitas minimum (RAM &amp; storage) untuk menjalankan fitur profiling tanpa degradasi performa aplikasi.</li>
+                </ul>
+
+                <h4>B. Ketergantungan (Dependencies)</h4>
+                <ul>
+                    <li><strong>Internal:</strong> Ketersediaan API Service Layer ALVIS, Schema Master Data <code>tour_leaders</code>, dan modul notifikasi Mobile Apps.</li>
+                    <li><strong>Tim:</strong> Koordinasi dengan Tim Mobile (auto-save &amp; offline cache), Tim Backoffice (CRUD + export), dan Tim Database (schema audit log).</li>
+                    <li><strong>Compliance:</strong> Data kesehatan dan diet termasuk data sensitif (PII) — pengelolaan wajib memperhatikan UU PDP dan kebijakan privasi internal Panorama.</li>
+                    <li><strong>Infrastruktur:</strong> Local storage pada Mobile (SQLite/MMKV) tersedia untuk cache offline; capacity &amp; retention policy mengikuti standar mobile app ALVIS.</li>
+                </ul>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 2. LINGKUP FITUR -->
+            <!-- ============================================ -->
+            <section id="sec2" class="section">
+                <h2><i class="fas fa-bullseye"></i> 2. Lingkup Fitur (Project Scope)</h2>
+
+                <h3><i class="fas fa-check"></i> 2.1 Dalam Lingkup (In-Scope)</h3>
+                <div class="status-cards">
+                    <div class="status-card primary">
+                        <i class="fas fa-desktop card-icon"></i>
+                        <strong>ALVIS Backoffice</strong>
+                        <p>Tombol Manage Profiling, halaman CRUD Master Question, status kelengkapan di tabel TL, section Profiling Data di Detail TL dengan export CSV.</p>
+                    </div>
+                    <div class="status-card primary">
+                        <i class="fas fa-mobile-screen card-icon"></i>
+                        <strong>ALVIS Mobile Apps</strong>
+                        <p>Banner progres kelengkapan di Dashboard, wizard auto-save di menu Profil, akses edit kapan saja melalui Menu Profil &gt; Data Profiling.</p>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-xmark"></i> 2.2 Luar Lingkup (Out-of-Scope)</h3>
+                <div class="info-box warning">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <div>
+                        <span class="info-title">Tidak Termasuk dalam Fase Ini</span>
+                        <p>Sistem algoritma penugasan tur otomatis (<em>Auto-Assignment Engine</em>) berbasis skor profiling — <strong>Direncanakan untuk Fase 2</strong>.</p>
+                    </div>
+                </div>
+                <ul>
+                    <li>Verifikasi otomatis dokumen lisensi berbasis AI / Optical Character Recognition (OCR).</li>
+                    <li>Integrasi langsung dengan sistem HRIS eksternal untuk sinkronisasi profil.</li>
+                    <li>Pengembangan dashboard analitik lanjutan untuk HR (misal: heatmap kapabilitas TL per region).</li>
+                </ul>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 3. KEBUTUHAN FUNGSIONAL -->
+            <!-- ============================================ -->
+            <section id="sec3" class="section">
+                <h2><i class="fas fa-cogs"></i> 3. Kebutuhan Fungsional (Functional Requirements)</h2>
+
+                <h3><i class="fas fa-desktop"></i> 3.1 ALVIS Backoffice Requirements</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">Req ID</th>
+                            <th style="width: 22%;">Nama Fitur</th>
+                            <th style="width: 38%;">Deskripsi Spesifikasi</th>
+                            <th style="width: 30%;">Aturan Bisnis (Business Rules)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>BO-REQ-01</strong></td>
+                            <td>Global Button Question Management</td>
+                            <td>Menambahkan tombol <em>"Manage Profiling Questions"</em> pada header action area di halaman daftar Tour Leaders.</td>
+                            <td>Hanya dapat diakses oleh Admin dengan role <strong>HR</strong> atau <strong>Operational Manager</strong>. Audit akses tercatat di log.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BO-REQ-02</strong></td>
+                            <td>CRUD Master Question</td>
+                            <td>Halaman untuk mengelola bank pertanyaan profiling. Field: Teks, Kategori, Tipe Input, Opsi, Order Index, Flag Required, Status Active, Versi.</td>
+                            <td>- Tipe: Single Choice, Multiple Choice, Short Text, Long Text, Rating Scale (1-5).<br>- Soft delete via <code>sys_soft_delete</code> untuk jaga integritas.<br>- Versi pertanyaan (auto-increment <code>sq_version</code>); jawaban TL tetap merujuk ke versi saat dijawab (snapshot di <code>sa_question_version</code>).<br>- Bulk Import CSV.<br>- Mode Preview sebelum publish.<br>- Mendukung <em>Branching Logic</em>: pertanyaan kondisional via <code>sq_parent_id</code> + <code>sq_parent_value</code> (misal: detail lisensi hanya muncul jika TL jawab "Punya Lisensi = Ya").</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BO-REQ-03</strong></td>
+                            <td>Manage Profiling Question Group</td>
+                            <td>Halaman terpisah di Backoffice untuk mengelola <em>Question Group</em> (kategori pertanyaan: Keahlian, Bahasa, Lisensi, Kesehatan, Diet, dll). Admin bisa menambah, mengubah, menonaktifkan, dan mengatur urutan tampil group.</td>
+                            <td>- Hanya Admin dengan role <strong>HR</strong> atau <strong>Operational Manager</strong>.<br>- Field manajemen: <code>sq_group_title</code>, <code>sq_group_subtitle</code>, <code>sq_group_code</code>, <code>sq_group_sequence</code>, <code>sq_group_is_active</code>, <code>sq_group_desc</code>.<br>- Mendukung <em>drag-and-drop</em> untuk mengubah urutan tampil group di Mobile Apps.<br>- Group yang berstatus non-aktif (<code>sq_group_is_active=0</code>) tidak ditampilkan di Mobile, tetapi data pertanyaan dan jawaban existing tetap tersimpan.<br>- Soft delete via <code>sys_soft_delete</code> — group yang sudah dipakai oleh pertanyaan tidak boleh dihapus (ditandai non-aktif saja).<br>- Setiap perubahan group tercatat di kolom <code>sys_update_user</code> dan <code>sys_update_date</code>.</td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+                <h3><i class="fas fa-mobile-screen"></i> 3.2 ALVIS Mobile Apps Requirements</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">Req ID</th>
+                            <th style="width: 22%;">Nama Fitur</th>
+                            <th style="width: 38%;">Deskripsi Spesifikasi</th>
+                            <th style="width: 30%;">Aturan Bisnis (Business Rules)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>MOB-REQ-01</strong></td>
+                            <td>Dashboard Progress Banner</td>
+                            <td>Widget banner interaktif di Dashboard TL yang menampilkan % kelengkapan profil dan tombol <em>CTA "Lengkapi Profil"</em>.</td>
+                            <td>- Banner <strong>selalu tampil</strong> di Landing TL (Tab TL) dan halaman Profile, baik saat progres belum lengkap maupun sudah 100%.<br>- Saat mencapai 100%, banner menampilkan status completion dan tombol untuk review/edit data.<br>- Indikator "Terakhir diperbarui X hari lalu" untuk menunjukkan freshness data.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MOB-REQ-02</strong></td>
+                            <td>Auto-Save Wizard Form</td>
+                            <td>Antarmuka wizard (satu per satu) dengan tombol navigasi Next &amp; Back.</td>
+                            <td>- Auto-save on pilihan opsi atau Next.<br>- Teks: blur event atau debounce 1000ms.<br>- Offline caching via SQLite/MMKV.<br>- Indikator: Saving / Saved / Failed.<br>- Validasi: Short Text maks 200, Long Text maks 2000, Rating 1-5.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MOB-REQ-03</strong></td>
+                            <td>Profile Menu Access</td>
+                            <td>Sub-menu <em>Data Profiling</em> di Halaman Profil TL untuk melihat dan mengubah jawaban.</td>
+                            <td>- Perubahan langsung memperbarui data di Backoffice real-time.<br>- Histori perubahan 7 hari terakhir.<br>- Read-only untuk pertanyaan soft-deleted.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3><i class="fas fa-image"></i> 3.3 Mockup Visual Backoffice</h3>
+                <p>Berikut adalah tampilan layar Backoffice untuk fitur-fitur Tour Leader Profiling. Mockup di bawah ini menunjukkan design final yang akan diimplementasi.</p>
+
+                <div class="bo-mockup-grid">
+
+                    <div class="bo-mockup-card">
+                        <div class="bo-mockup-header">
+                            <div class="bo-mockup-icon"><i class="fas fa-list"></i></div>
+                            <div>
+                                <div class="bo-mockup-title">Halaman Tour Leaders</div>
+                                <div class="bo-mockup-subtitle">Menampilkan dropdown Profiling Setting di header action area</div>
+                            </div>
+                        </div>
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Ftour-leader-profiling%2Fmackup%20tour%20leader%20list.png?alt=media&amp;token=89fc96b4-ccb8-451b-b748-019c62484ad2"
+                             alt="Mockup Tour Leaders dengan Dropdown Profiling Setting"
+                             class="bo-mockup-image" />
+                        <div class="bo-mockup-caption">
+                            <strong>Highlight:</strong> Pada header action area halaman Tour Leaders, terdapat tombol global dengan dropdown menu <em>Profiling Setting</em> yang berisi 2 sub-menu: <em>Manage Question</em> dan <em>Manage Question Group</em>. Dropdown ini adalah entry point untuk Admin mengakses fitur pengelolaan pertanyaan.
+                        </div>
+                    </div>
+
+                    <div class="bo-mockup-card">
+                        <div class="bo-mockup-header">
+                            <div class="bo-mockup-icon"><i class="fas fa-folder-tree"></i></div>
+                            <div>
+                                <div class="bo-mockup-title">Halaman Manage Question Group</div>
+                                <div class="bo-mockup-subtitle">CRUD untuk mengelompokkan pertanyaan berdasarkan kategori</div>
+                            </div>
+                        </div>
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Ftour-leader-profiling%2Fmackup%20manage%20question%20group.png?alt=media&amp;token=be51f5c3-a699-4c32-978a-a3639fce3b01"
+                             alt="Mockup Manage Question Group"
+                             class="bo-mockup-image" />
+                        <div class="bo-mockup-caption">
+                            <strong>Highlight:</strong> Halaman khusus untuk mengelola <em>Question Group</em> (kategori: Keahlian, Bahasa, Lisensi, Kesehatan, Diet, dll). Admin dapat menambah, mengubah, menonaktifkan, dan mengatur urutan tampil group. Field yang dikelola mencakup judul, code, urutan, status aktif, dan deskripsi.
+                        </div>
+                    </div>
+
+                    <div class="bo-mockup-card">
+                        <div class="bo-mockup-header">
+                            <div class="bo-mockup-icon"><i class="fas fa-question-circle"></i></div>
+                            <div>
+                                <div class="bo-mockup-title">Halaman Manage Question</div>
+                                <div class="bo-mockup-subtitle">CRUD untuk mengelola bank pertanyaan profiling</div>
+                            </div>
+                        </div>
+                        <img src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Ftour-leader-profiling%2Fmackup%20manage%20question.png?alt=media&amp;token=1149c9e1-05bb-4c52-88c0-6e0992b60c0c"
+                             alt="Mockup Manage Question"
+                             class="bo-mockup-image" />
+                        <div class="bo-mockup-caption">
+                            <strong>Highlight:</strong> Halaman utama untuk mengelola bank pertanyaan profiling. Mendukung tipe input Single/Multiple Choice, Short Text, Long Text, Rating Scale (1-5). Fitur branching logic via parent_id + parent_value, versioning otomatis, bulk import CSV, dan mode preview sebelum publish ke Mobile Apps.
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 4. ALUR PENGGUNA & SISTEM -->
+            <!-- ============================================ -->
+            <section id="sec4" class="section">
+                <h2><i class="fas fa-project-diagram"></i> 4. Alur Pengguna &amp; Sistem</h2>
+
+                <h3><i class="fas fa-route"></i> 4.1 Alur Pengisian Profiling di Mobile App</h3>
+                <div class="flow-box">[TL Buka Mobile App] ──► [Lihat Banner Profiling di Landing TL atau halaman Profile (% Bar)]
+                                │
+                                ▼ Klik "Lengkapi Profil"
+                     [Tampil Pertanyaan Wizard #N]
+                                │
+       ┌────────────────────────┴────────────────────────�
+       ▼                                                 ▼
+[Pilih Opsi Ganda / Skala]                    [Ketik Teks Input]
+       │                                                 │
+       ├─► Trigger Auto-Save (Background API)            ├─► Debounce 1s / Blur Event
+       │                                                 │
+       └────────────────────────┬────────────────────────┘
+                                │
+                                ▼ Klik "Next" / Auto Advance
+                     [Pertanyaan Selanjutnya #N+1]
+                                │
+                                ▼ (Pertanyaan Terakhir Selesai)
+                     [Progress Completeness = 100%]
+                                │
+                                ▼
+         [Banner Tetap Tampil dengan Status 100%] &amp; [Data Tersedia di Backoffice]</div>
+
+                <div class="info-box primary">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <span class="info-title">Catatan Desain UX (Auto-Save on Transition)</span>
+                        <p>TL tidak perlu menekan tombol "Simpan" secara manual. Setiap perpindahan ke pertanyaan berikutnya, sistem mengirim payload jawaban secara asynchronous di background. Jika terjadi kegagalan koneksi, jawaban disimpan di local storage dan di-retry otomatis saat online.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 5. LOGIKA PERHITUNGAN -->
+            <!-- ============================================ -->
+            <section id="sec5" class="section">
+                <h2><i class="fas fa-percentage"></i> 5. Logika Perhitungan Kelengkapan Profil</h2>
+                <p>Persentase kelengkapan profil dihitung secara dinamis hanya berdasarkan pertanyaan yang ditandai sebagai <strong>Required (Wajib)</strong> dan berstatus <strong>Active</strong>.</p>
+
+                <div class="info-box warning">
+                    <i class="fas fa-calculator"></i>
+                    <div>
+                        <span class="info-title">Formula % Completeness</span>
+                        <p style="font-family: monospace; background: #fff; padding: 12px; border-radius: 6px; margin-top: 8px; border: 1px dashed var(--warning);"><strong>% Completeness = (Total Pertanyaan Wajib Aktif Dijawab TL / Total Pertanyaan Wajib Aktif) × 100%</strong></p>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-code-branch"></i> 5.1 Aturan Edge Case untuk Kalkulasi</h3>
+                <ul>
+                    <li>Pertanyaan yang di-<em>soft-delete</em> (kolom <code>deleted_at</code> terisi) <strong>tidak</strong> dihitung dalam divisor dan numerator.</li>
+                    <li>Jika pertanyaan <em>required</em> diubah menjadi <em>optional</em>, jawaban existing tetap dihitung; kalkulasi ke depan melewati pertanyaan tersebut.</li>
+                    <li>Jawaban kosong (null) dianggap <strong>belum dijawab</strong>, termasuk untuk pertanyaan <em>multiple choice</em> tanpa pilihan yang dicentang.</li>
+                    <li>Pembulatan dilakukan ke <strong>bilangan bulat</strong> (floor) untuk konsistensi tampilan badge.</li>
+                </ul>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 6. SKEMA BASIS DATA -->
+            <!-- ============================================ -->
+            <section id="sec6" class="section">
+                <h2><i class="fas fa-database"></i> 6. Skema Basis Data (High-Level)</h2>
+                <p>Diperlukan <strong>3 tabel baru</strong> pada basis data MySQL ALVIS, mengikuti pola schema existing <code>tour_tmst_*</code> (master table dengan kolom <code>sys_*</code> audit standard). Ketiga tabel terhubung dengan tabel <code>tour_tmst_tour_leader</code> yang sudah ada (FK ke <code>tl_id</code>). Riwayat perubahan cukup ditangani oleh kolom <code>sys_update_user</code>, <code>sys_update_date</code>, dan <code>sys_soft_delete</code>; data jawaban TL sementara disimpan di local device (SQLite/MMKV) sebelum dikirim ke server.</p>
+
+                <div class="info-box primary">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <span class="info-title">Catatan Adopsi Pola Schema</span>
+                        <p>Schema ini mengadopsi pola dari fitur serupa (<code>tour_tmst_survey_*</code>) yang sudah berjalan di ALVIS: 3-tabel (group + question + answer), kolom <code>sys_*</code> untuk audit, soft delete yang trackable, dan dukungan <code>_guid</code> untuk sinkronisasi dari local storage. Penamaan mengikuti prefix <code>tour_tmst_tlpr_*</code> agar jelas scope-nya (Tour Leader Profiling).</p>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-folder-tree"></i> 6.1 Tabel: <code>tour_tmst_tlpr_question_group</code> (Group)</h3>
+                <p>Mengelompokkan pertanyaan berdasarkan kategori (Keahlian, Bahasa, Lisensi, Kesehatan, Diet, dll). Tabel ini di-manage oleh Admin di Backoffice.</p>
+                <table>
+                    <thead>
+                        <tr><th style="width: 25%;">Nama Kolom</th><th style="width: 25%;">Tipe Data</th><th>Keterangan / Constraint</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>sq_group_id</code></td><td>INT</td><td>Primary Key, Auto Increment</td></tr>
+                        <tr><td><code>sq_group_guid</code></td><td>VARCHAR(50)</td><td>GUID untuk sinkronisasi offline</td></tr>
+                        <tr><td><code>sq_group_code</code></td><td>VARCHAR(30)</td><td>Reference code kategori (misal: SKILL, LANGUAGE, LICENSE)</td></tr>
+                        <tr><td><code>sq_group_title</code></td><td>TEXT</td><td>Judul group (misal: "Keahlian Khusus")</td></tr>
+                        <tr><td><code>sq_group_subtitle</code></td><td>TEXT NULL</td><td>Sub-judul/deskripsi singkat group</td></tr>
+                        <tr><td><code>sq_group_sequence</code></td><td>INT</td><td>Urutan tampil group di mobile</td></tr>
+                        <tr><td><code>sq_group_is_active</code></td><td>TINYINT(1)</td><td>1 = aktif, 0 = non-aktif</td></tr>
+                        <tr><td><code>sq_group_desc</code></td><td>TEXT NULL</td><td>Catatan internal untuk Admin</td></tr>
+                        <tr><td><code>sys_entry_user</code></td><td>VARCHAR(255)</td><td>Username Admin pembuat</td></tr>
+                        <tr><td><code>sys_entry_date</code></td><td>DATETIME</td><td>Timestamp dibuat</td></tr>
+                        <tr><td><code>sys_update_user</code></td><td>VARCHAR(255)</td><td>Username Admin yang terakhir mengubah</td></tr>
+                        <tr><td><code>sys_update_date</code></td><td>DATETIME</td><td>Timestamp update terakhir</td></tr>
+                        <tr><td><code>sys_soft_delete</code></td><td>TINYINT(1)</td><td>Soft delete flag (0/1)</td></tr>
+                        <tr><td><code>sys_delete_user</code></td><td>VARCHAR(255) NULL</td><td>Username Admin yang soft-delete</td></tr>
+                        <tr><td><code>sys_delete_date</code></td><td>DATETIME NULL</td><td>Timestamp soft-delete</td></tr>
+                        <tr><td><code>sys_timestamp</code></td><td>DATETIME</td><td>Timestamp versi baris (untuk optimistic locking)</td></tr>
+                        <tr><td><code>sys_id_log_audit</code></td><td>VARCHAR(255) NULL</td><td>ID referensi log audit (jika ada integrasi)</td></tr>
+                    </tbody>
+                </table><h3><i class="fas fa-question-circle"></i> 6.2 Tabel: <code>tour_tmst_tlpr_question</code> (Question)</h3>
+                <p>Master pertanyaan profiling yang ditampilkan ke TL. Mendukung <strong>branching logic</strong> (parent-child questions), versioning, dan catatan.</p>
+                <table>
+                    <thead>
+                        <tr><th style="width: 25%;">Nama Kolom</th><th style="width: 22%;">Tipe Data</th><th>Keterangan / Constraint</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>sq_id</code></td><td>INT</td><td>Primary Key, Auto Increment</td></tr>
+                        <tr><td><code>sq_guid</code></td><td>VARCHAR(50)</td><td>GUID untuk sinkronisasi offline</td></tr>
+                        <tr><td><code>sq_code</code></td><td>VARCHAR(30)</td><td>Reference code pertanyaan</td></tr>
+                        <tr><td><code>sq_group_id</code></td><td>INT</td><td>FK -&gt; <code>tour_tmst_tlpr_question_group.sq_group_id</code></td></tr>
+                        <tr><td><code>sq_title</code></td><td>TEXT</td><td>Teks pertanyaan</td></tr>
+                        <tr><td><code>sq_subtitle</code></td><td>TEXT NULL</td><td>Sub-teks/keterangan pertanyaan</td></tr>
+                        <tr><td><code>sq_value_type_id</code></td><td>INT</td><td>FK ke master tipe input (opsional)</td></tr>
+                        <tr><td><code>sq_value_type_code</code></td><td>VARCHAR(25)</td><td>Tipe input: SINGLE_CHOICE, MULTIPLE_CHOICE, SHORT_TEXT, LONG_TEXT, RATING_SCALE</td></tr>
+                        <tr><td><code>sq_parent_id</code></td><td>INT NULL</td><td>FK ke pertanyaan parent (untuk branching logic). NULL = root question.</td></tr>
+                        <tr><td><code>sq_parent_value</code></td><td>VARCHAR(255) NULL</td><td>Nilai jawaban parent yang trigger pertanyaan ini muncul (misal: "Ya")</td></tr>
+                        <tr><td><code>sq_sequence</code></td><td>INT</td><td>Urutan tampil dalam groupnya</td></tr>
+                        <tr><td><code>sq_is_required</code></td><td>TINYINT(1)</td><td>1 = wajib dijawab (penentu % completeness)</td></tr>
+                        <tr><td><code>sq_need_note</code></td><td>TINYINT(1)</td><td>1 = TL boleh menambahkan catatan</td></tr>
+                        <tr><td><code>sq_note_required</code></td><td>TINYINT(1)</td><td>1 = catatan wajib diisi</td></tr>
+                        <tr><td><code>sq_is_active</code></td><td>TINYINT(1)</td><td>1 = aktif, 0 = non-aktif</td></tr>
+                        <tr><td><code>sq_version</code></td><td>INT</td><td>Versi pertanyaan (default 1, increment saat teks berubah)</td></tr>
+                        <tr><td><code>sq_desc</code></td><td>TEXT NULL</td><td>Catatan internal untuk Admin</td></tr>
+                        <tr><td><code>sys_entry_user / sys_entry_date</code></td><td>VARCHAR / DATETIME</td><td>Audit pembuatan</td></tr>
+                        <tr><td><code>sys_update_user / sys_update_date</code></td><td>VARCHAR / DATETIME</td><td>Audit perubahan</td></tr>
+                        <tr><td><code>sys_soft_delete</code></td><td>TINYINT(1)</td><td>Soft delete flag</td></tr>
+                        <tr><td><code>sys_delete_user / sys_delete_date</code></td><td>VARCHAR / DATETIME NULL</td><td>Soft delete info</td></tr>
+                        <tr><td><code>sys_timestamp</code></td><td>DATETIME</td><td>Timestamp versi baris</td></tr>
+                        <tr><td><code>sys_id_log_audit</code></td><td>VARCHAR(255) NULL</td><td>ID referensi log audit</td></tr>
+                    </tbody>
+                </table>
+
+                <h3><i class="fas fa-reply"></i> 6.3 Tabel: <code>tour_tmst_tlpr_answer</code> (Answer)</h3>
+                <p>Jawaban TL untuk setiap pertanyaan. Satu baris per (TL, pertanyaan, versi pertanyaan). Mendukung opsi tambahan "Lainnya" dan skor per jawaban untuk kebutuhan Fase 2.</p>
+                <table>
+                    <thead>
+                        <tr><th style="width: 25%;">Nama Kolom</th><th style="width: 22%;">Tipe Data</th><th>Keterangan / Constraint</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>sa_id</code></td><td>INT</td><td>Primary Key, Auto Increment</td></tr>
+                        <tr><td><code>sa_guid</code></td><td>VARCHAR(50)</td><td>GUID untuk sinkronisasi offline</td></tr>
+                        <tr><td><code>sa_tl_id</code></td><td>INT</td><td>FK -&gt; <code>tour_tmst_tour_leader.tl_id</code></td></tr>
+                        <tr><td><code>sa_question_id</code></td><td>INT</td><td>FK -&gt; <code>tour_tmst_tlpr_question.sq_id</code></td></tr>
+                        <tr><td><code>sa_question_version</code></td><td>INT</td><td>Snapshot versi pertanyaan saat dijawab</td></tr>
+                        <tr><td><code>sa_type</code></td><td>VARCHAR(50)</td><td>Tipe jawaban (SINGLE_CHOICE, MULTIPLE_CHOICE, TEXT, RATING, OTHER)</td></tr>
+                        <tr><td><code>sa_value</code></td><td>VARCHAR(1000)</td><td>Nilai jawaban (ID option; teks pendek; numeric 1-5)</td></tr>
+                        <tr><td><code>sa_label</code></td><td>VARCHAR(1000) NULL</td><td>Label tampilan jawaban</td></tr>
+                        <tr><td><code>sa_long_value</code></td><td>TEXT NULL</td><td>Nilai jawaban panjang (LONG_TEXT, max 2000 char sesuai AC-10)</td></tr>
+                        <tr><td><code>sa_note</code></td><td>TEXT NULL</td><td>Catatan tambahan dari TL (untuk pertanyaan dengan sq_need_note=1)</td></tr>
+                        <tr><td><code>sa_is_other</code></td><td>TINYINT(1)</td><td>1 = jawaban menggunakan opsi "Lainnya"</td></tr>
+                        <tr><td><code>sa_score</code></td><td>INT NULL</td><td>Skor jawaban (untuk algoritma matching Fase 2)</td></tr>
+                        <tr><td><code>sa_sequence</code></td><td>INT NULL</td><td>Urutan jawaban (untuk MULTIPLE_CHOICE)</td></tr>
+                        <tr><td><code>sa_is_active</code></td><td>TINYINT(1)</td><td>1 = aktif, 0 = historis</td></tr>
+                        <tr><td><code>sa_desc</code></td><td>TEXT NULL</td><td>Catatan internal untuk Admin</td></tr>
+                        <tr><td><code>sys_entry_user</code></td><td>VARCHAR(255)</td><td>Biasanya "SYSTEM_MOBILE"</td></tr>
+                        <tr><td><code>sys_entry_date</code></td><td>DATETIME</td><td>Timestamp pertama kali dijawab</td></tr>
+                        <tr><td><code>sys_update_user</code></td><td>VARCHAR(255)</td><td>'SYSTEM_MOBILE' / 'ADMIN_USERNAME'</td></tr>
+                        <tr><td><code>sys_update_date</code></td><td>DATETIME</td><td>Timestamp update terakhir</td></tr>
+                        <tr><td><code>sys_soft_delete</code></td><td>TINYINT(1)</td><td>Soft delete flag</td></tr>
+                        <tr><td><code>sys_delete_user / sys_delete_date</code></td><td>VARCHAR / DATETIME NULL</td><td>Soft delete info</td></tr>
+                        <tr><td><code>sys_timestamp</code></td><td>DATETIME</td><td>Timestamp versi baris</td></tr>
+                        <tr><td><code>sys_id_log_audit</code></td><td>VARCHAR(255) NULL</td><td>ID referensi log audit</td></tr>
+                        <tr><td colspan="3" style="text-align:center; background: var(--primary-light); font-weight: 600;">UNIQUE: (sa_tl_id, sa_question_id, sa_question_version)</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box info">
+                    <i class="fas fa-link"></i>
+                    <div>
+                        <span class="info-title">Relasi Antar Tabel</span>
+                        <p><code>tour_tmst_tlpr_question_group</code> (1) &rarr; (N) <code>tour_tmst_tlpr_question</code> &rarr; (N) <code>tour_tmst_tlpr_answer</code>. Tabel <code>tour_tmst_tour_leader</code> (existing) menjadi acuan FK pada <code>sa_tl_id</code>. Branching logic pada <code>sq_parent_id</code> + <code>sq_parent_value</code> memungkinkan pertanyaan kondisional.</p>
+                    </div>
+                </div></section>
+
+            <!-- ============================================ -->
+            <!-- 7. KRITERIA PENERIMAAN -->
+            <!-- ============================================ -->
+            <section id="sec7" class="section">
+                <h2><i class="fas fa-check-double"></i> 7. Kriteria Penerimaan (Acceptance Criteria)</h2>
+                <p>Daftar 10 kriteria yang harus dipenuhi agar fitur dianggap lulus QA.</p>
+
+                <ul>
+                    <li><span class="badge badge-green">AC-01</span> Admin sukses menambah, merubah, menonaktifkan, dan melakukan soft-delete pertanyaan profiling di Backoffice.</li>
+                    <li><span class="badge badge-green">AC-02</span> Pertanyaan baru yang diset sebagai <em>Required</em> secara otomatis memutakhirkan kalkulasi % kelengkapan seluruh TL secara real-time.</li>
+                    <li><span class="badge badge-green">AC-03</span> Banner profiling tampil di Landing TL (Tab TL) dan halaman Profile, baik saat progres &lt;100% maupun sudah 100%. Banner tidak auto-hide.</li>
+                    <li><span class="badge badge-green">AC-04</span> Pengisian jawaban di Mobile App berhasil tersimpan otomatis tanpa error ketika TL berpindah halaman pertanyaan (Auto-Save on Transition), termasuk pada skenario offline → online.</li>
+                    <li><span class="badge badge-green">AC-07</span> Setiap perubahan oleh Admin (edit pertanyaan, edit jawaban, soft-delete) secara otomatis memperbarui kolom <code>updated_at</code> dan <code>updated_by</code> pada record terkait.</li>
+                    
+                    <li><span class="badge badge-green">AC-09</span> Skema versioning: perubahan teks pertanyaan tidak memengaruhi jawaban historis; jawaban lama tetap merujuk pada versi pertanyaan saat dijawab.</li>
+                    <li><span class="badge badge-green">AC-10</span> Validasi input berjalan di client &amp; server: Short Text maks 200 karakter, Long Text maks 2000 karakter, Rating Scale hanya 1-5.</li>
+                </ul>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 8. NON-FUNCTIONAL REQUIREMENTS -->
+            <!-- ============================================ -->
+            <section id="sec8" class="section">
+                <h2><i class="fas fa-shield-alt"></i> 8. Edge Cases &amp; State Transitions</h2>
+
+                <h3><i class="fas fa-bolt"></i> 8.1 Skenario Concurrency</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Skenario</th>
+                            <th style="width: 40%;">Perlakuan Sistem</th>
+                            <th>Pesan ke User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Admin ubah pertanyaan yang sedang dijawab TL.</strong></td>
+                            <td>Jawaban TL disimpan dengan <code>question_version</code> lama; Admin membuat versi baru.</td>
+                            <td>"Pertanyaan telah diperbarui oleh Admin. Jawaban Anda sebelumnya tetap tersimpan."</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Admin edit jawaban TL langsung di Backoffice.</strong></td>
+                            <td>Last-write-wins dengan logging; jawaban Admin ditandai <code>updated_by</code> = admin username.</td>
+                            <td>"Jawaban Anda untuk pertanyaan X telah diperbarui oleh Admin."</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TL jawab dengan koneksi terputus &gt; 5 menit.</strong></td>
+                            <td>Data disimpan ke SQLite/MMKV. Retry exponential backoff (1m, 5m, 15m) saat online.</td>
+                            <td>Indikator "Menunggu koneksi..." pada header wizard.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Admin soft-delete pertanyaan aktif + sudah dijawab.</strong></td>
+                            <td>Pertanyaan hilang dari daftar aktif; jawaban existing di-archive, tidak dihitung di % completeness.</td>
+                            <td>Admin: "Pertanyaan di-nonaktifkan; 12 jawaban historis diarsipkan."</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Branching: TL ganti jawaban parent yang trigger child questions.</strong></td>
+                            <td>Sistem menghapus jawaban child questions yang bergantung pada nilai parent (cascade delete pada level aplikasi). Jawaban parent yang baru akan trigger child questions sesuai aturan.</td>
+                            <td>TL melihat child questions baru atau anak-anak hilang sesuai logika branching.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sync offline: TL isi 5 pertanyaan offline, lalu online dengan Admin update pertanyaan.</strong></td>
+                            <td>Sistem mencocokkan via <code>_guid</code>. Jawaban offline yang referensinya sudah dihapus Admin di-drop; jawaban valid tetap dikirim dengan version terbaru dari server.</td>
+                            <td>Indikator "Sinkronisasi..." lalu "Semua jawaban tersimpan" / sebagian "3 dari 5 jawaban tersimpan, 2 dilewati (perubahan di server)".</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3><i class="fas fa-bug"></i> 8.2 Validasi &amp; Error Handling</h3>
+                <ul>
+                    <li>Input teks &gt; batas karakter → <em>inline error</em>: "Maksimal 200/2000 karakter".</li>
+                    <li>Rating Scale di luar 1-5 → error: "Nilai harus 1-5".</li>
+                    <li>Auto-save gagal 3x berturut-turut → modal: "Gagal menyimpan. Jawaban tersimpan di perangkat dan akan dikirim otomatis saat koneksi stabil."</li>
+                    <li>Akun dinonaktifkan saat wizard → redirect ke halaman error 403 dengan instruksi hubungi HR.</li>
+                </ul>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 10. GLOSSARY -->
+            <!-- ============================================ -->
+            <section id="sec9" class="section">
+                <h2><i class="fas fa-book"></i> 9. Glossary</h2>
+                <p>Daftar istilah teknis yang digunakan dalam dokumen ini untuk konsistensi pemahaman antar tim.</p>
+
+                <table>
+                    <thead>
+                        <tr><th style="width: 22%;">Istilah</th><th>Definisi</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>ALVIS</strong></td><td>Sistem internal Panorama JTB untuk manajemen operasional tur (Backoffice + Mobile Apps).</td></tr>
+                        <tr><td><strong>Tour Leader (TL)</strong></td><td>Pemandu wisata yang ditugaskan memimpin rombongan tur; pengguna utama fitur Profiling di Mobile Apps.</td></tr>
+                        <tr><td><strong>Admin</strong></td><td>User Backoffice dengan role HR atau Operational Manager; pengguna utama fitur manajemen pertanyaan.</td></tr>
+                        <tr><td><strong>Profiling Question</strong></td><td>Pertanyaan yang disimpan di <code>tour_tmst_tlpr_question</code> dan disajikan ke TL untuk diisi. Berasosiasi dengan satu <em>Question Group</em>.</td></tr>
+                        <tr><td><strong>% Completeness</strong></td><td>Persentase kelengkapan profil TL; dihitung dari jumlah pertanyaan wajib aktif yang sudah dijawab dibagi total pertanyaan wajib aktif.</td></tr>
+                        <tr><td><strong>Auto-Save on Transition</strong></td><td>Mekanisme penyimpanan otomatis jawaban tanpa tombol "Simpan"; terjadi saat user memilih opsi, mengetik (debounce 1s/blur), atau berpindah pertanyaan.</td></tr>
+                        <tr><td><strong>Soft Delete</strong></td><td>Penghapusan logis dengan mengisi kolom <code>deleted_at</code>; data tetap ada untuk audit tapi tidak muncul di UI aktif.</td></tr>
+                        <tr><td><strong>Wizard</strong></td><td>Antarmuka pengisian pertanyaan satu per satu dengan navigasi Next/Back di Mobile.</td></tr>
+                        <tr><td><strong>Question Version</strong></td><td>Nomor versi sebuah pertanyaan; bertambah setiap kali teks pertanyaan diubah; jawaban historis merujuk ke versi saat dijawab.</td></tr>
+                        <tr><td><strong>Debounce</strong></td><td>Teknik menunda eksekusi fungsi sampai aktivitas berhenti selama durasi tertentu (1000ms).</td></tr>
+                        <tr><td><strong>MMKV</strong></td><td>Library key-value storage ringan untuk mobile (Android/iOS); alternatif SQLite untuk cache lokal.</td></tr>
+                        <tr><td><strong>PII</strong></td><td>Personally Identifiable Information — data yang dapat mengidentifikasi individu; diperlakukan sesuai UU PDP.</td></tr>
+                        <tr><td><strong>RBAC</strong></td><td>Role-Based Access Control — kontrol akses berbasis peran user.</td></tr>
+                        <tr><td><strong>BRD</strong></td><td>Business Requirement Document — dokumen formal yang menjabarkan kebutuhan bisnis suatu fitur.</td></tr>
+                        <tr><td><strong>NFR</strong></td><td>Non-Functional Requirement — kebutuhan non-fungsional (performa, keamanan, scalability).</td></tr>
+                        <tr><td><strong>AC</strong></td><td>Acceptance Criteria — kriteria yang harus dipenuhi agar fitur dianggap lulus QA.</td></tr>
+                        <tr><td><strong>Question Group</strong></td><td>Kelompok/kategori pertanyaan (misal: Keahlian, Bahasa, Lisensi). Disimpan di tabel <code>tour_tmst_tlpr_question_group</code>.</td></tr>
+                        <tr><td><strong>Branching Logic</strong></td><td>Logika pertanyaan kondisional — pertanyaan child hanya muncul jika jawaban parent memiliki nilai tertentu. Diatur via <code>sq_parent_id</code> + <code>sq_parent_value</code>.</td></tr>
+                        <tr><td><strong>GUID</strong></td><td>Globally Unique Identifier (varchar 50). Digunakan untuk sinkronisasi data antara local device (Mobile) dan server. Format UUID atau custom.</td></tr>
+                        <tr><td><strong>Snapshot Version</strong></td><td>Penyimpanan versi pertanyaan saat jawaban disimpan (<code>sa_question_version</code>). Memastikan jawaban historis tetap merujuk ke versi pertanyaan yang dijawab, walau Admin sudah update pertanyaan.</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- 11. SPESIFIKASI DESIGN MOBILE -->
+            <!-- ============================================ -->
+            <section id="sec10" class="section">
+                <h2><i class="fas fa-palette"></i> 10. Spesifikasi Design Mobile (UX Specification)</h2>
+                <p>Spesifikasi design final untuk komponen UI di ALVIS Mobile Apps berdasarkan hasil eksplorasi desain (lihat <em>mockup-tl-profiling-banner.html</em>).</p>
+
+                <div class="info-box primary">
+                    <i class="fas fa-star"></i>
+                    <div>
+                        <span class="info-title">Design Decision</span>
+                        <p>Berdasarkan analisis 3 konsep alternatif, disepakati menggunakan <strong>Konsep 2 (Full Progress Card)</strong> untuk Landing Tour Leader dan <strong>Konsep 1 (Settings List Item)</strong> untuk Profile Page. Keduanya menggunakan <em>circular progress indicator</em> sebagai visual language yang konsisten.</p>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-paintbrush"></i> 10.1 Prinsip Desain</h3>
+                <ul>
+                    <li><strong>Konsistensi Visual:</strong> Circular progress (orange conic-gradient) di kedua layar dengan ukuran berbeda (56px di Landing, 32px di Profile).</li>
+                    <li><strong>Primary Color Harmony:</strong> Orange <code>#ea580c</code> konsisten dengan design system ALVIS.</li>
+                    <li><strong>State-Driven:</strong> Progress dinamis mengikuti data real-time; transisi halus 300ms.</li>
+                    <li><strong>Hierarchy Jelas:</strong> Landing = high prominence (primary entry); Profile = low prominence (secondary).</li>
+                </ul>
+
+                <h3><i class="fas fa-flag"></i> 10.2 Landing Tour Leader — Full Progress Card</h3>
+
+                <h4>🖼️ Visual Mockup (Design Final)</h4>
+                <div class="mockup-card">
+                            <span class="mockup-label">DESIGN FINAL</span>
+                            <div class="mockup-title">Layar: Landing Tour Leader</div>
+                            <div class="mockup-desc">Visual mockup sesuai konsep yang dipilih (Konsep 2: Full Progress Card)</div>
+                            <div class="phone-frame">
+                                <div class="phone-screen">
+                                    <div class="phone-statusbar">
+                                        <span>9:41</span>
+                                        <span class="icons"><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span>
+                                    </div>
+                                    <div class="phone-header">Tour leader</div>
+                                    <div class="phone-content">
+                                        <div class="weather-strip"><i class="fas fa-cloud"></i> Few clouds 32°C at Jakarta</div>
+                                        <div class="c2-card">
+                                            <div class="progress-circle"><span class="pct">60%</span></div>
+                                            <div class="content">
+                                                <div class="title">Lengkapi Profil TL</div>
+                                                <div class="desc">3 dari 5 pertanyaan wajib</div>
+                                                <div class="cta"><i class="fas fa-arrow-right"></i> Lengkapi Sekarang</div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pills">
+                                            <div class="tab-pill active">Active</div>
+                                            <div class="tab-pill">Completed</div>
+                                            <div class="tab-pill">Tour score</div>
+                                        </div>
+                                        <div class="tour-card">
+                                            <div class="thumb"></div>
+                                            <div class="info">
+                                                <div class="title">Experience Vietnam (8d)</div>
+                                                <div class="date">22 Aug - 29 Aug 2026</div>
+                                                <div class="meta"><span>0 booking codes</span><span>0 guest</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bottom-nav">
+                                        <div class="bottom-nav-item"><i class="fas fa-home"></i><span>Home</span></div>
+                                        <div class="bottom-nav-item"><i class="fas fa-map-marker-alt"></i><span>My Trips</span></div>
+                                        <div class="bottom-nav-item active"><i class="fas fa-flag"></i><span>TL</span></div>
+                                        <div class="bottom-nav-item"><i class="fas fa-user"></i><span>Profile</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                <h4>📐 Wireframe (ASCII Mockup)</h4>
+                <div class="flow-box">┌─────────────────────────────────────┐
+│ Tour leader                   🖨️   │  ← Header (existing)
+├─────────────────────────────────────┤
+│ ☁ Few clouds 32°C at Jakarta        │  ← Weather (existing)
+├─────────────────────────────────────┤
+┃ ▓▓ ┌──────┐ Lengkapi Profil TL      │  ← ★ PROFILING CARD
+┃ ▓▓ │ 60%  │ 3 dari 5 pertanyaan      │
+┃ ▓▓ └──────┘ wajib                   │
+┃ ▓▓          [ Lengkapi Sekarang ▶ ] │
+├─────────────────────────────────────┤
+│ [Active] Completed  Tour score  Tasks│  ← Tabs (existing)
+├─────────────────────────────────────┤
+│ [🏖 Tour Card - Experience Vietnam] │  ← Tour cards (existing)
+│ [🏔 Tour Card - Bali Explorer]       │
+└─────────────────────────────────────┘
+   Home   My Trips   TL*   Profile      ← Bottom Nav</div>
+
+                <h4>🎨 Spesifikasi Komponen</h4>
+                <div class="spec-grid">
+                    <div class="spec-label">Lokasi</div>
+                    <div class="spec-value">Antara weather widget dan tab pills</div>
+                    <div class="spec-label">Container</div>
+                    <div class="spec-value">Background <code>#ffffff</code>; border-radius <code>14px</code>; box-shadow <code>0 2px 8px rgba(234,88,12,0.08)</code>; border-left <code>4px solid #ea580c</code></div>
+                    <div class="spec-label">Circular Progress</div>
+                    <div class="spec-value">Diameter <strong>56px</strong>; conic-gradient orange + inner mask <code>#ffffff</code> inset 4px; teks % center</div>
+                    <div class="spec-label">Title</div>
+                    <div class="spec-value">"Lengkapi Profil TL"; font-size <code>13pt</code>; weight 600</div>
+                    <div class="spec-label">Description</div>
+                    <div class="spec-value">"X dari Y pertanyaan wajib"; font-size <code>10pt</code></div>
+                    <div class="spec-label">CTA Button</div>
+                    <div class="spec-value">"Lengkapi Sekarang ▶"; bg <code>#ea580c</code>; radius <code>8px</code></div>
+                    <div class="spec-label">Tap Behavior</div>
+                    <div class="spec-value">Whole-card tap; navigasi ke Tour Leader Profiling Wizard</div>
+                </div>
+
+                <h4>🔄 State Variations</h4>
+                <table>
+                    <thead>
+                        <tr><th style="width: 20%;">Progress</th><th style="width: 30%;">Visual</th><th>Behavior</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>0% (Belum Mulai)</strong></td>
+                            <td>Circle kosong, full light-orange</td>
+                            <td>Card tampil dengan headline "Mulai Lengkapi Profil TL"; CTA "Mulai Sekarang ▶".</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1-99% (In Progress)</strong></td>
+                            <td>Circle sebagian orange</td>
+                            <td>Card tampil normal; deskripsi dinamis "X dari Y pertanyaan wajib".</td>
+                        </tr>
+                        <tr>
+                            <td><strong>100% (Lengkap)</strong></td>
+                            <td>Circle full orange ✓</td>
+                            <td>Card <strong>tetap tampil</strong> dengan status "Lengkap 100%" dan tombol "Lihat/Edit Profil". Banner tidak lagi auto-hide baik di Landing TL maupun Profile.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Loading</strong></td>
+                            <td>Skeleton shimmer</td>
+                            <td>Tampilkan skeleton card saat data belum tersedia.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3><i class="fas fa-user"></i> 10.3 Profile Page — Settings List Item</h3>
+
+                <h4>🖼️ Visual Mockup (Design Final)</h4>
+                <div class="mockup-card">
+                            <span class="mockup-label">DESIGN FINAL</span>
+                            <div class="mockup-title">Layar: Profile</div>
+                            <div class="mockup-desc">Visual mockup sesuai konsep yang dipilih (Konsep 1: Settings List Item)</div>
+                            <div class="phone-frame">
+                                <div class="phone-screen">
+                                    <div class="phone-statusbar">
+                                        <span>9:41</span>
+                                        <span class="icons"><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span>
+                                    </div>
+                                    <div class="phone-header">Profile</div>
+                                    <div class="phone-content">
+                                        <div class="weather-strip"><i class="fas fa-cloud"></i> Few clouds 32°C at Jakarta</div>
+                                        <div class="avatar-block">
+                                            <div class="avatar"></div>
+                                            <div class="avatar-info">
+                                                <div class="name">Anisa Reviyana S</div>
+                                                <div class="meta">+62 87838738687 <i class="fas fa-circle-check" style="color:var(--primary)"></i></div>
+                                            </div>
+                                        </div>
+                                        <div class="pp-card">
+                                            <div class="pp-header">
+                                                <div class="pp-icon"><i class="fas fa-star"></i></div>
+                                                <div>
+                                                    <div class="pp-num">0</div>
+                                                    <div class="pp-label">Active points</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="claim-banner"><i class="fas fa-star"></i><span>Click here to claim reward, activate, and use PV</span></div>
+                                        <div style="font-size:12px;font-weight:600;color:var(--text);margin-top:4px;">Settings</div>
+                                        <div class="settings-list">
+                                            <div class="pc1-item">
+                                                <div class="icon-circle"><i class="fas fa-id-card-clip"></i></div>
+                                                <div class="content">
+                                                    <div class="title">Tour Leader Profiling</div>
+                                                    <div class="subtitle">3 dari 5 pertanyaan</div>
+                                                </div>
+                                                <div class="mini-progress"><span class="pct">60%</span></div>
+                                                <i class="fas fa-chevron-right chev"></i>
+                                            </div>
+                                            <div class="settings-item"><span>Account information</span><i class="fas fa-chevron-right chev"></i></div>
+                                            <div class="settings-item"><span>Notifications</span><i class="fas fa-chevron-right chev"></i></div>
+                                            <div class="settings-item"><span>Log in and security</span><i class="fas fa-chevron-right chev"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="bottom-nav">
+                                        <div class="bottom-nav-item"><i class="fas fa-home"></i><span>Home</span></div>
+                                        <div class="bottom-nav-item"><i class="fas fa-map-marker-alt"></i><span>My Trips</span></div>
+                                        <div class="bottom-nav-item"><i class="fas fa-flag"></i><span>TL</span></div>
+                                        <div class="bottom-nav-item active"><i class="fas fa-user"></i><span>Profile</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                <h4>📐 Wireframe (ASCII Mockup)</h4>
+                <div class="flow-box">�─────────────────────────────────────┐
+│ Profile                       🖨️   │  ← Header
+├─────────────────────────────────────�
+│ ☁ Few clouds 32°C at Jakarta        │  ← Weather
+├─────────────────────────────────────┤
+│ ┌──┐ Anisa Reviyana Sakti           │  ← Avatar block
+│ │🌸│ +62 87838738687 ✓              │
+│ └──┘ anisareviyana@gmail.com ✓      │
+├─────────────────────────────────────┤
+│ ⭐ 0 Active points  [panoramapoints]│  ← PanoramaPoints card
+│ 0 inactive points — Member          │
+├─────────────────────────────────────┤
+│ ⭐ Click here to claim reward...    │  ← Claim banner
+├─────────────────────────────────────┤
+│ Settings                             │  ← Section header
+├─────────────────────────────────────┤
+│ 🎴 Tour Leader Profiling   60%  ›   │  ← ★ PROFILING ITEM
+│    3 dari 5 pertanyaan              │     Highlighted bg
+├─────────────────────────────────────┤
+│ Account information              ›  │
+│ Notifications (1)                 ›  │
+│ Log in and security               ›  │
+└─────────────────────────────────────┘
+   Home   My Trips   TL    Profile*    ← Bottom Nav</div>
+
+                <h4>🎨 Spesifikasi Komponen</h4>
+                <div class="spec-grid">
+                    <div class="spec-label">Lokasi</div>
+                    <div class="spec-value">Item <strong>pertama</strong> di Settings list</div>
+                    <div class="spec-label">Container</div>
+                    <div class="spec-value">Background <code>#fff7ed</code> (highlighted); padding <code>12px 14px</code></div>
+                    <div class="spec-label">Icon Box</div>
+                    <div class="spec-value">32x32px; bg <code>#ea580c</code>; radius <code>8px</code>; icon id-card</div>
+                    <div class="spec-label">Title</div>
+                    <div class="spec-value">"Tour Leader Profiling"; font-size <code>13pt</code>; weight 600</div>
+                    <div class="spec-label">Subtitle</div>
+                    <div class="spec-value">"X dari Y pertanyaan"; font-size <code>10pt</code></div>
+                    <div class="spec-label">Mini Progress</div>
+                    <div class="spec-value">Diameter <strong>32px</strong>; conic-gradient; inset <code>3px</code>; font <code>9pt 700</code></div>
+                    <div class="spec-label">Behavior Saat 100%</div>
+                    <div class="spec-value">Background highlight hilang; mini progress hijau <code>#10b981</code> "100%"; tap tetap berfungsi untuk review</div>
+                </div>
+
+                <h3><i class="fas fa-circle-half-stroke"></i> 10.4 Komponen: Circular Progress Indicator</h3>
+                <table>
+                    <thead>
+                        <tr><th style="width: 20%;">Varian</th><th style="width: 25%;">Ukuran</th><th>Implementasi Teknis</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Large</strong> (Landing TL)</td>
+                            <td>56px diameter</td>
+                            <td>
+                                - Container: <code>div</code> dengan <code>background: conic-gradient(...)</code>.<br>
+                                - Inner mask: <code>div</code> absolut <code>inset: 4px</code>, bg <code>#ffffff</code>, <code>border-radius: 50%</code>.<br>
+                                - Text: <code>span</code> center, font <code>14pt 700</code>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mini</strong> (Profile)</td>
+                            <td>32px diameter</td>
+                            <td>
+                                - Pattern sama dengan Large; inset <code>3px</code>; font <code>9pt 700</code>.<br>
+                                - State 100%: ganti orange menjadi <code>#10b981</code> (success green).
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3><i class="fas fa-icons"></i> 10.5 Icon &amp; Asset Spec</h3>
+                <ul>
+                    <li><strong>Primary Icon:</strong> Font Awesome <code>fa-solid fa-id-card-clip</code> atau custom SVG outline.</li>
+                    <li><strong>CTA Arrow:</strong> <code>fa-solid fa-arrow-right</code> di tombol CTA.</li>
+                    <li><strong>Chevron:</strong> <code>fa-solid fa-chevron-right</code> di Settings item.</li>
+                    <li><strong>Check Mark (100%):</strong> <code>fa-solid fa-circle-check</code> dengan color <code>#10b981</code>.</li>
+                </ul>
+
+                <h3><i class="fas fa-universal-access"></i> 10.6 Aksesibilitas (Accessibility)</h3>
+                <ul>
+                    <li>Seluruh card / item tap-area memenuhi standar minimum <strong>44x44 px</strong> (Apple HIG) / <strong>48x48 dp</strong> (Material).</li>
+                    <li>Progress indicator harus menyertakan <code>aria-label</code>: "Profil TL 60% lengkap" untuk screen reader.</li>
+                    <li>Kontras warna teks utama (#1e293b pada #fff7ed) lulus standar WCAG AA (4.5:1).</li>
+                    <li>Mendukung <em>reduced motion</em>: animasi progress arc di-disable dan langsung snap ke nilai akhir.</li>
+                </ul>
+            </section>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p><span class="footer-brand">ALVIS</span> • Tour Operation &amp; Management Platform</p>
+                <p style="margin-top: 4px;">&copy; 2026 Panorama JTB. All Rights Reserved.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Inline script -->
+    <script>
+        (function () {
+            // Sidebar toggle (mobile)
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('btnToggleSidebar');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                });
+            }
+            // Close sidebar on link click (mobile)
+            document.querySelectorAll('.sidebar-nav a').forEach(a => {
+                a.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) sidebar.classList.remove('open');
+                });
+            });
+
+            // Scroll to top button
+            const scrollBtn = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) scrollBtn.classList.add('show');
+                else scrollBtn.classList.remove('show');
+            });
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Scroll spy — highlight active nav link based on scroll position
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+            function updateActiveNav() {
+                const scrollPos = window.scrollY + 120; // offset for sticky header
+                let current = '';
+
+                sections.forEach(section => {
+                    const top = section.offsetTop;
+                    const height = section.offsetHeight;
+                    if (scrollPos >= top && scrollPos < top + height) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Throttle scroll event
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateActiveNav();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // Initial call
+            updateActiveNav();
+        })();
+    </script>
+
+</body>
+</html>

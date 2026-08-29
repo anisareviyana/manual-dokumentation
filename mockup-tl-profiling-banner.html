@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup Design - TL Profiling Banner & Button</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ea580c;
+            --primary-light: #fff7ed;
+            --primary-dark: #c2410c;
+            --primary-bg: #ffedd5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 24px rgba(234, 88, 12, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 32px 16px;
+        }
+
+        /* Page Header */
+        .page-header {
+            max-width: 1200px;
+            margin: 0 auto 32px auto;
+            text-align: center;
+        }
+
+        .page-header .badge-tag {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* Concept Grid */
+        .concepts-section {
+            max-width: 1200px;
+            margin: 0 auto 48px auto;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title .icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .section-title h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .section-title .subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        /* Concept Card */
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .concept-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform var(--transition), box-shadow var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .concept-card.recommended {
+            border-color: var(--primary);
+        }
+
+        .concept-card.recommended::before {
+            content: '★ REKOMENDASI';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--primary);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 10;
+        }
+
+        .concept-card { position: relative; }
+
+        .concept-card-header {
+            padding: 16px 20px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .concept-card-header .label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .concept-card-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Phone Mockup */
+        .phone-frame {
+            margin: 20px auto;
+            width: 280px;
+            background: #fff;
+            border-radius: 28px;
+            padding: 12px 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+        }
+
+        .phone-screen {
+            background: #f8fafc;
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .phone-statusbar {
+            background: #fff;
+            padding: 6px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .phone-statusbar .icons {
+            display: flex;
+            gap: 4px;
+            font-size: 11px;
+        }
+
+        .phone-header {
+            background: #fff;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            text-align: center;
+        }
+
+        .phone-content {
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Common Phone Elements */
+        .weather-strip {
+            background: #fff;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tab-pills {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: #fff;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .tab-pill {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .tab-pill.active {
+            background: var(--text);
+            color: #fff;
+        }
+
+        .tour-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .tour-card .thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            flex-shrink: 0;
+        }
+
+        .tour-card .info { flex: 1; min-width: 0; }
+        .tour-card .title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .tour-card .date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .tour-card .meta { font-size: 10px; color: var(--text-muted); margin-top: 4px; display: flex; flex-direction: column; gap: 2px; }
+
+        .bottom-nav {
+            background: #fff;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 4px 12px;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .bottom-nav-item.active {
+            color: var(--primary);
+        }
+
+        .bottom-nav-item i { font-size: 16px; }
+
+        /* Profile Page Common */
+        .avatar-block {
+            background: #fff;
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fed7aa, #fdba74);
+            flex-shrink: 0;
+        }
+
+        .avatar-info .name { font-size: 14px; font-weight: 600; color: var(--text); }
+        .avatar-info .meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+
+        .pp-card {
+            background: linear-gradient(135deg, #fff, #f8fafc);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .pp-card .pp-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pp-card .pp-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pp-card .pp-num { font-size: 22px; font-weight: 700; color: var(--text); }
+        .pp-card .pp-label { font-size: 11px; color: var(--text-muted); }
+        .pp-card .pp-sub { font-size: 10px; color: var(--text-muted); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
+
+        .claim-banner {
+            background: var(--primary-light);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-list {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .settings-item {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .settings-item:last-child { border-bottom: none; }
+        .settings-item .chev { color: var(--text-light); }
+
+        /* ============================================ */
+        /* CONCEPT DESIGNS — LANDING TL */
+        /* ============================================ */
+
+        /* Concept 1: Inline Notification Banner */
+        .c1-banner {
+            background: var(--primary-light);
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .c1-banner .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .c1-banner .content { flex: 1; min-width: 0; }
+        .c1-banner .title { font-size: 12px; font-weight: 600; color: var(--text); }
+        .c1-banner .subtitle { font-size: 10px; color: var(--text-muted); }
+        .c1-banner .progress-bar { height: 4px; background: var(--primary-bg); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+        .c1-banner .progress-bar-fill { height: 100%; width: 60%; background: var(--primary); border-radius: 2px; }
+        .c1-banner .close { color: var(--text-muted); font-size: 12px; padding: 4px; }
+
+        /* Concept 2: Full Progress Card */
+        .c2-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(234, 88, 12, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .c2-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .c2-card .progress-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0% 60%, var(--primary-bg) 60% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .c2-card .progress-circle::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .c2-card .progress-circle .pct {
+            position: relative;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .c2-card .content { flex: 1; min-width: 0; }
+        .c2-card .title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .c2-card .desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .c2-card .cta {
+            background: var(--primary);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        /* Concept 3: Compact Pill */
+        .c3-pill {
+            background: #fff;
+            border: 1.5px solid var(--primary);
+            border-radius: 100px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(234, 88, 12, 0.1);
+        }
+
+        .c3-pill .icon { color: var(--primary); font-size: 14px; }
+        .c3-pill .text { flex: 1; font-size: 12px; color: var(--text); font-weight: 500; }
+        .c3-pill .text strong { color: var(--primary); }
+        .c3-pill .chev { color: var(--primary); font-size: 12px; }
+
+        /* ============================================ */
+        /* CONCEPT DESIGNS — PROFILE */
+        /* ============================================ */
+
+        /* Profile Concept 1: Settings List Item */
+        .pc1-item {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+            background: var(--primary-light);
+        }
+
+        .pc1-item .icon-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pc1-item .content { flex: 1; min-width: 0; }
+        .pc1-item .title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .pc1-item .subtitle { font-size: 10px; color: var(--text-muted); }
+
+        .pc1-item .mini-progress {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0% 60%, #e2e8f0 60% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .pc1-item .mini-progress::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .pc1-item .mini-progress .pct {
+            position: relative;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .pc1-item .chev { color: var(--text-light); }
+
+        /* Profile Concept 2: Standalone Card */
+        .pc2-card {
+            background: linear-gradient(135deg, #fff, var(--primary-light));
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pc2-card .progress-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0% 60%, #fed7aa 60% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .pc2-card .progress-ring::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .pc2-card .progress-ring .pct {
+            position: relative;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .pc2-card .info { flex: 1; min-width: 0; }
+        .pc2-card .info .title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .pc2-card .info .desc { font-size: 10px; color: var(--text-muted); }
+        .pc2-card .info .action { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 4px; }
+
+        /* Profile Concept 3: Highlight Banner */
+        .pc3-banner {
+            background: linear-gradient(135deg, var(--primary-light), #ffedd5);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pc3-banner .icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 12px;
+        }
+
+        .pc3-banner .content { flex: 1; min-width: 0; }
+        .pc3-banner .title { font-size: 12px; font-weight: 600; color: var(--text); }
+        .pc3-banner .desc { font-size: 10px; color: var(--text-muted); }
+        .pc3-banner .chev { color: var(--primary); }
+
+        /* Spec Table */
+        .spec-section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-top: 12px;
+        }
+
+        .spec-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spec-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .spec-section li {
+            padding: 6px 0;
+            font-size: 13px;
+            color: var(--text);
+            display: flex;
+            gap: 8px;
+        }
+
+        .spec-section li i {
+            color: var(--success);
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .spec-section li.bad i {
+            color: var(--text-muted);
+        }
+
+        /* Recommendation Summary */
+        .recommendation {
+            max-width: 1200px;
+            margin: 48px auto 0 auto;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .recommendation h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recommendation p {
+            opacity: 0.95;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .recommendation .pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .recommendation .pair-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .recommendation .pair-card h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .recommendation .pair-card .ref {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .recommendation .pair-card p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 16px 12px; }
+            .page-header h1 { font-size: 24px; }
+            .recommendation .pair { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <span class="badge-tag"><i class="fa-solid fa-palette"></i> Design Exploration</span>
+        <h1>Mockup Banner & Button — Tour Leader Profiling</h1>
+        <p>Eksplorasi 3 konsep design untuk menampilkan progress kelengkapan profil Tour Leader di dua layar mobile ALVIS. Pilih favorit, atau mix & match.</p>
+    </header>
+
+    <!-- ============================================== -->
+    <!-- SECTION 1: LANDING TOUR LEADER -->
+    <!-- ============================================== -->
+    <section class="concepts-section">
+        <div class="section-title">
+            <div class="icon-circle"><i class="fa-solid fa-flag"></i></div>
+            <h2>Landing Tour Leader (Tab "TL")</h2>
+            <span class="subtitle">Primary entry point — high visibility</span>
+        </div>
+
+        <div class="concepts-grid">
+
+            <!-- Concept 1 -->
+            <div class="concept-card">
+                <div class="concept-card-header">
+                    <div class="label"><i class="fa-solid fa-circle-1"></i> Konsep 1</div>
+                    <h3>Inline Notification Banner</h3>
+                </div>
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="phone-statusbar">
+                            <span>9:41</span>
+                            <span class="icons"><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
+                        </div>
+                        <div class="phone-header">Tour leader</div>
+                        <div class="phone-content">
+                            <div class="weather-strip">
+                                <i class="fa-solid fa-cloud"></i> Few clouds 32°C at Jakarta
+                            </div>
+
+                            <!-- THE BANNER (Concept 1) -->
+                            <div class="c1-banner">
+                                <div class="icon"><i class="fa-solid fa-id-card-clip"></i></div>
+                                <div class="content">
+                                    <div class="title">Profil TL Anda 60% lengkap</div>
+                                    <div class="subtitle">Lengkapi untuk assignment yang lebih baik</div>
+                                    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+                                </div>
+                                <i class="fa-solid fa-xmark close"></i>
+                            </div>
+
+                            <div class="tab-pills">
+                                <div class="tab-pill active">Active</div>
+                                <div class="tab-pill">Completed</div>
+                                <div class="tab-pill">Tour score</div>
+                            </div>
+                            <div class="tour-card">
+                                <div class="thumb"></div>
+                                <div class="info">
+                                    <div class="title">Experience Vietnam (8d)</div>
+                                    <div class="date">22 Aug - 29 Aug 2026</div>
+                                    <div class="meta"><span>0 booking codes</span><span>0 guest</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spec-section">
+                    <h4><i class="fa-solid fa-palette"></i> Spesifikasi</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Background: <code>#fff7ed</code> (light orange)</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Border: <code>1px solid #fed7aa</code></li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Posisi: Antara weather & tabs</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Dismissable dengan icon X</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-up"></i> Kelebihan</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Match dengan pola notifikasi existing ("Get access to Alvis")</li>
+                        <li><i class="fa-solid fa-check"></i> Compact, hemat ruang vertikal</li>
+                        <li><i class="fa-solid fa-check"></i> User bisa dismiss jika sudah selesai</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-down"></i> Kekurangan</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Kemungkinan didismiss & terlupakan</li>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Kurang menonjol untuk memotivasi aksi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Concept 2 (RECOMMENDED) -->
+            <div class="concept-card recommended">
+                <div class="concept-card-header">
+                    <div class="label"><i class="fa-solid fa-circle-2"></i> Konsep 2</div>
+                    <h3>Full Progress Card</h3>
+                </div>
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="phone-statusbar">
+                            <span>9:41</span>
+                            <span class="icons"><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
+                        </div>
+                        <div class="phone-header">Tour leader</div>
+                        <div class="phone-content">
+                            <div class="weather-strip">
+                                <i class="fa-solid fa-cloud"></i> Few clouds 32°C at Jakarta
+                            </div>
+
+                            <!-- THE CARD (Concept 2) -->
+                            <div class="c2-card">
+                                <div class="progress-circle"><span class="pct">60%</span></div>
+                                <div class="content">
+                                    <div class="title">Lengkapi Profil TL</div>
+                                    <div class="desc">3 dari 5 pertanyaan wajib</div>
+                                    <div class="cta"><i class="fa-solid fa-arrow-right"></i> Lengkapi Sekarang</div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pills">
+                                <div class="tab-pill active">Active</div>
+                                <div class="tab-pill">Completed</div>
+                                <div class="tab-pill">Tour score</div>
+                            </div>
+                            <div class="tour-card">
+                                <div class="thumb"></div>
+                                <div class="info">
+                                    <div class="title">Experience Vietnam (8d)</div>
+                                    <div class="date">22 Aug - 29 Aug 2026</div>
+                                    <div class="meta"><span>0 booking codes</span><span>0 guest</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spec-section">
+                    <h4><i class="fa-solid fa-palette"></i> Spesifikasi</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Background: <code>#ffffff</code> dengan orange accent strip</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Shadow: <code>0 2px 8px rgba(234,88,12,0.08)</code></li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Circular progress: conic-gradient orange 0-60%, light 60-100%</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> CTA button: filled orange, radius 8px</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-up"></i> Kelebihan</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Highly visible, tidak bisa di-miss</li>
+                        <li><i class="fa-solid fa-check"></i> CTA button yang jelas & actionable</li>
+                        <li><i class="fa-solid fa-check"></i> Mirrors PanoramaPoints card pattern</li>
+                        <li><i class="fa-solid fa-check"></i> Progress visual paling informatif</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-down"></i> Kekurangan</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Lebih banyak ruang vertikal (~80px)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Concept 3 -->
+            <div class="concept-card">
+                <div class="concept-card-header">
+                    <div class="label"><i class="fa-solid fa-circle-3"></i> Konsep 3</div>
+                    <h3>Compact Pill</h3>
+                </div>
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="phone-statusbar">
+                            <span>9:41</span>
+                            <span class="icons"><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
+                        </div>
+                        <div class="phone-header">Tour leader</div>
+                        <div class="phone-content">
+                            <div class="weather-strip">
+                                <i class="fa-solid fa-cloud"></i> Few clouds 32°C at Jakarta
+                            </div>
+
+                            <!-- THE PILL (Concept 3) -->
+                            <div class="c3-pill">
+                                <i class="fa-solid fa-id-card icon"></i>
+                                <div class="text">Profil TL: <strong>60%</strong> lengkap</div>
+                                <i class="fa-solid fa-chevron-right chev"></i>
+                            </div>
+
+                            <div class="tab-pills">
+                                <div class="tab-pill active">Active</div>
+                                <div class="tab-pill">Completed</div>
+                                <div class="tab-pill">Tour score</div>
+                            </div>
+                            <div class="tour-card">
+                                <div class="thumb"></div>
+                                <div class="info">
+                                    <div class="title">Experience Vietnam (8d)</div>
+                                    <div class="date">22 Aug - 29 Aug 2026</div>
+                                    <div class="meta"><span>0 booking codes</span><span>0 guest</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spec-section">
+                    <h4><i class="fa-solid fa-palette"></i> Spesifikasi</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Background: <code>#ffffff</code>, border <code>1.5px solid #ea580c</code></li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Border-radius: <code>100px</code> (pill shape)</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Posisi: Centered, antara weather & tabs</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-up"></i> Kelebihan</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Paling hemat ruang (~40px)</li>
+                        <li><i class="fa-solid fa-check"></i> Modern look, on-brand dengan orange border</li>
+                        <li><i class="fa-solid fa-check"></i> Single line — info padat</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-down"></i> Kekurangan</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Paling tidak prominent — mudah terlewat</li>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Tidak ada visual progress bar/circle</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 2: PROFILE PAGE -->
+    <!-- ============================================== -->
+    <section class="concepts-section">
+        <div class="section-title">
+            <div class="icon-circle"><i class="fa-solid fa-user"></i></div>
+            <h2>Profile Page</h2>
+            <span class="subtitle">Secondary entry point — contextual access</span>
+        </div>
+
+        <div class="concepts-grid">
+
+            <!-- Profile Concept 1 (RECOMMENDED) -->
+            <div class="concept-card recommended">
+                <div class="concept-card-header">
+                    <div class="label"><i class="fa-solid fa-circle-1"></i> Konsep 1</div>
+                    <h3>Settings List Item + Progress</h3>
+                </div>
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="phone-statusbar">
+                            <span>9:41</span>
+                            <span class="icons"><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
+                        </div>
+                        <div class="phone-header">Profile</div>
+                        <div class="phone-content">
+                            <div class="weather-strip">
+                                <i class="fa-solid fa-cloud"></i> Few clouds 32°C at Jakarta
+                            </div>
+                            <div class="avatar-block">
+                                <div class="avatar"></div>
+                                <div class="avatar-info">
+                                    <div class="name">Anisa Reviyana Sakti</div>
+                                    <div class="meta">+62 87838738687 <i class="fa-solid fa-circle-check" style="color:var(--primary)"></i></div>
+                                    <div class="meta">anisareviyana@gmail.com <i class="fa-solid fa-circle-check" style="color:var(--primary)"></i></div>
+                                </div>
+                            </div>
+                            <div class="pp-card">
+                                <div class="pp-header">
+                                    <div class="pp-icon"><i class="fa-solid fa-star"></i></div>
+                                    <div>
+                                        <div class="pp-num">0</div>
+                                        <div class="pp-label">Active points</div>
+                                    </div>
+                                </div>
+                                <div class="pp-sub">PV2300091 — Anisa Reviyana Sakti</div>
+                            </div>
+                            <div class="claim-banner">
+                                <i class="fa-solid fa-star"></i>
+                                <span>Click here to claim reward, activate, and use PV</span>
+                            </div>
+
+                            <!-- SETTINGS LIST WITH NEW PROFILING ITEM -->
+                            <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:6px;">Settings</div>
+                            <div class="settings-list">
+                                <div class="pc1-item">
+                                    <div class="icon-circle"><i class="fa-solid fa-id-card-clip"></i></div>
+                                    <div class="content">
+                                        <div class="title">Tour Leader Profiling</div>
+                                        <div class="subtitle">3 dari 5 pertanyaan</div>
+                                    </div>
+                                    <div class="mini-progress"><span class="pct">60%</span></div>
+                                    <i class="fa-solid fa-chevron-right chev"></i>
+                                </div>
+                                <div class="settings-item">
+                                    <span>Account information</span>
+                                    <i class="fa-solid fa-chevron-right chev"></i>
+                                </div>
+                                <div class="settings-item">
+                                    <span>Notifications <span style="background:var(--primary);color:#fff;padding:1px 6px;border-radius:8px;font-size:9px;margin-left:4px;">1</span></span>
+                                    <i class="fa-solid fa-chevron-right chev"></i>
+                                </div>
+                                <div class="settings-item">
+                                    <span>Log in and security</span>
+                                    <i class="fa-solid fa-chevron-right chev"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spec-section">
+                    <h4><i class="fa-solid fa-palette"></i> Spesifikasi</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Posisi: Item pertama di Settings list</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Background: <code>#fff7ed</code> (highlighted)</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Icon box orange 32x32px</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Mini circular progress 32x32px di kanan</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-up"></i> Kelebihan</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Konsisten dengan pattern Settings list existing</li>
+                        <li><i class="fa-solid fa-check"></i> Background highlight menandakan "perlu perhatian"</li>
+                        <li><i class="fa-solid fa-check"></i> Progress circle ringkas tapi informatif</li>
+                        <li><i class="fa-solid fa-check"></i> User tahu lokasi tetap (selalu di Settings)</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-down"></i> Kekurangan</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Kurang menonjol dibanding full card</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Profile Concept 2 -->
+            <div class="concept-card">
+                <div class="concept-card-header">
+                    <div class="label"><i class="fa-solid fa-circle-2"></i> Konsep 2</div>
+                    <h3>Standalone Progress Card</h3>
+                </div>
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="phone-statusbar">
+                            <span>9:41</span>
+                            <span class="icons"><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
+                        </div>
+                        <div class="phone-header">Profile</div>
+                        <div class="phone-content">
+                            <div class="weather-strip">
+                                <i class="fa-solid fa-cloud"></i> Few clouds 32°C at Jakarta
+                            </div>
+                            <div class="avatar-block">
+                                <div class="avatar"></div>
+                                <div class="avatar-info">
+                                    <div class="name">Anisa Reviyana Sakti</div>
+                                    <div class="meta">+62 87838738687 <i class="fa-solid fa-circle-check" style="color:var(--primary)"></i></div>
+                                </div>
+                            </div>
+                            <div class="pp-card">
+                                <div class="pp-header">
+                                    <div class="pp-icon"><i class="fa-solid fa-star"></i></div>
+                                    <div>
+                                        <div class="pp-num">0</div>
+                                        <div class="pp-label">Active points</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STANDALONE CARD -->
+                            <div class="pc2-card">
+                                <div class="progress-ring"><span class="pct">60%</span></div>
+                                <div class="info">
+                                    <div class="title">Data Profiling TL</div>
+                                    <div class="desc">3 dari 5 pertanyaan wajib</div>
+                                    <div class="action">Lengkapi Sekarang →</div>
+                                </div>
+                            </div>
+
+                            <div class="claim-banner">
+                                <i class="fa-solid fa-star"></i>
+                                <span>Click here to claim reward, activate, and use PV</span>
+                            </div>
+                            <div style="font-size:13px;font-weight:600;color:var(--text);margin-top:6px;">Settings</div>
+                            <div class="settings-list">
+                                <div class="settings-item"><span>Account information</span><i class="fa-solid fa-chevron-right chev"></i></div>
+                                <div class="settings-item"><span>Notifications</span><i class="fa-solid fa-chevron-right chev"></i></div>
+                                <div class="settings-item"><span>Log in and security</span><i class="fa-solid fa-chevron-right chev"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spec-section">
+                    <h4><i class="fa-solid fa-palette"></i> Spesifikasi</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Background: <code>linear-gradient(135deg, #fff, #fff7ed)</code></li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Border: <code>1px solid #fed7aa</code></li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Progress ring 48x48px orange</li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Posisi: Antara PanoramaPoints & Settings</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-up"></i> Kelebihan</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Highly visible, mirrors PanoramaPoints prominence</li>
+                        <li><i class="fa-solid fa-check"></i> Progress ring paling besar & jelas</li>
+                        <li><i class="fa-solid fa-check"></i> Ada CTA text eksplisit</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-down"></i> Kekurangan</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Menambah cukup banyak ruang vertikal</li>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Duplikasi "card-area" dengan PanoramaPoints</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Profile Concept 3 -->
+            <div class="concept-card">
+                <div class="concept-card-header">
+                    <div class="label"><i class="fa-solid fa-circle-3"></i> Konsep 3</div>
+                    <h3>Highlight Banner (di atas Settings)</h3>
+                </div>
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="phone-statusbar">
+                            <span>9:41</span>
+                            <span class="icons"><i class="fa-solid fa-signal"></i> <i class="fa-solid fa-wifi"></i> <i class="fa-solid fa-battery-full"></i></span>
+                        </div>
+                        <div class="phone-header">Profile</div>
+                        <div class="phone-content">
+                            <div class="weather-strip">
+                                <i class="fa-solid fa-cloud"></i> Few clouds 32°C at Jakarta
+                            </div>
+                            <div class="avatar-block">
+                                <div class="avatar"></div>
+                                <div class="avatar-info">
+                                    <div class="name">Anisa Reviyana Sakti</div>
+                                </div>
+                            </div>
+                            <div class="pp-card">
+                                <div class="pp-header">
+                                    <div class="pp-icon"><i class="fa-solid fa-star"></i></div>
+                                    <div>
+                                        <div class="pp-num">0</div>
+                                        <div class="pp-label">Active points</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="claim-banner">
+                                <i class="fa-solid fa-star"></i>
+                                <span>Click here to claim reward, activate, and use PV</span>
+                            </div>
+
+                            <!-- HIGHLIGHT BANNER -->
+                            <div class="pc3-banner">
+                                <div class="icon"><i class="fa-solid fa-id-card-clip"></i></div>
+                                <div class="content">
+                                    <div class="title">Profil TL: 60% lengkap</div>
+                                    <div class="desc">Lengkapi untuk matching yang lebih baik</div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right chev"></i>
+                            </div>
+
+                            <div style="font-size:13px;font-weight:600;color:var(--text);">Settings</div>
+                            <div class="settings-list">
+                                <div class="settings-item"><span>Account information</span><i class="fa-solid fa-chevron-right chev"></i></div>
+                                <div class="settings-item"><span>Notifications</span><i class="fa-solid fa-chevron-right chev"></i></div>
+                                <div class="settings-item"><span>Log in and security</span><i class="fa-solid fa-chevron-right chev"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spec-section">
+                    <h4><i class="fa-solid fa-palette"></i> Spesifikasi</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Background: <code>linear-gradient(135deg, #fff7ed, #ffedd5)</code></li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Border-left: <code>4px solid #ea580c</code></li>
+                        <li class="bad"><i class="fa-solid fa-circle"></i> Posisi: Antara "claim reward" & Settings heading</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-up"></i> Kelebihan</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Compact, hanya 1 baris</li>
+                        <li><i class="fa-solid fa-check"></i> Kontras dengan pattern existing</li>
+                    </ul>
+                    <h4 style="margin-top: 16px;"><i class="fa-solid fa-thumbs-down"></i> Kekurangan</h4>
+                    <ul>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Tidak ada visual progress bar/circle</li>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Kemungkinan terlewat antara PanoramaPoints & Settings</li>
+                        <li class="bad"><i class="fa-solid fa-triangle-exclamation"></i> Lokasi kurang konsisten (bisa dianggap "promo")</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- RECOMMENDATION SUMMARY -->
+    <!-- ============================================== -->
+    <section class="recommendation">
+        <h2><i class="fa-solid fa-lightbulb"></i> Rekomendasi Kombinasi</h2>
+        <p>Berdasarkan balance antara visibility, konsistensi dengan design system existing, dan efisiensi ruang:</p>
+
+        <div class="pair">
+            <div class="pair-card">
+                <h4><i class="fa-solid fa-flag"></i> Landing Tour Leader</h4>
+                <div class="ref">Konsep 2 — Full Progress Card</div>
+                <p>Lokasi ini adalah <strong>primary entry point</strong>, butuh visibility tinggi. Card dengan circular progress + CTA button orange paling informatif dan actionable.</p>
+            </div>
+            <div class="pair-card">
+                <h4><i class="fa-solid fa-user"></i> Profile</h4>
+                <div class="ref">Konsep 1 — Settings List Item</div>
+                <p>Lokasi ini adalah <strong>secondary entry point</strong>, butuh konsistensi dengan pattern Settings list. Item dengan mini progress ring di kanan paling clean dan on-pattern.</p>
+            </div>
+        </div>
+
+        <p style="margin-top: 24px; font-size: 13px; opacity: 0.85;">
+            <i class="fa-solid fa-info-circle"></i> Kedua design menggunakan <strong>circular progress</strong> sebagai pattern konsisten — ukuran besar di Landing (56px), ukuran mini di Profile (32px). User melihat visual language yang sama di kedua lokasi.
+        </p>
+    </section>
+
+</body>
+</html>
