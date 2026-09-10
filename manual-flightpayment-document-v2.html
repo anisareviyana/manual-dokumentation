@@ -1,0 +1,5323 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual Book - Fitur Flight Payment ALVIS</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        /* Editorial Magazine - Monochrome Palette */
+        --primary: #1e293b;
+        --primary-light: #f1f5f9;
+        --primary-dark: #0f172a;
+        --primary-bg: #f8fafc;
+        --bg: #ffffff;
+        --bg-subtle: #fafafa;
+        --card-bg: #ffffff;
+        --text: #1e293b;
+        --text-light: #64748b;
+        --text-muted: #94a3b8;
+        --border: #e2e8f0;
+        --border-strong: #cbd5e1;
+        --success: #059669;
+        --warning: #d97706;
+        --danger: #dc2626;
+        --info: #0284c7;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.06);
+        --radius: 4px;
+        --radius-sm: 3px;
+        --transition: 0.2s ease;
+        --sidebar-width: 260px;
+        --header-height: 56px;
+        --color-input: #1e293b;
+        --color-payment: #1e293b;
+        --color-monitoring: #1e293b;
+        --color-support: #1e293b;
+        --flight-blue: #1e293b;
+        --sky-blue: #e2e8f0;
+        --cloud-white: #fafafa;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: calc(var(--header-height) + 20px);
+      }
+      body {
+        font-family:
+          'Poppins',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.8;
+        display: flex;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: opacity var(--transition);
+      }
+      a:hover {
+        opacity: 0.7;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: var(--sidebar-width);
+        height: 100vh;
+        background: var(--card-bg);
+        border-right: 1px solid var(--border);
+        overflow-y: auto;
+        z-index: 1000;
+        transition: transform var(--transition);
+        padding: 28px 0;
+      }
+      .sidebar::-webkit-scrollbar {
+        width: 3px;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--border-strong);
+      }
+      .sidebar-header {
+        padding: 0 24px 24px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 12px;
+      }
+      .sidebar-header .brand-logo {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--text);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .sidebar-header .brand-sub {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        margin-top: 4px;
+      }
+      .sidebar-nav {
+        padding: 0;
+      }
+      .sidebar-nav .nav-section {
+        padding: 20px 24px 6px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-muted);
+      }
+      .sidebar-nav a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 24px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-light);
+        transition: color var(--transition);
+        border-left: 2px solid transparent;
+      }
+      .sidebar-nav a i {
+        width: 16px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-muted);
+        transition: color var(--transition);
+      }
+      .sidebar-nav a:hover,
+      .sidebar-nav a.active {
+        color: var(--text);
+        border-left-color: var(--text);
+      }
+      .sidebar-nav a:hover i,
+      .sidebar-nav a.active i {
+        color: var(--text);
+      }
+      .sidebar-nav .nav-sub a {
+        padding-left: 50px;
+        font-size: 12px;
+      }
+
+      .main {
+        margin-left: var(--sidebar-width);
+        flex: 1;
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+      }
+
+      .top-header {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 0 40px;
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .top-header .breadcrumb {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .top-header .breadcrumb span {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .btn-toggle-sidebar {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: var(--text);
+        cursor: pointer;
+        padding: 4px;
+      }
+      .btn-toggle-sidebar:hover {
+        color: var(--primary);
+      }
+      .version-badge {
+        font-size: 13px;
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .content {
+        padding: 32px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      /* Cover with aircraft silhouette watermark */
+      .cover {
+        background: var(--text);
+        border-radius: var(--radius);
+        padding: 72px 56px;
+        color: #fff;
+        margin-bottom: 40px;
+        position: relative;
+      }
+      .cover .cover-badge {
+        display: inline-block;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 4px 14px;
+        border-radius: 2px;
+        font-size: 11px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .cover h1 {
+        font-size: 36px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+      }
+      .cover p {
+        font-size: 16px;
+        opacity: 0.9;
+        max-width: 600px;
+        position: relative;
+        z-index: 1;
+      }
+      .cover .cover-meta {
+        display: flex;
+        gap: 24px;
+        margin-top: 24px;
+        position: relative;
+        z-index: 1;
+        flex-wrap: wrap;
+      }
+      .cover .cover-meta span {
+        font-size: 13px;
+        opacity: 0.8;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .section {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 48px 56px;
+        margin-bottom: 32px;
+        transition: border-color var(--transition);
+        position: relative;
+      }
+      .section:hover {
+        border-color: var(--border-strong);
+      }
+      .section h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: -0.01em;
+      }
+      .section h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+        margin: 28px 0 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: -0.005em;
+      }
+      .section h3 i {
+        color: var(--text-muted);
+        font-size: 16px;
+      }
+      .section h4 {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+        margin: 20px 0 10px;
+      }
+      .section p {
+        font-size: 15px;
+        color: var(--text-light);
+        margin-bottom: 12px;
+      }
+      .section ul,
+      .section ol {
+        padding-left: 20px;
+        margin-bottom: 12px;
+      }
+      .section li {
+        font-size: 14px;
+        color: var(--text-light);
+        margin-bottom: 6px;
+      }
+      .section hr {
+        border: none;
+        border-top: 1px dashed var(--border);
+        margin: 24px 0;
+        position: relative;
+      }
+      .section hr::before {
+        content: '\f06e';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: var(--text-muted);
+        opacity: 0.4;
+      }
+
+      .step-card {
+        display: flex;
+        gap: 16px;
+        padding: 16px 20px;
+        background: var(--bg);
+        border-radius: var(--radius-sm);
+        margin-bottom: 12px;
+        border-left: 4px solid var(--primary);
+        transition: all var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+      .step-card::before {
+        content: '\f06e';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 10px;
+        color: var(--primary);
+        opacity: 0.1;
+      }
+      .step-card:hover {
+        background: var(--primary-bg);
+        transform: translateX(4px);
+        box-shadow: 0 2px 8px rgba(30, 58, 138, 0.08);
+      }
+      .step-card .step-number {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        background: var(--primary);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .step-card .step-content {
+        flex: 1;
+      }
+      .step-card .step-content strong {
+        display: block;
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .step-card .step-content p {
+        font-size: 13px;
+        color: var(--text-light);
+        margin: 0;
+      }
+
+      .steps {
+        list-style: none;
+        margin-bottom: 1.5rem;
+      }
+      .steps .step-item {
+        position: relative;
+        padding-left: 3rem;
+        margin-bottom: 1.5rem;
+      }
+      .steps .step-item .step-number {
+        position: absolute;
+        left: 0;
+        top: 2px;
+        width: 2rem;
+        height: 2rem;
+        background-color: var(--primary-bg);
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        border: 1px solid rgba(30, 58, 138, 0.2);
+      }
+      .steps .step-text strong {
+        color: #1e293b;
+      }
+
+      .info-box {
+        display: flex;
+        gap: 14px;
+        padding: 16px 20px;
+        border-radius: var(--radius-sm);
+        margin: 16px 0;
+        font-size: 14px;
+        background: var(--bg-subtle);
+        border-left: 2px solid var(--border-strong);
+        color: var(--text-light);
+      }
+      .info-box i {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        color: var(--text-muted);
+      }
+      .info-box.info {
+        border-left-color: var(--info);
+      }
+      .info-box.info i {
+        color: var(--info);
+      }
+      .info-box.success {
+        border-left-color: var(--success);
+      }
+      .info-box.success i {
+        color: var(--success);
+      }
+      .info-box.warning {
+        border-left-color: var(--warning);
+      }
+      .info-box.warning i {
+        color: var(--warning);
+      }
+      .info-box.danger {
+        border-left-color: var(--danger);
+      }
+      .info-box.danger i {
+        color: var(--danger);
+      }
+
+      .callout {
+        background: transparent;
+        border-left: 2px solid var(--text-muted);
+        padding: 16px 20px;
+        margin: 20px 0;
+        position: relative;
+      }
+      .callout .callout-title {
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        letter-spacing: 0;
+      }
+      .callout p {
+        color: var(--text-light);
+        margin-bottom: 0;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .callout.info {
+        border-left-color: var(--info);
+      }
+      .callout.info .callout-title {
+        color: var(--info);
+      }
+      .callout-orange {
+        border-left-color: var(--warning) !important;
+      }
+      .callout-orange .callout-title {
+        color: var(--warning) !important;
+      }
+      .callout-orange p {
+        color: var(--text-light);
+      }
+      .callout-success-custom {
+        border-left-color: var(--success) !important;
+      }
+      .callout-success-custom .callout-title {
+        color: var(--success) !important;
+      }
+      .callout-success-custom p {
+        color: var(--text-light);
+      }
+
+      .img-container {
+        margin: 1.5rem 0 2rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: var(--shadow);
+        max-width: 100%;
+      }
+      .img-container img {
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+        display: block;
+      }
+      .img-caption {
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 0.75rem;
+        font-weight: 500;
+        font-style: italic;
+      }
+
+      .section table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-size: 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+      }
+      .section table th {
+        background: var(--bg-subtle);
+        color: var(--text);
+        text-align: left;
+        padding: 12px 16px;
+        font-weight: 600;
+        font-size: 13px;
+        border-bottom: 1px solid var(--border);
+      }
+      .section table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-light);
+        vertical-align: top;
+      }
+      .section table tr:last-child td {
+        border-bottom: none;
+      }
+      .badge-req {
+        color: #dc2626;
+        font-weight: bold;
+        margin-left: 2px;
+      }
+      .badge-example {
+        background: #e2e8f0;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.85rem;
+        color: #334155;
+      }
+
+      .mockup {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 20px;
+        margin: 16px 0;
+        font-size: 13px;
+        position: relative;
+      }
+      .mockup::before {
+        content: '\f06e';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 6px;
+        right: 8px;
+        font-size: 10px;
+        color: var(--primary);
+        opacity: 0.08;
+      }
+      .mockup .mockup-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 12px;
+      }
+      .mockup .mockup-header .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .mockup .mockup-header .dot.red {
+        background: #ef4444;
+      }
+      .mockup .mockup-header .dot.yellow {
+        background: #f59e0b;
+      }
+      .mockup .mockup-header .dot.green {
+        background: #10b981;
+      }
+      .mockup .mockup-form label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 4px;
+        color: var(--text);
+      }
+      .mockup .mockup-form input,
+      .mockup .mockup-form textarea,
+      .mockup .mockup-form select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        background: var(--card-bg);
+        color: var(--text);
+        margin-bottom: 12px;
+        transition: border var(--transition);
+      }
+      .mockup .mockup-form input:focus,
+      .mockup .mockup-form textarea:focus,
+      .mockup .mockup-form select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+      }
+      .mockup .mockup-form textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+      .mockup .mockup-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 20px;
+        border: none;
+        border-radius: 6px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: default;
+        transition: all var(--transition);
+      }
+      .mockup .mockup-btn.primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .mockup .mockup-btn.secondary {
+        background: var(--bg);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      .mockup .mockup-btn.danger {
+        background: var(--danger);
+        color: #fff;
+      }
+      .mockup .mockup-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .mockup .mockup-table th,
+      .mockup .mockup-table td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      .mockup .mockup-table th {
+        background: var(--primary-bg);
+        font-weight: 600;
+        color: var(--primary);
+      }
+      .mockup .mockup-table td {
+        color: var(--text-light);
+      }
+      .mockup .mockup-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+      .mockup .mockup-badge.success {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .mockup .mockup-badge.warning {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .mockup .mockup-badge.danger {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .mockup .mockup-badge.info {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      /* Flight-themed flowchart */
+      .flowchart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        margin: 24px auto;
+        max-width: 500px;
+        position: relative;
+      }
+      .flowchart::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--info),
+          var(--info) 10px,
+          transparent 10px,
+          transparent 20px
+        );
+        transform: translateX(-50%);
+        opacity: 0.3;
+        z-index: 0;
+      }
+      .flowchart .flow-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        background: var(--bg);
+        border-radius: var(--radius-sm);
+        border-left: 4px solid var(--primary);
+        width: 100%;
+        position: relative;
+        z-index: 1;
+        transition: transform var(--transition);
+      }
+      .flowchart .flow-step:hover {
+        transform: scale(1.02);
+      }
+      .flowchart .flow-step .flow-icon {
+        width: 32px;
+        height: 32px;
+        background: var(--primary);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 14px;
+      }
+      .flowchart .flow-step .flow-text {
+        font-size: 14px;
+        color: var(--text);
+        font-weight: 500;
+      }
+      .flowchart .flow-step .flow-text small {
+        font-weight: 400;
+        color: var(--text-muted);
+        display: block;
+        font-size: 12px;
+        margin-top: 2px;
+      }
+      .flowchart .flow-arrow {
+        color: var(--info);
+        font-size: 20px;
+        padding: 4px 0;
+        opacity: 0.7;
+        z-index: 2;
+        position: relative;
+      }
+      .flowchart .flow-arrow i {
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.7;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .status-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 20px 0;
+      }
+      .status-card {
+        flex: 1;
+        min-width: 160px;
+        padding: 20px 18px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        text-align: center;
+        transition: border-color var(--transition);
+        background: var(--card-bg);
+      }
+      .status-card:hover {
+        border-color: var(--text-muted);
+      }
+      .status-card .card-icon {
+        font-size: 22px;
+        margin-bottom: 8px;
+        color: var(--text-muted);
+      }
+      .status-card strong {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text);
+      }
+      .status-card p {
+        font-size: 12px;
+        margin: 0;
+        color: var(--text-light);
+      }
+      .status-card.pending {
+        border-color: var(--warning);
+      }
+      .status-card.pending strong {
+        color: var(--warning);
+      }
+      .status-card.success {
+        border-color: var(--success);
+      }
+      .status-card.success strong {
+        color: var(--success);
+      }
+      .status-card.danger {
+        border-color: var(--danger);
+      }
+      .status-card.danger strong {
+        color: var(--danger);
+      }
+      .status-card.info {
+        border-color: var(--info);
+      }
+      .status-card.info strong {
+        color: var(--info);
+      }
+
+      .toc {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        padding: 28px 36px;
+        box-shadow: var(--shadow);
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+      .toc::before {
+        content: '\f06e';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        font-size: 48px;
+        color: var(--primary);
+        opacity: 0.03;
+      }
+      .toc h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .toc ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .toc ul li {
+        padding: 6px 0;
+        border-bottom: 1px dashed var(--border);
+      }
+      .toc ul li:last-child {
+        border-bottom: none;
+      }
+      .toc ul li a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--text);
+        transition: color var(--transition);
+      }
+      .toc ul li a:hover {
+        color: var(--primary);
+      }
+      .toc ul li a .toc-num {
+        font-weight: 600;
+        color: var(--primary);
+        min-width: 24px;
+      }
+      .toc ul li a i {
+        color: var(--text-muted);
+        font-size: 12px;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+      .tag.admin {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .tag.user {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .tag.both {
+        background: var(--primary-bg);
+        color: var(--primary);
+      }
+      .tag.system {
+        background: #e9d5ff;
+        color: #6b21a8;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 40px 32px;
+        color: var(--text-muted);
+        font-size: 13px;
+        border-top: 1px solid var(--border);
+        margin-top: 48px;
+      }
+      .footer a {
+        color: var(--text);
+      }
+
+      .scroll-top {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        width: 40px;
+        height: 40px;
+        background: var(--text);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        font-size: 16px;
+        cursor: pointer;
+        transition: opacity var(--transition);
+        opacity: 0;
+        visibility: hidden;
+        z-index: 999;
+      }
+      .scroll-top.show {
+        opacity: 1;
+        visibility: visible;
+      }
+      .scroll-top:hover {
+        background: var(--flight-blue);
+        transform: translateY(-2px);
+      }
+
+      .collapsible-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--primary);
+        cursor: pointer;
+        transition: all var(--transition);
+        margin: 12px 0;
+      }
+      .collapsible-toggle:hover {
+        background: var(--primary-bg);
+        border-color: var(--primary);
+      }
+      .collapsible-toggle i {
+        transition: transform var(--transition);
+      }
+      .collapsible-toggle.open i {
+        transform: rotate(180deg);
+      }
+      .collapsible-content {
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.4s ease,
+          opacity 0.3s ease,
+          margin 0.3s ease;
+        opacity: 0;
+        margin: 0;
+      }
+      .collapsible-content.open {
+        max-height: 2000px;
+        opacity: 1;
+        margin: 12px 0;
+      }
+
+      /* ===== SLIDE PANEL FOR IMAGE GALLERY ===== */
+      .panel-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition);
+      }
+      .panel-overlay.open {
+        opacity: 1;
+        visibility: visible;
+      }
+      .slide-panel {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        max-width: 720px;
+        height: 100%;
+        background: var(--card-bg);
+        z-index: 10000;
+        box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+        transition: right 0.4s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .slide-panel.open {
+        right: 0;
+      }
+      .slide-panel .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+      .slide-panel .panel-header .panel-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .slide-panel .panel-header .panel-title .panel-icon {
+        width: 32px;
+        height: 32px;
+        background: var(--primary-bg);
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .slide-panel .panel-header .panel-close {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: var(--bg);
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        transition: all var(--transition);
+      }
+      .slide-panel .panel-header .panel-close:hover {
+        background: #fee2e2;
+        color: var(--danger);
+      }
+      .slide-panel .panel-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+      }
+      .slide-panel .panel-body::-webkit-scrollbar {
+        width: 4px;
+      }
+      .slide-panel .panel-body::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 4px;
+      }
+      .slide-panel .panel-body .panel-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        background: var(--bg);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        margin-bottom: 20px;
+      }
+      .slide-panel .panel-body .panel-meta .meta-item {
+        font-size: 13px;
+        color: var(--text-light);
+      }
+      .slide-panel .panel-body .panel-meta .meta-item strong {
+        display: block;
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .slide-panel .panel-body .panel-summary {
+        background: var(--primary-bg);
+        border-left: 4px solid var(--primary);
+        padding: 16px;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        margin-bottom: 20px;
+      }
+      .slide-panel .panel-body .panel-summary strong {
+        display: block;
+        font-size: 14px;
+        color: var(--primary);
+        margin-bottom: 4px;
+      }
+      .slide-panel .panel-body .panel-summary p {
+        font-size: 13px;
+        color: var(--text-light);
+        margin: 0;
+      }
+      .slide-panel .panel-body .panel-gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .slide-panel .panel-body .panel-gallery .gallery-item {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        background: var(--bg);
+      }
+      .slide-panel .panel-body .panel-gallery .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .slide-panel .panel-body .panel-gallery .gallery-item .gallery-caption {
+        padding: 10px 14px;
+        font-size: 12px;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+      .slide-panel .panel-body .panel-gallery .gallery-item.placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        color: var(--text-muted);
+      }
+      .slide-panel .panel-body .panel-gallery .gallery-item.placeholder i {
+        font-size: 48px;
+        margin-bottom: 12px;
+        opacity: 0.3;
+      }
+      .slide-panel .panel-body .panel-gallery .gallery-item.placeholder p {
+        font-size: 14px;
+        margin: 0;
+      }
+      .slide-panel .panel-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 24px;
+        border-top: 1px solid var(--border);
+        flex-shrink: 0;
+        background: var(--bg);
+      }
+      .slide-panel .panel-nav button {
+        padding: 8px 20px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--card-bg);
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--transition);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .slide-panel .panel-nav button:hover:not(:disabled) {
+        background: var(--primary-bg);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .slide-panel .panel-nav button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .slide-panel .panel-nav .panel-counter {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      @media (max-width: 1024px) {
+        .slide-panel {
+          max-width: 85%;
+        }
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+        }
+        .btn-toggle-sidebar {
+          display: block;
+        }
+        .top-header {
+          padding: 0 16px;
+        }
+        .content {
+          padding: 16px;
+        }
+        .section {
+          padding: 24px 20px;
+        }
+        .cover {
+          padding: 32px 24px;
+        }
+        .cover h1 {
+          font-size: 24px;
+        }
+        .cover .cover-meta {
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        .step-card {
+          flex-direction: column;
+        }
+        .toc {
+          padding: 20px;
+        }
+        .section table {
+          font-size: 0.8rem;
+        }
+        .section table th,
+        .section table td {
+          padding: 0.5rem;
+        }
+      }
+      @media print {
+        .sidebar,
+        .top-header,
+        .scroll-top {
+          display: none !important;
+        }
+        .main {
+          margin-left: 0 !important;
+        }
+        .section {
+          box-shadow: none;
+          border: 1px solid #ddd;
+          break-inside: avoid;
+        }
+        .cover {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+
+      /* ===== PHONE MOCKUP STYLES ===== */
+      .phone-mockup {
+        width: 260px;
+        height: 540px;
+        background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        border-radius: 40px;
+        padding: 12px;
+        box-shadow:
+          0 50px 100px rgba(0, 0, 0, 0.35),
+          0 20px 40px rgba(0, 0, 0, 0.2),
+          inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        position: relative;
+        margin: 0 auto;
+      }
+      .phone-mockup::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 28px;
+        background: #000;
+        border-radius: 0 0 14px 14px;
+        z-index: 10;
+      }
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        border-radius: 30px;
+        overflow: hidden;
+        background: #000;
+        position: relative;
+      }
+      .phone-screen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 30px;
+      }
+      .phone-home {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+      }
+      .phone-side-btn {
+        position: absolute;
+        right: -3px;
+        top: 100px;
+        width: 3px;
+        height: 30px;
+        background: #2a2a2a;
+        border-radius: 0 2px 2px 0;
+      }
+      .phone-side-btn.volume-up {
+        top: 80px;
+        height: 50px;
+      }
+      .phone-side-btn.volume-down {
+        top: 140px;
+        height: 50px;
+      }
+      .phone-side-btn.power {
+        left: -3px;
+        right: auto;
+        top: 100px;
+        height: 40px;
+        border-radius: 2px 0 0 2px;
+      }
+
+      /* ===== CAROUSEL STYLES ===== */
+      .app-carousel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 24px 0;
+      }
+      .carousel-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+      }
+      .carousel-slides {
+        display: flex;
+        transition: transform 0.4s ease;
+      }
+      .carousel-slide {
+        min-width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0 20px;
+      }
+      .carousel-caption {
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-light);
+        margin-top: 12px;
+        padding: 0 20px;
+      }
+      .carousel-caption strong {
+        color: var(--primary);
+      }
+      .carousel-dots {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 12px;
+      }
+      .carousel-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .carousel-dot.active {
+        background: var(--primary);
+        width: 24px;
+        border-radius: 4px;
+      }
+      .carousel-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .carousel-nav-btn:hover {
+        background: var(--primary-bg);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .carousel-nav-btn.prev {
+        left: -18px;
+      }
+      .carousel-nav-btn.next {
+        right: -18px;
+      }
+
+      /* ===== COMPACT STEPS STYLES ===== */
+      .compact-steps {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 16px 0;
+      }
+      .compact-step {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        font-size: 12px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .compact-step:hover {
+        background: var(--primary-bg);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .compact-step.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+      .compact-step .step-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--primary-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--primary);
+      }
+      .compact-step.active .step-icon {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+      .compact-step .step-icon i {
+        font-size: 10px;
+      }
+
+      /* ===== INLINE STEP DETAIL ===== */
+      .step-detail {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        margin: 12px 0;
+        display: none;
+      }
+      .step-detail.active {
+        display: block;
+      }
+      .step-detail h5 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .step-detail p {
+        font-size: 13px;
+        color: var(--text-light);
+        margin: 0;
+      }
+
+      /* ===== BROWSER MOCKUP STYLES (Section 2.2) ===== */
+      .browser-mockup {
+        width: 100%;
+        max-width: 900px;
+        height: auto;
+        background: #f5f5f5;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow:
+          0 20px 40px rgba(0, 0, 0, 0.15),
+          0 8px 16px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        position: relative;
+      }
+      .browser-header {
+        background: linear-gradient(180deg, #e8e8e8 0%, #d8d8d8 100%);
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #ccc;
+      }
+      .browser-buttons {
+        display: flex;
+        gap: 6px;
+      }
+      .browser-btn {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .browser-btn.red {
+        background: #ff5f57;
+      }
+      .browser-btn.yellow {
+        background: #ffbd2e;
+      }
+      .browser-btn.green {
+        background: #28ca41;
+      }
+      .browser-address-bar {
+        flex: 1;
+        background: #fff;
+        border-radius: 6px;
+        padding: 6px 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #666;
+      }
+      .browser-address-bar i {
+        color: #28ca41;
+        font-size: 10px;
+      }
+      .browser-menu {
+        color: #666;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .browser-screen {
+        width: 100%;
+        background: #fff;
+        position: relative;
+      }
+      .browser-screen img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* ===== CAROUSEL P2 STYLES (Section 2.2) ===== */
+      .app-carousel-p2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 24px 0;
+      }
+      .carousel-container-p2 {
+        position: relative;
+        display: flex;
+        justify-content: center;
+      }
+      .carousel-slides-p2 {
+        display: flex;
+        transition: transform 0.4s ease;
+      }
+      .carousel-slide-p2 {
+        min-width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0 20px;
+      }
+      .carousel-caption-p2 {
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-light);
+        margin-top: 12px;
+        padding: 0 20px;
+      }
+      .carousel-caption-p2 strong {
+        color: var(--primary);
+      }
+      .carousel-dots-p2 {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 12px;
+      }
+      .carousel-dot-p2 {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .carousel-dot-p2.active {
+        background: var(--primary);
+        width: 24px;
+        border-radius: 4px;
+      }
+      .carousel-nav-btn-p2 {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .carousel-nav-btn-p2:hover {
+        background: var(--primary-bg);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .carousel-nav-btn-p2.prev {
+        left: -18px;
+      }
+      .carousel-nav-btn-p2.next {
+        right: -18px;
+      }
+
+      /* ===== COMPACT STEPS P2 STYLES (Section 2.2) ===== */
+      .compact-step-p2 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        font-size: 12px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .compact-step-p2:hover {
+        background: var(--primary-bg);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .compact-step-p2.active {
+        background: var(--success);
+        border-color: var(--success);
+        color: #fff;
+      }
+      .compact-step-p2 .step-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--primary-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--primary);
+      }
+      .compact-step-p2.active .step-icon {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+      .compact-step-p2 .step-icon i {
+        font-size: 10px;
+      }
+
+      /* ===== INLINE STEP DETAIL P2 (Section 2.2) ===== */
+      .step-detail-p2 {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        margin: 12px 0;
+        display: none;
+      }
+      .step-detail-p2.active {
+        display: block;
+      }
+      .step-detail-p2 h5 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--success);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .step-detail-p2 p {
+        font-size: 13px;
+        color: var(--text-light);
+        margin: 0;
+      }
+
+      /* ===== COMPACT STEPS P3 STYLES (Section 3.1 - Credit Card) ===== */
+      .compact-steps-p3 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 16px 0;
+      }
+      .compact-step-p3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        font-size: 12px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .compact-step-p3:hover {
+        background: var(--primary-bg);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .compact-step-p3.active {
+        background: #f59e0b;
+        border-color: #f59e0b;
+        color: #fff;
+      }
+      .compact-step-p3 .step-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--primary-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--primary);
+      }
+      .compact-step-p3.active .step-icon {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+      .compact-step-p3 .step-icon i {
+        font-size: 10px;
+      }
+
+      /* ===== INLINE STEP DETAIL P3 (Section 3.1 - Credit Card) ===== */
+      .step-detail-p3 {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        margin: 12px 0;
+        display: none;
+      }
+      .step-detail-p3.active {
+        display: block;
+      }
+      .step-detail-p3 h5 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #f59e0b;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .step-detail-p3 p {
+        font-size: 13px;
+        color: var(--text-light);
+        margin: 0;
+      }
+
+      /* ===== CAROUSEL P3 STYLES (Section 3.1 - Credit Card) ===== */
+      .app-carousel-p3 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 24px 0;
+      }
+      .carousel-container-p3 {
+        position: relative;
+        display: flex;
+        justify-content: center;
+      }
+      .carousel-slides-p3 {
+        display: flex;
+        transition: transform 0.4s ease;
+      }
+      .carousel-slide-p3 {
+        min-width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0 20px;
+      }
+      .carousel-caption-p3 {
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-light);
+        margin-top: 12px;
+        padding: 0 20px;
+      }
+      .carousel-caption-p3 strong {
+        color: #f59e0b;
+      }
+      .carousel-dots-p3 {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 12px;
+      }
+      .carousel-dot-p3 {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .carousel-dot-p3.active {
+        background: #f59e0b;
+        width: 24px;
+        border-radius: 4px;
+      }
+      .carousel-nav-btn-p3 {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .carousel-nav-btn-p3:hover {
+        background: #fff3e0;
+        border-color: #f59e0b;
+        color: #f59e0b;
+      }
+      .carousel-nav-btn-p3.prev {
+        left: -18px;
+      }
+      .carousel-nav-btn-p3.next {
+        right: -18px;
+      }
+
+      /* ===== BOOKING FLOW THEME (Section 2.1 - Mobile, P4) ===== */
+      :root {
+        --color-booking: #3b82f6;
+      }
+
+      /* ===== COMPACT STEPS P4 (Section 2.1 - Mobile Booking) ===== */
+      .compact-steps-p4 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 16px 0;
+      }
+      .compact-step-p4 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        font-size: 12px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .compact-step-p4:hover {
+        background: #dbeafe;
+        border-color: var(--color-input);
+        color: var(--color-input);
+      }
+      .compact-step-p4.active {
+        background: var(--color-input);
+        border-color: var(--color-input);
+        color: #fff;
+      }
+      .compact-step-p4 .step-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #dbeafe;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--color-input);
+      }
+      .compact-step-p4.active .step-icon {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+      .compact-step-p4 .step-icon i {
+        font-size: 10px;
+      }
+
+      /* ===== INLINE STEP DETAIL P4 (Section 2.1 - Mobile Booking) ===== */
+      .step-detail-p4 {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        margin: 12px 0;
+        display: none;
+      }
+      .step-detail-p4.active {
+        display: block;
+      }
+      .step-detail-p4 h5 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--color-input);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .step-detail-p4 p {
+        font-size: 13px;
+        color: var(--text-light);
+        margin: 0;
+      }
+
+      /* ===== CAROUSEL P4 (Section 2.1 - Mobile Booking) ===== */
+      .app-carousel-p4 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 24px 0;
+      }
+      .carousel-container-p4 {
+        position: relative;
+        display: flex;
+        justify-content: center;
+      }
+      .carousel-slides-p4 {
+        display: flex;
+        transition: transform 0.4s ease;
+      }
+      .carousel-slide-p4 {
+        min-width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0 20px;
+      }
+      .carousel-caption-p4 {
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-light);
+        margin-top: 12px;
+        padding: 0 20px;
+      }
+      .carousel-caption-p4 strong {
+        color: var(--color-input);
+      }
+      .carousel-dots-p4 {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 12px;
+      }
+      .carousel-dot-p4 {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .carousel-dot-p4.active {
+        background: var(--color-input);
+        width: 24px;
+        border-radius: 4px;
+      }
+      .carousel-nav-btn-p4 {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .carousel-nav-btn-p4:hover {
+        background: #dbeafe;
+        border-color: var(--color-input);
+        color: var(--color-input);
+      }
+      .carousel-nav-btn-p4.prev {
+        left: -18px;
+      }
+      .carousel-nav-btn-p4.next {
+        right: -18px;
+      }
+
+      /* ===== COMPACT STEPS P5 (Section 2.2 - Web Booking) ===== */
+      .compact-steps-p5 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 16px 0;
+      }
+      .compact-step-p5 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        font-size: 12px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .compact-step-p5:hover {
+        background: #d1fae5;
+        border-color: var(--color-payment);
+        color: var(--color-payment);
+      }
+      .compact-step-p5.active {
+        background: var(--color-payment);
+        border-color: var(--color-payment);
+        color: #fff;
+      }
+      .compact-step-p5 .step-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #d1fae5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: var(--color-payment);
+      }
+      .compact-step-p5.active .step-icon {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+      .compact-step-p5 .step-icon i {
+        font-size: 10px;
+      }
+
+      /* ===== INLINE STEP DETAIL P5 (Section 2.2 - Web Booking) ===== */
+      .step-detail-p5 {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        margin: 12px 0;
+        display: none;
+      }
+      .step-detail-p5.active {
+        display: block;
+      }
+      .step-detail-p5 h5 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--color-payment);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .step-detail-p5 p {
+        font-size: 13px;
+        color: var(--text-light);
+        margin: 0;
+      }
+
+      /* ===== CAROUSEL P5 (Section 2.2 - Web Booking) ===== */
+      .app-carousel-p5 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 24px 0;
+      }
+      .carousel-container-p5 {
+        position: relative;
+        display: flex;
+        justify-content: center;
+      }
+      .carousel-slides-p5 {
+        display: flex;
+        transition: transform 0.4s ease;
+      }
+      .carousel-slide-p5 {
+        min-width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0 20px;
+      }
+      .carousel-caption-p5 {
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-light);
+        margin-top: 12px;
+        padding: 0 20px;
+      }
+      .carousel-caption-p5 strong {
+        color: var(--color-payment);
+      }
+      .carousel-dots-p5 {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 12px;
+      }
+      .carousel-dot-p5 {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .carousel-dot-p5.active {
+        background: var(--color-payment);
+        width: 24px;
+        border-radius: 4px;
+      }
+      .carousel-nav-btn-p5 {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .carousel-nav-btn-p5:hover {
+        background: #d1fae5;
+        border-color: var(--color-payment);
+        color: var(--color-payment);
+      }
+      .carousel-nav-btn-p5.prev {
+        left: -18px;
+      }
+      .carousel-nav-btn-p5.next {
+        right: -18px;
+      }
+
+      /* ===== PLACEHOLDER IMAGE STYLES ===== */
+      .placeholder-img {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        text-align: center;
+        padding: 20px;
+      }
+      .placeholder-img.placeholder-web {
+        background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+        color: var(--color-payment);
+      }
+      .placeholder-img i {
+        font-size: 36px;
+        margin-bottom: 12px;
+        opacity: 0.6;
+      }
+      .placeholder-img p {
+        font-size: 12px;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.4;
+      }
+      .placeholder-img small {
+        font-size: 10px;
+        opacity: 0.6;
+        margin-top: 6px;
+        font-weight: 400;
+      }
+
+      /* ===== STEP GRID (Static - replacement for carousel) ===== */
+      .step-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin: 24px 0;
+      }
+      .step-grid-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 24px 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        transition: border-color var(--transition);
+      }
+      .step-grid-item:hover {
+        border-color: var(--text);
+      }
+      .step-grid-badge {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--text);
+        color: #fff;
+        font-weight: 600;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        letter-spacing: -0.02em;
+      }
+      .step-grid-p5 .step-grid-badge {
+        background: var(--text);
+      }
+      .step-grid-caption {
+        text-align: center;
+      }
+      .step-grid-caption strong {
+        display: block;
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 6px;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+      }
+      .step-grid-caption p {
+        font-size: 13px;
+        color: var(--text-light);
+        margin: 0;
+        line-height: 1.65;
+      }
+      @media (max-width: 768px) {
+        .step-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">ALVIS</div>
+        <div class="brand-sub">Manual Book Flight Payment</div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">Pendahuluan</div>
+        <a href="#bab1" class="active"
+          ><i class="fas fa-info-circle"></i> Bab 1: Pendahuluan</a
+        >
+        <div class="nav-section">Input Booking</div>
+        <a href="#bab2"><i class="fas fa-plane"></i> Bab 2: Input Booking</a>
+        <div class="nav-sub">
+          <a href="#bab2-1"
+            ><i class="fas fa-chevron-right"></i> 2.1 Booking via Mobile Apps</a
+          >
+          <a href="#bab2-2"
+            ><i class="fas fa-chevron-right"></i> 2.2 Booking via Web</a
+          >
+          <a href="#bab2-3"
+            ><i class="fas fa-chevron-right"></i> 2.3 Input dari KATRINA -
+            Mobile</a
+          >
+          <a href="#bab2-4"
+            ><i class="fas fa-chevron-right"></i> 2.4 Input dari KATRINA -
+            Web</a
+          >
+        </div>
+        <div class="nav-section">Pembayaran</div>
+        <a href="#bab3"><i class="fas fa-credit-card"></i> Bab 3: Pembayaran</a>
+        <div class="nav-sub">
+          <a href="#bab3-1"
+            ><i class="fas fa-chevron-right"></i> 3.1 Credit Card</a
+          >
+          <a href="#bab3-2"
+            ><i class="fas fa-chevron-right"></i> 3.2 Virtual Account</a
+          >
+        </div>
+        <div class="nav-section">Monitoring</div>
+        <a href="#bab4"
+          ><i class="fas fa-desktop"></i> Bab 4: Monitoring Backoffice</a
+        >
+        <div class="nav-section">Support</div>
+        <a href="#bab5"
+          ><i class="fas fa-question-circle"></i> Bab 5: Troubleshooting &
+          FAQ</a
+        >
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="top-header">
+        <div class="header-left">
+          <button
+            class="btn-toggle-sidebar"
+            id="btnToggleSidebar"
+            aria-label="Toggle sidebar"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="breadcrumb">
+            <i class="fas fa-home"></i> Flight / Payment /
+            <span>Manual Book</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <span class="version-badge"
+            ><i class="fas fa-sync-alt"></i> v1.0</span
+          >
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="cover">
+          <!-- Aircraft watermark removed for minimalist design -->
+          <span class="cover-badge"
+            ><i class="fas fa-credit-card"></i> Fitur Flight Payment</span
+          >
+          <h1>Manual Book<br />Flight Payment ALVIS</h1>
+          <p>
+            Panduan lengkap pembayaran pemesanan tiket pesawat KATRINA melalui
+            ALVIS — mulai dari input booking, pembayaran (credit card & virtual
+            account), hingga monitoring backoffice.
+          </p>
+          <div class="cover-meta">
+            <span><i class="fas fa-calendar-alt"></i> Juli 2026</span>
+            <span><i class="fas fa-credit-card"></i> Credit Card & VA</span>
+            <span><i class="fas fa-globe"></i> ALVIS Mobile & Web</span>
+            <span><i class="fas fa-tag"></i> v1.0</span>
+          </div>
+        </section>
+
+        <div class="toc">
+          <h2><i class="fas fa-list"></i> Daftar Isi</h2>
+          <ul>
+            <li>
+              <a href="#bab1"
+                ><span class="toc-num">1</span>
+                <i class="fas fa-info-circle"></i> Pendahuluan</a
+              >
+            </li>
+            <li>
+              <a href="#bab2"
+                ><span class="toc-num">2</span>
+                <i class="fas fa-plane"></i> Input Booking ke ALVIS</a
+              >
+            </li>
+            <li>
+              <a href="#bab3"
+                ><span class="toc-num">3</span>
+                <i class="fas fa-credit-card"></i> Pembayaran (Payment)</a
+              >
+            </li>
+            <li>
+              <a href="#bab4"
+                ><span class="toc-num">4</span>
+                <i class="fas fa-desktop"></i> Monitoring Backoffice</a
+              >
+            </li>
+            <li>
+              <a href="#bab5"
+                ><span class="toc-num">5</span>
+                <i class="fas fa-question-circle"></i> Troubleshooting & FAQ</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- BAB 1: PENDAHULUAN -->
+        <section id="bab1" class="section">
+          <h2>Bab 1: Pendahuluan</h2>
+
+          <h3>
+            <i class="fas fa-info-circle"></i> 1.1 Tentang Fitur Flight Payment
+          </h3>
+          <p>
+            <strong>Flight Payment</strong> adalah fitur yang memungkinkan
+            pembayaran pemesanan tiket pesawat yang telah dilakukan melalui
+            aplikasi <strong>KATRINA</strong>, dengan pembayaran dilakukan
+            melalui <strong>ALVIS</strong>. Fitur ini mencakup alur dari input
+            booking dari KATRINA ke sistem ALVIS (melalui ALVIS Mobile Apps atau
+            Web Panorama JTB), kemudian melakukan pembayaran (via Credit Card
+            atau Virtual Account), hingga monitoring dan support melalui
+            backoffice.
+          </p>
+
+          <div class="info-box info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              ALVIS Mobile Apps dan Web Panorama JTB dikelola dalam
+              <strong>1 sistem backoffice yang sama</strong>. Monitoring booking
+              yang sudah dimasukkan dapat dilakukan dari sisi backoffice untuk
+              memastikan semuanya ter-record dengan baik.
+            </div>
+          </div>
+
+          <h3><i class="fas fa-star"></i> 1.2 Manfaat Flight Payment</h3>
+          <ul>
+            <li>
+              <strong>Terintegrasi:</strong> Booking dari KATRINA langsung masuk
+              ke sistem ALVIS
+            </li>
+            <li>
+              <strong>Multi-channel:</strong> Input booking bisa melalui mobile
+              apps maupun web
+            </li>
+            <li>
+              <strong>Fleksibel:</strong> Pembayaran bisa melalui Credit Card
+              atau Virtual Account
+            </li>
+            <li>
+              <strong>Monitoring Real-time:</strong> Status pembayaran, issued,
+              CSR number, dan invoice bisa dipantau dari backoffice
+            </li>
+            <li>
+              <strong>Support Center:</strong> Penanganan kendala dan kegagalan
+              dapat dilakukan melalui backoffice
+            </li>
+          </ul>
+
+          <h3><i class="fas fa-route"></i> 1.3 Alur Bisnis Flight Payment</h3>
+          <p>
+            Berikut adalah alur lengkap dari booking tiket pesawat KATRINA
+            hingga pembayaran dan issued:
+          </p>
+
+          <div class="flowchart">
+            <div class="flow-step">
+              <div class="flow-icon"><i class="fas fa-ticket-alt"></i></div>
+              <div class="flow-text">
+                Booking tiket di KATRINA
+                <small>Pemesanan tiket pesawat oleh pengguna</small>
+              </div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="flow-step" style="border-left-color: var(--info)">
+              <div class="flow-icon" style="background: var(--info)">
+                <i class="fas fa-upload"></i>
+              </div>
+              <div class="flow-text">
+                Input booking ke ALVIS
+                <small>Via ALVIS Mobile Apps atau Web Panorama JTB</small>
+              </div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="flow-step" style="border-left-color: var(--success)">
+              <div class="flow-icon" style="background: var(--success)">
+                <i class="fas fa-credit-card"></i>
+              </div>
+              <div class="flow-text">
+                Pembayaran <small>Credit Card atau Virtual Account</small>
+              </div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="flow-step" style="border-left-color: var(--warning)">
+              <div class="flow-icon" style="background: var(--warning)">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="flow-text">
+                Issued tiket di KATRINA
+                <small>ALVIS menerima update status dari KATRINA</small>
+              </div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div
+              class="flow-step"
+              style="border-left-color: var(--color-support)"
+            >
+              <div class="flow-icon" style="background: var(--color-support)">
+                <i class="fas fa-file-invoice"></i>
+              </div>
+              <div class="flow-text">
+                CSR Number & Invoice
+                <small>Diterbitkan setelah proses issued selesai</small>
+              </div>
+            </div>
+          </div>
+
+          <h3><i class="fas fa-desktop"></i> 1.4 Persyaratan Sistem</h3>
+          <table>
+            <tr>
+              <th>Platform</th>
+              <th>Persyaratan</th>
+            </tr>
+            <tr>
+              <td>
+                <i class="fas fa-mobile-alt" style="color: var(--primary)"></i>
+                ALVIS Mobile Apps
+              </td>
+              <td>Android / iOS, koneksi internet</td>
+            </tr>
+            <tr>
+              <td>
+                <i class="fas fa-globe" style="color: var(--primary)"></i> Web
+                Panorama JTB
+              </td>
+              <td>
+                Browser modern (Chrome, Firefox, Edge, Safari) + koneksi
+                internet
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <i class="fas fa-desktop" style="color: var(--primary)"></i>
+                Backoffice ALVIS
+              </td>
+              <td>Browser modern + koneksi internet + akses login admin</td>
+            </tr>
+          </table>
+        </section>
+
+        <!-- BAB 2: INPUT BOOKING -->
+        <section id="bab2" class="section">
+          <h2>Bab 2: Input Booking ke ALVIS</h2>
+          <p>
+            ALVIS menyediakan <strong>2 alur</strong> untuk memasukkan booking
+            tiket pesawat ke dalam sistem. Kedua alur dapat dilakukan melalui
+            <strong>2 channel</strong> (mobile apps atau web):
+          </p>
+
+          <div class="status-cards" style="margin-bottom: 24px">
+            <div class="status-card info">
+              <div class="card-icon">✈️</div>
+              <strong>Booking Langsung</strong>
+              <p>Pesan tiket baru via ALVIS (lihat sub-bab 2.1 &amp; 2.2)</p>
+            </div>
+            <div class="status-card success">
+              <div class="card-icon">📥</div>
+              <strong>Input dari KATRINA</strong>
+              <p>
+                Import booking yang sudah ada di KATRINA (lihat sub-bab 2.3
+                &amp; 2.4)
+              </p>
+            </div>
+          </div>
+
+          <hr />
+
+          <h3 id="bab2-1">
+            <i class="fas fa-mobile-alt"></i> 2.1 Booking Flight via ALVIS
+            Mobile Apps
+          </h3>
+          <p>
+            Pada alur ini, pengguna dapat melakukan
+            <strong>pemesanan tiket pesawat baru</strong> langsung dari aplikasi
+            ALVIS di smartphone, tanpa harus pesan di KATRINA terlebih dahulu.
+            Pemesanan dilakukan dalam <strong>8 langkah</strong>.
+          </p>
+
+          <div class="info-box info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              Alur ini adalah <strong>booking langsung</strong> (bukan input
+              dari KATRINA). Untuk input booking yang sudah ada di KATRINA,
+              lihat sub-bab 2.3 dan 2.4.
+            </div>
+          </div>
+
+          <!-- Step Grid P4 (Static, replaces carousel + tabs + step-details) -->
+          <div class="step-grid step-grid-p4">
+            <div class="step-grid-item">
+              <div class="step-grid-badge">1</div>
+              <div class="phone-mockup">
+                <div class="phone-side-btn volume-up"></div>
+                <div class="phone-side-btn volume-down"></div>
+                <div class="phone-side-btn power"></div>
+                <div class="phone-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fhalaman-flight.png?alt=media&token=a7f21c8a-7392-4c30-91ae-cc757fff5aed"
+                    alt="Halaman akses Flight"
+                  />
+
+                  <div class="phone-home"></div>
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Akses Menu Flight</strong>
+                <p>
+                  Buka aplikasi <strong>ALVIS</strong> di smartphone Anda,
+                  kemudian akses menu <strong>Flight</strong> dari halaman utama
+                  untuk mulai melakukan pemesanan tiket pesawat baru.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">2</div>
+              <div class="phone-mockup">
+                <div class="phone-side-btn volume-up"></div>
+                <div class="phone-side-btn volume-down"></div>
+                <div class="phone-side-btn power"></div>
+                <div class="phone-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Finput-search.png?alt=media&token=1ee95f44-c62e-484d-af7b-d8b63edd2bb5"
+                    alt="Halaman akses search airport"
+                  />
+                  <div class="phone-home"></div>
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Input Data Pencarian</strong>
+                <p>
+                  Isi form pencarian flight: <strong>kota asal</strong>,
+                  <strong>kota tujuan</strong>, <strong>tanggal berangkat</strong>,
+                  dan <strong>jumlah penumpang</strong>. Pastikan data yang
+                  dimasukkan sudah benar.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">3</div>
+              <div class="phone-mockup">
+                <div class="phone-side-btn volume-up"></div>
+                <div class="phone-side-btn volume-down"></div>
+                <div class="phone-side-btn power"></div>
+                <div class="phone-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fjadwal-flight.png?alt=media&token=7dafb29a-3710-438c-9115-4a049d9ad5a3"
+                    alt="Halaman jadwal flight"
+                  />
+                  <div class="phone-home"></div>
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Cari Jadwal Flight</strong>
+                <p>
+                  Tap tombol <strong>Cari</strong>. Sistem akan menampilkan
+                  <strong>daftar jadwal penerbangan</strong> yang tersedia sesuai
+                  kriteria pencarian Anda.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">4</div>
+              <div class="phone-mockup">
+                <div class="phone-side-btn volume-up"></div>
+                <div class="phone-side-btn volume-down"></div>
+                <div class="phone-side-btn power"></div>
+                <div class="phone-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fpilih-flight.png?alt=media&token=94b8a5bb-7aa0-442c-8e1c-a4786a983f7d"
+                    alt="Halaman pilih flight"
+                  />
+                  <div class="phone-home"></div>
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Pilih Flight</strong>
+                <p>
+                  Pilih jadwal penerbangan yang sesuai dari daftar. Pertimbangkan
+                  <strong>harga</strong>, <strong>waktu keberangkatan</strong>,
+                  <strong>maskapai</strong>, dan <strong>transit</strong> sebelum
+                  memilih.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">5</div>
+              <div class="phone-mockup">
+                <div class="phone-side-btn volume-up"></div>
+                <div class="phone-side-btn volume-down"></div>
+                <div class="phone-side-btn power"></div>
+                <div class="phone-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fdata-pax.png?alt=media&token=028124c7-fe69-4683-b36c-009135c814c7"
+                    alt="Halaman input pax"
+                  />
+                  <div class="phone-home"></div>
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Input Data Penumpang</strong>
+                <p>
+                  Isi <strong>data penumpang</strong> sesuai dokumen resmi: nama
+                  lengkap, nomor identitas (KTP/Paspor), tanggal lahir, dan
+                  kontak. Pastikan data sesuai dengan dokumen perjalanan.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">6</div>
+              <div class="phone-mockup">
+                <div class="phone-side-btn volume-up"></div>
+                <div class="phone-side-btn volume-down"></div>
+                <div class="phone-side-btn power"></div>
+                <div class="phone-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fpilih-pembayaran.png?alt=media&token=e5f62136-3f53-4071-88bc-e17c4a0f6295"
+                    alt="Halaman pilih pembayaran"
+                  />
+                  <div class="phone-home"></div>
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Pilih Metode Pembayaran</strong>
+                <p>
+                  Pilih metode pembayaran: <strong>Credit Card</strong> atau
+                  <strong>Virtual Account</strong>. Masing-masing memiliki
+                  kelebihan — CC lebih cepat, VA lebih fleksibel.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">7</div>
+              <div class="phone-mockup">
+                <div class="phone-side-btn volume-up"></div>
+                <div class="phone-side-btn volume-down"></div>
+                <div class="phone-side-btn power"></div>
+                <div class="phone-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fproses-pembayaran.png?alt=media&token=bae6f4c6-9523-45d6-a028-706572df1826"
+                    alt="Halaman proses pembayaran"
+                  />
+                  <div class="phone-home"></div>
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Lakukan Pembayaran</strong>
+                <p>
+                  Ikuti instruksi pembayaran sesuai metode yang dipilih. Untuk
+                  Credit Card, masukkan nomor kartu dan OTP. Untuk VA, transfer
+                  ke nomor VA yang di-generate.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">8</div>
+              <div class="phone-mockup">
+                <div class="phone-side-btn volume-up"></div>
+                <div class="phone-side-btn volume-down"></div>
+                <div class="phone-side-btn power"></div>
+                <div class="phone-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fdetail-booking.png?alt=media&token=63197d32-6c55-445d-b5fc-06c342f59696"
+                    alt="Halaman detail booking"
+                  />
+                  <div class="phone-home"></div>
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Akses Booking Detail</strong>
+                <p>
+                  Setelah pembayaran sukses, sistem menampilkan halaman
+                  <strong>Booking Detail</strong> yang berisi e-ticket, nomor
+                  booking, dan status issued. Simpan informasi ini untuk
+                  referensi.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="callout"
+            style="background: #f0f9ff; border-left-color: var(--color-input)"
+          >
+            <div class="callout-title" style="color: #1e40af">
+              ✈️ Booking Berhasil
+            </div>
+            <p style="color: #0c4a6e">
+              Setelah 8 langkah selesai, tiket pesawat baru sudah terpesan di
+              sistem ALVIS. E-ticket tersedia di halaman
+              <strong>Booking Detail</strong> dan dapat dilihat sewaktu-waktu
+              melalui menu <strong>My Trips</strong>.
+            </p>
+          </div>
+
+          <hr />
+
+          <h3 id="bab2-2">
+            <i class="fas fa-globe"></i> 2.2 Booking Flight via Web Panorama JTB
+          </h3>
+          <p>
+            Selain melalui mobile apps, pengguna juga dapat melakukan
+            <strong>pemesanan tiket pesawat baru</strong> melalui website
+            <strong>Panorama JTB</strong>. Cocok untuk pengguna yang lebih
+            nyaman menggunakan browser desktop/laptop dengan tampilan yang lebih
+            luas.
+          </p>
+
+          <!-- Step Grid P5 (Static, replaces carousel + tabs + step-details) -->
+          <div class="step-grid step-grid-p5">
+            <div class="step-grid-item">
+              <div class="step-grid-badge">1</div>
+              <div class="browser-mockup">
+                <div class="browser-header">
+                  <div class="browser-buttons">
+                    <span class="browser-btn red"></span>
+                    <span class="browser-btn yellow"></span>
+                    <span class="browser-btn green"></span>
+                  </div>
+                  <div class="browser-address-bar">
+                    <i class="fas fa-lock"></i>
+                    <span>panorama-jtb.com/flight</span>
+                  </div>
+                  <div class="browser-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-search.png?alt=media&token=04ae5b29-685a-45f2-8018-29f755bd0eec"
+                    alt="Akses Menu Flight"
+                  />
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Akses Menu Flight</strong>
+                <p>
+                  Login ke website <strong>Panorama JTB</strong>. Pada halaman
+                  utama, akses menu <strong>Flight</strong> untuk mulai
+                  melakukan pemesanan tiket pesawat baru.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">2</div>
+              <div class="browser-mockup">
+                <div class="browser-header">
+                  <div class="browser-buttons">
+                    <span class="browser-btn red"></span>
+                    <span class="browser-btn yellow"></span>
+                    <span class="browser-btn green"></span>
+                  </div>
+                  <div class="browser-address-bar">
+                    <i class="fas fa-lock"></i>
+                    <span>panorama-jtb.com/flight/search</span>
+                  </div>
+                  <div class="browser-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-filter-search.png?alt=media&token=dbb4af29-3929-4c51-8c63-971047b44536"
+                    alt="Form Pencarian Flight"
+                  />
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Input Data Pencarian</strong>
+                <p>
+                  Isi form pencarian flight: <strong>kota asal</strong>,
+                  <strong>kota tujuan</strong>, <strong>tanggal berangkat</strong>,
+                  <strong>tanggal pulang</strong> (jika round-trip), dan
+                  <strong>jumlah penumpang</strong>.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">3</div>
+              <div class="browser-mockup">
+                <div class="browser-header">
+                  <div class="browser-buttons">
+                    <span class="browser-btn red"></span>
+                    <span class="browser-btn yellow"></span>
+                    <span class="browser-btn green"></span>
+                  </div>
+                  <div class="browser-address-bar">
+                    <i class="fas fa-lock"></i>
+                    <span>panorama-jtb.com/flight/results</span>
+                  </div>
+                  <div class="browser-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-list.png?alt=media&token=1b13c496-7f81-4e7b-9d8c-0f0e93e22dbe"
+                    alt="Hasil Pencarian Jadwal Flight"
+                  />
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Cari Jadwal Flight</strong>
+                <p>
+                  Klik tombol <strong>Search</strong>. Website akan menampilkan
+                  <strong>daftar jadwal penerbangan</strong> yang tersedia
+                  dengan filter dan sorting berdasarkan harga/waktu.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">4</div>
+              <div class="browser-mockup">
+                <div class="browser-header">
+                  <div class="browser-buttons">
+                    <span class="browser-btn red"></span>
+                    <span class="browser-btn yellow"></span>
+                    <span class="browser-btn green"></span>
+                  </div>
+                  <div class="browser-address-bar">
+                    <i class="fas fa-lock"></i>
+                    <span>panorama-jtb.com/flight/select</span>
+                  </div>
+                  <div class="browser-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-select.png?alt=media&token=60d74680-9906-42c8-8f8a-dcb79a68ce96"
+                    alt="Pilih Jadwal Flight"
+                  />
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Pilih Flight</strong>
+                <p>
+                  Klik jadwal penerbangan yang dipilih. Website menampilkan
+                  <strong>detail flight</strong> termasuk harga, fasilitas, dan
+                  kebijakan pembatalan sebelum lanjut ke langkah berikutnya.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">5</div>
+              <div class="browser-mockup">
+                <div class="browser-header">
+                  <div class="browser-buttons">
+                    <span class="browser-btn red"></span>
+                    <span class="browser-btn yellow"></span>
+                    <span class="browser-btn green"></span>
+                  </div>
+                  <div class="browser-address-bar">
+                    <i class="fas fa-lock"></i>
+                    <span>panorama-jtb.com/flight/pax</span>
+                  </div>
+                  <div class="browser-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-input-pax.png?alt=media&token=47cb244e-ed94-4bc2-8df1-0cecdf3f4b6f"
+                    alt="Form Data Penumpang"
+                  />
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Input Data Penumpang</strong>
+                <p>
+                  Isi <strong>data setiap penumpang</strong> sesuai dokumen
+                  resmi: nama lengkap, nomor identitas, tanggal lahir, jenis
+                  kelamin, dan kontak darurat. Untuk anak/infant, lengkapi data
+                  sesuai kebutuhan.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">6</div>
+              <div class="browser-mockup">
+                <div class="browser-header">
+                  <div class="browser-buttons">
+                    <span class="browser-btn red"></span>
+                    <span class="browser-btn yellow"></span>
+                    <span class="browser-btn green"></span>
+                  </div>
+                  <div class="browser-address-bar">
+                    <i class="fas fa-lock"></i>
+                    <span>panorama-jtb.com/flight/payment</span>
+                  </div>
+                  <div class="browser-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20select%20cc.png?alt=media&token=7bcbd9f9-55e3-48e0-9ae6-34c7ba683af2"
+                    alt="Pilih Metode Pembayaran"
+                  />
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Pilih Metode Pembayaran</strong>
+                <p>
+                  Pilih metode pembayaran: <strong>Credit Card</strong> (Visa,
+                  MasterCard) atau <strong>Virtual Account</strong> (BCA,
+                  Mandiri, BNI, BRI). Tiap metode punya instruksi berbeda di
+                  langkah berikutnya.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">7</div>
+              <div class="browser-mockup">
+                <div class="browser-header">
+                  <div class="browser-buttons">
+                    <span class="browser-btn red"></span>
+                    <span class="browser-btn yellow"></span>
+                    <span class="browser-btn green"></span>
+                  </div>
+                  <div class="browser-address-bar">
+                    <i class="fas fa-lock"></i>
+                    <span>panorama-jtb.com/flight/process</span>
+                  </div>
+                  <div class="browser-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20input%20card%20number.png?alt=media&token=5272d3ae-82a6-41fa-8d7b-4c933dbd541b"
+                    alt="Proses Pembayaran"
+                  />
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Lakukan Pembayaran</strong>
+                <p>
+                  Selesaikan pembayaran sesuai metode. Credit Card: masukkan data
+                  kartu di payment gateway. VA: catat nomor VA dan transfer
+                  melalui bank. Pembayaran harus selesai sebelum VA expired.
+                </p>
+              </div>
+            </div>
+            <div class="step-grid-item">
+              <div class="step-grid-badge">8</div>
+              <div class="browser-mockup">
+                <div class="browser-header">
+                  <div class="browser-buttons">
+                    <span class="browser-btn red"></span>
+                    <span class="browser-btn yellow"></span>
+                    <span class="browser-btn green"></span>
+                  </div>
+                  <div class="browser-address-bar">
+                    <i class="fas fa-lock"></i>
+                    <span>panorama-jtb.com/booking/detail</span>
+                  </div>
+                  <div class="browser-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </div>
+                <div class="browser-screen">
+                  <img
+                    src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-book-detail.png?alt=media&token=e2106f54-d754-4aaa-9e9d-64a683248659"
+                    alt="Booking Detail"
+                  />
+                </div>
+              </div>
+              <div class="step-grid-caption">
+                <strong>Akses Booking Detail</strong>
+                <p>
+                  Setelah pembayaran sukses, sistem menampilkan halaman
+                  <strong>Booking Detail</strong> yang berisi e-ticket,
+                  itinerary, dan instruksi lanjutan. E-ticket juga dikirim ke
+                  email terdaftar.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Booking Berhasil via Web</div>
+            <p>
+              Setelah 8 langkah selesai, tiket pesawat baru sudah terpesan via
+              Web Panorama JTB. E-ticket dapat di-download dari halaman
+              <strong>Booking Detail</strong> dan juga dikirimkan ke email.
+            </p>
+          </div>
+
+          <div class="callout info">
+            <div class="callout-title">💡 Tips Booking</div>
+            <p>
+              Untuk pengalaman terbaik, gunakan
+              <strong>browser modern</strong> (Chrome, Firefox, Edge, atau
+              Safari versi terbaru). Pastikan koneksi internet stabil saat
+              proses pembayaran.
+            </p>
+          </div>
+
+          <hr />
+
+          <h3 id="bab2-3">
+            <i class="fas fa-mobile-alt"></i> 2.3 Input Booking dari KATRINA via
+            ALVIS Mobile Apps
+          </h3>
+          <p>
+            Apabila tiket sudah dipesan melalui aplikasi
+            <strong>KATRINA</strong>, pengguna dapat memasukkan booking tiket
+            pesawat tersebut ke dalam sistem ALVIS melalui aplikasi mobile.
+            Panduan ini untuk booking yang sudah ada di KATRINA (bukan booking
+            baru).
+          </p>
+
+          <!-- Compact Steps Tabs -->
+          <div class="compact-steps">
+            <button class="compact-step active" data-step="0">
+              <span class="step-icon"><i class="fas fa-mobile-alt"></i></span>
+              Buka Apps
+            </button>
+            <button class="compact-step" data-step="1">
+              <span class="step-icon"><i class="fas fa-route"></i></span> My
+              Trips
+            </button>
+            <button class="compact-step" data-step="2">
+              <span class="step-icon"><i class="fas fa-ticket-alt"></i></span>
+              Input Data
+            </button>
+            <button class="compact-step" data-step="3">
+              <span class="step-icon"><i class="fas fa-file-invoice"></i></span>
+              Konfirmasi
+            </button>
+          </div>
+
+          <!-- Step Details -->
+          <div class="step-detail active" data-detail="0">
+            <h5><i class="fas fa-mobile-alt"></i> Langkah 1: Buka Aplikasi</h5>
+            <p>
+              Sistem ALVIS menampilkan <strong>halaman landing</strong>. Buka
+              aplikasi <strong>ALVIS</strong> di smartphone Anda.
+            </p>
+          </div>
+          <div class="step-detail" data-detail="1">
+            <h5><i class="fas fa-route"></i> Langkah 2: My Trips</h5>
+            <p>
+              Akses menu <strong>My Trips</strong>, lalu tap tombol
+              <strong>Add Trip</strong>.
+            </p>
+          </div>
+          <div class="step-detail" data-detail="2">
+            <h5>
+              <i class="fas fa-ticket-alt"></i> Langkah 3: Input Data Booking
+            </h5>
+            <p>
+              Pilih <strong>radio button Flight</strong>, kemudian input data
+              <strong>order number</strong> dan <strong>last name</strong> ke
+              dalam pop up Add Trip. Data yang diinputkan adalah data yang
+              didapat dari <strong>KATRINA</strong>.
+            </p>
+          </div>
+          <div class="step-detail" data-detail="3">
+            <h5><i class="fas fa-file-invoice"></i> Langkah 4: Konfirmasi</h5>
+            <p>
+              Sistem akan menampilkan halaman <strong>add trip</strong> dengan
+              card berisi informasi transaksi flight yang berhasil ditambahkan.
+            </p>
+          </div>
+
+          <!-- Phone Mockup Carousel -->
+          <div class="app-carousel">
+            <div class="carousel-container">
+              <button class="carousel-nav-btn prev" onclick="moveSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="carousel-slides" id="carouselSlides">
+                <div class="carousel-slide">
+                  <div class="phone-mockup">
+                    <div class="phone-side-btn volume-up"></div>
+                    <div class="phone-side-btn volume-down"></div>
+                    <div class="phone-side-btn power"></div>
+                    <div class="phone-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fhome%20alvis.png?alt=media&token=22d607a9-559f-4d26-ac88-ee37c363bbc9"
+                        alt="Halaman Landing ALVIS"
+                      />
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <div class="phone-mockup">
+                    <div class="phone-side-btn volume-up"></div>
+                    <div class="phone-side-btn volume-down"></div>
+                    <div class="phone-side-btn power"></div>
+                    <div class="phone-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fadd%20trips.png?alt=media&token=cc90341e-db5a-45cf-ace8-775cd229e72e"
+                        alt="Halaman My Trips"
+                      />
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <div class="phone-mockup">
+                    <div class="phone-side-btn volume-up"></div>
+                    <div class="phone-side-btn volume-down"></div>
+                    <div class="phone-side-btn power"></div>
+                    <div class="phone-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fadd%20trips%20input%20data.png?alt=media&token=292963aa-f324-4a9e-af00-e243a7f2ca15"
+                        alt="Input Data Booking"
+                      />
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <div class="phone-mockup">
+                    <div class="phone-side-btn volume-up"></div>
+                    <div class="phone-side-btn volume-down"></div>
+                    <div class="phone-side-btn power"></div>
+                    <div class="phone-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fadd%20trips%20sukses.png?alt=media&token=9af0c907-3b10-4e81-bfa6-43e445e49a8d"
+                        alt="Sukses Add Trip"
+                      />
+                      <div class="phone-home"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-nav-btn next" onclick="moveSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="carousel-dots" id="carouselDots">
+              <span class="carousel-dot active" onclick="goToSlide(0)"></span>
+              <span class="carousel-dot" onclick="goToSlide(1)"></span>
+              <span class="carousel-dot" onclick="goToSlide(2)"></span>
+              <span class="carousel-dot" onclick="goToSlide(3)"></span>
+            </div>
+            <div class="carousel-caption" id="carouselCaption">
+              <strong>Langkah 1:</strong> Sistem ALVIS menampilkan
+              <strong>halaman landing</strong>
+            </div>
+          </div>
+
+          <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Selesai</div>
+            <p>
+              Data booking berhasil dimasukkan. Sistem akan menampilkan card
+              informasi transaksi flight yang telah ditambahkan di halaman add
+              trip.
+            </p>
+          </div>
+
+          <hr />
+
+          <h3 id="bab2-4">
+            <i class="fas fa-globe"></i> 2.4 Input Booking dari KATRINA via Web
+            Panorama JTB
+          </h3>
+          <p>
+            Alternatif lainnya, booking yang sudah dipesan di
+            <strong>KATRINA</strong> dapat dimasukkan ke ALVIS melalui website
+            <strong>Panorama JTB</strong>. Metode ini berguna jika pengguna
+            lebih nyaman menggunakan browser desktop/laptop.
+          </p>
+
+          <!-- Compact Steps Tabs -->
+          <div class="compact-steps">
+            <button class="compact-step-p2 active" data-step-p2="0">
+              <span class="step-icon"><i class="fas fa-home"></i></span> Landing
+            </button>
+            <button class="compact-step-p2" data-step-p2="1">
+              <span class="step-icon"><i class="fas fa-user"></i></span> My
+              Bookings
+            </button>
+            <button class="compact-step-p2" data-step-p2="2">
+              <span class="step-icon"><i class="fas fa-plus"></i></span> Add
+              Trips
+            </button>
+            <button class="compact-step-p2" data-step-p2="3">
+              <span class="step-icon"><i class="fas fa-keyboard"></i></span>
+              Input Data
+            </button>
+            <button class="compact-step-p2" data-step-p2="4">
+              <span class="step-icon"><i class="fas fa-check"></i></span>
+              Konfirmasi
+            </button>
+            <button class="compact-step-p2" data-step-p2="5">
+              <span class="step-icon"><i class="fas fa-credit-card"></i></span>
+              Payment
+            </button>
+          </div>
+
+          <!-- Step Details -->
+          <div class="step-detail-p2 active" data-detail-p2="0">
+            <h5><i class="fas fa-home"></i> Langkah 1: Halaman Landing</h5>
+            <p>
+              Sistem Panorama JTB menampilkan
+              <strong>halaman landing</strong> setelah user berhasil login.
+            </p>
+          </div>
+          <div class="step-detail-p2" data-detail-p2="1">
+            <h5><i class="fas fa-user"></i> Langkah 2: Akses My Bookings</h5>
+            <p>
+              Klik <strong>profile user</strong> di pojok kanan atas, kemudian
+              pilih menu <strong>My Bookings</strong>.
+            </p>
+          </div>
+          <div class="step-detail-p2" data-detail-p2="2">
+            <h5><i class="fas fa-plus"></i> Langkah 3: Add Trips</h5>
+            <p>
+              Klik button <strong>Add Trips</strong> yang terletak di sebelah
+              kanan bawah halaman My Bookings.
+            </p>
+          </div>
+          <div class="step-detail-p2" data-detail-p2="3">
+            <h5>
+              <i class="fas fa-keyboard"></i> Langkah 4: Input Data Booking
+            </h5>
+            <p>
+              Pada popup <strong>Add Trip</strong>, input
+              <strong>booking code/order number</strong> dan
+              <strong>last name</strong>. Data tersebut diperoleh dari
+              <strong>KATRINA</strong>.
+            </p>
+          </div>
+          <div class="step-detail-p2" data-detail-p2="4">
+            <h5><i class="fas fa-check"></i> Langkah 5: Konfirmasi</h5>
+            <p>
+              Sistem menampilkan halaman <strong>My Booking</strong> dengan data
+              baru yang berhasil ditambahkan.
+            </p>
+          </div>
+          <div class="step-detail-p2" data-detail-p2="5">
+            <h5>
+              <i class="fas fa-credit-card"></i> Langkah 6: Payment Progress
+            </h5>
+            <p>
+              Akses menu <strong>Payment Progress</strong> untuk melihat data
+              flight yang telah ditambahkan.
+            </p>
+          </div>
+
+          <!-- Browser Mockup Carousel -->
+          <div class="app-carousel-p2">
+            <div class="carousel-container-p2">
+              <button
+                class="carousel-nav-btn-p2 prev"
+                onclick="moveSlideP2(-1)"
+              >
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="carousel-slides-p2" id="carouselSlidesP2">
+                <div class="carousel-slide-p2">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Flanding%20PTC.png?alt=media&token=717f093a-1000-464d-9ba1-5be3bd500f73"
+                        alt="Halaman Landing Panorama JTB"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p2">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/my-bookings</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fakses%20halaman%20my%20booking.png?alt=media&token=33313407-4b6c-48cd-9be9-ab05a2850af7"
+                        alt="Akses Halaman My Booking"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p2">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/my-bookings</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fhalaman%20trip.png?alt=media&token=cb43e308-ae11-4969-9367-75a2dc0c36d9"
+                        alt="Halaman Trip"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p2">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/my-bookings</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20add%20trip.png?alt=media&token=99a74e98-5e52-452b-bd33-352d2a2412fc"
+                        alt="Add Trip Popup"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p2">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/my-bookings</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20add%20trip%20sukses.png?alt=media&token=7371b3b8-a4fc-4bde-b8f8-4453417d187f"
+                        alt="Add Trip Sukses"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p2">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/payment-progress</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC%20paymnet%20progress.png?alt=media&token=e38c3192-c81e-41d6-a35e-44fdb3ef2afc"
+                        alt="Payment Progress"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-nav-btn-p2 next" onclick="moveSlideP2(1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="carousel-dots-p2" id="carouselDotsP2">
+              <span
+                class="carousel-dot-p2 active"
+                onclick="goToSlideP2(0)"
+              ></span>
+              <span class="carousel-dot-p2" onclick="goToSlideP2(1)"></span>
+              <span class="carousel-dot-p2" onclick="goToSlideP2(2)"></span>
+              <span class="carousel-dot-p2" onclick="goToSlideP2(3)"></span>
+              <span class="carousel-dot-p2" onclick="goToSlideP2(4)"></span>
+              <span class="carousel-dot-p2" onclick="goToSlideP2(5)"></span>
+            </div>
+            <div class="carousel-caption-p2" id="carouselCaptionP2">
+              <strong>Langkah 1:</strong> Sistem Panorama JTB menampilkan
+              <strong>halaman landing</strong>
+            </div>
+          </div>
+
+          <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Selesai</div>
+            <p>
+              Data booking berhasil ditambahkan melalui Web Panorama JTB. Data
+              flight dapat dipantau melalui menu
+              <strong>Payment Progress</strong>.
+            </p>
+          </div>
+
+          <div class="callout info">
+            <div class="callout-title">💡 Catatan</div>
+            <p>
+              Baik input melalui ALVIS Mobile Apps maupun Web Panorama JTB,
+              keduanya akan masuk ke
+              <strong>sistem backoffice yang sama</strong> sehingga monitoring
+              dapat dilakukan secara terpusat.
+            </p>
+          </div>
+        </section>
+
+        <!-- BAB 3: PEMBAYARAN -->
+        <section id="bab3" class="section">
+          <h2>Bab 3: Pembayaran (Payment)</h2>
+          <p>
+            Setelah booking berhasil dimasukkan ke sistem ALVIS, langkah
+            selanjutnya adalah melakukan <strong>pembayaran</strong>. Terdapat
+            <strong>2 metode pembayaran</strong> yang tersedia:
+          </p>
+
+          <div class="status-cards" style="margin-bottom: 24px">
+            <div class="status-card info">
+              <div class="card-icon">💳</div>
+              <strong>Credit Card</strong>
+              <p>Pembayaran menggunakan kartu kredit</p>
+            </div>
+            <div class="status-card success">
+              <div class="card-icon">🏦</div>
+              <strong>Virtual Account</strong>
+              <p>Pembayaran melalui transfer bank</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <h3 id="bab3-1">
+            <i class="fas fa-credit-card"></i> 3.1 Pembayaran via Credit Card
+          </h3>
+          <p>
+            Pembayaran menggunakan <strong>Credit Card</strong> memungkinkan
+            pengguna membayar tiket pesawat melalui website
+            <strong>Panorama JTB</strong>. Berikut langkah-langkah pembayaran
+            via Credit Card:
+          </p>
+
+          <!-- Compact Steps Tabs -->
+          <div class="compact-steps-p3">
+            <button class="compact-step-p3 active" data-step-p3="0">
+              <span class="step-icon"><i class="fas fa-list"></i></span> Payment
+              Progress
+            </button>
+            <button class="compact-step-p3" data-step-p3="1">
+              <span class="step-icon"><i class="fas fa-credit-card"></i></span>
+              Select Method
+            </button>
+            <button class="compact-step-p3" data-step-p3="2">
+              <span class="step-icon"><i class="fas fa-keyboard"></i></span>
+              Card Number
+            </button>
+            <button class="compact-step-p3" data-step-p3="3">
+              <span class="step-icon"><i class="fas fa-lock"></i></span>
+              Password
+            </button>
+            <button class="compact-step-p3" data-step-p3="4">
+              <span class="step-icon"><i class="fas fa-check-circle"></i></span>
+              Sukses
+            </button>
+            <button class="compact-step-p3" data-step-p3="5">
+              <span class="step-icon"
+                ><i class="fas fa-clipboard-check"></i
+              ></span>
+              My Booking
+            </button>
+          </div>
+
+          <!-- Step Details -->
+          <div class="step-detail-p3 active" data-detail-p3="0">
+            <h5>
+              <i class="fas fa-list"></i> Langkah 1: Akses Payment Progress
+            </h5>
+            <p>
+              Akses halaman <strong>Payment Progress</strong> melalui menu di
+              website Panorama JTB. Klik pada
+              <strong>card transaksi</strong> yang akan dibayar.
+            </p>
+          </div>
+          <div class="step-detail-p3" data-detail-p3="1">
+            <h5>
+              <i class="fas fa-credit-card"></i> Langkah 2: Select Payment
+              Method
+            </h5>
+            <p>
+              Sistem menampilkan halaman <strong>Select Payment Method</strong>.
+              Swipe button untuk melanjutkan pembayaran menggunakan
+              <strong>Credit Card</strong>.
+            </p>
+          </div>
+          <div class="step-detail-p3" data-detail-p3="2">
+            <h5>
+              <i class="fas fa-keyboard"></i> Langkah 3: Input Card Number
+            </h5>
+            <p>
+              Masukkan <strong>nomor kartu kredit</strong> Anda pada form input
+              yang tersedia di dalam webview.
+            </p>
+          </div>
+          <div class="step-detail-p3" data-detail-p3="3">
+            <h5><i class="fas fa-lock"></i> Langkah 4: Input Password/OTP</h5>
+            <p>
+              Masukkan <strong>password atau OTP</strong> untuk verifikasi
+              transaksi Credit Card.
+            </p>
+          </div>
+          <div class="step-detail-p3" data-detail-p3="4">
+            <h5>
+              <i class="fas fa-check-circle"></i> Langkah 5: Payment Sukses
+            </h5>
+            <p>
+              Sistem menampilkan halaman
+              <strong>Payment via CC Sukses</strong> sebagai konfirmasi bahwa
+              pembayaran berhasil dilakukan.
+            </p>
+          </div>
+          <div class="step-detail-p3" data-detail-p3="5">
+            <h5>
+              <i class="fas fa-clipboard-check"></i> Langkah 6: My Booking
+            </h5>
+            <p>
+              Setelah selesai melakukan pembayaran, sistem menampilkan halaman
+              <strong>My Booking</strong> dengan menampilkan data transaksi yang
+              sudah dibayar.
+            </p>
+          </div>
+
+          <!-- Browser Mockup Carousel -->
+          <div class="app-carousel-p3">
+            <div class="carousel-container-p3">
+              <button
+                class="carousel-nav-btn-p3 prev"
+                onclick="moveSlideP3(-1)"
+              >
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="carousel-slides-p3" id="carouselSlidesP3">
+                <div class="carousel-slide-p3">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/payment-progress</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC%20paymnet%20progress.png?alt=media&token=53c38ac0-5f70-4243-ae70-36978a1d86f4"
+                        alt="Halaman Payment Progress"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p3">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/payment/select</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20select%20cc.png?alt=media&token=7bcbd9f9-55e3-48e0-9ae6-34c7ba683af2"
+                        alt="Select Payment Method"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p3">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/payment/cc</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20input%20card%20number.png?alt=media&token=5272d3ae-82a6-41fa-8d7b-4c933dbd541b"
+                        alt="Input Card Number"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p3">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/payment/cc</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20input%20card%20number%20password.png?alt=media&token=303d9b7e-aee5-4430-ab52-42745d677c19"
+                        alt="Input Password"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p3">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/payment/success</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20paymnet%20cc%20sukses.png?alt=media&token=8e53eaeb-40f3-4368-83eb-907715eb4c06"
+                        alt="Payment Sukses"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide-p3">
+                  <div class="browser-mockup">
+                    <div class="browser-header">
+                      <div class="browser-buttons">
+                        <span class="browser-btn red"></span>
+                        <span class="browser-btn yellow"></span>
+                        <span class="browser-btn green"></span>
+                      </div>
+                      <div class="browser-address-bar">
+                        <i class="fas fa-lock"></i>
+                        <span>panorama-jtb.com/my-bookings</span>
+                      </div>
+                      <div class="browser-menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </div>
+                    </div>
+                    <div class="browser-screen">
+                      <img
+                        src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20active%20trip%20with%20sukses%20paymnet.png?alt=media&token=b5be1d7f-4c62-4b9a-afc1-a250c0a13254"
+                        alt="My Booking Sukses"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-nav-btn-p3 next" onclick="moveSlideP3(1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="carousel-dots-p3" id="carouselDotsP3">
+              <span
+                class="carousel-dot-p3 active"
+                onclick="goToSlideP3(0)"
+              ></span>
+              <span class="carousel-dot-p3" onclick="goToSlideP3(1)"></span>
+              <span class="carousel-dot-p3" onclick="goToSlideP3(2)"></span>
+              <span class="carousel-dot-p3" onclick="goToSlideP3(3)"></span>
+              <span class="carousel-dot-p3" onclick="goToSlideP3(4)"></span>
+              <span class="carousel-dot-p3" onclick="goToSlideP3(5)"></span>
+            </div>
+            <div class="carousel-caption-p3" id="carouselCaptionP3">
+              <strong>Langkah 1:</strong> Akses halaman
+              <strong>Payment Progress</strong>, klik card transaksi
+            </div>
+          </div>
+
+          <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Selesai</div>
+            <p>
+              Pembayaran via Credit Card berhasil dilakukan. Data transaksi akan
+              tampil di halaman <strong>My Booking</strong> dengan status
+              sukses.
+            </p>
+          </div>
+
+          <div class="callout info">
+            <div class="callout-title">⚠️ Keamanan Transaksi</div>
+            <p>
+              Data kartu kredit Anda diamankan dengan enkripsi dan diproses
+              melalui payment gateway yang terpercaya.
+            </p>
+          </div>
+
+          <hr />
+
+          <h3 id="bab3-2">
+            <i class="fas fa-university"></i> 3.2 Pembayaran via Virtual Account
+          </h3>
+          <p>
+            Pembayaran menggunakan
+            <strong>Virtual Account (VA)</strong> memungkinkan pengguna
+            melakukan transfer bank ke nomor virtual account yang digenerate
+            secara otomatis oleh sistem.
+          </p>
+
+          <h4><i class="fas fa-sign-in-alt"></i> Langkah-langkah</h4>
+          <ul class="steps">
+            <li class="step-item">
+              <span class="step-number">1</span>
+              <div class="step-text">
+                Pada halaman pembayaran, pilih metode
+                <strong>Virtual Account</strong>.
+              </div>
+            </li>
+            <li class="step-item">
+              <span class="step-number">2</span>
+              <div class="step-text">
+                Pilih <strong>bank tujuan</strong> yang tersedia (BCA, Mandiri,
+                BNI, BRI, dll.).
+              </div>
+            </li>
+            <li class="step-item">
+              <span class="step-number">3</span>
+              <div class="step-text">
+                Sistem akan <strong>mengenerate</strong> nomor Virtual Account
+                khusus untuk transaksi Anda.
+              </div>
+            </li>
+          </ul>
+
+          <div class="mockup" style="max-width: 500px; margin: 16px auto">
+            <div class="mockup-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span style="font-size: 12px; color: #666; margin-left: 8px"
+                >Pembayaran Virtual Account</span
+              >
+            </div>
+            <div style="padding: 20px; text-align: center">
+              <div
+                style="
+                  background: var(--primary-bg);
+                  border-radius: 8px;
+                  padding: 20px;
+                  margin-bottom: 16px;
+                "
+              >
+                <p
+                  style="
+                    font-size: 12px;
+                    color: var(--text-muted);
+                    margin-bottom: 8px;
+                  "
+                >
+                  Nomor Virtual Account Anda
+                </p>
+                <p
+                  style="
+                    font-size: 24px;
+                    font-weight: 700;
+                    color: var(--primary);
+                    letter-spacing: 3px;
+                    font-family: monospace;
+                  "
+                >
+                  12345 67890 12345
+                </p>
+                <p
+                  style="
+                    font-size: 12px;
+                    color: var(--text-muted);
+                    margin-top: 4px;
+                  "
+                >
+                  BCA Virtual Account
+                </p>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 12px 0;
+                  border-bottom: 1px dashed var(--border);
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Total Pembayaran</span
+                >
+                <span
+                  style="font-size: 16px; font-weight: 700; color: var(--text)"
+                  >Rp 2.500.000</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 12px 0;
+                  border-bottom: 1px dashed var(--border);
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Masa Berlaku VA</span
+                >
+                <span
+                  style="
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: var(--warning);
+                  "
+                  >1 x 24 Jam</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 12px 0;
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Status</span
+                >
+                <span class="mockup-badge warning">Menunggu Pembayaran</span>
+              </div>
+              <div
+                style="
+                  margin-top: 16px;
+                  padding: 12px;
+                  background: #f0f9ff;
+                  border-radius: 8px;
+                  font-size: 12px;
+                  color: var(--text-light);
+                "
+              >
+                <i class="fas fa-info-circle" style="color: var(--info)"></i>
+                Silakan transfer ke nomor Virtual Account di atas melalui
+                <strong>mobile banking</strong>, <strong>ATM</strong>, atau
+                <strong>internet banking</strong> BCA.
+              </div>
+            </div>
+          </div>
+
+          <ul class="steps">
+            <li class="step-item">
+              <span class="step-number">4</span>
+              <div class="step-text">
+                Lakukan <strong>transfer</strong> ke nomor Virtual Account yang
+                telah diberikan melalui mobile banking, ATM, atau internet
+                banking.
+              </div>
+            </li>
+            <li class="step-item">
+              <span class="step-number">5</span>
+              <div class="step-text">
+                Sistem akan <strong>otomatis mendeteksi</strong> pembayaran yang
+                masuk dan memperbarui status pembayaran.
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Pembayaran Berhasil</div>
+            <p>
+              Setelah pembayaran terkonfirmasi, status booking akan berubah dan
+              proses selanjutnya (issued tiket) akan diproses oleh sistem
+              KATRINA.
+            </p>
+          </div>
+        </section>
+
+        <!-- BAB 4: MONITORING BACKOFFICE -->
+        <section id="bab4" class="section">
+          <h2>Bab 4: Monitoring Backoffice</h2>
+          <p>
+            <span class="tag admin">Admin</span> Bab ini khusus untuk
+            <strong>Admin Backoffice</strong> yang bertugas memonitoring
+            bookingan yang telah dimasukkan, memastikan semua tercatat dengan
+            baik di sistem ALVIS.
+          </p>
+
+          <p>Backoffice digunakan untuk memonitoring beberapa hal berikut:</p>
+
+          <div class="status-cards" style="margin-bottom: 24px">
+            <div class="status-card info">
+              <div class="card-icon">📋</div>
+              <strong>Record Booking</strong>
+              <p>Monitoring data booking yang masuk</p>
+            </div>
+            <div class="status-card pending">
+              <div class="card-icon">💳</div>
+              <strong>Status Pembayaran</strong>
+              <p>Memantau pembayaran sukses/gagal</p>
+            </div>
+            <div class="status-card success">
+              <div class="card-icon">✅</div>
+              <strong>Issued Tiket</strong>
+              <p>Update status issued dari KATRINA</p>
+            </div>
+            <div
+              class="status-card"
+              style="
+                background: #f3e8ff;
+                border-left-color: var(--color-support);
+              "
+            >
+              <div class="card-icon">📄</div>
+              <strong>CSR & Invoice</strong>
+              <p>Penerbitan CSR number dan invoice</p>
+            </div>
+          </div>
+
+          <hr />
+
+          <h3><i class="fas fa-search"></i> 4.1 Monitoring Record Booking</h3>
+          <p>
+            Admin dapat melihat seluruh data booking yang telah dimasukkan (baik
+            dari ALVIS Mobile Apps maupun Web Panorama JTB) di halaman
+            <strong>Flight Payment</strong> pada backoffice.
+          </p>
+
+          <div
+            class="img-container"
+            style="max-width: 800px; margin: 1.5rem auto"
+          >
+            <div class="mockup">
+              <div class="mockup-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span style="font-size: 12px; color: #666; margin-left: 8px"
+                  >Backoffice ALVIS - Daftar Booking Flight</span
+                >
+              </div>
+              <table class="mockup-table">
+                <thead>
+                  <tr>
+                    <th>Kode Booking</th>
+                    <th>Nama Pemesan</th>
+                    <th>Rute</th>
+                    <th>Total</th>
+                    <th>Status Bayar</th>
+                    <th>Issued</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>KTR-001</strong></td>
+                    <td>Budi Santoso</td>
+                    <td>CGK - DPS</td>
+                    <td>Rp 2.500.000</td>
+                    <td><span class="mockup-badge success">Lunas</span></td>
+                    <td><span class="mockup-badge success">Issued</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>KTR-002</strong></td>
+                    <td>Siti Aisyah</td>
+                    <td>CGK - KNO</td>
+                    <td>Rp 1.800.000</td>
+                    <td><span class="mockup-badge warning">Pending</span></td>
+                    <td>
+                      <span class="mockup-badge warning">Belum Issued</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>KTR-003</strong></td>
+                    <td>Ahmad Fauzi</td>
+                    <td>CGK - SUB</td>
+                    <td>Rp 1.200.000</td>
+                    <td><span class="mockup-badge success">Lunas</span></td>
+                    <td><span class="mockup-badge warning">Proses</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="img-caption">
+              Gambar 4.1: Tampilan daftar booking di backoffice ALVIS
+            </div>
+          </div>
+
+          <hr />
+
+          <h3>
+            <i class="fas fa-credit-card"></i> 4.2 Monitoring Status Pembayaran
+          </h3>
+          <p>
+            Admin dapat memantau status pembayaran dari setiap booking. Status
+            pembayaran yang tersedia:
+          </p>
+
+          <div class="status-cards">
+            <div class="status-card pending">
+              <div class="card-icon">⏳</div>
+              <strong>Pending</strong>
+              <p>Menunggu pembayaran</p>
+            </div>
+            <div class="status-card success">
+              <div class="card-icon">✅</div>
+              <strong>Sukses</strong>
+              <p>Pembayaran berhasil</p>
+            </div>
+            <div class="status-card danger">
+              <div class="card-icon">❌</div>
+              <strong>Gagal</strong>
+              <p>Pembayaran gagal</p>
+            </div>
+            <div class="status-card info">
+              <div class="card-icon">🔄</div>
+              <strong>Refund</strong>
+              <p>Pembayaran dikembalikan</p>
+            </div>
+          </div>
+
+          <div class="callout info">
+            <div class="callout-title">🔍 Cara Monitoring</div>
+            <p>
+              Pilih booking yang ingin dicek, kemudian lihat detail pembayaran
+              untuk melihat riwayat transaksi, metode pembayaran, dan status
+              terkini.
+            </p>
+          </div>
+
+          <hr />
+
+          <h3><i class="fas fa-check-double"></i> 4.3 Proses Issued Tiket</h3>
+          <p>
+            <strong>Issued</strong> tiket dilakukan di sistem
+            <strong>KATRINA</strong>. ALVIS hanya menerima
+            <strong>update status</strong> dari KATRINA mengenai proses issued
+            tersebut.
+          </p>
+
+          <div class="info-box info">
+            <i class="fas fa-sync-alt"></i>
+            <div>
+              <strong>Alur Issued:</strong> KATRINA memproses issued tiket →
+              Mengirim update status ke ALVIS → ALVIS memperbarui status booking
+              di backoffice.
+            </div>
+          </div>
+
+          <p>Status issued yang dapat dipantau di backoffice:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="mockup-badge warning">Belum Issued</span></td>
+                <td>Tiket masih menunggu proses issued dari KATRINA</td>
+              </tr>
+              <tr>
+                <td><span class="mockup-badge info">Proses Issued</span></td>
+                <td>KATRINA sedang memproses issued tiket</td>
+              </tr>
+              <tr>
+                <td><span class="mockup-badge success">Issued</span></td>
+                <td>Tiket berhasil di-issued oleh KATRINA</td>
+              </tr>
+              <tr>
+                <td><span class="mockup-badge danger">Gagal Issued</span></td>
+                <td>Proses issued gagal, perlu penanganan lebih lanjut</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <hr />
+
+          <h3>
+            <i class="fas fa-file-invoice"></i> 4.4 Penerbitan CSR Number &
+            Invoice
+          </h3>
+          <p>Setelah tiket berhasil di-issued, sistem akan menerbitkan:</p>
+
+          <div class="step-card" style="border-left-color: var(--info)">
+            <div class="step-number"><i class="fas fa-hashtag"></i></div>
+            <div class="step-content">
+              <strong>CSR Number (Customer Service Record Number)</strong>
+              <p>
+                Nomor referensi yang diterbitkan sebagai bukti bahwa transaksi
+                telah tercatat dan diproses. CSR Number digunakan untuk
+                keperluan customer service dan pelacakan transaksi.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-card" style="border-left-color: var(--success)">
+            <div class="step-number"><i class="fas fa-file-invoice"></i></div>
+            <div class="step-content">
+              <strong>Invoice</strong>
+              <p>
+                Dokumen tagihan resmi yang diterbitkan setelah pembayaran lunas
+                dan tiket di-issued. Invoice dapat di-download dan digunakan
+                untuk keperluan administrasi dan akuntansi.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="img-container"
+            style="max-width: 600px; margin: 1.5rem auto"
+          >
+            <div class="mockup">
+              <div class="mockup-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span style="font-size: 12px; color: #666; margin-left: 8px"
+                  >Detail Transaksi - CSR & Invoice</span
+                >
+              </div>
+              <div style="padding: 16px">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 8px 0;
+                    border-bottom: 1px solid var(--border);
+                  "
+                >
+                  <span style="font-size: 13px; color: var(--text-light)"
+                    >CSR Number</span
+                  >
+                  <span
+                    style="
+                      font-size: 13px;
+                      font-weight: 600;
+                      font-family: monospace;
+                    "
+                    >CSR-2026-0720-001</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 8px 0;
+                    border-bottom: 1px solid var(--border);
+                  "
+                >
+                  <span style="font-size: 13px; color: var(--text-light)"
+                    >Invoice Number</span
+                  >
+                  <span
+                    style="
+                      font-size: 13px;
+                      font-weight: 600;
+                      font-family: monospace;
+                    "
+                    >INV-2026-0720-001</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 8px 0;
+                    border-bottom: 1px solid var(--border);
+                  "
+                >
+                  <span style="font-size: 13px; color: var(--text-light)"
+                    >Tanggal Invoice</span
+                  >
+                  <span style="font-size: 13px; font-weight: 500"
+                    >20 Juli 2026</span
+                  >
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 8px 0;
+                  "
+                >
+                  <span style="font-size: 13px; color: var(--text-light)"
+                    >Status</span
+                  >
+                  <span class="mockup-badge success">Active</span>
+                </div>
+                <div style="text-align: center; margin-top: 16px">
+                  <button class="mockup-btn secondary" disabled>
+                    <i class="fas fa-download"></i> Download Invoice
+                  </button>
+                  <button class="mockup-btn primary" disabled>
+                    <i class="fas fa-print"></i> Cetak
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="img-caption">
+              Gambar 4.2: Contoh tampilan CSR Number & Invoice di backoffice
+            </div>
+          </div>
+
+          <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Selesai</div>
+            <p>
+              Dengan terbitnya CSR Number dan Invoice, seluruh proses flight
+              payment telah selesai. Booking sudah tercatat, pembayaran lunas,
+              tiket issued, dan dokumen resmi tersedia.
+            </p>
+          </div>
+        </section>
+
+        <!-- BAB 5: TROUBLESHOOTING & FAQ -->
+        <section id="bab5" class="section">
+          <h2>Bab 5: Troubleshooting & FAQ</h2>
+
+          <h3>
+            <i class="fas fa-exclamation-triangle"></i> 5.1 Kendala & Kegagalan
+            yang Mungkin Terjadi
+          </h3>
+
+          <div class="step-card" style="border-left-color: var(--danger)">
+            <div class="step-number"><i class="fas fa-times"></i></div>
+            <div class="step-content">
+              <strong>Pembayaran Gagal</strong>
+              <p>
+                Pembayaran tidak berhasil diproses. Penyebab: saldo tidak
+                mencukupi (credit card), limit tercapai, koneksi terputus saat
+                transaksi, atau data kartu tidak valid.
+                <strong>Penanganan:</strong> Cek kembali metode pembayaran,
+                pastikan data valid, dan coba lagi.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-card" style="border-left-color: var(--warning)">
+            <div class="step-number"><i class="fas fa-clock"></i></div>
+            <div class="step-content">
+              <strong>Virtual Account Expired</strong>
+              <p>
+                Masa berlaku Virtual Account (1x24 jam) telah habis sebelum
+                pembayaran dilakukan. <strong>Penanganan:</strong> Admin
+                backoffice dapat mengenerate ulang nomor Virtual Account baru
+                atau mengubah metode pembayaran.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-card" style="border-left-color: var(--info)">
+            <div class="step-number"><i class="fas fa-sync-alt"></i></div>
+            <div class="step-content">
+              <strong>Status Issued Tidak Update</strong>
+              <p>
+                Status issued dari KATRINA belum masuk ke sistem ALVIS.
+                <strong>Penanganan:</strong> Admin backoffice dapat menghubungi
+                tim KATRINA untuk memastikan proses issued dan memicu ulang
+                pengiriman status.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="step-card"
+            style="border-left-color: var(--color-support)"
+          >
+            <div class="step-number"><i class="fas fa-file"></i></div>
+            <div class="step-content">
+              <strong>CSR Number / Invoice Tidak Terbit</strong>
+              <p>
+                CSR Number atau invoice tidak muncul setelah pembayaran lunas.
+                <strong>Penanganan:</strong> Admin backoffice dapat memeriksa
+                status transaksi dan menerbitkan ulang CSR/invoice secara manual
+                melalui sistem.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-card" style="border-left-color: var(--danger)">
+            <div class="step-number">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="step-content">
+              <strong>Data Booking Tidak Muncul</strong>
+              <p>
+                Booking yang sudah dimasukkan tidak muncul di daftar backoffice.
+                <strong>Penanganan:</strong> Verifikasi data booking di KATRINA,
+                pastikan input sudah benar, dan hubungi admin jika diperlukan.
+              </p>
+            </div>
+          </div>
+
+          <hr />
+
+          <h3>
+            <i class="fas fa-headset"></i> 5.2 Penanganan melalui Backoffice
+          </h3>
+          <p>
+            Apabila terjadi kendala atau kegagalan dalam proses di atas, Admin
+            dapat melakukan <strong>support melalui backoffice sistem</strong>.
+            Berikut langkah-langkah umum penanganan:
+          </p>
+
+          <ol>
+            <li>
+              <strong>Identifikasi Masalah</strong> — Cek status booking,
+              pembayaran, dan issued di backoffice.
+            </li>
+            <li>
+              <strong>Verifikasi Data</strong> — Pastikan data booking dan
+              pembayaran sudah benar dan sesuai.
+            </li>
+            <li>
+              <strong>Tindak Lanjut</strong> — Lakukan tindakan sesuai jenis
+              kendala (generate ulang VA, hubungi KATRINA, terbitkan ulang
+              invoice, dll.).
+            </li>
+            <li>
+              <strong>Konfirmasi</strong> — Pastikan masalah telah terselesaikan
+              dan status di sistem sudah benar.
+            </li>
+          </ol>
+
+          <hr />
+
+          <h3><i class="fas fa-question-circle"></i> 5.3 FAQ</h3>
+
+          <div class="callout info">
+            <strong
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 8px;
+                color: var(--primary);
+              "
+              ><i class="fas fa-question-circle"></i> Apakah bisa mengganti
+              metode pembayaran setelah memilih?</strong
+            >
+            <p>
+              Ya, selama pembayaran belum diproses, Anda dapat mengganti metode
+              pembayaran kapan saja.
+            </p>
+          </div>
+
+          <div class="callout info">
+            <strong
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 8px;
+                color: var(--primary);
+              "
+              ><i class="fas fa-question-circle"></i> Berapa lama proses issued
+              tiket?</strong
+            >
+            <p>
+              Proses issued dilakukan oleh KATRINA. Waktu yang dibutuhkan
+              bervariasi tergantung kebijakan maskapai dan ketersediaan tiket.
+            </p>
+          </div>
+
+          <div class="callout info">
+            <strong
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 8px;
+                color: var(--primary);
+              "
+              ><i class="fas fa-question-circle"></i> Bagaimana jika pembayaran
+              sudah terpotong tapi status masih pending?</strong
+            >
+            <p>
+              Hubungi Admin Backoffice untuk dilakukan pengecekan dan verifikasi
+              manual. Sertakan bukti transfer untuk mempercepat proses.
+            </p>
+          </div>
+
+          <div class="callout info">
+            <strong
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 8px;
+                color: var(--primary);
+              "
+              ><i class="fas fa-question-circle"></i> Apakah bisa refund jika
+              pembatalan?</strong
+            >
+            <p>
+              Kebijakan refund mengikuti ketentuan dari KATRINA dan maskapai
+              terkait. Admin backoffice dapat membantu memproses refund jika
+              memenuhi syarat.
+            </p>
+          </div>
+
+          <div class="callout info">
+            <strong
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 8px;
+                color: var(--primary);
+              "
+              ><i class="fas fa-question-circle"></i> Bagaimana cara mendapatkan
+              invoice?</strong
+            >
+            <p>
+              Invoice dapat di-download langsung dari halaman detail transaksi
+              di backoffice setelah status issued selesai.
+            </p>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <p>
+            <i class="fas fa-credit-card" style="color: var(--primary)"></i>
+            <strong>Manual Book Flight Payment ALVIS</strong> &mdash; v1.0
+            &mdash; Juli 2026
+          </p>
+          <p style="margin-top: 4px">&copy; 2026 ALVIS.</p>
+        </footer>
+      </div>
+    </div>
+
+    <button
+      class="scroll-top"
+      id="scrollTop"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    >
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ===== SLIDE PANEL FOR IMAGE GALLERY ===== -->
+    <div class="panel-overlay" id="panelOverlay"></div>
+    <div class="slide-panel" id="slidePanel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="panel-icon" id="panelIcon"
+            ><i class="fas fa-mobile-alt"></i
+          ></span>
+          <span id="panelTitleText">Langkah 1: Buka Aplikasi</span>
+        </div>
+        <button class="panel-close" id="panelClose">&times;</button>
+      </div>
+      <div class="panel-body" id="panelBody">
+        <div class="panel-meta" id="panelMeta"></div>
+        <div class="panel-summary" id="panelSummary">
+          <strong>📋 Langkah</strong>
+          <p id="panelStepDesc">
+            Klik step card untuk melihat detail dan gambar.
+          </p>
+        </div>
+        <div class="panel-gallery" id="panelGallery"></div>
+      </div>
+      <div class="panel-nav">
+        <button id="panelPrev">
+          <i class="fas fa-chevron-left"></i> Sebelumnya
+        </button>
+        <span class="panel-counter" id="panelCounter">1 / 6</span>
+        <button id="panelNext">
+          Selanjutnya <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById('btnToggleSidebar')
+        .addEventListener('click', function () {
+          document.getElementById('sidebar').classList.toggle('open');
+        });
+      document.addEventListener('click', function (e) {
+        const s = document.getElementById('sidebar'),
+          t = document.getElementById('btnToggleSidebar');
+        if (
+          window.innerWidth <= 768 &&
+          !s.contains(e.target) &&
+          !t.contains(e.target) &&
+          s.classList.contains('open')
+        )
+          s.classList.remove('open');
+      });
+
+      const sections = document.querySelectorAll('.section[id]');
+      const navLinks = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+      function updateActiveNav() {
+        let current = '';
+        sections.forEach(function (s) {
+          const top = s.getBoundingClientRect().top;
+          if (top <= 150) current = s.getAttribute('id');
+        });
+        navLinks.forEach(function (link) {
+          link.classList.remove('active');
+          const href = link.getAttribute('href').replace('#', '');
+          if (href === current) link.classList.add('active');
+          const ps = link.closest('.nav-sub');
+          if (ps) {
+            const pl = ps.previousElementSibling;
+            if (pl && pl.getAttribute('href') === '#' + current)
+              link.classList.add('active');
+          }
+        });
+      }
+      window.addEventListener('scroll', updateActiveNav);
+      updateActiveNav();
+
+      window.addEventListener('scroll', function () {
+        const btn = document.getElementById('scrollTop');
+        if (window.scrollY > 300) btn.classList.add('show');
+        else btn.classList.remove('show');
+      });
+      navLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1),
+            target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+            if (window.innerWidth <= 768)
+              document.getElementById('sidebar').classList.remove('open');
+          }
+        });
+      });
+
+      // ===== SLIDE PANEL FOR IMAGE GALLERY =====
+      var stepData = [
+        {
+          icon: 'fa-mobile-alt',
+          title: 'Langkah 1: Buka Aplikasi',
+          desc: 'Buka aplikasi <strong>ALVIS</strong> di smartphone Anda.',
+          step: '1 dari 6',
+          images: [],
+        },
+        {
+          icon: 'fa-route',
+          title: 'Langkah 2: My Trips',
+          desc: 'Akses menu <strong>My Trips</strong>, lalu tap tombol <strong>Add Trip</strong>.',
+          step: '2 dari 6',
+          images: [
+            {
+              url: 'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fadd%20trips.png?alt=media&token=cc90341e-db5a-45cf-ace8-775cd229e72e',
+              caption:
+                'Halaman My Trips - Tap tombol Add Trip untuk menambahkan booking',
+            },
+          ],
+        },
+        {
+          icon: 'fa-keyboard',
+          title: 'Langkah 3-4: Input Data Booking',
+          desc: 'Masukkan <strong>booking code</strong> dan <strong>data booking</strong> dari KATRINA (nomor booking, last name tamu, dll.).',
+          step: '3 dari 6',
+          images: [
+            {
+              url: 'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fadd%20trips%20input%20data.png?alt=media&token=292963aa-f324-4a9e-af00-e243a7f2ca15',
+              caption: 'Popup Add Trip - Input data booking dari KATRINA',
+            },
+          ],
+        },
+        {
+          icon: 'fa-ticket-alt',
+          title: 'Langkah 5: Proses Tambah Trip',
+          desc: 'Tap tombol <strong>Add Trip</strong> untuk memproses penambahan transaksi ke sistem ALVIS.',
+          step: '4 dari 6',
+          images: [],
+        },
+        {
+          icon: 'fa-check-circle',
+          title: 'Langkah 6: Konfirmasi Berhasil',
+          desc: 'Sistem akan menampilkan halaman <strong>add trip</strong> dengan card berisi informasi transaksi flight yang berhasil ditambahkan.',
+          step: '5 dari 6',
+          images: [
+            {
+              url: 'https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fadd%20trips%20sukses.png?alt=media&token=9af0c907-3b10-4e81-bfa6-43e445e49a8d',
+              caption: 'Sukses - Booking berhasil ditambahkan ke sistem ALVIS',
+            },
+          ],
+        },
+        {
+          icon: 'fa-check-double',
+          title: 'Ringkasan',
+          desc: 'Booking berhasil dicatat dan siap untuk dilakukan pembayaran.',
+          step: '6 dari 6',
+          images: [],
+        },
+      ];
+
+      var currentStep = 0;
+      var panelOverlay = document.getElementById('panelOverlay');
+      var slidePanel = document.getElementById('slidePanel');
+      var panelIcon = document.getElementById('panelIcon');
+      var panelTitleText = document.getElementById('panelTitleText');
+      var panelStepDesc = document.getElementById('panelStepDesc');
+      var panelGallery = document.getElementById('panelGallery');
+      var panelCounter = document.getElementById('panelCounter');
+      var panelPrev = document.getElementById('panelPrev');
+      var panelNext = document.getElementById('panelNext');
+
+      function openPanel(index) {
+        currentStep = index;
+        updatePanel();
+        panelOverlay.classList.add('open');
+        slidePanel.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closePanel() {
+        panelOverlay.classList.remove('open');
+        slidePanel.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      function updatePanel() {
+        var data = stepData[currentStep];
+        panelIcon.className = 'panel-icon';
+        var iconEl = document.createElement('i');
+        iconEl.className = 'fas ' + data.icon;
+        panelIcon.innerHTML = '';
+        panelIcon.appendChild(iconEl);
+        panelTitleText.textContent = data.title;
+        panelStepDesc.innerHTML = data.desc;
+
+        var galleryHtml = '';
+        if (data.images && data.images.length > 0) {
+          data.images.forEach(function (img) {
+            galleryHtml +=
+              '<div class="gallery-item"><img src="' +
+              img.url +
+              '" alt="' +
+              img.caption +
+              '" loading="lazy"><div class="gallery-caption">' +
+              img.caption +
+              '</div></div>';
+          });
+        } else {
+          galleryHtml =
+            '<div class="gallery-item placeholder"><i class="fas fa-image"></i><p>🖼️ Tambahkan screenshot di sini</p></div>';
+        }
+        panelGallery.innerHTML = galleryHtml;
+
+        panelCounter.textContent = data.step;
+        panelPrev.disabled = currentStep === 0;
+        panelNext.disabled = currentStep === stepData.length - 1;
+      }
+
+      var stepCards = document.querySelectorAll('#bab2-1 .step-card');
+      stepCards.forEach(function (card, index) {
+        card.style.cursor = 'pointer';
+        card.setAttribute('title', 'Klik untuk lihat gambar');
+        card.addEventListener('click', function () {
+          openPanel(index);
+        });
+      });
+
+      document
+        .getElementById('panelClose')
+        .addEventListener('click', closePanel);
+      panelOverlay.addEventListener('click', closePanel);
+      panelPrev.addEventListener('click', function () {
+        if (currentStep > 0) {
+          currentStep--;
+          updatePanel();
+          document.getElementById('panelBody').scrollTop = 0;
+        }
+      });
+      panelNext.addEventListener('click', function () {
+        if (currentStep < stepData.length - 1) {
+          currentStep++;
+          updatePanel();
+          document.getElementById('panelBody').scrollTop = 0;
+        }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (!slidePanel.classList.contains('open')) return;
+        if (e.key === 'Escape') closePanel();
+        if (e.key === 'ArrowLeft') {
+          if (currentStep > 0) {
+            currentStep--;
+            updatePanel();
+            document.getElementById('panelBody').scrollTop = 0;
+          }
+        }
+        if (e.key === 'ArrowRight') {
+          if (currentStep < stepData.length - 1) {
+            currentStep++;
+            updatePanel();
+            document.getElementById('panelBody').scrollTop = 0;
+          }
+        }
+      });
+
+      // ===== CAROUSEL & COMPACT STEPS JAVASCRIPT =====
+      var carouselIndex = 0;
+      var totalSlides = 4;
+      var carouselCaptions = [
+        '<strong>Langkah 1:</strong> Sistem ALVIS menampilkan <strong>halaman landing</strong>',
+        '<strong>Langkah 2:</strong> Halaman My Trips - Tap tombol <strong>Add Trip</strong>',
+        '<strong>Langkah 3:</strong> Input data booking dari KATRINA',
+        '<strong>Langkah 4:</strong> Booking berhasil ditambahkan ke sistem ALVIS',
+      ];
+
+      function updateCarousel() {
+        var slides = document.getElementById('carouselSlides');
+        if (slides) {
+          slides.style.transform = 'translateX(-' + carouselIndex * 100 + '%)';
+        }
+
+        // Update dots
+        var dots = document.querySelectorAll('.carousel-dot');
+        dots.forEach(function (dot, i) {
+          dot.classList.remove('active');
+          if (i === carouselIndex) dot.classList.add('active');
+        });
+
+        // Update caption
+        var caption = document.getElementById('carouselCaption');
+        if (caption) caption.innerHTML = carouselCaptions[carouselIndex];
+
+        // Update compact steps
+        var steps = document.querySelectorAll('.compact-step');
+        steps.forEach(function (step, i) {
+          step.classList.remove('active');
+          if (i === carouselIndex) {
+            step.classList.add('active');
+          }
+        });
+
+        // Map carousel index to step detail
+        var stepDetails = document.querySelectorAll('.step-detail');
+        stepDetails.forEach(function (detail) {
+          detail.classList.remove('active');
+        });
+
+        var activeDetail = document.querySelector(
+          '.step-detail[data-detail="' + carouselIndex + '"]'
+        );
+        if (activeDetail) activeDetail.classList.add('active');
+      }
+
+      function moveSlide(direction) {
+        carouselIndex += direction;
+        if (carouselIndex < 0) carouselIndex = totalSlides - 1;
+        if (carouselIndex >= totalSlides) carouselIndex = 0;
+        updateCarousel();
+      }
+
+      function goToSlide(index) {
+        carouselIndex = index;
+        updateCarousel();
+      }
+
+      // Initialize carousel
+      document.addEventListener('DOMContentLoaded', function () {
+        updateCarousel();
+      });
+
+      // Compact steps click handler
+      var compactSteps = document.querySelectorAll('.compact-step');
+      compactSteps.forEach(function (step, index) {
+        step.addEventListener('click', function () {
+          carouselIndex = index;
+          updateCarousel();
+        });
+      });
+
+      // ===== CAROUSEL P2 & COMPACT STEPS P2 JAVASCRIPT (Section 2.2) =====
+      var carouselIndexP2 = 0;
+      var totalSlidesP2 = 6;
+      var carouselCaptionsP2 = [
+        '<strong>Langkah 1:</strong> Sistem Panorama JTB menampilkan <strong>halaman landing</strong>',
+        '<strong>Langkah 2:</strong> Klik <strong>profile user</strong> → pilih menu <strong>My Bookings</strong>',
+        '<strong>Langkah 3:</strong> Klik button <strong>Add Trips</strong> di kanan bawah halaman',
+        '<strong>Langkah 4:</strong> Input <strong>booking code/order number</strong> dan <strong>last name</strong>',
+        '<strong>Langkah 5:</strong> Sistem menampilkan halaman <strong>My Booking</strong> dengan data baru',
+        '<strong>Langkah 6:</strong> Akses menu <strong>Payment Progress</strong>',
+      ];
+
+      function updateCarouselP2() {
+        var slidesP2 = document.getElementById('carouselSlidesP2');
+        if (slidesP2) {
+          slidesP2.style.transform =
+            'translateX(-' + carouselIndexP2 * 100 + '%)';
+        }
+
+        // Update dots
+        var dotsP2 = document.querySelectorAll('.carousel-dot-p2');
+        dotsP2.forEach(function (dot, i) {
+          dot.classList.remove('active');
+          if (i === carouselIndexP2) dot.classList.add('active');
+        });
+
+        // Update caption
+        var captionP2 = document.getElementById('carouselCaptionP2');
+        if (captionP2)
+          captionP2.innerHTML = carouselCaptionsP2[carouselIndexP2];
+
+        // Update compact steps P2
+        var stepsP2 = document.querySelectorAll('.compact-step-p2');
+        stepsP2.forEach(function (step, i) {
+          step.classList.remove('active');
+          if (i === carouselIndexP2) {
+            step.classList.add('active');
+          }
+        });
+
+        // Map carousel index to step detail P2
+        var stepDetailsP2 = document.querySelectorAll('.step-detail-p2');
+        stepDetailsP2.forEach(function (detail) {
+          detail.classList.remove('active');
+        });
+
+        var activeDetailP2 = document.querySelector(
+          '.step-detail-p2[data-detail-p2="' + carouselIndexP2 + '"]'
+        );
+        if (activeDetailP2) activeDetailP2.classList.add('active');
+      }
+
+      function moveSlideP2(direction) {
+        carouselIndexP2 += direction;
+        if (carouselIndexP2 < 0) carouselIndexP2 = totalSlidesP2 - 1;
+        if (carouselIndexP2 >= totalSlidesP2) carouselIndexP2 = 0;
+        updateCarouselP2();
+      }
+
+      function goToSlideP2(index) {
+        carouselIndexP2 = index;
+        updateCarouselP2();
+      }
+
+      // Initialize carousel P2
+      document.addEventListener('DOMContentLoaded', function () {
+        updateCarouselP2();
+      });
+
+      // Compact steps P2 click handler
+      var compactStepsP2 = document.querySelectorAll('.compact-step-p2');
+      compactStepsP2.forEach(function (step, index) {
+        step.addEventListener('click', function () {
+          carouselIndexP2 = index;
+          updateCarouselP2();
+        });
+      });
+
+      // ===== CAROUSEL P3 & COMPACT STEPS P3 JAVASCRIPT (Section 3.1 - Credit Card) =====
+      var carouselIndexP3 = 0;
+      var totalSlidesP3 = 6;
+      var carouselCaptionsP3 = [
+        '<strong>Langkah 1:</strong> Akses halaman <strong>Payment Progress</strong>, klik card transaksi',
+        '<strong>Langkah 2:</strong> Pilih metode <strong>Credit Card</strong>, swipe button untuk melanjutkan',
+        '<strong>Langkah 3:</strong> Masukkan <strong>nomor kartu kredit</strong> Anda',
+        '<strong>Langkah 4:</strong> Masukkan <strong>password atau OTP</strong> untuk verifikasi',
+        '<strong>Langkah 5:</strong> Sistem menampilkan halaman <strong>Payment via CC Sukses</strong>',
+        '<strong>Langkah 6:</strong> Sistem menampilkan halaman <strong>My Booking</strong> dengan status sukses',
+      ];
+
+      function updateCarouselP3() {
+        var slidesP3 = document.getElementById('carouselSlidesP3');
+        if (slidesP3) {
+          slidesP3.style.transform =
+            'translateX(-' + carouselIndexP3 * 100 + '%)';
+        }
+
+        // Update dots
+        var dotsP3 = document.querySelectorAll('.carousel-dot-p3');
+        dotsP3.forEach(function (dot, i) {
+          dot.classList.remove('active');
+          if (i === carouselIndexP3) dot.classList.add('active');
+        });
+
+        // Update caption
+        var captionP3 = document.getElementById('carouselCaptionP3');
+        if (captionP3)
+          captionP3.innerHTML = carouselCaptionsP3[carouselIndexP3];
+
+        // Update compact steps P3
+        var stepsP3 = document.querySelectorAll('.compact-step-p3');
+        stepsP3.forEach(function (step, i) {
+          step.classList.remove('active');
+          if (i === carouselIndexP3) {
+            step.classList.add('active');
+          }
+        });
+
+        // Map carousel index to step detail P3
+        var stepDetailsP3 = document.querySelectorAll('.step-detail-p3');
+        stepDetailsP3.forEach(function (detail) {
+          detail.classList.remove('active');
+        });
+
+        var activeDetailP3 = document.querySelector(
+          '.step-detail-p3[data-detail-p3="' + carouselIndexP3 + '"]'
+        );
+        if (activeDetailP3) activeDetailP3.classList.add('active');
+      }
+
+      function moveSlideP3(direction) {
+        carouselIndexP3 += direction;
+        if (carouselIndexP3 < 0) carouselIndexP3 = totalSlidesP3 - 1;
+        if (carouselIndexP3 >= totalSlidesP3) carouselIndexP3 = 0;
+        updateCarouselP3();
+      }
+
+      function goToSlideP3(index) {
+        carouselIndexP3 = index;
+        updateCarouselP3();
+      }
+
+      // Initialize carousel P3
+      document.addEventListener('DOMContentLoaded', function () {
+        updateCarouselP3();
+      });
+
+      // Compact steps P3 click handler
+      var compactStepsP3 = document.querySelectorAll('.compact-step-p3');
+      compactStepsP3.forEach(function (step, index) {
+        step.addEventListener('click', function () {
+          carouselIndexP3 = index;
+          updateCarouselP3();
+        });
+      });
+
+      // ===== CAROUSEL P4 & COMPACT STEPS P4 JAVASCRIPT (Section 2.1 - Mobile Booking) =====
+      var carouselIndexP4 = 0;
+      var totalSlidesP4 = 8;
+      var carouselCaptionsP4 = [
+        '<strong>Langkah 1:</strong> Akses menu <strong>Flight</strong> dari halaman utama ALVIS',
+        '<strong>Langkah 2:</strong> Isi form pencarian: <strong>asal, tujuan, tanggal, penumpang</strong>',
+        '<strong>Langkah 3:</strong> Tap tombol <strong>Cari</strong> untuk menampilkan jadwal',
+        '<strong>Langkah 4:</strong> Pilih jadwal penerbangan yang sesuai',
+        '<strong>Langkah 5:</strong> Isi <strong>data penumpang</strong> sesuai dokumen resmi',
+        '<strong>Langkah 6:</strong> Pilih metode <strong>Credit Card</strong> atau <strong>Virtual Account</strong>',
+        '<strong>Langkah 7:</strong> Lakukan pembayaran sesuai metode yang dipilih',
+        '<strong>Langkah 8:</strong> Akses halaman <strong>Booking Detail</strong> untuk e-ticket',
+      ];
+
+      function updateCarouselP4() {
+        var slidesP4 = document.getElementById('carouselSlidesP4');
+        if (slidesP4) {
+          slidesP4.style.transform =
+            'translateX(-' + carouselIndexP4 * 100 + '%)';
+        }
+        var dotsP4 = document.querySelectorAll('.carousel-dot-p4');
+        dotsP4.forEach(function (dot, i) {
+          dot.classList.remove('active');
+          if (i === carouselIndexP4) dot.classList.add('active');
+        });
+        var captionP4 = document.getElementById('carouselCaptionP4');
+        if (captionP4)
+          captionP4.innerHTML = carouselCaptionsP4[carouselIndexP4];
+        var stepsP4 = document.querySelectorAll('.compact-step-p4');
+        stepsP4.forEach(function (step, i) {
+          step.classList.remove('active');
+          if (i === carouselIndexP4) step.classList.add('active');
+        });
+        var stepDetailsP4 = document.querySelectorAll('.step-detail-p4');
+        stepDetailsP4.forEach(function (detail) {
+          detail.classList.remove('active');
+        });
+        var activeDetailP4 = document.querySelector(
+          '.step-detail-p4[data-detail-p4="' + carouselIndexP4 + '"]'
+        );
+        if (activeDetailP4) activeDetailP4.classList.add('active');
+      }
+
+      function moveSlideP4(direction) {
+        carouselIndexP4 += direction;
+        if (carouselIndexP4 < 0) carouselIndexP4 = totalSlidesP4 - 1;
+        if (carouselIndexP4 >= totalSlidesP4) carouselIndexP4 = 0;
+        updateCarouselP4();
+      }
+
+      function goToSlideP4(index) {
+        carouselIndexP4 = index;
+        updateCarouselP4();
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        updateCarouselP4();
+      });
+
+      var compactStepsP4 = document.querySelectorAll('.compact-step-p4');
+      compactStepsP4.forEach(function (step, index) {
+        step.addEventListener('click', function () {
+          carouselIndexP4 = index;
+          updateCarouselP4();
+        });
+      });
+
+      // ===== CAROUSEL P5 & COMPACT STEPS P5 JAVASCRIPT (Section 2.2 - Web Booking) =====
+      var carouselIndexP5 = 0;
+      var totalSlidesP5 = 8;
+      var carouselCaptionsP5 = [
+        '<strong>Langkah 1:</strong> Login ke Panorama JTB, akses menu <strong>Flight</strong>',
+        '<strong>Langkah 2:</strong> Isi form pencarian: <strong>asal, tujuan, tanggal, penumpang</strong>',
+        '<strong>Langkah 3:</strong> Klik <strong>Search</strong> untuk menampilkan jadwal',
+        '<strong>Langkah 4:</strong> Pilih jadwal dan lihat detail flight',
+        '<strong>Langkah 5:</strong> Isi <strong>data setiap penumpang</strong> sesuai dokumen',
+        '<strong>Langkah 6:</strong> Pilih metode <strong>Credit Card</strong> atau <strong>Virtual Account</strong>',
+        '<strong>Langkah 7:</strong> Selesaikan pembayaran sesuai metode',
+        '<strong>Langkah 8:</strong> Akses halaman <strong>Booking Detail</strong> untuk e-ticket & itinerary',
+      ];
+
+      function updateCarouselP5() {
+        var slidesP5 = document.getElementById('carouselSlidesP5');
+        if (slidesP5) {
+          slidesP5.style.transform =
+            'translateX(-' + carouselIndexP5 * 100 + '%)';
+        }
+        var dotsP5 = document.querySelectorAll('.carousel-dot-p5');
+        dotsP5.forEach(function (dot, i) {
+          dot.classList.remove('active');
+          if (i === carouselIndexP5) dot.classList.add('active');
+        });
+        var captionP5 = document.getElementById('carouselCaptionP5');
+        if (captionP5)
+          captionP5.innerHTML = carouselCaptionsP5[carouselIndexP5];
+        var stepsP5 = document.querySelectorAll('.compact-step-p5');
+        stepsP5.forEach(function (step, i) {
+          step.classList.remove('active');
+          if (i === carouselIndexP5) step.classList.add('active');
+        });
+        var stepDetailsP5 = document.querySelectorAll('.step-detail-p5');
+        stepDetailsP5.forEach(function (detail) {
+          detail.classList.remove('active');
+        });
+        var activeDetailP5 = document.querySelector(
+          '.step-detail-p5[data-detail-p5="' + carouselIndexP5 + '"]'
+        );
+        if (activeDetailP5) activeDetailP5.classList.add('active');
+      }
+
+      function moveSlideP5(direction) {
+        carouselIndexP5 += direction;
+        if (carouselIndexP5 < 0) carouselIndexP5 = totalSlidesP5 - 1;
+        if (carouselIndexP5 >= totalSlidesP5) carouselIndexP5 = 0;
+        updateCarouselP5();
+      }
+
+      function goToSlideP5(index) {
+        carouselIndexP5 = index;
+        updateCarouselP5();
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        updateCarouselP5();
+      });
+
+      var compactStepsP5 = document.querySelectorAll('.compact-step-p5');
+      compactStepsP5.forEach(function (step, index) {
+        step.addEventListener('click', function () {
+          carouselIndexP5 = index;
+          updateCarouselP5();
+        });
+      });
+    </script>
+  </body>
+</html>
