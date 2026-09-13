@@ -2560,6 +2560,180 @@
           grid-template-columns: 1fr;
         }
       }
+
+      /* ===== TAB SWITCHER (Booking Flow) ===== */
+      .book-flow {
+        margin: 24px 0;
+      }
+      .book-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-bottom: 0;
+        border-bottom: 1px solid var(--border);
+        padding: 0;
+      }
+      .book-tab {
+        padding: 10px 14px;
+        background: transparent;
+        border: 1px solid transparent;
+        border-bottom: none;
+        border-radius: 4px 4px 0 0;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: -1px;
+      }
+      .book-tab:hover {
+        color: var(--text);
+        background: var(--bg-subtle);
+      }
+      .book-tab.active {
+        color: var(--text);
+        background: var(--card-bg);
+        border-color: var(--border);
+        border-bottom-color: var(--card-bg);
+        font-weight: 600;
+      }
+      .book-tab .tab-num {
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        font-variant-numeric: tabular-nums;
+        color: var(--text-muted);
+      }
+      .book-tab.active .tab-num {
+        color: var(--text);
+      }
+
+      .book-stage {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-top: none;
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        padding: 36px;
+        display: grid;
+        grid-template-columns: minmax(280px, 360px) 1fr;
+        gap: 40px;
+        align-items: center;
+        min-height: 360px;
+      }
+
+      .book-panel {
+        display: none;
+      }
+      .book-panel.active {
+        display: contents;
+      }
+
+      .book-image-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        aspect-ratio: 9 / 16;
+        max-height: 380px;
+        overflow: hidden;
+      }
+      .book-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .book-info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .book-step-num {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-variant-numeric: tabular-nums;
+      }
+      .book-info h4 {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+        letter-spacing: -0.015em;
+      }
+      .book-info p {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--text-light);
+        margin: 0;
+      }
+
+      .book-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding-top: 16px;
+      }
+      .book-nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: all var(--transition);
+      }
+      .book-nav-btn:hover:not(:disabled) {
+        border-color: var(--text);
+        color: var(--text);
+        background: var(--bg-subtle);
+      }
+      .book-nav-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+      .book-nav-counter {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.04em;
+      }
+
+      @media (max-width: 768px) {
+        .book-stage {
+          grid-template-columns: 1fr;
+          padding: 24px 20px;
+          gap: 24px;
+        }
+        .book-image-wrap {
+          max-height: 320px;
+        }
+        .book-tab {
+          font-size: 12px;
+          padding: 8px 10px;
+        }
+        .book-info h4 {
+          font-size: 18px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -2896,195 +3070,195 @@
             </div>
           </div>
 
-          <!-- Step Grid P4 (Static, replaces carousel + tabs + step-details) -->
-          <div class="step-grid step-grid-p4">
-            <div class="step-grid-item">
-              <div class="step-grid-badge">1</div>
-              <div class="phone-mockup">
-                <div class="phone-side-btn volume-up"></div>
-                <div class="phone-side-btn volume-down"></div>
-                <div class="phone-side-btn power"></div>
-                <div class="phone-screen">
+          <!-- Tab Switcher Booking Flow P4 -->
+          <div class="book-flow" data-book-flow="p4">
+            <div class="book-tabs" role="tablist">
+              <button class="book-tab active" data-book="0" role="tab">
+                <span class="tab-num">01</span> Akses Flight
+              </button>
+              <button class="book-tab" data-book="1" role="tab">
+                <span class="tab-num">02</span> Search
+              </button>
+              <button class="book-tab" data-book="2" role="tab">
+                <span class="tab-num">03</span> Jadwal
+              </button>
+              <button class="book-tab" data-book="3" role="tab">
+                <span class="tab-num">04</span> Pilih
+              </button>
+              <button class="book-tab" data-book="4" role="tab">
+                <span class="tab-num">05</span> Data Pax
+              </button>
+              <button class="book-tab" data-book="5" role="tab">
+                <span class="tab-num">06</span> Pembayaran
+              </button>
+              <button class="book-tab" data-book="6" role="tab">
+                <span class="tab-num">07</span> Bayar
+              </button>
+              <button class="book-tab" data-book="7" role="tab">
+                <span class="tab-num">08</span> Detail
+              </button>
+            </div>
+
+            <div class="book-stage">
+              <div class="book-panel active" data-book-panel="0">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fhalaman-flight.png?alt=media&token=a7f21c8a-7392-4c30-91ae-cc757fff5aed"
                     alt="Halaman akses Flight"
+                    class="book-image"
                   />
-
-                  <div class="phone-home"></div>
+                </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 01 / 08</div>
+                  <h4>Akses Menu Flight</h4>
+                  <p>
+                    Buka aplikasi <strong>ALVIS</strong> di smartphone Anda,
+                    kemudian akses menu <strong>Flight</strong> dari halaman
+                    utama untuk mulai melakukan pemesanan tiket pesawat baru.
+                  </p>
                 </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Akses Menu Flight</strong>
-                <p>
-                  Buka aplikasi <strong>ALVIS</strong> di smartphone Anda,
-                  kemudian akses menu <strong>Flight</strong> dari halaman utama
-                  untuk mulai melakukan pemesanan tiket pesawat baru.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">2</div>
-              <div class="phone-mockup">
-                <div class="phone-side-btn volume-up"></div>
-                <div class="phone-side-btn volume-down"></div>
-                <div class="phone-side-btn power"></div>
-                <div class="phone-screen">
+              <div class="book-panel" data-book-panel="1">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Finput-search.png?alt=media&token=1ee95f44-c62e-484d-af7b-d8b63edd2bb5"
                     alt="Halaman akses search airport"
+                    class="book-image"
                   />
-                  <div class="phone-home"></div>
+                </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 02 / 08</div>
+                  <h4>Input Data Pencarian</h4>
+                  <p>
+                    Isi form pencarian flight: <strong>kota asal</strong>,
+                    <strong>kota tujuan</strong>,
+                    <strong>tanggal berangkat</strong>, dan
+                    <strong>jumlah penumpang</strong>. Pastikan data yang
+                    dimasukkan sudah benar.
+                  </p>
                 </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Input Data Pencarian</strong>
-                <p>
-                  Isi form pencarian flight: <strong>kota asal</strong>,
-                  <strong>kota tujuan</strong>, <strong>tanggal berangkat</strong>,
-                  dan <strong>jumlah penumpang</strong>. Pastikan data yang
-                  dimasukkan sudah benar.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">3</div>
-              <div class="phone-mockup">
-                <div class="phone-side-btn volume-up"></div>
-                <div class="phone-side-btn volume-down"></div>
-                <div class="phone-side-btn power"></div>
-                <div class="phone-screen">
+              <div class="book-panel" data-book-panel="2">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fjadwal-flight.png?alt=media&token=7dafb29a-3710-438c-9115-4a049d9ad5a3"
                     alt="Halaman jadwal flight"
+                    class="book-image"
                   />
-                  <div class="phone-home"></div>
+                </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 03 / 08</div>
+                  <h4>Cari Jadwal Flight</h4>
+                  <p>
+                    Tap tombol <strong>Cari</strong>. Sistem akan menampilkan
+                    <strong>daftar jadwal penerbangan</strong> yang tersedia
+                    sesuai kriteria pencarian Anda.
+                  </p>
                 </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Cari Jadwal Flight</strong>
-                <p>
-                  Tap tombol <strong>Cari</strong>. Sistem akan menampilkan
-                  <strong>daftar jadwal penerbangan</strong> yang tersedia sesuai
-                  kriteria pencarian Anda.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">4</div>
-              <div class="phone-mockup">
-                <div class="phone-side-btn volume-up"></div>
-                <div class="phone-side-btn volume-down"></div>
-                <div class="phone-side-btn power"></div>
-                <div class="phone-screen">
+              <div class="book-panel" data-book-panel="3">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fpilih-flight.png?alt=media&token=94b8a5bb-7aa0-442c-8e1c-a4786a983f7d"
                     alt="Halaman pilih flight"
+                    class="book-image"
                   />
-                  <div class="phone-home"></div>
+                </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 04 / 08</div>
+                  <h4>Pilih Flight</h4>
+                  <p>
+                    Pilih jadwal penerbangan yang sesuai dari daftar.
+                    Pertimbangkan <strong>harga</strong>,
+                    <strong>waktu keberangkatan</strong>,
+                    <strong>maskapai</strong>, dan <strong>transit</strong>
+                    sebelum memilih.
+                  </p>
                 </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Pilih Flight</strong>
-                <p>
-                  Pilih jadwal penerbangan yang sesuai dari daftar. Pertimbangkan
-                  <strong>harga</strong>, <strong>waktu keberangkatan</strong>,
-                  <strong>maskapai</strong>, dan <strong>transit</strong> sebelum
-                  memilih.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">5</div>
-              <div class="phone-mockup">
-                <div class="phone-side-btn volume-up"></div>
-                <div class="phone-side-btn volume-down"></div>
-                <div class="phone-side-btn power"></div>
-                <div class="phone-screen">
+              <div class="book-panel" data-book-panel="4">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fdata-pax.png?alt=media&token=028124c7-fe69-4683-b36c-009135c814c7"
                     alt="Halaman input pax"
+                    class="book-image"
                   />
-                  <div class="phone-home"></div>
+                </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 05 / 08</div>
+                  <h4>Input Data Penumpang</h4>
+                  <p>
+                    Isi <strong>data penumpang</strong> sesuai dokumen resmi:
+                    nama lengkap, nomor identitas (KTP/Paspor), tanggal lahir,
+                    dan kontak. Pastikan data sesuai dengan dokumen perjalanan.
+                  </p>
                 </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Input Data Penumpang</strong>
-                <p>
-                  Isi <strong>data penumpang</strong> sesuai dokumen resmi: nama
-                  lengkap, nomor identitas (KTP/Paspor), tanggal lahir, dan
-                  kontak. Pastikan data sesuai dengan dokumen perjalanan.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">6</div>
-              <div class="phone-mockup">
-                <div class="phone-side-btn volume-up"></div>
-                <div class="phone-side-btn volume-down"></div>
-                <div class="phone-side-btn power"></div>
-                <div class="phone-screen">
+              <div class="book-panel" data-book-panel="5">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fpilih-pembayaran.png?alt=media&token=e5f62136-3f53-4071-88bc-e17c4a0f6295"
                     alt="Halaman pilih pembayaran"
+                    class="book-image"
                   />
-                  <div class="phone-home"></div>
+                </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 06 / 08</div>
+                  <h4>Pilih Metode Pembayaran</h4>
+                  <p>
+                    Pilih metode pembayaran: <strong>Credit Card</strong> atau
+                    <strong>Virtual Account</strong>. Masing-masing memiliki
+                    kelebihan — CC lebih cepat, VA lebih fleksibel.
+                  </p>
                 </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Pilih Metode Pembayaran</strong>
-                <p>
-                  Pilih metode pembayaran: <strong>Credit Card</strong> atau
-                  <strong>Virtual Account</strong>. Masing-masing memiliki
-                  kelebihan — CC lebih cepat, VA lebih fleksibel.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">7</div>
-              <div class="phone-mockup">
-                <div class="phone-side-btn volume-up"></div>
-                <div class="phone-side-btn volume-down"></div>
-                <div class="phone-side-btn power"></div>
-                <div class="phone-screen">
+              <div class="book-panel" data-book-panel="6">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fproses-pembayaran.png?alt=media&token=bae6f4c6-9523-45d6-a028-706572df1826"
                     alt="Halaman proses pembayaran"
+                    class="book-image"
                   />
-                  <div class="phone-home"></div>
+                </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 07 / 08</div>
+                  <h4>Lakukan Pembayaran</h4>
+                  <p>
+                    Ikuti instruksi pembayaran sesuai metode yang dipilih. Untuk
+                    Credit Card, masukkan nomor kartu dan OTP. Untuk VA,
+                    transfer ke nomor VA yang di-generate.
+                  </p>
                 </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Lakukan Pembayaran</strong>
-                <p>
-                  Ikuti instruksi pembayaran sesuai metode yang dipilih. Untuk
-                  Credit Card, masukkan nomor kartu dan OTP. Untuk VA, transfer
-                  ke nomor VA yang di-generate.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">8</div>
-              <div class="phone-mockup">
-                <div class="phone-side-btn volume-up"></div>
-                <div class="phone-side-btn volume-down"></div>
-                <div class="phone-side-btn power"></div>
-                <div class="phone-screen">
+              <div class="book-panel" data-book-panel="7">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fdetail-booking.png?alt=media&token=63197d32-6c55-445d-b5fc-06c342f59696"
                     alt="Halaman detail booking"
+                    class="book-image"
                   />
-                  <div class="phone-home"></div>
+                </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 08 / 08</div>
+                  <h4>Akses Booking Detail</h4>
+                  <p>
+                    Setelah pembayaran sukses, sistem menampilkan halaman
+                    <strong>Booking Detail</strong> yang berisi e-ticket, nomor
+                    booking, dan status issued. Simpan informasi ini untuk
+                    referensi.
+                  </p>
                 </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Akses Booking Detail</strong>
-                <p>
-                  Setelah pembayaran sukses, sistem menampilkan halaman
-                  <strong>Booking Detail</strong> yang berisi e-ticket, nomor
-                  booking, dan status issued. Simpan informasi ini untuk
-                  referensi.
-                </p>
-              </div>
+            </div>
+
+            <div class="book-nav">
+              <button class="book-nav-btn book-prev" data-book-prev="p4">
+                <i class="fas fa-arrow-left"></i> Sebelumnya
+              </button>
+              <span class="book-nav-counter" data-book-counter="p4">01 / 08</span>
+              <button class="book-nav-btn book-next" data-book-next="p4">
+                Selanjutnya <i class="fas fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
@@ -3116,275 +3290,198 @@
             luas.
           </p>
 
-          <!-- Step Grid P5 (Static, replaces carousel + tabs + step-details) -->
-          <div class="step-grid step-grid-p5">
-            <div class="step-grid-item">
-              <div class="step-grid-badge">1</div>
-              <div class="browser-mockup">
-                <div class="browser-header">
-                  <div class="browser-buttons">
-                    <span class="browser-btn red"></span>
-                    <span class="browser-btn yellow"></span>
-                    <span class="browser-btn green"></span>
-                  </div>
-                  <div class="browser-address-bar">
-                    <i class="fas fa-lock"></i>
-                    <span>panorama-jtb.com/flight</span>
-                  </div>
-                  <div class="browser-menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </div>
-                </div>
-                <div class="browser-screen">
+          <!-- Tab Switcher Booking Flow P5 -->
+          <div class="book-flow" data-book-flow="p5">
+            <div class="book-tabs" role="tablist">
+              <button class="book-tab active" data-book="0" role="tab">
+                <span class="tab-num">01</span> Akses Flight
+              </button>
+              <button class="book-tab" data-book="1" role="tab">
+                <span class="tab-num">02</span> Search
+              </button>
+              <button class="book-tab" data-book="2" role="tab">
+                <span class="tab-num">03</span> Jadwal
+              </button>
+              <button class="book-tab" data-book="3" role="tab">
+                <span class="tab-num">04</span> Pilih
+              </button>
+              <button class="book-tab" data-book="4" role="tab">
+                <span class="tab-num">05</span> Data Pax
+              </button>
+              <button class="book-tab" data-book="5" role="tab">
+                <span class="tab-num">06</span> Pembayaran
+              </button>
+              <button class="book-tab" data-book="6" role="tab">
+                <span class="tab-num">07</span> Bayar
+              </button>
+              <button class="book-tab" data-book="7" role="tab">
+                <span class="tab-num">08</span> Detail
+              </button>
+            </div>
+
+            <div class="book-stage">
+              <div class="book-panel active" data-book-panel="0">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-search.png?alt=media&token=04ae5b29-685a-45f2-8018-29f755bd0eec"
                     alt="Akses Menu Flight"
+                    class="book-image"
                   />
                 </div>
-              </div>
-              <div class="step-grid-caption">
-                <strong>Akses Menu Flight</strong>
-                <p>
-                  Login ke website <strong>Panorama JTB</strong>. Pada halaman
-                  utama, akses menu <strong>Flight</strong> untuk mulai
-                  melakukan pemesanan tiket pesawat baru.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">2</div>
-              <div class="browser-mockup">
-                <div class="browser-header">
-                  <div class="browser-buttons">
-                    <span class="browser-btn red"></span>
-                    <span class="browser-btn yellow"></span>
-                    <span class="browser-btn green"></span>
-                  </div>
-                  <div class="browser-address-bar">
-                    <i class="fas fa-lock"></i>
-                    <span>panorama-jtb.com/flight/search</span>
-                  </div>
-                  <div class="browser-menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 01 / 08</div>
+                  <h4>Akses Menu Flight</h4>
+                  <p>
+                    Login ke website <strong>Panorama JTB</strong>. Pada
+                    halaman utama, akses menu <strong>Flight</strong> untuk
+                    mulai melakukan pemesanan tiket pesawat baru.
+                  </p>
                 </div>
-                <div class="browser-screen">
+              </div>
+              <div class="book-panel" data-book-panel="1">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-filter-search.png?alt=media&token=dbb4af29-3929-4c51-8c63-971047b44536"
                     alt="Form Pencarian Flight"
+                    class="book-image"
                   />
                 </div>
-              </div>
-              <div class="step-grid-caption">
-                <strong>Input Data Pencarian</strong>
-                <p>
-                  Isi form pencarian flight: <strong>kota asal</strong>,
-                  <strong>kota tujuan</strong>, <strong>tanggal berangkat</strong>,
-                  <strong>tanggal pulang</strong> (jika round-trip), dan
-                  <strong>jumlah penumpang</strong>.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">3</div>
-              <div class="browser-mockup">
-                <div class="browser-header">
-                  <div class="browser-buttons">
-                    <span class="browser-btn red"></span>
-                    <span class="browser-btn yellow"></span>
-                    <span class="browser-btn green"></span>
-                  </div>
-                  <div class="browser-address-bar">
-                    <i class="fas fa-lock"></i>
-                    <span>panorama-jtb.com/flight/results</span>
-                  </div>
-                  <div class="browser-menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 02 / 08</div>
+                  <h4>Input Data Pencarian</h4>
+                  <p>
+                    Isi form pencarian flight: <strong>kota asal</strong>,
+                    <strong>kota tujuan</strong>,
+                    <strong>tanggal berangkat</strong>,
+                    <strong>tanggal pulang</strong> (jika round-trip), dan
+                    <strong>jumlah penumpang</strong>.
+                  </p>
                 </div>
-                <div class="browser-screen">
+              </div>
+              <div class="book-panel" data-book-panel="2">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-list.png?alt=media&token=1b13c496-7f81-4e7b-9d8c-0f0e93e22dbe"
                     alt="Hasil Pencarian Jadwal Flight"
+                    class="book-image"
                   />
                 </div>
-              </div>
-              <div class="step-grid-caption">
-                <strong>Cari Jadwal Flight</strong>
-                <p>
-                  Klik tombol <strong>Search</strong>. Website akan menampilkan
-                  <strong>daftar jadwal penerbangan</strong> yang tersedia
-                  dengan filter dan sorting berdasarkan harga/waktu.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">4</div>
-              <div class="browser-mockup">
-                <div class="browser-header">
-                  <div class="browser-buttons">
-                    <span class="browser-btn red"></span>
-                    <span class="browser-btn yellow"></span>
-                    <span class="browser-btn green"></span>
-                  </div>
-                  <div class="browser-address-bar">
-                    <i class="fas fa-lock"></i>
-                    <span>panorama-jtb.com/flight/select</span>
-                  </div>
-                  <div class="browser-menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 03 / 08</div>
+                  <h4>Cari Jadwal Flight</h4>
+                  <p>
+                    Klik tombol <strong>Search</strong>. Website akan
+                    menampilkan <strong>daftar jadwal penerbangan</strong>
+                    yang tersedia dengan filter dan sorting berdasarkan
+                    harga/waktu.
+                  </p>
                 </div>
-                <div class="browser-screen">
+              </div>
+              <div class="book-panel" data-book-panel="3">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-select.png?alt=media&token=60d74680-9906-42c8-8f8a-dcb79a68ce96"
                     alt="Pilih Jadwal Flight"
+                    class="book-image"
                   />
                 </div>
-              </div>
-              <div class="step-grid-caption">
-                <strong>Pilih Flight</strong>
-                <p>
-                  Klik jadwal penerbangan yang dipilih. Website menampilkan
-                  <strong>detail flight</strong> termasuk harga, fasilitas, dan
-                  kebijakan pembatalan sebelum lanjut ke langkah berikutnya.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">5</div>
-              <div class="browser-mockup">
-                <div class="browser-header">
-                  <div class="browser-buttons">
-                    <span class="browser-btn red"></span>
-                    <span class="browser-btn yellow"></span>
-                    <span class="browser-btn green"></span>
-                  </div>
-                  <div class="browser-address-bar">
-                    <i class="fas fa-lock"></i>
-                    <span>panorama-jtb.com/flight/pax</span>
-                  </div>
-                  <div class="browser-menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 04 / 08</div>
+                  <h4>Pilih Flight</h4>
+                  <p>
+                    Klik jadwal penerbangan yang dipilih. Website menampilkan
+                    <strong>detail flight</strong> termasuk harga, fasilitas,
+                    dan kebijakan pembatalan sebelum lanjut ke langkah
+                    berikutnya.
+                  </p>
                 </div>
-                <div class="browser-screen">
+              </div>
+              <div class="book-panel" data-book-panel="4">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-input-pax.png?alt=media&token=47cb244e-ed94-4bc2-8df1-0cecdf3f4b6f"
                     alt="Form Data Penumpang"
+                    class="book-image"
                   />
                 </div>
-              </div>
-              <div class="step-grid-caption">
-                <strong>Input Data Penumpang</strong>
-                <p>
-                  Isi <strong>data setiap penumpang</strong> sesuai dokumen
-                  resmi: nama lengkap, nomor identitas, tanggal lahir, jenis
-                  kelamin, dan kontak darurat. Untuk anak/infant, lengkapi data
-                  sesuai kebutuhan.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">6</div>
-              <div class="browser-mockup">
-                <div class="browser-header">
-                  <div class="browser-buttons">
-                    <span class="browser-btn red"></span>
-                    <span class="browser-btn yellow"></span>
-                    <span class="browser-btn green"></span>
-                  </div>
-                  <div class="browser-address-bar">
-                    <i class="fas fa-lock"></i>
-                    <span>panorama-jtb.com/flight/payment</span>
-                  </div>
-                  <div class="browser-menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 05 / 08</div>
+                  <h4>Input Data Penumpang</h4>
+                  <p>
+                    Isi <strong>data setiap penumpang</strong> sesuai dokumen
+                    resmi: nama lengkap, nomor identitas, tanggal lahir, jenis
+                    kelamin, dan kontak darurat. Untuk anak/infant, lengkapi
+                    data sesuai kebutuhan.
+                  </p>
                 </div>
-                <div class="browser-screen">
+              </div>
+              <div class="book-panel" data-book-panel="5">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20select%20cc.png?alt=media&token=7bcbd9f9-55e3-48e0-9ae6-34c7ba683af2"
                     alt="Pilih Metode Pembayaran"
+                    class="book-image"
                   />
                 </div>
-              </div>
-              <div class="step-grid-caption">
-                <strong>Pilih Metode Pembayaran</strong>
-                <p>
-                  Pilih metode pembayaran: <strong>Credit Card</strong> (Visa,
-                  MasterCard) atau <strong>Virtual Account</strong> (BCA,
-                  Mandiri, BNI, BRI). Tiap metode punya instruksi berbeda di
-                  langkah berikutnya.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">7</div>
-              <div class="browser-mockup">
-                <div class="browser-header">
-                  <div class="browser-buttons">
-                    <span class="browser-btn red"></span>
-                    <span class="browser-btn yellow"></span>
-                    <span class="browser-btn green"></span>
-                  </div>
-                  <div class="browser-address-bar">
-                    <i class="fas fa-lock"></i>
-                    <span>panorama-jtb.com/flight/process</span>
-                  </div>
-                  <div class="browser-menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 06 / 08</div>
+                  <h4>Pilih Metode Pembayaran</h4>
+                  <p>
+                    Pilih metode pembayaran: <strong>Credit Card</strong>
+                    (Visa, MasterCard) atau <strong>Virtual Account</strong>
+                    (BCA, Mandiri, BNI, BRI). Tiap metode punya instruksi
+                    berbeda di langkah berikutnya.
+                  </p>
                 </div>
-                <div class="browser-screen">
+              </div>
+              <div class="book-panel" data-book-panel="6">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fptc%20input%20card%20number.png?alt=media&token=5272d3ae-82a6-41fa-8d7b-4c933dbd541b"
                     alt="Proses Pembayaran"
+                    class="book-image"
                   />
                 </div>
-              </div>
-              <div class="step-grid-caption">
-                <strong>Lakukan Pembayaran</strong>
-                <p>
-                  Selesaikan pembayaran sesuai metode. Credit Card: masukkan data
-                  kartu di payment gateway. VA: catat nomor VA dan transfer
-                  melalui bank. Pembayaran harus selesai sebelum VA expired.
-                </p>
-              </div>
-            </div>
-            <div class="step-grid-item">
-              <div class="step-grid-badge">8</div>
-              <div class="browser-mockup">
-                <div class="browser-header">
-                  <div class="browser-buttons">
-                    <span class="browser-btn red"></span>
-                    <span class="browser-btn yellow"></span>
-                    <span class="browser-btn green"></span>
-                  </div>
-                  <div class="browser-address-bar">
-                    <i class="fas fa-lock"></i>
-                    <span>panorama-jtb.com/booking/detail</span>
-                  </div>
-                  <div class="browser-menu">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 07 / 08</div>
+                  <h4>Lakukan Pembayaran</h4>
+                  <p>
+                    Selesaikan pembayaran sesuai metode. Credit Card: masukkan
+                    data kartu di payment gateway. VA: catat nomor VA dan
+                    transfer melalui bank. Pembayaran harus selesai sebelum
+                    VA expired.
+                  </p>
                 </div>
-                <div class="browser-screen">
+              </div>
+              <div class="book-panel" data-book-panel="7">
+                <div class="book-image-wrap">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2FPTC-flight-book-detail.png?alt=media&token=e2106f54-d754-4aaa-9e9d-64a683248659"
                     alt="Booking Detail"
+                    class="book-image"
                   />
                 </div>
+                <div class="book-info">
+                  <div class="book-step-num">Step 08 / 08</div>
+                  <h4>Akses Booking Detail</h4>
+                  <p>
+                    Setelah pembayaran sukses, sistem menampilkan halaman
+                    <strong>Booking Detail</strong> yang berisi e-ticket,
+                    itinerary, dan instruksi lanjutan. E-ticket juga dikirim
+                    ke email terdaftar.
+                  </p>
+                </div>
               </div>
-              <div class="step-grid-caption">
-                <strong>Akses Booking Detail</strong>
-                <p>
-                  Setelah pembayaran sukses, sistem menampilkan halaman
-                  <strong>Booking Detail</strong> yang berisi e-ticket,
-                  itinerary, dan instruksi lanjutan. E-ticket juga dikirim ke
-                  email terdaftar.
-                </p>
-              </div>
+            </div>
+
+            <div class="book-nav">
+              <button class="book-nav-btn book-prev" data-book-prev="p5">
+                <i class="fas fa-arrow-left"></i> Sebelumnya
+              </button>
+              <span class="book-nav-counter" data-book-counter="p5">01 / 08</span>
+              <button class="book-nav-btn book-next" data-book-next="p5">
+                Selanjutnya <i class="fas fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
@@ -5640,6 +5737,60 @@
               if (sb) sb.classList.remove('open');
             }
           });
+        });
+      })();
+
+      // 5. Booking Flow Tab Switcher (P4 & P5)
+      (function () {
+        document.querySelectorAll('.book-flow').forEach(function (flow) {
+          var id = flow.getAttribute('data-book-flow');
+          var tabs = flow.querySelectorAll('.book-tab');
+          var panels = flow.querySelectorAll('.book-panel');
+          var prevBtn = flow.querySelector('.book-prev');
+          var nextBtn = flow.querySelector('.book-next');
+          var counter = flow.querySelector('.book-nav-counter');
+          var current = 0;
+
+          function pad(n) {
+            return n < 10 ? '0' + n : '' + n;
+          }
+          function update() {
+            tabs.forEach(function (t, i) {
+              t.classList.toggle('active', i === current);
+              if (i === current) t.setAttribute('aria-selected', 'true');
+              else t.removeAttribute('aria-selected');
+            });
+            panels.forEach(function (p, i) {
+              p.classList.toggle('active', i === current);
+            });
+            if (counter) counter.textContent = pad(current + 1) + ' / ' + pad(panels.length);
+            if (prevBtn) prevBtn.disabled = current === 0;
+            if (nextBtn) nextBtn.disabled = current === panels.length - 1;
+          }
+
+          tabs.forEach(function (tab, idx) {
+            tab.addEventListener('click', function () {
+              current = idx;
+              update();
+            });
+          });
+          if (prevBtn) {
+            prevBtn.addEventListener('click', function () {
+              if (current > 0) {
+                current--;
+                update();
+              }
+            });
+          }
+          if (nextBtn) {
+            nextBtn.addEventListener('click', function () {
+              if (current < panels.length - 1) {
+                current++;
+                update();
+              }
+            });
+          }
+          update();
         });
       })();
     </script>
