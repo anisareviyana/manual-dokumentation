@@ -3071,15 +3071,23 @@
           ><span class="chapter-num">04</span
           ><i class="fas fa-desktop"></i> Monitoring Backoffice</a
         >
-        <div class="nav-sub">
-          <a href="#bab4-5"
-            ><span class="chapter-num">4.5</span> Mitigasi Kendala</a
-          >
-        </div>
         <div class="nav-section">Support</div>
         <a href="#bab5"
           ><span class="chapter-num">05</span
           ><i class="fas fa-question-circle"></i> Troubleshooting & FAQ</a
+        >
+        <div class="nav-sub">
+          <a href="#bab5-1"
+            ><span class="chapter-num">5.1</span> Mitigasi Kendala</a
+          >
+          <a href="#bab5-2"
+            ><span class="chapter-num">5.2</span> Kendala &amp; Kegagalan</a
+          >
+          <a href="#bab5-3"
+            ><span class="chapter-num">5.3</span> Penanganan via Backoffice</a
+          >
+          <a href="#bab5-4"><span class="chapter-num">5.4</span> FAQ</a>
+        </div>
         >
       </nav>
     </aside>
@@ -5433,10 +5441,15 @@
               tiket issued, dan dokumen resmi tersedia.
             </p>
           </div>
+        </section>
 
-          <!-- ===== 4.5 MITIGASI KENDALA TRANSAKSI ===== -->
-          <h3 id="bab4-5">
-            <i class="fas fa-shield-alt"></i> 4.5 Mitigasi Kendala Transaksi
+        <!-- BAB 5: TROUBLESHOOTING & FAQ -->
+        <section id="bab5" class="section">
+          <h2>Bab 5: Troubleshooting & FAQ</h2>
+
+          <!-- ===== 5.1 MITIGASI KENDALA TRANSAKSI (moved dari 4.5) ===== -->
+          <h3 id="bab5-1">
+            <i class="fas fa-shield-alt"></i> 5.1 Mitigasi Kendala Transaksi
           </h3>
           <p>
             Backoffice dilengkapi dengan mekanisme mitigasi untuk
@@ -5458,9 +5471,9 @@
             </div>
           </div>
 
-          <!-- ============ 4.5.1 GAGAL GENERATE CSR & INVOICE ============ -->
-          <h4 id="bab4-5-1">
-            <i class="fas fa-file-invoice"></i> 4.5.1 Gagal Generate CSR Number
+          <!-- ============ 5.1.1 GAGAL GENERATE CSR & INVOICE ============ -->
+          <h4 id="bab5-1-1">
+            <i class="fas fa-file-invoice"></i> 5.1.1 Gagal Generate CSR Number
             &amp; Invoice
           </h4>
           <p>
@@ -5552,9 +5565,9 @@
             </p>
           </div>
 
-          <!-- ============ 4.5.2 FAILED BOOKING ============ -->
-          <h4 id="bab4-5-2">
-            <i class="fas fa-exclamation-circle"></i> 4.5.2 Gagal Booking
+          <!-- ============ 5.1.2 FAILED BOOKING ============ -->
+          <h4 id="bab5-1-2">
+            <i class="fas fa-exclamation-circle"></i> 5.1.2 Gagal Booking
             (Failed Book)
           </h4>
           <p>
@@ -5632,7 +5645,7 @@
               </div>
             </div>
             <div class="img-caption">
-              <strong>Gambar 4.5a:</strong> Halaman detail transaksi
+              <strong>Gambar 5.1a:</strong> Halaman detail transaksi
               dengan status <strong>Failed Book</strong>. Pada halaman
               ini, sistem menampilkan: (1) status booking, (2) informasi
               <strong>step-by-step mitigasi</strong>, dan (3) tombol
@@ -5652,9 +5665,9 @@
             </p>
           </div>
 
-          <!-- ============ 4.5.3 FAILED ISSUED ============ -->
-          <h4 id="bab4-5-3">
-            <i class="fas fa-check-circle"></i> 4.5.3 Gagal Issued
+          <!-- ============ 5.1.3 FAILED ISSUED ============ -->
+          <h4 id="bab5-1-3">
+            <i class="fas fa-check-circle"></i> 5.1.3 Gagal Issued
           </h4>
           <p>
             <strong>Trigger:</strong> Transaksi sudah berstatus
@@ -5700,8 +5713,8 @@
               <div class="flow-text">
                 <strong>Opsi 2: Replace</strong>
                 <small
-                  >Buat transaksi baru dengan journey &amp; pax yang
-                  sama</small
+                  >Buat transaksi baru di KATRINA dengan journey &amp; pax
+                  yang sama</small
                 >
               </div>
             </div>
@@ -5748,7 +5761,7 @@
               </div>
             </div>
             <div class="img-caption">
-              <strong>Gambar 4.5b:</strong> Halaman detail transaksi
+              <strong>Gambar 5.1b:</strong> Halaman detail transaksi
               dengan status <strong>Failed Issued</strong>. Pada halaman
               ini, sistem menampilkan 3 tombol mitigasi berurutan:
               <strong>Sync</strong> (Opsi 1) →
@@ -5837,14 +5850,10 @@
               trail internal.
             </p>
           </div>
-        </section>
 
-        <!-- BAB 5: TROUBLESHOOTING & FAQ -->
-        <section id="bab5" class="section">
-          <h2>Bab 5: Troubleshooting & FAQ</h2>
-
-          <h3>
-            <i class="fas fa-exclamation-triangle"></i> 5.1 Kendala & Kegagalan
+          <!-- ============ 5.2 KENDALA & KEGAGALAN (renumbered from 5.1) ============ -->
+          <h3 id="bab5-2">
+            <i class="fas fa-exclamation-triangle"></i> 5.2 Kendala &amp; Kegagalan
             yang Mungkin Terjadi
           </h3>
 
@@ -5921,7 +5930,7 @@
           <hr />
 
           <h3>
-            <i class="fas fa-headset"></i> 5.2 Penanganan melalui Backoffice
+            <i class="fas fa-headset"></i> 5.3 Penanganan melalui Backoffice
           </h3>
           <p>
             Apabila terjadi kendala atau kegagalan dalam proses di atas, Admin
@@ -5951,7 +5960,7 @@
 
           <hr />
 
-          <h3><i class="fas fa-question-circle"></i> 5.3 FAQ</h3>
+          <h3><i class="fas fa-question-circle"></i> 5.4 FAQ</h3>
 
           <div class="callout info">
             <strong
