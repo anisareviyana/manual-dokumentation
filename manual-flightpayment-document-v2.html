@@ -5104,67 +5104,107 @@
 
           <h3><i class="fas fa-search"></i> 4.1 Monitoring Record Booking</h3>
           <p>
-            Admin dapat melihat seluruh data booking yang telah dimasukkan (baik
-            dari ALVIS Mobile Apps maupun Web Panorama JTB) di halaman
-            <strong>Flight Payment &amp; Booking</strong> pada backoffice.
+            Admin dapat melihat seluruh data booking yang telah masuk ke
+            sistem ALVIS &amp; Panorama JTB melalui halaman
+            <strong>Flight Payment &amp; Booking</strong> di backoffice.
+            Daftar transaksi terbagi menjadi
+            <strong>2 sumber</strong>:
           </p>
+
+          <ul>
+            <li>
+              <strong>Katrina Transaction List</strong> — transaksi yang
+              dibooking di sistem <strong>KATRINA</strong> kemudian
+              di-import ke ALVIS/Panorama JTB untuk pembayaran.
+            </li>
+            <li>
+              <strong>Flight Transaction List</strong> — transaksi yang
+              dibooking <strong>langsung</strong> melalui ALVIS Mobile
+              Apps atau Web Panorama JTB.
+            </li>
+          </ul>
 
           <div
             class="img-container"
-            style="max-width: 800px; margin: 1.5rem auto"
+            style="max-width: 960px; margin: 1.5rem auto"
           >
-            <div class="mockup">
-              <div class="mockup-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span style="font-size: 12px; color: #666; margin-left: 8px"
-                  >Backoffice ALVIS - Daftar Booking Flight</span
-                >
+            <div class="browser-mockup">
+              <div class="browser-header">
+                <div class="browser-buttons">
+                  <span class="browser-btn red"></span>
+                  <span class="browser-btn yellow"></span>
+                  <span class="browser-btn green"></span>
+                </div>
+                <div class="browser-address-bar">
+                  <i class="fas fa-lock"></i>
+                  <span
+                    >backoffice.alvis.com/flight/katrina-transactions</span
+                  >
+                </div>
+                <div class="browser-menu">
+                  <i class="fas fa-ellipsis-v"></i>
+                </div>
               </div>
-              <table class="mockup-table">
-                <thead>
-                  <tr>
-                    <th>Kode Booking</th>
-                    <th>Nama Pemesan</th>
-                    <th>Rute</th>
-                    <th>Total</th>
-                    <th>Status Bayar</th>
-                    <th>Issued</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>KTR-001</strong></td>
-                    <td>Budi Santoso</td>
-                    <td>CGK - DPS</td>
-                    <td>Rp 2.500.000</td>
-                    <td><span class="mockup-badge success">Lunas</span></td>
-                    <td><span class="mockup-badge success">Issued</span></td>
-                  </tr>
-                  <tr>
-                    <td><strong>KTR-002</strong></td>
-                    <td>Siti Aisyah</td>
-                    <td>CGK - KNO</td>
-                    <td>Rp 1.800.000</td>
-                    <td><span class="mockup-badge warning">Pending</span></td>
-                    <td>
-                      <span class="mockup-badge warning">Belum Issued</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong>KTR-003</strong></td>
-                    <td>Ahmad Fauzi</td>
-                    <td>CGK - SUB</td>
-                    <td>Rp 1.200.000</td>
-                    <td><span class="mockup-badge success">Lunas</span></td>
-                    <td><span class="mockup-badge warning">Proses</span></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="browser-screen">
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fbackoffice%2FKatrina%20transaction%20list.png?alt=media&token=7d3ab070-c9a2-4a86-8c4c-233ed2ec0a0f"
+                  alt="Daftar transaksi Katrina"
+                />
+              </div>
             </div>
             <div class="img-caption">
-              Gambar 4.1: Tampilan daftar booking di backoffice ALVIS
+              <strong>Gambar 4.1a:</strong> Daftar transaksi yang
+              dibooking melalui <strong>KATRINA</strong> dan di-import
+              ke ALVIS/Panorama JTB. Pada halaman ini, ALVIS/Panorama
+              JTB hanya menerima data detail transaksi dan berperan
+              sebagai payment gateway.
+            </div>
+          </div>
+
+          <div
+            class="img-container"
+            style="max-width: 960px; margin: 1.5rem auto"
+          >
+            <div class="browser-mockup">
+              <div class="browser-header">
+                <div class="browser-buttons">
+                  <span class="browser-btn red"></span>
+                  <span class="browser-btn yellow"></span>
+                  <span class="browser-btn green"></span>
+                </div>
+                <div class="browser-address-bar">
+                  <i class="fas fa-lock"></i>
+                  <span>backoffice.alvis.com/flight/transactions</span>
+                </div>
+                <div class="browser-menu">
+                  <i class="fas fa-ellipsis-v"></i>
+                </div>
+              </div>
+              <div class="browser-screen">
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fbackoffice%2FFlight%20transaction%20list.png?alt=media&token=6c54e931-bd8d-44de-b083-a50bda9c57c1"
+                  alt="Daftar transaksi Flight"
+                />
+              </div>
+            </div>
+            <div class="img-caption">
+              <strong>Gambar 4.1b:</strong> Daftar transaksi yang
+              dibooking <strong>langsung</strong> melalui ALVIS Mobile
+              Apps atau Web Panorama JTB. Pada halaman ini, sistem
+              melakukan pre-book di KATRINA terlebih dahulu saat user
+              memulai proses booking.
+            </div>
+          </div>
+
+          <div class="info-box info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              Perbedaan utama kedua halaman: pada
+              <strong>Katrina Transaction List</strong>, status
+              <em>booking</em> sudah sukses sejak transaksi dibuat (di
+              KATRINA). Pada <strong>Flight Transaction List</strong>,
+              status booking baru sukses setelah payment confirmed dan
+              sistem memproses booking di KATRINA.
             </div>
           </div>
 
@@ -5565,123 +5605,39 @@
             </tbody>
           </table>
 
-          <div class="mockup" style="max-width: 600px; margin: 16px auto">
-            <div class="mockup-header">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-              <span style="font-size: 12px; color: #666; margin-left: 8px"
-                >Backoffice — Transaction Detail (Status: Failed Book)</span
-              >
-            </div>
-            <div style="padding: 20px">
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  padding: 8px 0;
-                  border-bottom: 1px solid var(--border);
-                "
-              >
-                <span style="font-size: 13px; color: var(--text-light)"
-                  >Status Booking</span
-                >
-                <span class="mockup-badge danger">Failed Book</span>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  padding: 8px 0;
-                  border-bottom: 1px solid var(--border);
-                "
-              >
-                <span style="font-size: 13px; color: var(--text-light)"
-                  >Waktu Transaksi</span
-                >
-                <span style="font-size: 13px; color: var(--text)"
-                  >2 jam lalu</span
-                >
-              </div>
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  padding: 8px 0;
-                  border-bottom: 1px solid var(--border);
-                "
-              >
-                <span style="font-size: 13px; color: var(--text-light)"
-                  >Channel</span
-                >
-                <span style="font-size: 13px; color: var(--text)"
-                  >ALVIS Mobile Apps</span
-                >
-              </div>
-
-              <div
-                style="
-                  background: #fffbeb;
-                  border-left: 3px solid var(--warning);
-                  padding: 14px 16px;
-                  margin-top: 16px;
-                  border-radius: 0 4px 4px 0;
-                "
-              >
-                <div
-                  style="
-                    font-size: 11px;
-                    font-weight: 600;
-                    letter-spacing: 0.04em;
-                    color: var(--warning);
-                    margin-bottom: 8px;
-                  "
-                >
-                  MITIGASI
+          <div
+            class="img-container"
+            style="max-width: 960px; margin: 1.5rem auto"
+          >
+            <div class="browser-mockup">
+              <div class="browser-header">
+                <div class="browser-buttons">
+                  <span class="browser-btn red"></span>
+                  <span class="browser-btn yellow"></span>
+                  <span class="browser-btn green"></span>
                 </div>
-                <ol
-                  style="
-                    margin: 0;
-                    padding-left: 20px;
-                    font-size: 12px;
-                    color: var(--text-light);
-                    line-height: 1.6;
-                  "
-                >
-                  <li>Verifikasi data booking di sistem KATRINA</li>
-                  <li>
-                    Pastikan input booking sudah benar (order number &amp;
-                    last name)
-                  </li>
-                  <li>
-                    Klik tombol <strong>Rebooking</strong> untuk retry
-                    (sisa waktu: ±2 jam)
-                  </li>
-                  <li>
-                    Jika tetap gagal setelah 4 jam, gunakan tombol
-                    <strong>Replace</strong>
-                  </li>
-                </ol>
+                <div class="browser-address-bar">
+                  <i class="fas fa-lock"></i>
+                  <span>backoffice.alvis.com/flight/transaction/detail</span>
+                </div>
+                <div class="browser-menu">
+                  <i class="fas fa-ellipsis-v"></i>
+                </div>
               </div>
-
-              <div
-                style="
-                  display: flex;
-                  gap: 8px;
-                  margin-top: 16px;
-                  padding-top: 16px;
-                  border-top: 1px solid var(--border);
-                  flex-wrap: wrap;
-                "
-              >
-                <button class="mockup-btn primary">
-                  <i class="fas fa-redo"></i> Rebooking
-                </button>
-                <button class="mockup-btn secondary" disabled>
-                  <i class="fas fa-exchange-alt"></i> Replace (aktif setelah 4
-                  jam)
-                </button>
+              <div class="browser-screen">
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fbackoffice%2Ffailed%20booking.png?alt=media&token=e17d76ed-7347-436b-893b-0c67dae273e1"
+                  alt="Halaman detail transaksi Failed Book"
+                />
               </div>
+            </div>
+            <div class="img-caption">
+              <strong>Gambar 4.5a:</strong> Halaman detail transaksi
+              dengan status <strong>Failed Book</strong>. Pada halaman
+              ini, sistem menampilkan: (1) status booking, (2) informasi
+              <strong>step-by-step mitigasi</strong>, dan (3) tombol
+              <strong>Rebooking</strong> (aktif dalam 0–4 jam) atau
+              <strong>Replace</strong> (aktif setelah 4 jam).
             </div>
           </div>
 
@@ -5765,61 +5721,40 @@
           </div>
 
           <h4>Tampilan Tombol di Halaman Detail Transaksi</h4>
-          <div class="mockup" style="max-width: 600px; margin: 16px auto">
-            <div class="mockup-header">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-              <span style="font-size: 12px; color: #666; margin-left: 8px"
-                >Backoffice — Transaction Detail (Status: Failed Issued)</span
-              >
+          <div
+            class="img-container"
+            style="max-width: 960px; margin: 1.5rem auto"
+          >
+            <div class="browser-mockup">
+              <div class="browser-header">
+                <div class="browser-buttons">
+                  <span class="browser-btn red"></span>
+                  <span class="browser-btn yellow"></span>
+                  <span class="browser-btn green"></span>
+                </div>
+                <div class="browser-address-bar">
+                  <i class="fas fa-lock"></i>
+                  <span>backoffice.alvis.com/flight/transaction/detail</span>
+                </div>
+                <div class="browser-menu">
+                  <i class="fas fa-ellipsis-v"></i>
+                </div>
+              </div>
+              <div class="browser-screen">
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Fbackoffice%2Ffailed%20to%20issue.png?alt=media&token=e3454ca7-5892-4364-a105-70270733ed35"
+                  alt="Halaman detail transaksi Failed Issued"
+                />
+              </div>
             </div>
-            <div style="padding: 20px">
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  padding: 8px 0;
-                  border-bottom: 1px solid var(--border);
-                "
-              >
-                <span style="font-size: 13px; color: var(--text-light)"
-                  >Status Issued</span
-                >
-                <span class="mockup-badge danger">Gagal</span>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  padding: 8px 0;
-                "
-              >
-                <span style="font-size: 13px; color: var(--text-light)"
-                  >Status Payment</span
-                >
-                <span class="mockup-badge success">Paid</span>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  gap: 8px;
-                  margin-top: 16px;
-                  padding-top: 16px;
-                  border-top: 1px solid var(--border);
-                  flex-wrap: wrap;
-                "
-              >
-                <button class="mockup-btn primary">
-                  <i class="fas fa-sync"></i> Sync
-                </button>
-                <button class="mockup-btn primary">
-                  <i class="fas fa-exchange-alt"></i> Replace
-                </button>
-                <button class="mockup-btn danger">
-                  <i class="fas fa-undo"></i> Update Payment Status
-                </button>
-              </div>
+            <div class="img-caption">
+              <strong>Gambar 4.5b:</strong> Halaman detail transaksi
+              dengan status <strong>Failed Issued</strong>. Pada halaman
+              ini, sistem menampilkan 3 tombol mitigasi berurutan:
+              <strong>Sync</strong> (Opsi 1) →
+              <strong>Replace</strong> (Opsi 2) →
+              <strong>Update Payment Status</strong> (Opsi 3, last
+              resort).
             </div>
           </div>
 
