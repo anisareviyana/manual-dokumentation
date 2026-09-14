@@ -2944,6 +2944,11 @@
           ><span class="chapter-num">04</span
           ><i class="fas fa-desktop"></i> Monitoring Backoffice</a
         >
+        <div class="nav-sub">
+          <a href="#bab4-5"
+            ><span class="chapter-num">4.5</span> Mitigasi Kendala</a
+          >
+        </div>
         <div class="nav-section">Support</div>
         <a href="#bab5"
           ><span class="chapter-num">05</span
@@ -4980,6 +4985,514 @@
               Dengan terbitnya CSR Number dan Invoice, seluruh proses flight
               payment telah selesai. Booking sudah tercatat, pembayaran lunas,
               tiket issued, dan dokumen resmi tersedia.
+            </p>
+          </div>
+
+          <!-- ===== 4.5 MITIGASI KENDALA TRANSAKSI ===== -->
+          <h3 id="bab4-5">
+            <i class="fas fa-shield-alt"></i> 4.5 Mitigasi Kendala Transaksi
+          </h3>
+          <p>
+            Backoffice dilengkapi dengan mekanisme mitigasi untuk
+            menangani berbagai case kegagalan transaksi. Setiap case
+            kegagalan memiliki tombol aksi spesifik yang muncul di
+            <strong>halaman detail transaksi</strong> sesuai dengan
+            kondisi yang terdeteksi sistem. Pada case tertentu, sistem
+            juga menampilkan <strong>step-by-step mitigasi</strong> untuk
+            memandu admin menjalankan aksi yang tepat.
+          </p>
+
+          <div class="info-box info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              Setiap tombol mitigasi muncul berdasarkan trigger spesifik
+              (status transaksi, waktu transaksi, atau kondisi lainnya).
+              Admin diharapkan membaca informasi step-by-step mitigasi
+              sebelum menjalankan aksi agar sesuai prosedur.
+            </div>
+          </div>
+
+          <!-- ============ 4.5.1 GAGAL GENERATE CSR & INVOICE ============ -->
+          <h4 id="bab4-5-1">
+            <i class="fas fa-file-invoice"></i> 4.5.1 Gagal Generate CSR Number
+            &amp; Invoice
+          </h4>
+          <p>
+            <strong>Trigger:</strong> Status transaksi sudah
+            <code>issued</code>, namun sistem gagal men-generate
+            <strong>CSR Number</strong> dan/atau <strong>Invoice</strong>.
+          </p>
+          <p>
+            Pada halaman detail transaksi, sistem akan menampilkan 2
+            tombol berikut untuk melakukan generate ulang secara manual:
+          </p>
+
+          <div class="mockup" style="max-width: 600px; margin: 16px auto">
+            <div class="mockup-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span style="font-size: 12px; color: #666; margin-left: 8px"
+                >Backoffice — Transaction Detail #FLT-2026-001</span
+              >
+            </div>
+            <div style="padding: 20px">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Status</span
+                >
+                <span class="mockup-badge success">Issued</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >CSR Number</span
+                >
+                <span class="mockup-badge warning">Belum Ter-generate</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Invoice</span
+                >
+                <span class="mockup-badge warning">Belum Ter-generate</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  margin-top: 16px;
+                  padding-top: 16px;
+                  border-top: 1px solid var(--border);
+                  flex-wrap: wrap;
+                "
+              >
+                <button class="mockup-btn primary">
+                  <i class="fas fa-hashtag"></i> Generate CSR Number
+                </button>
+                <button class="mockup-btn primary">
+                  <i class="fas fa-file-invoice"></i> Generate Invoice
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout info">
+            <div class="callout-title">📋 Aksi Admin</div>
+            <p>
+              Klik tombol <strong>Generate CSR Number</strong> untuk
+              men-generate CSR, dan/atau klik tombol
+              <strong>Generate Invoice</strong> untuk men-generate
+              Invoice. Kedua tombol bersifat independen — admin dapat
+              menjalankan salah satu atau keduanya sesuai kebutuhan.
+            </p>
+          </div>
+
+          <!-- ============ 4.5.2 FAILED BOOKING ============ -->
+          <h4 id="bab4-5-2">
+            <i class="fas fa-exclamation-circle"></i> 4.5.2 Gagal Booking
+            (Failed Book)
+          </h4>
+          <p>
+            <strong>Trigger:</strong> Transaksi via
+            <strong>ALVIS Mobile Apps</strong> atau
+            <strong>Web Panorama JTB</strong> memiliki status
+            <code>failed book</code>.
+          </p>
+          <p>
+            Pada halaman detail transaksi, sistem menampilkan tombol
+            mitigasi yang <strong>berubah berdasarkan waktu transaksi</strong>.
+            Sistem juga menampilkan
+            <strong>informasi step-by-step mitigasi</strong> untuk
+            memandu admin menjalankan aksi yang tepat.
+          </p>
+
+          <h4>Kondisi Tombol Berdasarkan Waktu</h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 30%">Waktu dari transaksi dibuat</th>
+                <th style="width: 25%">Tombol yang ditampilkan</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>0 – 4 jam</strong></td>
+                <td>
+                  <span class="mockup-badge info">Rebooking</span>
+                </td>
+                <td>
+                  Sistem akan mencoba ulang proses booking dengan data
+                  yang sama.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>&gt; 4 jam</strong></td>
+                <td>
+                  <span class="mockup-badge warning">Replace</span>
+                </td>
+                <td>
+                  Tombol Rebooking hilang dan terganti tombol Replace.
+                  Buat transaksi baru dengan data sama (lihat detail di
+                  bawah).
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mockup" style="max-width: 600px; margin: 16px auto">
+            <div class="mockup-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span style="font-size: 12px; color: #666; margin-left: 8px"
+                >Backoffice — Transaction Detail (Status: Failed Book)</span
+              >
+            </div>
+            <div style="padding: 20px">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Status Booking</span
+                >
+                <span class="mockup-badge danger">Failed Book</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Waktu Transaksi</span
+                >
+                <span style="font-size: 13px; color: var(--text)"
+                  >2 jam lalu</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Channel</span
+                >
+                <span style="font-size: 13px; color: var(--text)"
+                  >ALVIS Mobile Apps</span
+                >
+              </div>
+
+              <div
+                style="
+                  background: #fffbeb;
+                  border-left: 3px solid var(--warning);
+                  padding: 14px 16px;
+                  margin-top: 16px;
+                  border-radius: 0 4px 4px 0;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 600;
+                    letter-spacing: 0.04em;
+                    color: var(--warning);
+                    margin-bottom: 8px;
+                  "
+                >
+                  MITIGASI
+                </div>
+                <ol
+                  style="
+                    margin: 0;
+                    padding-left: 20px;
+                    font-size: 12px;
+                    color: var(--text-light);
+                    line-height: 1.6;
+                  "
+                >
+                  <li>Verifikasi data booking di sistem KATRINA</li>
+                  <li>
+                    Pastikan input booking sudah benar (order number &amp;
+                    last name)
+                  </li>
+                  <li>
+                    Klik tombol <strong>Rebooking</strong> untuk retry
+                    (sisa waktu: ±2 jam)
+                  </li>
+                  <li>
+                    Jika tetap gagal setelah 4 jam, gunakan tombol
+                    <strong>Replace</strong>
+                  </li>
+                </ol>
+              </div>
+
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  margin-top: 16px;
+                  padding-top: 16px;
+                  border-top: 1px solid var(--border);
+                  flex-wrap: wrap;
+                "
+              >
+                <button class="mockup-btn primary">
+                  <i class="fas fa-redo"></i> Rebooking
+                </button>
+                <button class="mockup-btn secondary" disabled>
+                  <i class="fas fa-exchange-alt"></i> Replace (aktif setelah 4
+                  jam)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout warning">
+            <div class="callout-title">⚠️ Catatan</div>
+            <p>
+              Case <strong>failed booking</strong> hanya terjadi pada
+              transaksi yang dipesan melalui
+              <strong>ALVIS Mobile Apps</strong> atau
+              <strong>Web Panorama JTB</strong>. Transaksi via KATRINA
+              langsung tidak memiliki case failed booking ini.
+            </p>
+          </div>
+
+          <!-- ============ 4.5.3 FAILED ISSUED ============ -->
+          <h4 id="bab4-5-3">
+            <i class="fas fa-check-circle"></i> 4.5.3 Gagal Issued
+          </h4>
+          <p>
+            <strong>Trigger:</strong> Transaksi sudah berstatus
+            <code>paid</code>, namun proses <strong>issued tiket</strong>
+            tidak berhasil dilakukan.
+          </p>
+          <p>
+            Backoffice menyediakan
+            <strong>3 opsi mitigasi berurutan (fallback chain)</strong>.
+            Admin harus mencoba opsi pertama, kemudian lanjut ke opsi
+            berikutnya jika tidak berhasil.
+          </p>
+
+          <h4>Urutan Mitigasi (Fallback Chain)</h4>
+          <div class="flowchart" style="margin-bottom: 20px">
+            <div class="flow-step" style="border-left-color: var(--danger)">
+              <div class="flow-icon" style="background: var(--danger)">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <div class="flow-text">
+                <strong>Failed Issued</strong>
+                <small>Status Paid, issued gagal dilakukan</small>
+              </div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="flow-step" style="border-left-color: var(--success)">
+              <div class="flow-icon" style="background: var(--success)">
+                <i class="fas fa-sync"></i>
+              </div>
+              <div class="flow-text">
+                <strong>Opsi 1: Sync</strong>
+                <small
+                  >Coba issued manual di KATRINA, lalu sync status
+                  terbaru</small
+                >
+              </div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="flow-step" style="border-left-color: var(--warning)">
+              <div class="flow-icon" style="background: var(--warning)">
+                <i class="fas fa-exchange-alt"></i>
+              </div>
+              <div class="flow-text">
+                <strong>Opsi 2: Replace</strong>
+                <small
+                  >Buat transaksi baru dengan journey &amp; pax yang
+                  sama</small
+                >
+              </div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="flow-step" style="border-left-color: var(--danger)">
+              <div class="flow-icon" style="background: var(--danger)">
+                <i class="fas fa-undo"></i>
+              </div>
+              <div class="flow-text">
+                <strong>Opsi 3: Update Payment Status</strong>
+                <small
+                  >Ubah status dari Paid → Processing Refund (last
+                  resort)</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <h4>Tampilan Tombol di Halaman Detail Transaksi</h4>
+          <div class="mockup" style="max-width: 600px; margin: 16px auto">
+            <div class="mockup-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span style="font-size: 12px; color: #666; margin-left: 8px"
+                >Backoffice — Transaction Detail (Status: Failed Issued)</span
+              >
+            </div>
+            <div style="padding: 20px">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Status Issued</span
+                >
+                <span class="mockup-badge danger">Gagal</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 8px 0;
+                "
+              >
+                <span style="font-size: 13px; color: var(--text-light)"
+                  >Status Payment</span
+                >
+                <span class="mockup-badge success">Paid</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  margin-top: 16px;
+                  padding-top: 16px;
+                  border-top: 1px solid var(--border);
+                  flex-wrap: wrap;
+                "
+              >
+                <button class="mockup-btn primary">
+                  <i class="fas fa-sync"></i> Sync
+                </button>
+                <button class="mockup-btn primary">
+                  <i class="fas fa-exchange-alt"></i> Replace
+                </button>
+                <button class="mockup-btn danger">
+                  <i class="fas fa-undo"></i> Update Payment Status
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <h4>Detail Tiap Opsi Mitigasi</h4>
+
+          <div class="step-card" style="border-left-color: var(--success)">
+            <div class="step-number"><i class="fas fa-sync"></i></div>
+            <div class="step-content">
+              <strong>Opsi 1: Sync</strong>
+              <p>
+                Tim support melakukan <strong>issued manual</strong> di
+                sistem <strong>KATRINA</strong>. Setelah issued berhasil
+                di KATRINA, admin di backoffice product klik tombol
+                <strong>Sync</strong> untuk menarik status issued
+                terbaru dan memperbarui status transaksi di ALVIS.
+              </p>
+              <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted)">
+                ✅ <strong>Use case:</strong> Masalah bersifat sistemik
+                dan bisa diselesaikan dengan retry dari sisi KATRINA.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-card" style="border-left-color: var(--warning)">
+            <div class="step-number"><i class="fas fa-exchange-alt"></i></div>
+            <div class="step-content">
+              <strong>Opsi 2: Replace</strong>
+              <p>
+                Digunakan ketika transaksi <strong>tidak dapat
+                di-issued manual</strong> di KATRINA. Tim support
+                membuat <strong>transaksi baru</strong> dengan data
+                yang sama seperti transaksi sebelumnya:
+              </p>
+              <ul
+                style="
+                  font-size: 13px;
+                  color: var(--text-light);
+                  margin-top: 8px;
+                  padding-left: 20px;
+                "
+              >
+                <li><strong>Journey</strong> (rute &amp; tanggal) yang sama</li>
+                <li><strong>Jumlah penumpang</strong> (pax count) yang sama</li>
+                <li><strong>Nama penumpang</strong> (pax names) yang sama</li>
+              </ul>
+              <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted)">
+                ✅ <strong>Use case:</strong> Tiket sudah tidak tersedia
+                atau ada perubahan signifikan di KATRINA yang menghambat
+                issued.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-card" style="border-left-color: var(--danger)">
+            <div class="step-number"><i class="fas fa-undo"></i></div>
+            <div class="step-content">
+              <strong>Opsi 3: Update Payment Status (Last Resort)</strong>
+              <p>
+                <strong>Opsi terakhir</strong> yang dijalankan ketika
+                dua opsi sebelumnya tidak dapat dilakukan. Admin klik
+                tombol untuk mengubah status pembayaran dari
+                <code>paid</code> menjadi <code>processing refund</code>.
+              </p>
+              <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted)">
+                ⚠️ <strong>Catatan:</strong> Setelah status diubah ke
+                processing refund, proses refund akan dijalankan sesuai
+                kebijakan yang berlaku. Admin perlu follow up dengan tim
+                finance untuk konfirmasi refund ke customer.
+              </p>
+            </div>
+          </div>
+
+          <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Best Practice</div>
+            <p>
+              Selalu coba opsi mitigasi secara berurutan:
+              <strong>Sync → Replace → Update Payment Status</strong>.
+              Dokumentasikan hasil tiap aksi yang dijalankan untuk audit
+              trail internal.
             </p>
           </div>
         </section>
