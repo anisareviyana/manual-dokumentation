@@ -1005,6 +1005,137 @@
       .flowchart .flow-arrow i {
         animation: pulse 2s infinite;
       }
+
+      /* ===== BRANCHING FLOWCHART (Alur Bisnis) ===== */
+      .flowchart-branching {
+        margin: 32px 0 24px;
+        position: relative;
+      }
+      .flow-source-label {
+        text-align: center;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .flow-source {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        max-width: 640px;
+        margin: 0 auto 28px;
+        position: relative;
+      }
+      .flow-source-step {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 18px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+        transition: border-color var(--transition);
+      }
+      .flow-source-step:hover {
+        border-color: var(--text);
+      }
+      .flow-source-step .flow-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--text);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+      .flow-source-step strong {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: -0.005em;
+      }
+      .flow-source-step small {
+        font-size: 11px;
+        color: var(--text-light);
+        display: block;
+        line-height: 1.5;
+      }
+      .flow-merge-arrow {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto 20px;
+        max-width: 500px;
+        position: relative;
+      }
+      .flow-merge-arrow::before {
+        content: '';
+        position: absolute;
+        left: 25%;
+        right: 25%;
+        top: 0;
+        height: 1px;
+        background: var(--border);
+      }
+      .flow-merge-arrow i {
+        color: var(--text-muted);
+        font-size: 16px;
+        background: var(--bg);
+        padding: 0 10px;
+        position: relative;
+      }
+      .flow-merge-caption {
+        text-align: center;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin: -8px 0 16px;
+      }
+      .flow-side-annotations {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        max-width: 720px;
+        margin: 24px auto 0;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+      }
+      .flow-side {
+        background: var(--bg-subtle);
+        border-left: 2px solid var(--text-muted);
+        padding: 14px 18px;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      }
+      .flow-side strong {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .flow-side p {
+        font-size: 12px;
+        color: var(--text-light);
+        margin: 0;
+        line-height: 1.5;
+      }
+      @media (max-width: 768px) {
+        .flow-source,
+        .flow-side-annotations {
+          grid-template-columns: 1fr;
+        }
+      }
+
       @keyframes pulse {
         0%,
         100% {
@@ -2958,58 +3089,109 @@
             Booking
           </h3>
           <p>
-            Berikut adalah alur lengkap dari booking tiket pesawat KATRINA
-            hingga pembayaran dan issued:
+            Alur lengkap fitur Flight Payment &amp; Booking — dari
+            pemesanan tiket hingga penerbitan dokumen. Fitur ini mendukung
+            <strong>2 sumber booking</strong> (langsung via ALVIS atau via
+            KATRINA) yang keduanya bertemu di tahap pembayaran, dengan
+            monitoring &amp; support sebagai aktivitas pendukung.
           </p>
 
-          <div class="flowchart">
-            <div class="flow-step">
-              <div class="flow-icon"><i class="fas fa-ticket-alt"></i></div>
-              <div class="flow-text">
-                Booking tiket di KATRINA
-                <small>Pemesanan tiket pesawat oleh pengguna</small>
+          <div class="flowchart-branching">
+            <div class="flow-source-label">Booking Source — Pilih Salah Satu</div>
+            <div class="flow-source">
+              <div class="flow-source-step">
+                <div class="flow-icon">
+                  <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div>
+                  <strong>Path A: Direct Booking</strong>
+                  <small
+                    >ALVIS Mobile Apps atau Web Panorama JTB<br />(lihat
+                    sub-bab 2.1 &amp; 2.2)</small
+                  >
+                </div>
+              </div>
+              <div class="flow-source-step">
+                <div class="flow-icon">
+                  <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div>
+                  <strong>Path B: Via KATRINA</strong>
+                  <small
+                    >Book di KATRINA, lalu input ke ALVIS<br />(lihat sub-bab
+                    2.3 &amp; 2.4)</small
+                  >
+                </div>
               </div>
             </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
-            <div class="flow-step" style="border-left-color: var(--info)">
-              <div class="flow-icon" style="background: var(--info)">
-                <i class="fas fa-upload"></i>
+
+            <div class="flow-merge-arrow">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="flow-merge-caption">
+              Kedua path bertemu di tahap pembayaran
+            </div>
+
+            <div class="flowchart" style="margin-top: 0">
+              <div
+                class="flow-step"
+                style="border-left-color: var(--success)"
+              >
+                <div class="flow-icon" style="background: var(--success)">
+                  <i class="fas fa-credit-card"></i>
+                </div>
+                <div class="flow-text">
+                  Pembayaran
+                  <small>Credit Card atau Virtual Account</small>
+                </div>
               </div>
-              <div class="flow-text">
-                Input booking ke ALVIS
-                <small>Via ALVIS Mobile Apps atau Web Panorama JTB</small>
+              <div class="flow-arrow">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div
+                class="flow-step"
+                style="border-left-color: var(--warning)"
+              >
+                <div class="flow-icon" style="background: var(--warning)">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="flow-text">
+                  Issued tiket di KATRINA
+                  <small>ALVIS menerima update status dari KATRINA</small>
+                </div>
+              </div>
+              <div class="flow-arrow">
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div
+                class="flow-step"
+                style="border-left-color: var(--color-support)"
+              >
+                <div class="flow-icon" style="background: var(--color-support)">
+                  <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="flow-text">
+                  CSR Number &amp; Invoice
+                  <small>Diterbitkan setelah proses issued selesai</small>
+                </div>
               </div>
             </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
-            <div class="flow-step" style="border-left-color: var(--success)">
-              <div class="flow-icon" style="background: var(--success)">
-                <i class="fas fa-credit-card"></i>
+
+            <div class="flow-side-annotations">
+              <div class="flow-side">
+                <strong>Monitoring Backoffice</strong>
+                <p>
+                  Aktivitas continuous — Admin memantau seluruh status
+                  booking, pembayaran, dan issued melalui backoffice ALVIS
+                  (lihat Bab 4).
+                </p>
               </div>
-              <div class="flow-text">
-                Pembayaran <small>Credit Card atau Virtual Account</small>
-              </div>
-            </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
-            <div class="flow-step" style="border-left-color: var(--warning)">
-              <div class="flow-icon" style="background: var(--warning)">
-                <i class="fas fa-check-circle"></i>
-              </div>
-              <div class="flow-text">
-                Issued tiket di KATRINA
-                <small>ALVIS menerima update status dari KATRINA</small>
-              </div>
-            </div>
-            <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
-            <div
-              class="flow-step"
-              style="border-left-color: var(--color-support)"
-            >
-              <div class="flow-icon" style="background: var(--color-support)">
-                <i class="fas fa-file-invoice"></i>
-              </div>
-              <div class="flow-text">
-                CSR Number & Invoice
-                <small>Diterbitkan setelah proses issued selesai</small>
+              <div class="flow-side">
+                <strong>Support &amp; Troubleshooting</strong>
+                <p>
+                  Aktivitas on-demand — Penanganan kendala &amp; kegagalan
+                  transaksi melalui backoffice (lihat Bab 5).
+                </p>
               </div>
             </div>
           </div>
