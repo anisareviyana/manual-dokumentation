@@ -4840,9 +4840,10 @@
                 </td>
                 <td>
                   Setelah <strong>payment confirmed</strong>, sistem
-                  memproses <strong>booking + issued</strong> di KATRINA
-                  secara bersamaan. Invoice email dikirim setelah booking
-                  sukses (= bersamaan dengan issued sukses).
+                  memproses <strong>booking</strong> terlebih dahulu di
+                  KATRINA. Setelah booking sukses, sistem melanjutkan
+                  proses <strong>issued</strong>. Invoice email dikirim
+                  setelah booking sukses (sebelum issued selesai).
                 </td>
               </tr>
               <tr>
@@ -4925,10 +4926,10 @@
                   <strong>Via ALVIS / Panorama JTB</strong>
                 </td>
                 <td>
-                  Setelah <strong>booking + issued selesai</strong>
-                  diproses di KATRINA (oleh payment confirmation). E-ticket
-                  email dikirim setelah issued sukses (= hampir bersamaan
-                  dengan invoice email).
+                  Setelah <strong>booking</strong> sukses &amp;
+                  <strong>issued</strong> selesai diproses di KATRINA
+                  (booking lebih dulu, kemudian issued). E-ticket email
+                  dikirim setelah issued sukses (= setelah invoice email).
                 </td>
               </tr>
               <tr>
@@ -4989,13 +4990,11 @@
           </h4>
           <p>
             Perbandingan kapan kedua email dikirim pada kedua flow
-            booking. Perhatikan bahwa pada
-            <strong>flow ALVIS/Panorama JTB</strong>, invoice &amp; e-ticket
-            email dikirim hampir bersamaan (karena booking + issued terjadi
-            sekaligus), sedangkan pada
-            <strong>flow KATRINA</strong>, invoice email dikirim lebih
-            dulu (setelah payment), baru disusul e-ticket email (setelah
-            issued).
+            booking. Pada kedua flow, proses
+            <strong>booking dan issued dilakukan secara bertahap (sequential)</strong>
+            — booking harus sukses lebih dulu sebelum issued dimulai.
+            Invoice email dikirim setelah booking sukses, sedangkan
+            e-ticket email dikirim setelah issued sukses.
           </p>
 
           <div class="flow-compare">
@@ -5006,14 +5005,18 @@
                 <li>Sistem melakukan <strong>pre-book</strong> di KATRINA</li>
                 <li>User melakukan payment</li>
                 <li class="payment-trigger">
-                  Payment confirmed → sistem melakukan
-                  <strong>booking + issued</strong> di KATRINA
+                  Payment confirmed → sistem memproses
+                  <strong>booking</strong> di KATRINA
                 </li>
                 <li class="email-trigger">
-                  Invoice email dikirim (booking sukses)
+                  Invoice email dikirim (setelah booking sukses)
+                </li>
+                <li>
+                  Sistem melanjutkan proses
+                  <strong>issued</strong> di KATRINA
                 </li>
                 <li class="email-trigger">
-                  E-ticket email dikirim (issued sukses)
+                  E-ticket email dikirim (setelah issued sukses)
                 </li>
               </ol>
             </div>
