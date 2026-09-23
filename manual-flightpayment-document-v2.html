@@ -4714,45 +4714,197 @@
             <i class="fas fa-envelope"></i> 3.3 Email Notifikasi Otomatis
           </h3>
           <p>
-            Sistem akan mengirim <strong>2 email otomatis</strong> ke tamu
-            berdasarkan event/alur transaksi. Kedua email ini dikirim
-            secara otomatis oleh sistem — tanpa intervensi admin — dan
-            merupakan bagian dari komunikasi end-to-end antara sistem dan
-            tamu.
+            Sistem mengirim <strong>4 email otomatis</strong> ke contact
+            selama proses booking sampai dengan payment. Setiap email
+            dikirim otomatis oleh sistem berdasarkan event/alur
+            transaksi — tanpa intervensi admin — dan merupakan bagian
+            dari komunikasi end-to-end antara sistem dan contact.
           </p>
 
           <div class="status-cards" style="margin-bottom: 24px">
             <div class="status-card info">
               <div class="card-icon">📧</div>
-              <strong>Email Invoice</strong>
-              <p>Dikirim saat booking sukses (setelah payment confirmed)</p>
+              <strong>Waiting for Payment</strong>
+              <p>Setelah pilih metode &amp; masuk payment page</p>
             </div>
             <div class="status-card success">
-              <div class="card-icon">🎫</div>
-              <strong>Email E-Ticket</strong>
-              <p>Dikirim saat issued sukses (tiket siap untuk boarding)</p>
+              <div class="card-icon">✅</div>
+              <strong>Payment Success</strong>
+              <p>Setelah payment confirmed (lunas)</p>
+            </div>
+            <div class="status-card" style="border-color: #f59e0b">
+              <div class="card-icon" style="color: #f59e0b">📄</div>
+              <strong>Flight Invoice</strong>
+              <p>Setelah booking sukses (dengan attachment PDF)</p>
+            </div>
+            <div class="status-card" style="border-color: #dc2626">
+              <div class="card-icon" style="color: #dc2626">🎫</div>
+              <strong>Flight E-Ticket</strong>
+              <p>Setelah issued sukses (dengan attachment PDF)</p>
             </div>
           </div>
 
           <div class="info-box info">
             <i class="fas fa-info-circle"></i>
             <div>
-              Email dikirim ke alamat email tamu yang terdaftar pada data
-              transaksi. Pengiriman dilakukan otomatis oleh sistem
-              background job tanpa perlu trigger manual dari admin.
+              Untuk proses booking dan payment flight <strong>baik di
+              ALVIS maupun melalui Panorama JTB web</strong>, contact akan
+              menerima <strong>seluruh 4 email</strong>. Jika transaksi
+              flight di KATRINA maupun web Panorama JTB merupakan hasil
+              dari <strong>add transaksi KATRINA</strong>, contact hanya
+              akan menerima <strong>3 email</strong> —
+              <strong>Payment Success</strong>, <strong>Invoice</strong>,
+              dan <strong>E-Ticket</strong> (tanpa email Waiting for
+              Payment).
             </div>
           </div>
 
-          <!-- ============ 3.3.1 INVOICE EMAIL ============ -->
+          <div class="callout info" style="margin-top: 16px">
+            <div class="callout-title">📎 Catatan Attachment</div>
+            <p>
+              Untuk email <strong>Invoice</strong> dan
+              <strong>E-Ticket</strong>, terdapat
+              <strong>dokumen terlampir (PDF)</strong> — dokumen invoice
+              pada email invoice, dan dokumen e-ticket pada email
+              e-ticket. Contact dapat langsung mengunduh dokumen dari
+              email.
+            </p>
+          </div>
+
+          <!-- ============ 3.3.1 WAITING FOR PAYMENT EMAIL ============ -->
           <h4 id="bab3-3-1">
-            <i class="fas fa-envelope-open-text"></i> 3.3.1 Email Invoice
-            (Sukses Booking)
+            <i class="fas fa-hourglass-half"></i> 3.3.1 Email Waiting for
+            Payment
           </h4>
           <p>
-            Email invoice dikirim ke tamu
+            Email pertama yang dikirim saat contact telah
+            <strong>memilih metode pembayaran</strong> dan berada di
+            halaman payment (status transaksi: <code>waiting for
+            payment</code>). Berisi informasi cara menyelesaikan pembayaran
+            termasuk nomor VA / instruksi CC serta
+            <strong>batas waktu pembayaran</strong>.
+          </p>
+
+          <h4>Kapan Email Waiting for Payment Dikirim?</h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 32%">Flow Booking</th>
+                <th>Trigger Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Booking langsung via ALVIS / Panorama JTB</strong>
+                </td>
+                <td>
+                  Setelah contact memilih metode pembayaran pada halaman
+                  payment ALVIS / Panorama JTB.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Booking via add transaksi KATRINA</strong>
+                </td>
+                <td>
+                  <em style="color: var(--text-muted)"
+                    >❌ Tidak dikirim</em
+                  >
+                  — karena transaksi sudah ada di KATRINA,
+                  contact langsung menerima halaman payment
+                  ALVIS/Panorama JTB tanpa fase waiting ini.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Preview Email Waiting for Payment</h4>
+          <div
+            class="img-container"
+            style="max-width: 720px; margin: 1.5rem auto; background: var(--bg); border: 1px solid var(--border)"
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Femail%20waiting%20for%20paymnet.jpg?alt=media&token=f48796bb-e6e8-4ffb-96bc-b7508a9f31a6"
+              alt="Email Waiting for Payment"
+              style="width: 100%; height: auto; display: block"
+            />
+          </div>
+          <div class="img-caption">
+            <strong>Gambar 3.3.1:</strong> Email Waiting for Payment —
+            dikirim setelah contact memilih metode pembayaran. Email
+            berisi instruksi pembayaran (nomor VA / langkah CC) dan batas
+            waktu pembayaran.
+          </div>
+
+          <!-- ============ 3.3.2 PAYMENT SUCCESS EMAIL ============ -->
+          <h4 id="bab3-3-2">
+            <i class="fas fa-check-circle"></i> 3.3.2 Email Payment Success
+          </h4>
+          <p>
+            Email konfirmasi pembayaran sukses. Dikirim setelah payment
+            confirmed (<code>paid</code>). Berisi ringkasan pembayaran
+            dan informasi bahwa tiket sedang diproses (booking &amp;
+            issued di KATRINA).
+          </p>
+
+          <h4>Kapan Email Payment Success Dikirim?</h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 32%">Flow Booking</th>
+                <th>Trigger Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Booking langsung via ALVIS / Panorama JTB</strong>
+                </td>
+                <td>
+                  Setelah payment confirmed di payment gateway.
+                  Sistem kemudian memproses booking di KATRINA.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Booking via add transaksi KATRINA</strong>
+                </td>
+                <td>
+                  Setelah payment confirmed di ALVIS / Panorama JTB.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Preview Email Payment Success</h4>
+          <div
+            class="img-container"
+            style="max-width: 720px; margin: 1.5rem auto; background: var(--bg); border: 1px solid var(--border)"
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Femail%20paymnet%20sucess.jpg?alt=media&token=2ef51a8b-b584-4d6a-8689-10a137923898"
+              alt="Email Payment Success"
+              style="width: 100%; height: auto; display: block"
+            />
+          </div>
+          <div class="img-caption">
+            <strong>Gambar 3.3.2:</strong> Email Payment Success — dikirim
+            setelah payment confirmed. Email berisi ringkasan pembayaran
+            dan notifikasi bahwa tiket sedang diproses.
+          </div>
+
+          <!-- ============ 3.3.3 INVOICE EMAIL ============ -->
+          <h4 id="bab3-3-3">
+            <i class="fas fa-file-invoice"></i> 3.3.3 Email Flight Invoice
+            (Booking Sukses)
+          </h4>
+          <p>
+            Email invoice dikirim ke contact
             <strong>setelah proses booking berhasil</strong>. Email ini
-            berisi rincian pemesanan dan pembayaran tiket pesawat — dapat
-            digunakan tamu sebagai bukti pembayaran.
+            berisi rincian pemesanan dan pembayaran tiket pesawat, dan
+            <strong>dilengkapi dokumen Invoice terlampir (PDF)</strong>
+            yang dapat diunduh contact.
           </p>
 
           <h4>Kapan Email Invoice Dikirim?</h4>
@@ -4766,7 +4918,7 @@
             <tbody>
               <tr>
                 <td>
-                  <strong>Via ALVIS / Panorama JTB</strong>
+                  <strong>Booking langsung via ALVIS / Panorama JTB</strong>
                 </td>
                 <td>
                   Setelah <strong>payment confirmed</strong>, sistem
@@ -4778,68 +4930,49 @@
               </tr>
               <tr>
                 <td>
-                  <strong>Via KATRINA</strong>
+                  <strong>Booking via add transaksi KATRINA</strong>
                 </td>
                 <td>
                   Booking sudah dilakukan di KATRINA. Setelah
                   <strong>payment confirmed</strong> di ALVIS/Panorama
-                  JTB, invoice email langsung dikirim karena booking
-                  sudah sukses sejak awal.
+                  JTB, invoice email langsung dikirim (booking sudah
+                  sukses sejak awal).
                 </td>
               </tr>
             </tbody>
           </table>
 
           <h4>Preview Email Invoice</h4>
-          <div class="email-mockup">
-            <div class="email-header">
-              <div class="email-subject">
-                Invoice Pemesanan Tiket Pesawat #FLT-2026-001
-              </div>
-              <div class="email-meta">
-                From: <strong>noreply@alvis.com</strong> &nbsp;·&nbsp; To:
-                <strong>tamu@email.com</strong> &nbsp;·&nbsp; 20 Juli 2026
-              </div>
-            </div>
-            <div class="email-body">
-              <p>Halo <strong>Bapak/Ibu Budi</strong>,</p>
-              <p>
-                Terima kasih telah melakukan pemesanan tiket pesawat melalui
-                ALVIS. Berikut rincian pemesanan Anda:
-              </p>
-              <p><strong>Detail Pemesanan</strong></p>
-              <ul>
-                <li>Booking ID: <strong>FLT-2026-001</strong></li>
-                <li>Rute: Jakarta (CGK) → Bali (DPS)</li>
-                <li>Tanggal: 25 Juli 2026</li>
-                <li>Penumpang: 1 orang</li>
-                <li>Maskapai: Garuda Indonesia</li>
-              </ul>
-              <p><strong>Rincian Pembayaran</strong></p>
-              <ul>
-                <li>Harga tiket: Rp 1.500.000</li>
-                <li>Tax &amp; service: Rp 200.000</li>
-                <li>Total: <strong>Rp 1.700.000</strong></li>
-              </ul>
-              <p>Status pembayaran: <strong>Lunas</strong></p>
-              <p>
-                E-ticket akan dikirimkan otomatis setelah proses issued
-                tiket selesai.
-              </p>
-            </div>
+          <div
+            class="img-container"
+            style="max-width: 720px; margin: 1.5rem auto; background: var(--bg); border: 1px solid var(--border)"
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Femail%20paymnet%20invoice.jpg?alt=media&token=97907589-92b9-4907-b1b3-cdd301c7972c"
+              alt="Email Flight Invoice"
+              style="width: 100%; height: auto; display: block"
+            />
+          </div>
+          <div class="img-caption">
+            <strong>Gambar 3.3.3:</strong> Email Flight Invoice — dikirim
+            setelah booking sukses. Email
+            <strong>dilengkapi dokumen Invoice terlampir (PDF)</strong>
+            yang dapat langsung diunduh oleh contact sebagai bukti
+            pembayaran.
           </div>
 
-          <!-- ============ 3.3.2 E-TICKET EMAIL ============ -->
-          <h4 id="bab3-3-2">
-            <i class="fas fa-ticket-alt"></i> 3.3.2 Email E-Ticket (Sukses
-            Issued)
+          <!-- ============ 3.3.4 E-TICKET EMAIL ============ -->
+          <h4 id="bab3-3-4">
+            <i class="fas fa-ticket-alt"></i> 3.3.4 Email Flight E-Ticket
+            (Issued Sukses)
           </h4>
           <p>
-            Email e-ticket dikirim ke tamu
+            Email e-ticket dikirim ke contact
             <strong>setelah proses issued tiket berhasil</strong>. Email
             ini berisi detail penerbangan final dan
             <strong>e-ticket number</strong> yang dapat digunakan untuk
-            boarding di bandara.
+            boarding di bandara, serta
+            <strong>dilengkapi dokumen E-Ticket terlampir (PDF)</strong>.
           </p>
 
           <h4>Kapan Email E-Ticket Dikirim?</h4>
@@ -4853,78 +4986,59 @@
             <tbody>
               <tr>
                 <td>
-                  <strong>Via ALVIS / Panorama JTB</strong>
+                  <strong>Booking langsung via ALVIS / Panorama JTB</strong>
                 </td>
                 <td>
                   Setelah <strong>booking</strong> sukses &amp;
-                  <strong>issued</strong> selesai diproses di KATRINA
-                  (booking lebih dulu, kemudian issued). E-ticket email
-                  dikirim setelah issued sukses (= setelah invoice email).
+                  <strong>issued</strong> selesai diproses di KATRINA.
+                  E-ticket email dikirim setelah issued sukses (= setelah
+                  invoice email).
                 </td>
               </tr>
               <tr>
                 <td>
-                  <strong>Via KATRINA</strong>
+                  <strong>Booking via add transaksi KATRINA</strong>
                 </td>
                 <td>
-                  Setelah <strong>payment confirmed</strong> di ALVIS/PJ,
-                  KATRINA memproses issued. E-ticket email dikirim setelah
-                  issued sukses (invoice email sudah dikirim lebih dulu
-                  setelah payment).
+                  Setelah <strong>payment confirmed</strong> di
+                  ALVIS/PJ, KATRINA memproses issued. E-ticket email
+                  dikirim setelah issued sukses (invoice email sudah
+                  dikirim lebih dulu setelah payment).
                 </td>
               </tr>
             </tbody>
           </table>
 
           <h4>Preview Email E-Ticket</h4>
-          <div class="email-mockup">
-            <div class="email-header">
-              <div class="email-subject">
-                E-Ticket Anda #FLT-2026-001 — Jakarta (CGK) → Bali (DPS)
-              </div>
-              <div class="email-meta">
-                From: <strong>noreply@alvis.com</strong> &nbsp;·&nbsp; To:
-                <strong>tamu@email.com</strong> &nbsp;·&nbsp; 20 Juli 2026
-              </div>
-            </div>
-            <div class="email-body">
-              <p>Halo <strong>Bapak/Ibu Budi</strong>,</p>
-              <p>
-                Tiket Anda sudah berhasil di-issue. Berikut detail
-                penerbangan Anda:
-              </p>
-              <p><strong>Informasi Penerbangan</strong></p>
-              <ul>
-                <li>Booking ID: <strong>FLT-2026-001</strong></li>
-                <li>Maskapai: Garuda Indonesia</li>
-                <li>Nomor Penerbangan: <strong>GA-401</strong></li>
-                <li>Rute: Jakarta (CGK) → Bali (DPS)</li>
-                <li>Tanggal: 25 Juli 2026</li>
-                <li>Jam: 07:00 → 10:00 WIB</li>
-                <li>Seat: <strong>14A</strong></li>
-              </ul>
-              <p>
-                E-Ticket Number:
-                <strong>123-4567890123</strong>
-              </p>
-              <p>
-                Harap tiba di bandara minimal 2 jam sebelum keberangkatan.
-                Tunjukkan e-ticket number dan identitas diri saat check-in.
-              </p>
-            </div>
+          <div
+            class="img-container"
+            style="max-width: 720px; margin: 1.5rem auto; background: var(--bg); border: 1px solid var(--border)"
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Femail%20eticket.jpg?alt=media&token=ea32af6c-fa0f-4384-b879-e6f52c87ca1e"
+              alt="Email Flight E-Ticket"
+              style="width: 100%; height: auto; display: block"
+            />
+          </div>
+          <div class="img-caption">
+            <strong>Gambar 3.3.4:</strong> Email Flight E-Ticket —
+            dikirim setelah issued sukses. Email
+            <strong>dilengkapi dokumen E-Ticket terlampir (PDF)</strong>
+            yang berisi detail penerbangan untuk boarding di bandara.
           </div>
 
-          <!-- ============ 3.3.3 FLOW COMPARISON ============ -->
-          <h4 id="bab3-3-3">
-            <i class="fas fa-clock"></i> 3.3.3 Timing Email di Setiap Flow
+          <!-- ============ 3.3.5 FLOW COMPARISON ============ -->
+          <h4 id="bab3-3-5">
+            <i class="fas fa-clock"></i> 3.3.5 Timing Email di Setiap Flow
           </h4>
           <p>
-            Perbandingan kapan kedua email dikirim pada kedua flow
+            Perbandingan kapan setiap email dikirim pada kedua flow
             booking. Pada kedua flow, proses
-            <strong>booking dan issued dilakukan secara bertahap (sequential)</strong>
-            — booking harus sukses lebih dulu sebelum issued dimulai.
-            Invoice email dikirim setelah booking sukses, sedangkan
-            e-ticket email dikirim setelah issued sukses.
+            <strong>booking dan issued dilakukan secara bertahap
+            (sequential)</strong> — booking harus sukses lebih dulu
+            sebelum issued dimulai. Perbedaan utama: pada
+            <strong>flow add transaksi KATRINA</strong> contact tidak
+            menerima email <strong>Waiting for Payment</strong>.
           </p>
 
           <div class="flow-compare">
@@ -4933,25 +5047,34 @@
               <ol>
                 <li>User booking via ALVIS/PJ</li>
                 <li>Sistem melakukan <strong>pre-book</strong> di KATRINA</li>
-                <li>User melakukan payment</li>
+                <li>Contact berada di halaman payment</li>
+                <li class="email-trigger">
+                  📧 Email Waiting for Payment
+                </li>
+                <li>Contact melakukan payment</li>
                 <li class="payment-trigger">
                   Payment confirmed → sistem memproses
-                  <strong>booking</strong> di KATRINA
+                  <strong>booking</strong>
                 </li>
                 <li class="email-trigger">
-                  Invoice email dikirim (setelah booking sukses)
+                  ✅ Email Payment Success (setelah payment confirmed)
+                </li>
+                <li class="email-trigger">
+                  📄 Email Invoice (setelah booking sukses, dengan
+                  attachment)
                 </li>
                 <li>
                   Sistem melanjutkan proses
                   <strong>issued</strong> di KATRINA
                 </li>
                 <li class="email-trigger">
-                  E-ticket email dikirim (setelah issued sukses)
+                  🎫 Email E-Ticket (setelah issued sukses, dengan
+                  attachment)
                 </li>
               </ol>
             </div>
             <div class="flow-compare-col">
-              <h5>Flow B — Booking via KATRINA</h5>
+              <h5>Flow B — Booking via add transaksi KATRINA</h5>
               <ol>
                 <li>
                   Booking terjadi di <strong>KATRINA</strong> (luar ALVIS)
@@ -4961,29 +5084,73 @@
                   sudah done)
                 </li>
                 <li>
-                  User melakukan payment via ALVIS/PJ
+                  Contact langsung ke halaman payment (no waiting)
                 </li>
+                <li>Contact melakukan payment via ALVIS/PJ</li>
                 <li class="payment-trigger">
                   Payment confirmed → KATRINA melakukan
                   <strong>issued</strong>
                 </li>
                 <li class="email-trigger">
-                  Invoice email dikirim (booking sudah sukses)
+                  ✅ Email Payment Success (setelah payment confirmed)
                 </li>
                 <li class="email-trigger">
-                  E-ticket email dikirim (issued sukses)
+                  📄 Email Invoice (booking sudah sukses, dengan
+                  attachment)
+                </li>
+                <li class="email-trigger">
+                  🎫 Email E-Ticket (setelah issued sukses, dengan
+                  attachment)
                 </li>
               </ol>
             </div>
           </div>
 
+          <h4>Ringkasan Jumlah Email per Flow</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Flow ALVIS / Panorama JTB (Direct)</th>
+                <th>Flow add transaksi KATRINA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>📧 Waiting for Payment</td>
+                <td><strong>✅ Dikirim</strong></td>
+                <td>❌ Tidak dikirim</td>
+              </tr>
+              <tr>
+                <td>✅ Payment Success</td>
+                <td>✅ Dikirim</td>
+                <td>✅ Dikirim</td>
+              </tr>
+              <tr>
+                <td>📄 Flight Invoice (+ attachment PDF)</td>
+                <td>✅ Dikirim</td>
+                <td>✅ Dikirim</td>
+              </tr>
+              <tr>
+                <td>🎫 Flight E-Ticket (+ attachment PDF)</td>
+                <td>✅ Dikirim</td>
+                <td>✅ Dikirim</td>
+              </tr>
+              <tr style="font-weight: 600">
+                <td><strong>Total email</strong></td>
+                <td><strong>4 email</strong></td>
+                <td><strong>3 email</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
           <div class="callout callout-success-custom">
             <div class="callout-title">✅ Best Practice</div>
             <p>
               Untuk user experience terbaik, pastikan
-              <strong>alamat email tamu selalu valid</strong> saat input
-              transaksi. Jika email bounce atau invalid, sistem akan
-              menandai transaksi dengan flag "Email Failed" untuk
+              <strong>alamat email contact selalu valid</strong> saat
+              input transaksi. Jika email bounce atau invalid, sistem
+              akan menandai transaksi dengan flag "Email Failed" untuk
               follow-up admin.
             </p>
           </div>
