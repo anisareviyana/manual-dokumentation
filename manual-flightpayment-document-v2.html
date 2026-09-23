@@ -3081,12 +3081,15 @@
             ><span class="chapter-num">5.1</span> Mitigasi Kendala</a
           >
           <a href="#bab5-2"
-            ><span class="chapter-num">5.2</span> Kendala &amp; Kegagalan</a
+            ><span class="chapter-num">5.2</span> Email Notifikasi Support</a
           >
           <a href="#bab5-3"
-            ><span class="chapter-num">5.3</span> Penanganan via Backoffice</a
+            ><span class="chapter-num">5.3</span> Kendala &amp; Kegagalan</a
           >
-          <a href="#bab5-4"><span class="chapter-num">5.4</span> FAQ</a>
+          <a href="#bab5-4"
+            ><span class="chapter-num">5.4</span> Penanganan via Backoffice</a
+          >
+          <a href="#bab5-5"><span class="chapter-num">5.5</span> FAQ</a>
         </div>
         >
       </nav>
@@ -5845,9 +5848,267 @@
             </p>
           </div>
 
-          <!-- ============ 5.2 KENDALA & KEGAGALAN (renumbered from 5.1) ============ -->
+          <!-- ============ 5.2 EMAIL NOTIFIKASI TIM SUPPORT (NEW) ============ -->
           <h3 id="bab5-2">
-            <i class="fas fa-exclamation-triangle"></i> 5.2 Kendala &amp; Kegagalan
+            <i class="fas fa-bell"></i> 5.2 Email Notifikasi Tim Support
+          </h3>
+          <p>
+            Ketika terjadi kegagalan dalam transaksi, sistem akan secara
+            otomatis mengirim
+            <strong>email notifikasi ke tim support</strong>. Email ini
+            berisi informasi kegagalan yang terjadi sehingga tim support
+            dapat segera mengambil tindakan mitigasi sesuai dengan section
+            <strong>5.1 Mitigasi Kendala Transaksi</strong> di atas.
+          </p>
+
+          <div class="info-box info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              Email notifikasi dikirim ke
+              <strong>mailbox khusus tim support</strong>, bukan ke
+              contact/tamu. Email berisi detail transaksi, jenis
+              kegagalan, dan link ke halaman detail transaksi di
+              backoffice untuk tindakan lanjutan. Total ada
+              <strong>3 jenis email notifikasi</strong> yang dikirim oleh
+              sistem sesuai dengan jenis kegagalannya.
+            </div>
+          </div>
+
+          <h4>3 Jenis Email Notifikasi</h4>
+
+          <!-- ============ 5.2.1 EMAIL GAGAL BOOKING ============ -->
+          <h4 id="bab5-2-1">
+            <i class="fas fa-exclamation-circle"></i> 5.2.1 Email Gagal Booking
+          </h4>
+          <p>
+            Dikirim secara otomatis oleh sistem ketika transaksi
+            mengalami <code>failed book</code>. Email ini menandakan
+            bahwa tim support perlu menjalankan mitigasi
+            <strong>Rebooking</strong> atau <strong>Replace</strong> sesuai
+            section <a href="#bab5-1-2">5.1.2 Gagal Booking</a>.
+          </p>
+
+          <h4>Kapan Email Ini Dikirim?</h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 35%">Kondisi</th>
+                <th>Trigger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Status transaksi</strong></td>
+                <td>
+                  Berubah menjadi <code>failed book</code> oleh sistem.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Saluran booking</strong></td>
+                <td>
+                  Hanya untuk transaksi via
+                  <strong>ALVIS Mobile Apps</strong> atau
+                  <strong>Web Panorama JTB</strong>.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Preview Email Gagal Booking</h4>
+          <div
+            class="img-container"
+            style="
+              max-width: 720px;
+              margin: 1.5rem auto;
+              background: var(--bg);
+              border: 1px solid var(--border);
+            "
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Ffailed%20booking.jpg?alt=media&token=a00db223-b631-4946-b925-b36d9bb436c9"
+              alt="Email Gagal Booking"
+              style="width: 100%; height: auto; display: block"
+            />
+          </div>
+          <div class="img-caption">
+            <strong>Gambar 5.2.1:</strong> Email notifikasi
+            <em>gagal booking</em> yang dikirim otomatis ke tim support
+            ketika transaksi berstatus <code>failed book</code>. Email
+            berisi detail transaksi dan tombol/link menuju halaman
+            detail untuk menjalankan mitigasi Rebooking/Replace.
+          </div>
+
+          <!-- ============ 5.2.2 EMAIL GAGAL GENERATE INVOICE ============ -->
+          <h4 id="bab5-2-2">
+            <i class="fas fa-file-invoice"></i> 5.2.2 Email Gagal Generate
+            Invoice
+          </h4>
+          <p>
+            Dikirim ketika transaksi sudah berstatus
+            <code>issued</code> namun sistem gagal men-generate
+            <strong>Invoice</strong>. Tim support perlu menjalankan
+            mitigasi <strong>Generate Invoice</strong> sesuai section
+            <a href="#bab5-1-1">5.1.1 Gagal Generate CSR &amp;
+            Invoice</a>.
+          </p>
+
+          <h4>Kapan Email Ini Dikirim?</h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 35%">Kondisi</th>
+                <th>Trigger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Status transaksi</strong></td>
+                <td>Berstatus <code>issued</code>, gagal generate invoice.</td>
+              </tr>
+              <tr>
+                <td><strong>Saluran booking</strong></td>
+                <td>
+                  Berlaku untuk semua saluran (ALVIS Mobile, Panorama
+                  JTB, atau add transaksi KATRINA).
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Preview Email Gagal Generate Invoice</h4>
+          <div
+            class="img-container"
+            style="
+              max-width: 720px;
+              margin: 1.5rem auto;
+              background: var(--bg);
+              border: 1px solid var(--border);
+            "
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Ffailed%20generate%20invoice.jpg?alt=media&token=97d0a5b2-e1c1-41a1-b5dc-886169ab90e4"
+              alt="Email Gagal Generate Invoice"
+              style="width: 100%; height: auto; display: block"
+            />
+          </div>
+          <div class="img-caption">
+            <strong>Gambar 5.2.2:</strong> Email notifikasi
+            <em>gagal generate invoice</em> yang dikirim ke tim support
+            ketika transaksi sudah issued namun invoice gagal di-generate.
+            Tim support perlu menjalankan mitigasi Generate Invoice.
+          </div>
+
+          <!-- ============ 5.2.3 EMAIL GAGAL ISSUED ============ -->
+          <h4 id="bab5-2-3">
+            <i class="fas fa-check-circle"></i> 5.2.3 Email Gagal Issued
+          </h4>
+          <p>
+            Dikirim ketika transaksi sudah berstatus
+            <code>paid</code> namun proses <strong>issued tiket</strong>
+            gagal dilakukan. Tim support perlu menjalankan
+            mitigasi berurutan (Sync → Replace → Update Payment Status)
+            sesuai section
+            <a href="#bab5-1-3">5.1.3 Gagal Issued</a>.
+          </p>
+
+          <h4>Kapan Email Ini Dikirim?</h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 35%">Kondisi</th>
+                <th>Trigger</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Status transaksi</strong></td>
+                <td>Berstatus <code>paid</code>, issued gagal dilakukan.</td>
+              </tr>
+              <tr>
+                <td><strong>Saluran booking</strong></td>
+                <td>
+                  Berlaku untuk semua saluran (ALVIS Mobile, Panorama
+                  JTB, atau add transaksi KATRINA).
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Preview Email Gagal Issued</h4>
+          <div
+            class="img-container"
+            style="
+              max-width: 720px;
+              margin: 1.5rem auto;
+              background: var(--bg);
+              border: 1px solid var(--border);
+            "
+          >
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/dev-alvis.appspot.com/o/documentation%2Fmanual-book-flight-paymnet%2Ffailed%20issued.jpg?alt=media&token=fc6c612d-11f8-4c30-8234-5e870ee71536"
+              alt="Email Gagal Issued"
+              style="width: 100%; height: auto; display: block"
+            />
+          </div>
+          <div class="img-caption">
+            <strong>Gambar 5.2.3:</strong> Email notifikasi
+            <em>gagal issued</em> yang dikirim ke tim support ketika
+            transaksi paid namun issued gagal. Tim support perlu
+            menjalankan mitigasi Sync → Replace → Update Payment Status.
+          </div>
+
+          <h4>Ringkasan Email Notifikasi ke Tim Support</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Trigger</th>
+                <th>Mitigasi (section 5.1)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>📧 Gagal Booking</td>
+                <td>Transaksi <code>failed book</code></td>
+                <td>
+                  <a href="#bab5-1-2">5.1.2 Gagal Booking</a> (Rebooking /
+                  Replace)
+                </td>
+              </tr>
+              <tr>
+                <td>📧 Gagal Generate Invoice</td>
+                <td>Status <code>issued</code>, invoice gagal</td>
+                <td>
+                  <a href="#bab5-1-1">5.1.1 Generate Invoice</a>
+                </td>
+              </tr>
+              <tr>
+                <td>📧 Gagal Issued</td>
+                <td>Status <code>paid</code>, issued gagal</td>
+                <td>
+                  <a href="#bab5-1-3">5.1.3 Gagal Issued</a> (Sync →
+                  Replace → Update Payment Status)
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-success-custom">
+            <div class="callout-title">✅ Best Practice</div>
+            <p>
+              Tim support diharapkan menindaklanjuti setiap email
+              notifikasi kegagalan dalam waktu
+              <strong>≤ 30 menit</strong> sejak diterima, terutama
+              untuk transaksi di mana contact sudah menunggu
+              konfirmasi. Setiap email juga berisi link langsung ke
+              halaman detail transaksi di backoffice untuk mempercepat
+              proses mitigasi.
+            </p>
+          </div>
+
+          <!-- ============ 5.3 KENDALA & KEGAGALAN (renumbered from 5.2) ============ -->
+          <h3 id="bab5-3">
+            <i class="fas fa-exclamation-triangle"></i> 5.3 Kendala &amp; Kegagalan
             yang Mungkin Terjadi
           </h3>
 
@@ -5923,8 +6184,8 @@
 
           <hr />
 
-          <h3>
-            <i class="fas fa-headset"></i> 5.3 Penanganan melalui Backoffice
+          <h3 id="bab5-4">
+            <i class="fas fa-headset"></i> 5.4 Penanganan melalui Backoffice
           </h3>
           <p>
             Apabila terjadi kendala atau kegagalan dalam proses di atas, Admin
@@ -5954,7 +6215,7 @@
 
           <hr />
 
-          <h3><i class="fas fa-question-circle"></i> 5.4 FAQ</h3>
+          <h3 id="bab5-5"><i class="fas fa-question-circle"></i> 5.5 FAQ</h3>
 
           <div class="callout info">
             <strong
