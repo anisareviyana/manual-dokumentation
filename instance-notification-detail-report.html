@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instance Notification Detail Report — ALVIS Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --brand-50:  #fff7ed;
+            --brand-100: #ffedd5;
+            --brand-200: #fed7aa;
+            --brand-300: #fdba74;
+            --brand-400: #fb923c;
+            --brand-500: #f97316;
+            --brand-600: #ea580c;
+            --brand-700: #c2410c;
+            --brand-800: #9a3412;
+
+            --gray-50:  #fafaf9;
+            --gray-100: #f5f5f4;
+            --gray-200: #e7e5e4;
+            --gray-300: #d6d3d1;
+            --gray-400: #a8a29e;
+            --gray-500: #78716c;
+            --gray-600: #57534e;
+            --gray-700: #44403c;
+            --gray-800: #292524;
+            --gray-900: #1c1917;
+
+            --bg:        #fafaf9;
+            --card:      #ffffff;
+            --text:      #1c1917;
+            --text-muted:#57534e;
+            --text-subtle:#a8a29e;
+            --border:    #e7e5e4;
+            --border-soft:#f5f5f4;
+
+            --sent:      #d6d3d1;
+            --delivered: #f97316;
+            --tapped:    #c2410c;
+
+            --ok-bg:     #f0fdf4;
+            --ok-border: #86efac;
+            --ok-text:   #166534;
+            --warn-bg:   #fff7ed;
+            --warn-text: #9a3412;
+            --danger-bg: #fef2f2;
+            --danger-border: #fecaca;
+            --danger-text: #991b1b;
+            --danger-soft: #fee2e2;
+            --info-bg:   #eff6ff;
+            --info-border:#bfdbfe;
+            --info-text: #1e40af;
+
+            --radius:    12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 2px rgba(28,25,23,0.04);
+            --shadow:    0 2px 6px rgba(28,25,23,0.05), 0 1px 2px rgba(28,25,23,0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            padding: 32px 16px;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* HEADER */
+        .header-banner {
+            background: var(--card);
+            padding: 36px 40px 28px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .header-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--brand-500) 0%, var(--brand-400) 60%, var(--brand-300) 100%);
+        }
+        .brand-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-title i { color: var(--brand-500); }
+        .doc-subtitle {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+        .doc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--brand-50);
+            color: var(--brand-700);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+
+        /* INSTANCE INFO GRID */
+        .instance-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .info-cell {
+            background: var(--card);
+            padding: 18px 20px;
+        }
+        .info-cell .info-label {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .info-cell .info-label i {
+            font-size: 11px;
+            color: var(--brand-500);
+        }
+        .info-cell .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+        }
+        .info-cell .info-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+            word-break: break-all;
+        }
+        .health-cell {
+            background: linear-gradient(135deg, var(--ok-bg) 0%, #ecfdf5 100%);
+        }
+        .health-cell .info-value {
+            color: var(--ok-text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .health-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--ok-border);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .health-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            border-radius: 999px;
+        }
+
+        .meta-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border);
+        }
+        .meta-box .meta-item {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .meta-box .meta-item strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .meta-box .meta-item .label {
+            color: var(--text-subtle);
+            font-weight: 500;
+        }
+
+        .content { padding: 36px 40px 40px; }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 44px 0 4px;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title:first-of-type { margin-top: 0; }
+        .section-title .num-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 8px;
+            background: var(--brand-50);
+            color: var(--brand-600);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .section-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0 0 22px;
+        }
+
+        /* KPI CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 18px 0 14px;
+        }
+        .kpi-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .kpi-card:hover {
+            border-color: var(--brand-300);
+            transform: translateY(-1px);
+        }
+        .kpi-card .kpi-label {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .kpi-card .kpi-label i {
+            color: var(--brand-500);
+            font-size: 11px;
+        }
+        .kpi-card .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .kpi-card .kpi-value .unit {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-left: 3px;
+        }
+        .kpi-card .kpi-note {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            margin-top: 6px;
+            line-height: 1.3;
+        }
+        .kpi-card.accent {
+            background: var(--brand-50);
+            border-color: var(--brand-100);
+        }
+        .kpi-card.accent .kpi-value { color: var(--brand-700); }
+        .kpi-card.ok {
+            background: var(--ok-bg);
+            border-color: var(--ok-border);
+        }
+        .kpi-card.ok .kpi-value { color: var(--ok-text); }
+
+        /* TAKEAWAY */
+        .takeaway {
+            background: var(--brand-50);
+            border: 1px solid var(--brand-100);
+            border-left: 3px solid var(--brand-500);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            font-size: 13.5px;
+            color: var(--text);
+            margin: 6px 0 14px;
+        }
+        .takeaway strong { color: var(--brand-700); font-weight: 600; }
+
+        /* FUNNEL */
+        .funnel-wrap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 14px 0;
+        }
+        .funnel {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-width: 720px;
+            margin: 8px auto 0;
+        }
+        .funnel-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .funnel-label {
+            flex: 0 0 130px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .funnel-label .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+        .funnel-bar {
+            flex: 1;
+            height: 48px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .funnel-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+        .funnel-fill.sent { background: var(--sent); }
+        .funnel-fill.delivered { background: var(--delivered); }
+        .funnel-fill.tapped { background: var(--tapped); }
+        .funnel-fill .funnel-val {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+        .funnel-fill.sent .funnel-val { color: var(--gray-800); }
+        .funnel-conversion {
+            flex: 0 0 90px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+            font-weight: 500;
+        }
+        .funnel-conversion strong {
+            color: var(--brand-700);
+            font-weight: 700;
+        }
+        .funnel-caption {
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--text-subtle);
+            margin-top: 14px;
+        }
+
+        /* MESSAGE DETAIL TABLE */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 14px 0 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            font-size: 13px;
+        }
+        table.data-table th {
+            background: var(--gray-50);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 14px;
+            white-space: nowrap;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid var(--border);
+        }
+        table.data-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-soft);
+            color: var(--text);
+            vertical-align: top;
+        }
+        table.data-table tbody tr:last-child td { border-bottom: none; }
+        table.data-table tbody tr:hover { background: var(--gray-50); }
+        table.data-table tbody tr.row-warn td { background: var(--warn-bg); }
+        table.data-table tbody tr.row-info td { background: var(--info-bg); }
+
+        .num { text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+        .metric-chip {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            font-weight: 500;
+        }
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .dot.sent { background: var(--sent); }
+        .dot.delivered { background: var(--delivered); }
+        .dot.tapped { background: var(--tapped); }
+
+        .date-group-header {
+            background: var(--brand-50);
+            font-weight: 700;
+            color: var(--brand-800);
+            font-size: 12.5px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .date-group-header .badge-count {
+            font-size: 10.5px;
+            font-weight: 600;
+            background: var(--brand-200);
+            color: var(--brand-800);
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin-left: auto;
+        }
+
+        .msg-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+            font-size: 13.5px;
+        }
+        .msg-body {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55;
+            font-style: italic;
+            max-width: 460px;
+        }
+        .time-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .time-block strong {
+            color: var(--text);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* STATUS PILLS */
+        .status-pill {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+        .status-pill .pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        .pill-sent { background: var(--ok-bg); color: var(--ok-text); }
+        .pill-sent .pill-dot { background: var(--ok-text); }
+        .pill-sending { background: var(--warn-bg); color: var(--warn-text); animation: pulse 1.5s infinite; }
+        .pill-sending .pill-dot { background: var(--warn-text); }
+        .pill-scheduled { background: var(--gray-100); color: var(--gray-700); }
+        .pill-scheduled .pill-dot { background: var(--gray-600); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* BAR CHART */
+        .chart-wrap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin: 14px 0;
+        }
+        .chart-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            color: var(--text);
+        }
+        .chart-caption {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+        }
+        .bar-chart {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 6px;
+            height: 220px;
+            padding: 0 4px;
+        }
+        .bar-day {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .bar {
+            width: 14px;
+            border-radius: 3px 3px 0 0;
+            min-height: 1px;
+            transition: opacity 0.2s;
+        }
+        .bar:hover { opacity: 0.75; }
+        .bar.sent { background: var(--sent); }
+        .bar.delivered { background: var(--delivered); }
+        .bar.tapped { background: var(--tapped); }
+        .bar-day .day-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .bar-day .day-total {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+        .chart-legend {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        .chart-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* CALLOUT */
+        .callout {
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            font-size: 13.5px;
+            margin: 14px 0;
+            border: 1px solid;
+            line-height: 1.6;
+        }
+        .callout.warn {
+            background: var(--warn-bg);
+            border-color: var(--brand-200);
+            border-left: 3px solid var(--brand-500);
+            color: var(--warn-text);
+        }
+        .callout.ok {
+            background: var(--ok-bg);
+            border-color: var(--ok-border);
+            border-left: 3px solid #22c55e;
+            color: var(--ok-text);
+        }
+        .callout.danger {
+            background: var(--danger-bg);
+            border-color: var(--danger-border);
+            border-left: 3px solid #ef4444;
+            color: var(--danger-text);
+        }
+        .callout.info {
+            background: var(--info-bg);
+            border-color: var(--info-border);
+            border-left: 3px solid #3b82f6;
+            color: var(--info-text);
+        }
+        .callout strong { font-weight: 600; color: inherit; }
+
+        /* PHASE TIMELINE */
+        .phase-timeline {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            margin: 14px 0;
+        }
+        .phase-track {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            position: relative;
+            margin-top: 8px;
+        }
+        .phase-step {
+            flex: 1;
+            padding: 14px 16px;
+            border-right: 1px dashed var(--border);
+            position: relative;
+        }
+        .phase-step:last-child { border-right: none; }
+        .phase-step .phase-date {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 4px;
+        }
+        .phase-step .phase-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .phase-step .phase-notifs {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .phase-notif {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: var(--brand-50);
+            color: var(--brand-700);
+            line-height: 1.4;
+            border-left: 2px solid var(--brand-500);
+        }
+        .phase-notif.empty {
+            background: var(--gray-50);
+            color: var(--text-subtle);
+            border-left-color: var(--border);
+            font-style: italic;
+        }
+        .phase-step.gap {
+            background: var(--danger-bg);
+        }
+        .phase-step.gap .phase-notif.empty {
+            background: rgba(255,255,255,0.7);
+            color: var(--danger-text);
+            border-left-color: var(--danger-text);
+        }
+
+        /* FINDING */
+        .finding {
+            display: flex;
+            gap: 16px;
+            padding: 22px 0;
+            border-bottom: 1px solid var(--border-soft);
+            align-items: flex-start;
+        }
+        .finding:last-child { border-bottom: none; }
+        .finding-num {
+            flex: 0 0 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--brand-50);
+            color: var(--brand-600);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .finding-num.warn { background: var(--warn-bg); color: var(--warn-text); }
+        .finding-num.ok { background: var(--ok-bg); color: var(--ok-text); }
+        .finding-body { flex: 1; }
+        .finding-body h4 {
+            font-size: 14.5px;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .finding-body p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+        .finding-body p:last-child { margin-bottom: 0; }
+        .finding-body p strong { color: var(--text); font-weight: 600; }
+
+        .prio {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+        .prio.high { background: var(--danger-bg); color: var(--danger-text); }
+        .prio.mid { background: var(--warn-bg); color: var(--warn-text); }
+        .prio.low { background: var(--gray-100); color: var(--gray-600); }
+
+        /* IMPROVEMENT TABLE */
+        .footer-note {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-subtle);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .instance-info { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+            .instance-info { grid-template-columns: 1fr; }
+            .header-banner { padding: 28px 24px 22px; }
+            .content { padding: 28px 24px 32px; }
+            .brand-title { font-size: 19px; }
+            .phase-track { flex-direction: column; }
+            .phase-step { border-right: none; border-bottom: 1px dashed var(--border); }
+            .phase-step:last-child { border-bottom: none; }
+            .funnel-row { flex-direction: column; align-items: stretch; gap: 6px; }
+            .funnel-label { flex: none; }
+            .funnel-conversion { flex: none; text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header-banner">
+        <div class="brand-title"><i class="fa-solid fa-bell"></i> Instance Notification Detail</div>
+        <div class="doc-subtitle">Notification Performance Report — ALVIS Apps (Push Notification Pilot, 1 Tour Instance)</div>
+        <span class="doc-badge">📌 Detail instance notifikasi untuk satu katalog tur</span>
+        <div class="meta-box">
+            <span class="meta-item"><span class="label">Catalog:</span> <strong>BCL-05 0923/QG [DMK-DMK] + NONGNOOCH VILLAGE, ASIATIQUE RIVERFRONT, CHINATOWN [SUPER DEAL]</strong></span>
+            <span class="meta-item"><span class="label">Periode Tur:</span> <strong>23 – 27 Sep 2026</strong></span>
+            <span class="meta-item"><span class="label">Periode Notifikasi:</span> <strong>22 – 28 Sep 2026</strong></span>
+            <span class="meta-item"><span class="label">Tanggal Laporan:</span> <strong>29 Sep 2026</strong></span>
+        </div>
+    </div>
+
+    <!-- INSTANCE INFO GRID -->
+    <div class="instance-info">
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-location-dot"></i> Destination</div>
+            <div class="info-value">THAILAND BEAUTIFUL</div>
+            <div class="info-sub">Asia (South East Asia)</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-user-tie"></i> Guide</div>
+            <div class="info-value">TJEN MARIAWATY</div>
+            <div class="info-sub">tjen.mariawaty@panorama-jtb.com</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-plane-departure"></i> Rute</div>
+            <div class="info-value">DMK → DMK</div>
+            <div class="info-sub">Don Mueang (round-trip)</div>
+        </div>
+        <div class="info-cell health-cell">
+            <div class="info-label"><i class="fa-solid fa-heart-pulse"></i> Health Indicator</div>
+            <div class="info-value">
+                <span>100%</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--ok-text); margin-top:2px;">Good health</div>
+            <div class="health-bar"><div class="health-bar-fill" style="width:100%;"></div></div>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- SECTION 1: INSTANCE OVERVIEW -->
+        <div class="section-title"><span class="num-tag">1</span> Instance Overview</div>
+        <p class="section-sub">Ringkasan performa notifikasi untuk satu instance tur: total 6 event notifikasi (1 SENDING, 4 SENT, 1 SCHEDULED) dikirim ke peserta dalam rentang 22–28 September 2026.</p>
+
+        <div class="kpi-grid">
+            <div class="kpi-card accent">
+                <div class="kpi-label"><i class="fa-solid fa-paper-plane"></i> Messages Sent</div>
+                <div class="kpi-value">101</div>
+                <div class="kpi-note">across 6 notification events</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-circle-check"></i> Delivered</div>
+                <div class="kpi-value">51<span class="unit">(50.5%)</span></div>
+                <div class="kpi-note">delivered / sent ratio</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-hand-pointer"></i> Tapped</div>
+                <div class="kpi-value">20</div>
+                <div class="kpi-note">opened by travelers</div>
+            </div>
+            <div class="kpi-card ok">
+                <div class="kpi-label"><i class="fa-solid fa-arrow-trend-up"></i> Tap Rate</div>
+                <div class="kpi-value">39.2<span class="unit">%</span></div>
+                <div class="kpi-note">tapped / delivered</div>
+            </div>
+        </div>
+
+        <div class="takeaway">
+            <strong>Snapshot:</strong> Instance ini mengirim <strong>101 notifikasi</strong> ke peserta tur Thailand (DMK-DMK), dengan <strong>51 terkonfirmasi delivered</strong> (50.5%) dan <strong>20 dibuka</strong> oleh peserta (Tap Rate 39.2% dari yang delivered). Angka capture rate (Delivered/Sent = 50.5%) <strong>lebih tinggi</strong> dibanding pilot sebelumnya (37.5% — grup KOP-07 0813/SQ), namun Tap Rate 39.2% masih menunjukkan ruang peningkatan pada konten CTA notifikasi.
+        </div>
+
+        <!-- SECTION 2: ENGAGEMENT FUNNEL -->
+        <div class="section-title"><span class="num-tag">2</span> Aggregate Engagement Funnel</div>
+        <p class="section-sub">Visualisasi funnel 3-tahap dari total 101 notifikasi yang dikirim — menunjukkan conversion rate antar-tahap (Sent → Delivered → Tapped).</p>
+
+        <div class="funnel-wrap">
+            <div class="chart-title">Engagement Funnel — All 6 Notification Events</div>
+            <div class="chart-caption">Perbandingan volume antar-tahap: Sent (total keluar sistem) → Delivered (sampai di HP peserta) → Tapped (dibuka oleh peserta).</div>
+            <div class="funnel">
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--sent);"></span> Sent</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill sent" style="width:100%;">
+                            <span class="funnel-val">101 notifikasi</span>
+                        </div>
+                    </div>
+                    <div class="funnel-conversion">baseline</div>
+                </div>
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--delivered);"></span> Delivered</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill delivered" style="width:50.5%;">
+                            <span class="funnel-val">51</span>
+                        </div>
+                    </div>
+                    <div class="funnel-conversion"><strong>50.5%</strong> dari Sent</div>
+                </div>
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--tapped);"></span> Tapped</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill tapped" style="width:19.8%;">
+                            <span class="funnel-val">20</span>
+                        </div>
+                    </div>
+                    <div class="funnel-conversion"><strong>19.8%</strong> dari Sent<br><strong>39.2%</strong> dari Delivered</div>
+                </div>
+            </div>
+            <div class="funnel-caption">Catatan: 1 event (Trip Anda, 22 Sep 10:31) masih berstatus SENDING dan seluruh recipient tercatat dalam "Delivered" namun belum terkonfirmasi sampai di perangkat.</div>
+        </div>
+
+        <div class="callout ok">
+            <strong>✅ Capture Rate Membaik:</strong> Delivered/Sent ratio mencapai <strong>50.5%</strong>, naik signifikan dari pilot sebelumnya (37.5% pada KOP-07). Hal ini sejalan dengan hipotesis bahwa sebagian besar peserta sudah memperbarui aplikasi ke versi terbaru (v3.17.0) sehingga callback otomatis dari perangkat ke sistem berjalan lebih baik. Capture rate masih dapat terus meningkat ketika seluruh peserta telah melakukan update aplikasi.
+        </div>
+
+        <!-- SECTION 3: MESSAGE DETAILS -->
+        <div class="section-title"><span class="num-tag">3</span> Message Details</div>
+        <p class="section-sub">Daftar lengkap 6 event notifikasi yang dikirim untuk instance ini, dikelompokkan berdasarkan tanggal pengiriman. Setiap event menampilkan judul, isi pesan, waktu kirim (Jakarta & Local Tour Time), dan metrics S/D/T.</p>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:30%;">Notifikasi</th>
+                        <th style="width:9%;">Status</th>
+                        <th style="width:14%;">Jakarta Time</th>
+                        <th style="width:14%;">Local Tour Time</th>
+                        <th style="width:6%;" class="num"><span class="metric-chip"><span class="dot sent"></span>S</span></th>
+                        <th style="width:6%;" class="num"><span class="metric-chip"><span class="dot delivered"></span>D</span></th>
+                        <th style="width:6%;" class="num"><span class="metric-chip"><span class="dot tapped"></span>T</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- TUESDAY 22 SEP -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Tuesday, 22 September 2026
+                                <span class="badge-count">2 notifications</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="row-warn">
+                        <td>
+                            <div class="msg-title">✈️ Trip Anda Bersama Panorama JTB</div>
+                            <div class="msg-body">"Terima kasih telah mempercayakan perjalanan Anda kepada Panorama JTB. Detail perjalanan kini dapat Anda akses melalui ALVIS. Kami siap menemani perjalanan Anda menuju pengalaman yang tak terlupakan! 🌏✨"</div>
+                        </td>
+                        <td><span class="status-pill pill-sending"><span class="pill-dot"></span> SENDING</span></td>
+                        <td><div class="time-block"><strong>10:31:38</strong><span>22 Sep 2026</span></div></td>
+                        <td><div class="time-block"><strong>10:31:38</strong><span>22 Sep 2026</span></div></td>
+                        <td class="num">15</td>
+                        <td class="num">15</td>
+                        <td class="num">8</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="msg-title">✈️ Besok Kita Berangkat!</div>
+                            <div class="msg-body">"Saatnya final check! Pastikan paspor, dokumen perjalanan, barang pribadi, obat-obatan, dan kebutuhan penting lainnya sudah masuk ke dalam tas. Jangan lupa cek kembali waktu & meeting point keberangkatan. Sampai jumpa besok! 🌏✨"</div>
+                        </td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td><div class="time-block"><strong>15:00:00</strong><span>22 Sep 2026</span></div></td>
+                        <td><div class="time-block"><strong>15:00:00</strong><span>22 Sep 2026</span></div></td>
+                        <td class="num">12</td>
+                        <td class="num">4</td>
+                        <td class="num">2</td>
+                    </tr>
+
+                    <!-- WEDNESDAY 23 SEP -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Wednesday, 23 September 2026
+                                <span class="badge-count">1 notification</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="msg-title">✈️ Selamat Memulai Perjalanan Anda!</div>
+                            <div class="msg-body">"Hari yang ditunggu akhirnya tiba! Selamat memulai perjalanan bersama Panorama JTB. Semoga perjalanan Anda berjalan lancar, nyaman, dan penuh pengalaman menyenangkan. Enjoy the journey and make wonderful memories! 💙🌏"</div>
+                        </td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td><div class="time-block"><strong>09:00:00</strong><span>23 Sep 2026</span></div></td>
+                        <td><div class="time-block"><strong>09:00:00</strong><span>23 Sep 2026</span></div></td>
+                        <td class="num">18</td>
+                        <td class="num">10</td>
+                        <td class="num">3</td>
+                    </tr>
+
+                    <!-- FRIDAY 25 SEP -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Friday, 25 September 2026
+                                <span class="badge-count">1 notification</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="msg-title">🏠 Dua Hari Lagi Kembali ke Indonesia</div>
+                            <div class="msg-body">"Sebelum pulang, kami mengundang Anda untuk menceritakan pengalaman Anda bersama Panorama JTB—pendapat Anda sangat berarti bagi kami. Buka Alvis Customer Satisfaction Survey DISINI 💙"</div>
+                        </td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td><div class="time-block"><strong>19:00:00</strong><span>25 Sep 2026</span></div></td>
+                        <td><div class="time-block"><strong>19:00:00</strong><span>25 Sep 2026</span></div></td>
+                        <td class="num">26</td>
+                        <td class="num">8</td>
+                        <td class="num">3</td>
+                    </tr>
+
+                    <!-- SUNDAY 27 SEP -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Sunday, 27 September 2026
+                                <span class="badge-count">1 notification</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="row-info">
+                        <td>
+                            <div class="msg-title">💙 Terima Kasih atas Feedback Anda!</div>
+                            <div class="msg-body">"Terima kasih sudah meluangkan waktu untuk berbagi pengalaman perjalanan Anda bersama Panorama JTB. Setiap feedback membantu kami memberikan pelayanan yang lebih baik. Jika masih ada hal lain yang ingin disampaikan, Anda dapat menghubungi Service Quality kami melalui kontak Service Quality +62 817-1730-0083"</div>
+                        </td>
+                        <td><span class="status-pill pill-scheduled"><span class="pill-dot"></span> SCHEDULED</span></td>
+                        <td><div class="time-block"><strong>09:27:13</strong><span>27 Sep 2026</span></div></td>
+                        <td><div class="time-block"><strong>09:27:13</strong><span>27 Sep 2026</span></div></td>
+                        <td class="num">10</td>
+                        <td class="num">10</td>
+                        <td class="num">1</td>
+                    </tr>
+
+                    <!-- MONDAY 28 SEP -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Monday, 28 September 2026
+                                <span class="badge-count">1 notification</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="msg-title">💙 Ceritakan Pengalaman Anda</div>
+                            <div class="msg-body">"Kami masih ingin mendengar cerita dari Anda. Yuk, luangkan beberapa menit untuk mengisi Customer Satisfaction Survey di ALVIS. Feedback Anda menjadi bagian penting bagi kami untuk terus memberikan pengalaman perjalanan yang lebih baik."</div>
+                        </td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td><div class="time-block"><strong>09:00:00</strong><span>28 Sep 2026</span></div></td>
+                        <td><div class="time-block"><strong>09:00:00</strong><span>28 Sep 2026</span></div></td>
+                        <td class="num">20</td>
+                        <td class="num">4</td>
+                        <td class="num">3</td>
+                    </tr>
+
+                    <!-- TOTAL ROW -->
+                    <tr style="background:var(--gray-50); font-weight:600;">
+                        <td colspan="4" style="border-top:1px solid var(--border);"><strong>TOTAL</strong></td>
+                        <td class="num" style="border-top:1px solid var(--border);"><strong>101</strong></td>
+                        <td class="num" style="border-top:1px solid var(--border);"><strong>51</strong></td>
+                        <td class="num" style="border-top:1px solid var(--border);"><strong>20</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECTION 4: PHASE ANALYSIS -->
+        <div class="section-title"><span class="num-tag">4</span> Phase Analysis</div>
+        <p class="section-sub">Pemetaan 6 notifikasi terhadap 5 fase perjalanan tur (Pre-Trip → Departure → On-Trip → Pre-Return → Post-Tour).</p>
+
+        <div class="phase-timeline">
+            <div class="chart-title">Coverage Notifikasi per Fase Perjalanan</div>
+            <div class="chart-caption">📍 Thailand (DMK-DMK), 23–27 Sep 2026 · 6 event notifikasi aktif</div>
+
+            <div class="phase-track">
+                <div class="phase-step">
+                    <div class="phase-date">22 Sep 2026 · H-1</div>
+                    <div class="phase-name">Pre-Trip</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif">✈️ Trip Anda Bersama Panorama JTB (10:31)</div>
+                        <div class="phase-notif">✈️ Besok Kita Berangkat! (15:00)</div>
+                    </div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-date">23 Sep 2026 · Day 1</div>
+                    <div class="phase-name">Departure</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif">✈️ Selamat Memulai Perjalanan Anda! (09:00)</div>
+                    </div>
+                </div>
+                <div class="phase-step gap">
+                    <div class="phase-date">24–26 Sep 2026 · Day 2–4</div>
+                    <div class="phase-name">On-Trip</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif empty">⚠️ Tidak ada notifikasi harian "How's Your Journey So Far?" (expected)</div>
+                    </div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-date">25 Sep 2026 · H-2 Return</div>
+                    <div class="phase-name">Pre-Return</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif">🏠 Dua Hari Lagi Kembali ke Indonesia (19:00)</div>
+                    </div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-date">27–28 Sep 2026 · Post</div>
+                    <div class="phase-name">Post-Tour</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif">💙 Terima Kasih atas Feedback Anda! (27 Sep, survey-triggered)</div>
+                        <div class="phase-notif">💙 Ceritakan Pengalaman Anda (28 Sep, 09:00)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Catatan On-Trip:</strong> Pada fase on-trip (24–26 Sep), template notifikasi harian "How's Your Journey So Far?" <strong>tidak aktif</strong> untuk instance ini. Hal ini merupakan <strong>konfigurasi yang disengaja</strong> — notifikasi on-trip harian hanya diaktifkan untuk tur dengan durasi ≥ 7 hari, sedangkan tur Thailand DMK-DMK ini berdurasi 5 hari sehingga fase on-trip sengaja di-skip.
+        </div>
+
+        <!-- SECTION 5: VOLUME TREND -->
+        <div class="section-title"><span class="num-tag">5</span> Volume Trend Harian</div>
+        <p class="section-sub">Tren volume notifikasi per hari pengiriman (5 hari aktif: 22, 23, 25, 27, 28 September).</p>
+
+        <div class="chart-wrap">
+            <div class="chart-title">Notification Volume per Day</div>
+            <div class="chart-caption">Abu-abu = Sent · Orange = Delivered · Orange tua = Tapped</div>
+            <div class="bar-chart">
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:100%;" title="Sent 27"></div>
+                    <div class="bar delivered" style="height:70%;" title="Delivered 19"></div>
+                    <div class="bar tapped" style="height:37%;" title="Tapped 10"></div>
+                </div><div class="day-label">22 Sep</div><div class="day-total">2 notif</div></div>
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:67%;" title="Sent 18"></div>
+                    <div class="bar delivered" style="height:37%;" title="Delivered 10"></div>
+                    <div class="bar tapped" style="height:11%;" title="Tapped 3"></div>
+                </div><div class="day-label">23 Sep</div><div class="day-total">1 notif</div></div>
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:96%;" title="Sent 26"></div>
+                    <div class="bar delivered" style="height:30%;" title="Delivered 8"></div>
+                    <div class="bar tapped" style="height:11%;" title="Tapped 3"></div>
+                </div><div class="day-label">25 Sep</div><div class="day-total">1 notif</div></div>
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:37%;" title="Sent 10"></div>
+                    <div class="bar delivered" style="height:37%;" title="Delivered 10"></div>
+                    <div class="bar tapped" style="height:4%;" title="Tapped 1"></div>
+                </div><div class="day-label">27 Sep</div><div class="day-total">1 notif</div></div>
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:74%;" title="Sent 20"></div>
+                    <div class="bar delivered" style="height:15%;" title="Delivered 4"></div>
+                    <div class="bar tapped" style="height:11%;" title="Tapped 3"></div>
+                </div><div class="day-label">28 Sep</div><div class="day-total">1 notif</div></div>
+            </div>
+            <div class="chart-legend">
+                <span><span class="dot sent"></span> Sent (101)</span>
+                <span><span class="dot delivered"></span> Delivered (51)</span>
+                <span><span class="dot tapped"></span> Tapped (20)</span>
+            </div>
+        </div>
+
+        <!-- SECTION 6: STATUS & ANOMALI -->
+        <div class="section-title"><span class="num-tag">6</span> Status &amp; Anomali</div>
+        <p class="section-sub">Temuan utama terhadap status, keanehan data, dan hal-hal yang perlu ditindaklanjuti oleh tim terkait.</p>
+
+        <div class="finding">
+            <div class="finding-num warn">1</div>
+            <div class="finding-body">
+                <h4>Notifikasi "Trip Anda Bersama Panorama JTB" (22 Sep 10:31) masih berstatus SENDING <span class="prio high">HIGH PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> Notifikasi selamat datang yang dikirim pada 22 September pukul 10:31:38 WIB — yang seharusnya menjadi event notifikasi pertama untuk instance ini — hingga laporan ini disusun masih tercatat berstatus <strong>SENDING</strong> di sistem, bukan SENT. Dari 15 recipient, semuanya tercatat dalam perhitungan Delivered (15) dan Tapped (8), namun tidak ada konfirmasi final "sent successfully" dari FCM.</p>
+                <p><strong>Root Cause (Hipotesis):</strong> Status SENDING biasanya terjadi ketika sistem menerima ACK awal dari FCM namun belum menerima <em>delivery receipt</em> final, atau callback ke sistem tidak pernah tertutup sempurna (kemungkinan <em>timeout</em> atau <em>connection drop</em> antara FCM dan sistem internal ALVIS).</p>
+                <p><strong>Impact &amp; Action:</strong> Metrics "Delivered" dan "Tapped" untuk event ini mungkin belum final — perlu diverifikasi ulang dengan tim Back-End untuk memastikan 15 recipient benar-benar menerima notifikasi. Disarankan untuk menambahkan <strong>retry logic</strong> dan <strong>timeout handling</strong> pada scheduler notifikasi welcome agar status dapat ter-update ke SENT dalam waktu yang ditentukan (misal ≤ 1 jam setelah trigger).</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num ok">2</div>
+            <div class="finding-body">
+                <h4>Notifikasi "Terima Kasih atas Feedback Anda!" (27 Sep) berstatus SCHEDULED — ini <em>expected behavior</em> <span class="prio low">INFO</span></h4>
+                <p><strong>What Happened:</strong> Notifikasi "Terima Kasih atas Feedback Anda!" tercatat dengan status SCHEDULED pada 27 September 09:27:13 WIB dengan 10 recipient.</p>
+                <p><strong>Why SCHEDULED, not SENT:</strong> Berbeda dengan notifikasi scheduled lainnya, template ini menggunakan <strong>trigger berbasis event</strong> — hanya dikirim setelah masing-masing peserta <em>submit Customer Satisfaction Survey</em>. Karena sistem membaca "10 peserta telah submit survey" sebagai event trigger, scheduler pun langsung membuat job kirim dengan status SCHEDULED yang akan berubah menjadi SENT dalam hitungan detik setelah FCM menerima payload. Status SCHEDULED untuk 10 recipient ini bersifat <strong>normal dan expected</strong>, bukan anomali.</p>
+                <p><strong>Recommendation:</strong> Tidak ada tindakan perbaikan yang diperlukan untuk status ini. Namun, akan lebih informatif jika halaman Notification Instance backoffice menampilkan label tambahan "Triggered by: Survey Submission" untuk template-template event-based seperti ini, agar tim operasional tidak salah mengira SCHEDULED sebagai masalah.</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num">3</div>
+            <div class="finding-body">
+                <h4>Penumpukan 2 notifikasi pada 22 September (H-1) <span class="prio mid">MEDIUM PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> Pada 22 September (H-1 keberangkatan), sistem mengirim 2 notifikasi ke peserta: <em>Trip Anda Bersama Panorama JTB</em> pada pukul 10:31, dan <em>Besok Kita Berangkat!</em> pada pukul 15:00 — dengan selisih waktu 4,5 jam.</p>
+                <p><strong>Impact:</strong> Tidak ada penumpukan pada menit yang sama (berbeda dengan temuan di pilot KOP-07 18 Agustus). Namun, mengirim welcome message dan pre-trip reminder pada hari yang sama tetap berpotensi membuat peserta merasa "terlalu banyak notifikasi" jika welcome message baru terbaca di sore hari.</p>
+                <p><strong>Recommendation:</strong> Pertimbangkan untuk menjadwalkan welcome message <strong>≥ 3 hari sebelum keberangkatan</strong> (misal H-3 atau H-7), sehingga tidak bertabrakan dengan pre-trip reminder di H-1. Pattern ini juga akan mengurangi risiko welcome message tertimbun notifikasi lain di hari yang sama.</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num">4</div>
+            <div class="finding-body">
+                <h4>Tap Rate 39.2% — engagement sedang, ada ruang perbaikan pada CTA <span class="prio mid">MEDIUM PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> Dari 51 notifikasi yang terkonfirmasi delivered, hanya 20 yang dibuka oleh peserta (Tap Rate 39.2%). Dibandingkan dengan pilot KOP-07 yang mencapai 64.6%, angka ini lebih rendah.</p>
+                <p><strong>Why It Matters:</strong> Tap Rate yang rendah menandakan peserta menerima notifikasi namun tidak tertarik untuk membukanya. Untuk notifikasi dengan CTA spesifik (misal survey, detail trip), rendahnya tap rate berarti <strong>action yang diharapkan tidak terjadi</strong> — dalam hal ini, engagement terhadap Customer Satisfaction Survey bisa menurun.</p>
+                <p><strong>Recommendation:</strong> Lakukan A/B testing pada <em>preview text</em> notifikasi (50–80 karakter pertama yang tampil di lock screen). Beberapa hal yang bisa diuji: (a) personalisasi dengan nama tour/negara, (b) emoji di awal pesan, (c) kalimat yang lebih action-oriented (misal "Buka ALVIS sekarang untuk detail trip Anda" daripada kalimat naratif).</p>
+            </div>
+        </div>
+
+        <!-- SECTION 7: INSIGHT & NEXT STEPS -->
+        <div class="section-title"><span class="num-tag">7</span> Insight &amp; Rekomendasi</div>
+        <p class="section-sub">Kesimpulan utama dari instance ini dan rekomendasi tindak lanjut untuk tim operasional & development.</p>
+
+        <div class="callout ok">
+            <strong>✅ Hal yang sudah berjalan baik:</strong>
+            <ul style="margin-top:8px; margin-left:22px;">
+                <li><strong>Capture rate 50.5%</strong> — signifikan lebih tinggi dari pilot sebelumnya (37.5%), menunjukkan callback otomatis sudah mulai bekerja dengan baik.</li>
+                <li><strong>Tidak ada notifikasi gagal kirim (failed)</strong> — seluruh 101 pesan keluar sistem tanpa insiden FCM failure.</li>
+                <li><strong>Distribusi notifikasi merata</strong> di 5 fase perjalanan (Pre-Trip, Departure, Pre-Return, Post-Tour) — coverage sudah cukup lengkap.</li>
+                <li><strong>Template notifikasi konsisten</strong> menggunakan gaya bahasa Panorama JTB dan CTA survey yang jelas pada fase post-tour.</li>
+            </ul>
+        </div>
+
+        <div class="callout warn">
+            <strong>⚠️ Yang perlu ditingkatkan:</strong>
+            <ul style="margin-top:8px; margin-left:22px;">
+                <li><strong>Status SENDING pada welcome message</strong> belum ter-resolve — perlu investigasi dan perbaikan retry/timeout logic.</li>
+                <li><strong>Tap Rate 39.2%</strong> lebih rendah dari pilot sebelumnya — perlu A/B testing pada preview text.</li>
+                <li><strong>Penjadwalan welcome di H-1</strong> — pertimbangkan untuk geser ke H-3 atau lebih awal agar tidak bertabrakan dengan pre-trip reminder.</li>
+                <li><strong>Visibility status SCHEDULED untuk event-trigger</strong> — perlu label tambahan di backoffice agar tim operasional tidak salah interpretasi.</li>
+            </ul>
+        </div>
+
+        <div class="takeaway">
+            <strong>Bottom Line:</strong> Instance BCL-05 0923/QG menunjukkan <strong>peningkatan capture rate yang menggembirakan</strong> (50.5% vs 37.5% pilot sebelumnya), namun masih terdapat <strong>1 isu teknis (welcome message stuck SENDING)</strong> yang perlu investigasi Back-End dan <strong>1 peluang optimasi (Tap Rate 39.2%)</strong> yang bisa di-address melalui A/B testing konten. Secara keseluruhan, fitur notifikasi otomatis untuk tur short-haul (≤ 5 hari) <strong>sudah cukup stabil</strong> untuk dilanjutkan ke lebih banyak instance tur.
+        </div>
+
+        <div class="footer-note">
+            Instance Notification Detail Report — ALVIS Mobile Apps &amp; Backoffice Development Team © 2026<br>
+            Laporan ini bersifat internal untuk tim operasional dan management. Data bersumber dari halaman Notification Instance backoffice per 29 September 2026.
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
