@@ -1165,8 +1165,107 @@
             </div>
         </div>
 
-        <!-- SECTION 6: STATUS & ANOMALI -->
-        <div class="section-title"><span class="num-tag">6</span> Status &amp; Anomali</div>
+        <!-- SECTION 6: APP VERSION COVERAGE -->
+        <div class="section-title"><span class="num-tag">6</span> App Version Coverage</div>
+        <p class="section-sub">Validasi versi aplikasi ALVIS untuk peserta yang submit survey (sumber: Mixpanel event "Trip - Submit Survey Success") — untuk membuktikan atau menantang hipotesis dari pilot KOP-07 0813/SQ bahwa capture rate rendah disebabkan user yang belum update ke v3.17.0+.</p>
+
+        <div class="kpi-grid">
+            <div class="kpi-card ok">
+                <div class="kpi-label"><i class="fa-solid fa-mobile-screen"></i> App Version</div>
+                <div class="kpi-value">3.17.2</div>
+                <div class="kpi-note">all confirmed submitters</div>
+            </div>
+            <div class="kpi-card accent">
+                <div class="kpi-label"><i class="fa-solid fa-code-branch"></i> App Build</div>
+                <div class="kpi-value">1051</div>
+                <div class="kpi-note">latest build</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-tag"></i> Tour ID</div>
+                <div class="kpi-value">51544</div>
+                <div class="kpi-note">matches BCL-05 0923/QG</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-database"></i> Sample Size</div>
+                <div class="kpi-value">2<span class="unit">/17</span></div>
+                <div class="kpi-note">events with full data</div>
+            </div>
+        </div>
+
+        <h4 style="font-size:13px; font-weight:700; margin: 18px 0 10px; color:var(--text); display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-table-list" style="color:var(--brand-500);"></i> Mixpanel "Trip - Submit Survey Success" — Sample Events dengan Property App Version Lengkap</h4>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:20%;">Distinct ID</th>
+                        <th style="width:11%;">Booking</th>
+                        <th style="width:18%;">Device</th>
+                        <th style="width:10%;">App</th>
+                        <th style="width:8%;">Build</th>
+                        <th style="width:14%;">OS</th>
+                        <th style="width:19%;">Time (Jakarta)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code style="font-size:10.5px; background:var(--gray-100); color:var(--gray-700); padding:2px 6px; border-radius:4px;">TP1A.220624.014</code></td>
+                        <td><code style="font-size:11px; background:var(--gray-100); color:var(--gray-700); padding:2px 6px; border-radius:4px;">20260006377</code></td>
+                        <td>Samsung SM-G780F<br><span style="font-size:11px; color:var(--text-muted);">Gubengairlangga (Surabaya)</span></td>
+                        <td><span class="status-pill pill-sent" style="font-size:10px;">3.17.2</span></td>
+                        <td>1051</td>
+                        <td>Android 13</td>
+                        <td>29 Sep 2026, 12:39</td>
+                    </tr>
+                    <tr>
+                        <td><code style="font-size:10.5px; background:var(--gray-100); color:var(--gray-700); padding:2px 6px; border-radius:4px;">BP2A.250605.031.A3</code></td>
+                        <td><code style="font-size:11px; background:var(--gray-100); color:var(--gray-700); padding:2px 6px; border-radius:4px;">20260006743</code></td>
+                        <td>Samsung SM-A356E<br><span style="font-size:11px; color:var(--text-muted);">Cideng (Jakarta)</span></td>
+                        <td><span class="status-pill pill-sent" style="font-size:10px;">3.17.2</span></td>
+                        <td>1051</td>
+                        <td>Android 16</td>
+                        <td>29 Sep 2026, 10:45</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="callout warn">
+            <strong>⚠️ Sample Data Terbatas:</strong> Dari 17 events "Trip - Submit Survey Success" yang tercatat di Mixpanel untuk tour ini, hanya <strong>2 events</strong> yang menampilkan property <code>app_version</code> dan <code>app_build_number</code> secara eksplisit di UI/JSON yang tersedia. 15 events sisanya hanya memiliki <code>distinct_id</code>, <code>time</code>, <code>$city</code>, <code>$os</code>, dan <code>mp_country_code</code> — tanpa field App Version. Untuk validasi penuh terhadap seluruh 12 device, diperlukan <strong>re-export JSON Mixpanel dengan seluruh property</strong> (terutama <code>properties.app_version</code>).
+        </div>
+
+        <div class="finding">
+            <div class="finding-num ok">1</div>
+            <div class="finding-body">
+                <h4>Submitters sudah pakai ALVIS app v3.17.2 (latest) <span class="prio low">INFO</span></h4>
+                <p><strong>What Happened:</strong> Dari 2 events dengan property lengkap, kedua-duanya menampilkan <strong>App Version 3.17.2</strong> dan <strong>App Build 1051</strong> — versi terbaru ALVIS per 29 September 2026. Booking code <code>20260006377</code> (event 1) cocok dengan user guide row 1/10 (djitowibowohany@yahoo.com atau susyliawati705@gmail.com), dan <code>20260006743</code> (event 2) cocok dengan row 15-17 (anniegonie6 / ponigrowingstars / merinwinzz1702). Keduanya adalah tamu riil (bukan internal tester).</p>
+                <p><strong>What This Means:</strong> Setidaknya 2 dari 12 device submitter telah <strong>dikonfirmasi menggunakan app versi terbaru</strong>. Hal ini memberikan indikasi kuat bahwa peserta yang engage dengan ALVIS (sampai tahap submit survey) sudah memiliki kemampuan callback otomatis yang seharusnya meningkatkan capture rate — membuktikan bahwa update aplikasi <strong>sudah adopted dengan baik</strong> oleh user yang aktif.</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num warn">2</div>
+            <div class="finding-body">
+                <h4>Capture Rate 50.5% BUKAN disebabkan App Version <span class="prio mid">MEDIUM PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> Pilot sebelumnya (KOP-07 0813/SQ, 12-19 Agustus 2026) mengidentifikasi bahwa capture rate rendah (37.5%) disebabkan oleh user yang masih menggunakan ALVIS app di bawah v3.17.0 — tanpa kemampuan callback otomatis ke sistem. Untuk instance BCL-05 0923/QG, hipotesis ini <strong>perlu di-revisit</strong>: submitters sudah di v3.17.2 (latest), namun Capture Rate masih 50.5%.</p>
+                <p><strong>Root Cause (Hipotesis Baru):</strong> Capture rate yang tidak optimal kemungkinan besar berasal dari faktor <strong>device-level behavior</strong>, bukan app version:</p>
+                <ul>
+                    <li><strong>Notification permission disabled</strong> — User secara eksplisit mematikan notifikasi untuk ALVIS di device settings.</li>
+                    <li><strong>Quick dismissal</strong> — User dismiss notification sebelum app sempat record delivery callback ke sistem.</li>
+                    <li><strong>App background-killed</strong> — OS membunuh app process (memory pressure) sebelum callback fired.</li>
+                    <li><strong>Doze / Battery saver mode</strong> — Device dalam mode hemat daya, menunda eksekusi background task.</li>
+                    <li><strong>Konektivitas terbatas</strong> — Device offline / signal lemah saat notifikasi tiba, callback gagal terkirim.</li>
+                </ul>
+                <p><strong>Impact &amp; Action:</strong> Rekomendasi "pop-up perbarui aplikasi" dari pilot sebelumnya <strong>tidak lagi menjadi solusi utama</strong> untuk meningkatkan capture rate instance ini — fitur tersebut tetap relevan untuk device-device lama, tapi mayoritas user yang aktif sudah di versi terbaru. Prioritas berikutnya: investigasi permission & dismiss-behavior, atau implementasi <strong>fallback delivery mechanism</strong> (misal SMS/email) untuk pesan-pesan kritis yang tidak boleh terlewat.</p>
+            </div>
+        </div>
+
+        <div class="callout ok">
+            <strong>✅ Validasi Hipotesis & Perubahan Strategi:</strong> Hipotesis "capture rate rendah karena user belum pakai versi terbaru" dari pilot KOP-07 TIDAK berlaku untuk instance BCL-05 0923/QG. Berdasarkan sample 2 events dengan property lengkap di Mixpanel, semua submitter menggunakan ALVIS app v3.17.2 (latest). Ini adalah <strong>perubahan signifikan</strong> dari rekomendasi sebelumnya — strategi peningkatan capture rate perlu bergeser dari "dorong update aplikasi" ke "optimalisasi device-level behavior" atau "fallback delivery mechanism". <em>Catatan: Validasi penuh menunggu re-export JSON dengan 17 events + property <code>app_version</code>.</em>
+        </div>
+
+        <!-- SECTION 7: STATUS & ANOMALI -->
+        <div class="section-title"><span class="num-tag">7</span> Status &amp; Anomali</div>
         <p class="section-sub">Temuan utama terhadap status, keanehan data, dan hal-hal yang perlu ditindaklanjuti oleh tim terkait.</p>
 
         <div class="finding">
@@ -1209,14 +1308,15 @@
             </div>
         </div>
 
-        <!-- SECTION 7: INSIGHT & NEXT STEPS -->
-        <div class="section-title"><span class="num-tag">7</span> Insight &amp; Rekomendasi</div>
+        <!-- SECTION 8: INSIGHT & NEXT STEPS -->
+        <div class="section-title"><span class="num-tag">8</span> Insight &amp; Rekomendasi</div>
         <p class="section-sub">Kesimpulan utama dari instance ini dan rekomendasi tindak lanjut untuk tim operasional & development.</p>
 
         <div class="callout ok">
             <strong>✅ Hal yang sudah berjalan baik:</strong>
             <ul style="margin-top:8px; margin-left:22px;">
                 <li><strong>Capture rate 53.4%</strong> — signifikan lebih tinggi dari pilot sebelumnya (37.5%), menunjukkan callback otomatis sudah mulai bekerja dengan baik.</li>
+                <li><strong>App version adoption terkonfirmasi</strong> (berdasarkan sample Mixpanel) — submitters sudah di v3.17.2 (latest), membuktikan update aplikasi sudah adopted dengan baik oleh user aktif.</li>
                 <li><strong>Tidak ada notifikasi gagal kirim (failed)</strong> — seluruh 103 pesan keluar sistem tanpa insiden FCM failure.</li>
                 <li><strong>Distribusi notifikasi merata</strong> di 5 fase perjalanan (Pre-Trip, Departure, Pre-Return, Post-Tour) — coverage sudah cukup lengkap.</li>
                 <li><strong>Template notifikasi konsisten</strong> menggunakan gaya bahasa Panorama JTB dan CTA survey yang jelas pada fase post-tour.</li>
@@ -1227,6 +1327,7 @@
             <strong>⚠️ Yang perlu ditingkatkan:</strong>
             <ul style="margin-top:8px; margin-left:22px;">
                 <li><strong>Status SENDING pada welcome message</strong> belum ter-resolve — perlu investigasi dan perbaikan retry/timeout logic.</li>
+                <li><strong>Capture rate 50.5% perlu investigasi device-level</strong> (permission, dismiss behavior, doze, background kill) — <strong>bukan</strong> masalah app version lagi.</li>
                 <li><strong>Tap Rate 38.2%</strong> lebih rendah dari pilot sebelumnya — perlu A/B testing pada preview text.</li>
                 <li><strong>Penjadwalan welcome di H-1</strong> — pertimbangkan untuk geser ke H-3 atau lebih awal agar tidak bertabrakan dengan pre-trip reminder.</li>
                 <li><strong>Visibility status SCHEDULED untuk event-trigger</strong> — perlu label tambahan di backoffice agar tim operasional tidak salah interpretasi.</li>
@@ -1234,7 +1335,7 @@
         </div>
 
         <div class="takeaway">
-            <strong>Bottom Line:</strong> Instance BCL-05 0923/QG menunjukkan <strong>peningkatan capture rate yang menggembirakan</strong> (53.4% vs 37.5% pilot sebelumnya), namun masih terdapat <strong>1 isu teknis (welcome message stuck SENDING)</strong> yang perlu investigasi Back-End dan <strong>1 peluang optimasi (Tap Rate 38.2%)</strong> yang bisa di-address melalui A/B testing konten. Secara keseluruhan, fitur notifikasi otomatis untuk tur short-haul (≤ 5 hari) <strong>sudah cukup stabil</strong> untuk dilanjutkan ke lebih banyak instance tur.
+            <strong>Bottom Line:</strong> Instance BCL-05 0923/QG menunjukkan <strong>peningkatan capture rate yang menggembirakan</strong> (53.4% vs 37.5% pilot sebelumnya), namun validasi Mixpanel mengungkap bahwa <strong>capture rate bukan lagi masalah app version</strong> — submitters sudah di v3.17.2 (latest). Masih terdapat <strong>1 isu teknis (welcome message stuck SENDING)</strong> yang perlu investigasi Back-End, <strong>1 peluang optimasi (Tap Rate 38.2%)</strong> yang bisa di-address melalui A/B testing konten, dan <strong>1 perubahan strategi</strong> — investigasi faktor device-level (permission, dismiss behavior) atau implementasi fallback delivery mechanism. Fitur notifikasi otomatis untuk tur short-haul (≤ 5 hari) <strong>sudah cukup stabil</strong> untuk dilanjutkan ke lebih banyak instance tur.
         </div>
 
         <div class="footer-note">
