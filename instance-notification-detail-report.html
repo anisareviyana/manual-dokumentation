@@ -1349,12 +1349,12 @@
         <p class="section-sub">Temuan utama terhadap status, keanehan data, dan hal-hal yang perlu ditindaklanjuti oleh tim terkait.</p>
 
         <div class="finding">
-            <div class="finding-num warn">1</div>
+            <div class="finding-num ok">1</div>
             <div class="finding-body">
-                <h4>Notifikasi "Trip Anda Bersama Panorama JTB" (22 Sep 10:31) masih berstatus SENDING <span class="prio high">HIGH PRIORITY</span></h4>
-                <p><strong>What Happened:</strong> Notifikasi selamat datang yang dikirim pada 22 September pukul 10:31:38 WIB — yang seharusnya menjadi event notifikasi pertama untuk instance ini — hingga laporan ini disusun masih tercatat berstatus <strong>SENDING</strong> di sistem, bukan SENT. Dari 15 recipient, semuanya tercatat dalam perhitungan Delivered (15) dan Tapped (8), namun tidak ada konfirmasi final "sent successfully" dari FCM.</p>
-                <p><strong>Root Cause (Hipotesis):</strong> Status SENDING biasanya terjadi ketika sistem menerima ACK awal dari FCM namun belum menerima <em>delivery receipt</em> final, atau callback ke sistem tidak pernah tertutup sempurna (kemungkinan <em>timeout</em> atau <em>connection drop</em> antara FCM dan sistem internal ALVIS).</p>
-                <p><strong>Impact &amp; Action:</strong> Metrics "Delivered" dan "Tapped" untuk event ini mungkin belum final — perlu diverifikasi ulang dengan tim Back-End untuk memastikan 15 recipient benar-benar menerima notifikasi. Disarankan untuk menambahkan <strong>retry logic</strong> dan <strong>timeout handling</strong> pada scheduler notifikasi welcome agar status dapat ter-update ke SENT dalam waktu yang ditentukan (misal ≤ 1 jam setelah trigger).</p>
+                <h4>Status SENDING pada "Trip Anda Bersama Panorama JTB" — <em>by design, bukan anomali</em> <span class="prio low">INFO</span></h4>
+                <p><strong>What Happened:</strong> Notifikasi "Trip Anda Bersama Panorama JTB" tercatat berstatus <strong>SENDING</strong> (bukan SENT) sejak dikirim 22 September pukul 10:31:38 WIB. Dari 15 recipient, 15 tercatat Delivered dan 8 Tapped — namun status scheduler-nya sendiri masih SENDING.</p>
+                <p><strong>Root Cause (Dikonfirmasi):</strong> Status SENDING pada notifikasi ini <strong>bukan anomali, melainkan perilaku yang disengaja</strong>. Notifikasi welcome message ini berfungsi untuk mengirim notifikasi ke user yang <em>bergabung setelah instance tur terbentuk</em> — yaitu user yang join tidak menganut jadwal keberangkatan (join-trigger, bukan schedule-trigger). Karena participant list bersifat inkremental (bertambah seiring user join), scheduler didesain mempertahankan status SENDING untuk terus memantau participant baru yang eligible menerima welcome message.</p>
+                <p><strong>Impact &amp; Action:</strong> <strong>Tidak ada tindakan perbaikan</strong> yang diperlukan untuk status SENDING ini — ini adalah perilaku yang benar. Metrics "Delivered" (15) dan "Tapped" (8) tetap valid untuk recipient yang sudah join hingga laporan ini disusun. Namun, agar tim operasional tidak salah menginterpretasikan status SENDING sebagai masalah, halaman Notification Instance backoffice dapat menampilkan label tambahan <em>"Join-triggered — active until tour start"</em> untuk template-template dengan pattern serupa.</p>
             </div>
         </div>
 
@@ -1363,18 +1363,19 @@
             <div class="finding-body">
                 <h4>Notifikasi "Terima Kasih atas Feedback Anda!" (27 Sep) berstatus SCHEDULED — ini <em>expected behavior</em> <span class="prio low">INFO</span></h4>
                 <p><strong>What Happened:</strong> Notifikasi "Terima Kasih atas Feedback Anda!" tercatat dengan status SCHEDULED pada 27 September 09:27:13 WIB dengan 12 recipient (naik dari 10 recipient pada snapshot 29 September, seiring 2 peserta tambahan yang submit survey).</p>
-                <p><strong>Why SCHEDULED, not SENT:</strong> Berbeda dengan notifikasi scheduled lainnya, template ini menggunakan <strong>trigger berbasis event</strong> — hanya dikirim setelah masing-masing peserta <em>submit Customer Satisfaction Survey</em>. Karena sistem membaca "12 peserta telah submit survey" sebagai event trigger, scheduler pun langsung membuat job kirim dengan status SCHEDULED yang akan berubah menjadi SENT dalam hitungan detik setelah FCM menerima payload. Status SCHEDULED untuk 12 recipient ini bersifat <strong>normal dan expected</strong>, bukan anomali.</p>
-                <p><strong>Recommendation:</strong> Tidak ada tindakan perbaikan yang diperlukan untuk status ini. Namun, akan lebih informatif jika halaman Notification Instance backoffice menampilkan label tambahan "Triggered by: Survey Submission" untuk template-template event-based seperti ini, agar tim operasional tidak salah mengira SCHEDULED sebagai masalah.</p>
+                <p><strong>Why SCHEDULED, not SENT:</strong> Status <strong>SCHEDULED adalah kondisi normal dan permanen</strong> untuk template ini — bukan status sementara yang akan berubah ke SENT dalam hitungan detik. Template ini menggunakan <strong>trigger berbasis event (survey submission)</strong>: sistem membuat record SCHEDULED untuk <em>setiap</em> peserta yang eligible menerima thank you message, namun hanya benar-benar terkirim ke FCM ketika peserta tersebut submit survey. Sebelum submit, status tetap SCHEDULED; setelah submit, scheduler akan trigger pengiriman dan status berubah ke SENDING → SENT.</p>
+                <p><strong>Recommendation:</strong> Tidak ada tindakan perbaikan yang diperlukan untuk status SCHEDULED — ini adalah <strong>desain yang benar</strong> untuk template event-triggered. Namun, akan lebih informatif jika halaman Notification Instance backoffice menampilkan label tambahan <strong>"Triggered by: Survey Submission"</strong> untuk template-template serupa, agar tim operasional memahami bahwa SCHEDULED di sini bukan indikasi masalah.</p>
             </div>
         </div>
 
         <div class="finding">
-            <div class="finding-num">3</div>
+            <div class="finding-num warn">3</div>
             <div class="finding-body">
-                <h4>Penumpukan 2 notifikasi pada 22 September (H-1) <span class="prio mid">MEDIUM PRIORITY</span></h4>
+                <h4>Penumpukan 2 notifikasi pada 22 September (H-1) — disebabkan scheduler generation timing <span class="prio mid">MEDIUM PRIORITY</span></h4>
                 <p><strong>What Happened:</strong> Pada 22 September (H-1 keberangkatan), sistem mengirim 2 notifikasi ke peserta: <em>Trip Anda Bersama Panorama JTB</em> pada pukul 10:31, dan <em>Besok Kita Berangkat!</em> pada pukul 15:00 — dengan selisih waktu 4,5 jam.</p>
-                <p><strong>Impact:</strong> Tidak ada penumpukan pada menit yang sama (berbeda dengan temuan di pilot KOP-07 18 Agustus). Namun, mengirim welcome message dan pre-trip reminder pada hari yang sama tetap berpotensi membuat peserta merasa "terlalu banyak notifikasi" jika welcome message baru terbaca di sore hari.</p>
-                <p><strong>Recommendation:</strong> Pertimbangkan untuk menjadwalkan welcome message <strong>≥ 3 hari sebelum keberangkatan</strong> (misal H-3 atau H-7), sehingga tidak bertabrakan dengan pre-trip reminder di H-1. Pattern ini juga akan mengurangi risiko welcome message tertimbun notifikasi lain di hari yang sama.</p>
+                <p><strong>Root Cause (Dikonfirmasi):</strong> Penumpukan ini <strong>bukan</strong> karena penjadwalan welcome message terlalu dekat dengan pre-trip reminder. Penyebab sebenarnya adalah <strong>scheduler instance generation dilakukan di hari yang sama</strong> dengan pengiriman notifikasi "Besok Kita Berangkat!" — yaitu pada 22 September (H-1). Artinya, instance tur baru terbentuk/diproses pada hari yang sama dengan jadwal kirim pre-trip reminder, sehingga welcome message dan pre-trip reminder tumpang tindih pada hari yang sama.</p>
+                <p><strong>Impact:</strong> Peserta yang menerima kedua notifikasi di hari yang sama berpotensi merasa overloaded, terutama jika welcome message baru terbaca di sore hari setelah pre-trip reminder sudah masuk. Berbeda dengan pilot KOP-07 18 Agustus (yang menumpuk pada menit yang sama), penumpukan di sini tidak fatal tetapi tetap bisa diperbaiki.</p>
+                <p><strong>Recommendation:</strong> Perbaiki <strong>scheduler instance generation timing</strong>: proses pembentukan instance (termasuk welcome message scheduler) idealnya dilakukan <strong>≥ 3 hari sebelum H-1</strong> (misal H-4 atau lebih awal). Dengan demikian, welcome message sudah terkirim dan terbaca peserta jauh sebelum pre-trip reminder di H-1, sehingga tidak terjadi penumpukan pada hari yang sama.</p>
             </div>
         </div>
 
@@ -1396,8 +1397,10 @@
             <strong>✅ Hal yang sudah berjalan baik:</strong>
             <ul style="margin-top:8px; margin-left:22px;">
                 <li><strong>Capture rate 53.4%</strong> — signifikan lebih tinggi dari pilot sebelumnya (37.5%), menunjukkan callback otomatis sudah mulai bekerja dengan baik.</li>
-                <li><strong>App version adoption terkonfirmasi</strong> (berdasarkan sample Mixpanel) — submitters sudah di v3.17.2 (latest), membuktikan update aplikasi sudah adopted dengan baik oleh user aktif.</li>
+                <li><strong>App version adoption terkonfirmasi</strong> — 100% submitter devices menggunakan ALVIS app v3.17.2+ (latest), membuktikan update aplikasi sudah adopted dengan baik oleh user aktif.</li>
                 <li><strong>Tidak ada notifikasi gagal kirim (failed)</strong> — seluruh 103 pesan keluar sistem tanpa insiden FCM failure.</li>
+                <li><strong>Status SENDING welcome message adalah by design</strong> untuk join-triggered notification — bukan anomali (per participant fraction). Pola ini dapat dilanjutkan tanpa perubahan.</li>
+                <li><strong>Status SCHEDULED pada thank-you message adalah by design</strong> untuk event-triggered notification (survey submission) — bukan indikasi masalah (per participant fraction).</li>
                 <li><strong>Distribusi notifikasi merata</strong> di 5 fase perjalanan (Pre-Trip, Departure, Pre-Return, Post-Tour) — coverage sudah cukup lengkap.</li>
                 <li><strong>Template notifikasi konsisten</strong> menggunakan gaya bahasa Panorama JTB dan CTA survey yang jelas pada fase post-tour.</li>
             </ul>
@@ -1406,16 +1409,15 @@
         <div class="callout warn">
             <strong>⚠️ Yang perlu ditingkatkan:</strong>
             <ul style="margin-top:8px; margin-left:22px;">
-                <li><strong>Status SENDING pada welcome message</strong> belum ter-resolve — perlu investigasi dan perbaikan retry/timeout logic.</li>
                 <li><strong>Capture rate 50.5% perlu investigasi device-level</strong> (permission, dismiss behavior, doze, background kill) — <strong>bukan</strong> masalah app version lagi.</li>
+                <li><strong>Scheduler instance generation timing</strong> pada 22 September (H-1) menyebabkan welcome message dan pre-trip reminder tumpang tindih di hari yang sama. Sebaiknya instance generation dilakukan ≥ H-4 agar welcome message terkirim lebih awal.</li>
                 <li><strong>Tap Rate 38.2%</strong> lebih rendah dari pilot sebelumnya — perlu A/B testing pada preview text.</li>
-                <li><strong>Penjadwalan welcome di H-1</strong> — pertimbangkan untuk geser ke H-3 atau lebih awal agar tidak bertabrakan dengan pre-trip reminder.</li>
-                <li><strong>Visibility status SCHEDULED untuk event-trigger</strong> — perlu label tambahan di backoffice agar tim operasional tidak salah interpretasi.</li>
+                <li><strong>Visibility status SENDING/SCHEDULED di backoffice</strong> — tambahkan label kontekstual seperti <em>"Join-triggered — active until tour start"</em> dan <em>"Triggered by: Survey Submission"</em> agar tim operasional tidak salah interpretasi.</li>
             </ul>
         </div>
 
         <div class="takeaway">
-            <strong>Bottom Line:</strong> Instance BCL-05 0923/QG menunjukkan <strong>peningkatan capture rate yang menggembirakan</strong> (53.4% vs 37.5% pilot sebelumnya), namun validasi Mixpanel mengungkap bahwa <strong>capture rate bukan lagi masalah app version</strong> — submitters sudah di v3.17.2 (latest). Masih terdapat <strong>1 isu teknis (welcome message stuck SENDING)</strong> yang perlu investigasi Back-End, <strong>1 peluang optimasi (Tap Rate 38.2%)</strong> yang bisa di-address melalui A/B testing konten, dan <strong>1 perubahan strategi</strong> — investigasi faktor device-level (permission, dismiss behavior) atau implementasi fallback delivery mechanism. Fitur notifikasi otomatis untuk tur short-haul (≤ 5 hari) <strong>sudah cukup stabil</strong> untuk dilanjutkan ke lebih banyak instance tur.
+            <strong>Bottom Line:</strong> Instance BCL-05 0923/QG menunjukkan <strong>peningkatan capture rate yang menggembirakan</strong> (53.4% vs 37.5% pilot sebelumnya). Validasi Mixpanel mengungkap bahwa <strong>capture rate bukan lagi masalah app version</strong> — 100% submitter devices sudah di v3.17.2+. Dua status yang awalnya tampak sebagai anomali (SENDING welcome message & SCHEDULED thank-you) ternyata <strong>by design</strong>: SENDING untuk join-triggered notification, SCHEDULED untuk event-triggered notification. Yang masih perlu ditindaklanjuti: (1) <strong>scheduler instance generation timing</strong> — instance baru terbentuk terlalu dekat dengan tanggal keberangkatan, (2) <strong>capture rate 50.5% perlu investigasi device-level</strong> (permission, dismiss behavior, doze), (3) <strong>Tap Rate 38.2%</strong> masih di bawah pilot sebelumnya, perlu A/B testing preview text. Fitur notifikasi otomatis untuk tur short-haul (≤ 5 hari) <strong>sudah cukup stabil</strong> untuk dilanjutkan ke lebih banyak instance tur.
         </div>
 
         <div class="footer-note">
