@@ -734,6 +734,41 @@
         }
         .finding-body p:last-child { margin-bottom: 0; }
         .finding-body p strong { color: var(--text); font-weight: 600; }
+        .finding-body p strong:first-child {
+            display: inline-block;
+            margin-right: 8px;
+            padding: 2px 9px;
+            background: var(--brand-50);
+            color: var(--brand-700);
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-radius: 999px;
+            vertical-align: middle;
+        }
+        .finding-body ul {
+            margin: 10px 0 14px 6px;
+            padding-left: 22px;
+            list-style-type: disc;
+        }
+        .finding-body ul li {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.65;
+            padding-left: 6px;
+        }
+        .finding-body ul li::marker {
+            color: var(--brand-500);
+        }
+        .finding-body ul li strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .finding-body ul li:last-child {
+            margin-bottom: 0;
+        }
 
         .prio {
             font-size: 11px;
