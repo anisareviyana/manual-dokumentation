@@ -827,6 +827,28 @@
         transition: width 0.1s ease-out;
       }
 
+      /* ===== SKIP TO CONTENT (A11Y) ===== */
+      .skip-to-content {
+        position: absolute;
+        top: -100px;
+        left: 16px;
+        z-index: 100000;
+        background: var(--text);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: top 0.2s ease;
+      }
+      .skip-to-content:focus,
+      .skip-to-content:focus-visible {
+        top: 16px;
+        outline: 2px solid var(--info);
+        outline-offset: 2px;
+      }
+
       /* ===== READING TIME / META ===== */
       .meta-line {
         display: flex;
@@ -3013,6 +3035,8 @@
   <body>
     <div id="progressBar"></div>
 
+    <a href="#mainContent" class="skip-to-content">Lewati ke konten utama</a>
+
     <aside class="toc-sticky" id="tocSticky">
       <div class="toc-sticky-title">On This Page</div>
       <ul id="tocStickyList"></ul>
@@ -3105,11 +3129,10 @@
           >
           <a href="#bab5-5"><span class="chapter-num">5.5</span> FAQ</a>
         </div>
-        >
       </nav>
     </aside>
 
-    <div class="main">
+    <div class="main" id="mainContent" tabindex="-1">
       <header class="top-header">
         <div class="header-left">
           <button
@@ -3125,8 +3148,13 @@
           </div>
         </div>
         <div class="header-actions">
-          <span class="version-badge"
-            ><i class="fas fa-sync-alt"></i> v1.0</span
+          <span
+            class="version-badge"
+            title="Terakhir diperbarui: 14 Oktober 2026"
+            ><i class="fas fa-history"></i> Diperbarui: 14 Okt 2026</span
+          >
+          <span class="version-badge" style="margin-left: 12px"
+            ><i class="fas fa-tag"></i> v1.0</span
           >
         </div>
       </header>
@@ -6293,9 +6321,12 @@
           <p>
             <i class="fas fa-plane" style="color: var(--primary)"></i>
             <strong>Manual Book Flight Payment &amp; Booking — ALVIS x Panorama
-            JTB</strong> &mdash; v1.0 &mdash; September 2026
+            JTB</strong> &mdash; v1.0
           </p>
-          <p style="margin-top: 4px">&copy; 2026 ALVIS &amp; Panorama JTB.</p>
+          <p style="margin-top: 4px">
+            Terakhir diperbarui: <strong>14 Oktober 2026</strong> &middot;
+            &copy; 2026 ALVIS &amp; Panorama JTB.
+          </p>
         </footer>
       </div>
     </div>
@@ -6381,6 +6412,33 @@
       }
       window.addEventListener('scroll', updateActiveNav);
       updateActiveNav();
+
+      // ===== IMAGE PERFORMANCE & RESILIENCE =====
+      // Native lazy loading untuk semua <img> (kecuali yang sudah lazy atau di panel gallery)
+      document.querySelectorAll('img').forEach(function (img) {
+        if (!img.hasAttribute('loading')) {
+          // Skip images that are part of the dynamically-built slide panel
+          // (the panel uses innerHTML + loading="lazy" already in the template).
+          img.setAttribute('loading', 'lazy');
+        }
+        if (!img.hasAttribute('decoding')) {
+          img.setAttribute('decoding', 'async');
+        }
+        // Fallback handler: jika Firebase URL mati / token invalid, tampilkan placeholder
+        img.addEventListener('error', function handleImgError() {
+          if (img.dataset.fallbackApplied === '1') return;
+          img.dataset.fallbackApplied = '1';
+          img.removeAttribute('src');
+          img.style.display = 'flex';
+          img.style.alignItems = 'center';
+          img.style.justifyContent = 'center';
+          img.style.background = 'var(--bg-subtle)';
+          img.style.color = 'var(--text-muted)';
+          img.style.fontSize = '12px';
+          img.style.minHeight = '120px';
+          img.alt = 'Gambar tidak tersedia';
+        });
+      });
 
       window.addEventListener('scroll', function () {
         const btn = document.getElementById('scrollTop');
