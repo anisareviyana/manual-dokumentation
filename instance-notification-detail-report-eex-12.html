@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Pilot Testing Notifikasi — Instance EEX-12 (Europe &amp; UK) — ALVIS Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --brand-50:  #fff7ed;
+            --brand-100: #ffedd5;
+            --brand-200: #fed7aa;
+            --brand-300: #fdba74;
+            --brand-400: #fb923c;
+            --brand-500: #f97316;
+            --brand-600: #ea580c;
+            --brand-700: #c2410c;
+            --brand-800: #9a3412;
+
+            --gray-50:  #fafaf9;
+            --gray-100: #f5f5f4;
+            --gray-200: #e7e5e4;
+            --gray-300: #d6d3d1;
+            --gray-400: #a8a29e;
+            --gray-500: #78716c;
+            --gray-600: #57534e;
+            --gray-700: #44403c;
+            --gray-800: #292524;
+            --gray-900: #1c1917;
+
+            --bg:        #fafaf9;
+            --card:      #ffffff;
+            --text:      #1c1917;
+            --text-muted:#57534e;
+            --text-subtle:#a8a29e;
+            --border:    #e7e5e4;
+            --border-soft:#f5f5f4;
+
+            --sent:      #d6d3d1;
+            --delivered: #f97316;
+            --tapped:    #c2410c;
+
+            --ok-bg:     #f0fdf4;
+            --ok-border: #86efac;
+            --ok-text:   #166534;
+            --warn-bg:   #fff7ed;
+            --warn-text: #9a3412;
+            --danger-bg: #fef2f2;
+            --danger-border: #fecaca;
+            --danger-text: #991b1b;
+            --danger-soft: #fee2e2;
+            --info-bg:   #eff6ff;
+            --info-border:#bfdbfe;
+            --info-text: #1e40af;
+
+            --radius:    12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 2px rgba(28,25,23,0.04);
+            --shadow:    0 2px 6px rgba(28,25,23,0.05), 0 1px 2px rgba(28,25,23,0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            padding: 32px 16px;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* HEADER */
+        .header-banner {
+            background: var(--card);
+            padding: 36px 40px 28px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .header-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--brand-500) 0%, var(--brand-400) 60%, var(--brand-300) 100%);
+        }
+        .brand-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-title i { color: var(--brand-500); }
+        .doc-subtitle {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+        .doc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--brand-50);
+            color: var(--brand-700);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+
+        /* INSTANCE INFO GRID */
+        .instance-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .info-cell {
+            background: var(--card);
+            padding: 18px 20px;
+        }
+        .info-cell .info-label {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .info-cell .info-label i {
+            font-size: 11px;
+            color: var(--brand-500);
+        }
+        .info-cell .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+        }
+        .info-cell .info-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+            word-break: break-word;
+        }
+        .health-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--ok-bg);
+            color: var(--ok-text);
+            border: 1px solid var(--ok-border);
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-top: 6px;
+        }
+        .health-pill .hp-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: #22c55e;
+        }
+        .meta-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border);
+        }
+        .meta-box .meta-item {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .meta-box .meta-item strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .meta-box .meta-item .label {
+            color: var(--text-subtle);
+            font-weight: 500;
+        }
+
+        .content { padding: 36px 40px 40px; }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 44px 0 4px;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title:first-of-type { margin-top: 0; }
+        .section-title .num-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 8px;
+            background: var(--brand-50);
+            color: var(--brand-600);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .section-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0 0 22px;
+        }
+        .sub-heading {
+            font-size: 13px;
+            font-weight: 700;
+            margin: 22px 0 10px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sub-heading i { color: var(--brand-500); }
+
+        /* EXEC CARD */
+        .exec-card {
+            background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-400) 100%);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        .exec-card::after {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 160px; height: 160px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+        .exec-card p strong { color: #fff; font-weight: 600; }
+        .exec-card .exec-tag {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.85;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .exec-card .exec-lead {
+            font-size: 14.5px;
+            color: #fff;
+            line-height: 1.7;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .exec-card .exec-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 14px 10px;
+            margin-bottom: 22px;
+            position: relative;
+        }
+        .exec-stat { text-align: center; color: #fff; padding: 0 4px; }
+        .exec-stat-num {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .exec-stat-label {
+            display: block;
+            font-size: 10.5px;
+            opacity: 0.9;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+        .exec-card .exec-concerns {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 18px;
+            position: relative;
+        }
+        .exec-concerns li {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 11px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            font-size: 13px;
+            line-height: 1.65;
+            color: #fff;
+        }
+        .exec-concerns li:last-child { border-bottom: none; padding-bottom: 0; }
+        .exec-num {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px; height: 22px;
+            background: rgba(255,255,255,0.28);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 1px;
+        }
+        .exec-concerns strong { color: #fff; font-weight: 600; }
+        .exec-card .exec-closing {
+            font-size: 13px;
+            color: #fff;
+            background: rgba(255,255,255,0.18);
+            padding: 10px 14px;
+            border-radius: 8px;
+            line-height: 1.6;
+            position: relative;
+        }
+        .exec-card .exec-closing strong { color: #fff; font-weight: 600; }
+
+        /* KPI CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 18px 0 14px;
+        }
+        .kpi-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .kpi-card:hover {
+            border-color: var(--brand-300);
+            transform: translateY(-1px);
+        }
+        .kpi-card .kpi-label {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .kpi-card .kpi-label i {
+            color: var(--brand-500);
+            font-size: 11px;
+        }
+        .kpi-card .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .kpi-card .kpi-value .unit {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-left: 3px;
+        }
+        .kpi-card .kpi-note {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            margin-top: 6px;
+            line-height: 1.3;
+        }
+        .kpi-card.accent { background: var(--brand-50); border-color: var(--brand-100); }
+        .kpi-card.accent .kpi-value { color: var(--brand-700); }
+        .kpi-card.ok { background: var(--ok-bg); border-color: var(--ok-border); }
+        .kpi-card.ok .kpi-value { color: var(--ok-text); }
+        .kpi-card.warn { background: var(--warn-bg); border-color: var(--brand-200); }
+        .kpi-card.warn .kpi-value { color: var(--warn-text); }
+        .kpi-card.danger { background: var(--danger-bg); border-color: var(--danger-soft); }
+        .kpi-card.danger .kpi-value { color: var(--danger-text); }
+
+        /* TAKEAWAY */
+        .takeaway {
+            background: var(--brand-50);
+            border: 1px solid var(--brand-100);
+            border-left: 3px solid var(--brand-500);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            font-size: 13.5px;
+            color: var(--text);
+            margin: 6px 0 14px;
+        }
+        .takeaway strong { color: var(--brand-700); font-weight: 600; }
+
+        /* FUNNEL */
+        .funnel-wrap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 14px 0;
+        }
+        .funnel {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-width: 720px;
+            margin: 8px auto 0;
+        }
+        .funnel-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .funnel-label {
+            flex: 0 0 130px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .funnel-label .dot {
+            width: 10px; height: 10px; border-radius: 3px;
+        }
+        .funnel-bar {
+            flex: 1;
+            height: 48px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .funnel-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+        .funnel-fill.sent { background: var(--sent); }
+        .funnel-fill.delivered { background: var(--delivered); }
+        .funnel-fill.tapped { background: var(--tapped); }
+        .funnel-fill .funnel-val {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+        .funnel-fill.sent .funnel-val { color: var(--gray-800); }
+        .funnel-conversion {
+            flex: 0 0 90px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+            font-weight: 500;
+        }
+        .funnel-conversion strong { color: var(--brand-700); font-weight: 700; }
+        .funnel-caption {
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--text-subtle);
+            margin-top: 14px;
+        }
+
+        /* TABLES */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 14px 0 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            font-size: 13px;
+        }
+        table.data-table th {
+            background: var(--gray-50);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 14px;
+            white-space: nowrap;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid var(--border);
+        }
+        table.data-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-soft);
+            color: var(--text);
+            vertical-align: top;
+        }
+        table.data-table tbody tr:last-child td { border-bottom: none; }
+        table.data-table tbody tr:hover { background: var(--gray-50); }
+        table.data-table tbody tr.row-warn td { background: var(--warn-bg); }
+        table.data-table tbody tr.row-info td { background: var(--info-bg); }
+        table.data-table tbody tr.row-danger td { background: var(--danger-bg); }
+        table.data-table tbody tr.total-row td {
+            background: var(--gray-50);
+            font-weight: 600;
+            border-top: 1px solid var(--border);
+        }
+        table.data-table tr.highlight-row td { background: var(--ok-bg); }
+
+        .num { text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+        .metric-chip {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            font-weight: 500;
+        }
+        .dot {
+            width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+        }
+        .dot.sent { background: var(--sent); }
+        .dot.delivered { background: var(--delivered); }
+        .dot.tapped { background: var(--tapped); }
+
+        .date-group-header {
+            background: var(--brand-50);
+            font-weight: 700;
+            color: var(--brand-800);
+            font-size: 12.5px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .date-group-header .badge-count {
+            font-size: 10.5px;
+            font-weight: 600;
+            background: var(--brand-200);
+            color: var(--brand-800);
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin-left: auto;
+        }
+
+        .msg-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+            font-size: 13.5px;
+        }
+        .msg-body {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55;
+            font-style: italic;
+            max-width: 460px;
+        }
+        .time-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .time-block strong {
+            color: var(--text);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* STATUS PILLS */
+        .status-pill {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+        .status-pill .pill-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .pill-sent { background: var(--ok-bg); color: var(--ok-text); }
+        .pill-sent .pill-dot { background: var(--ok-text); }
+        .pill-sending { background: var(--warn-bg); color: var(--warn-text); animation: pulse 1.5s infinite; }
+        .pill-sending .pill-dot { background: var(--warn-text); }
+        .pill-scheduled { background: var(--gray-100); color: var(--gray-700); }
+        .pill-scheduled .pill-dot { background: var(--gray-600); }
+        .pill-done { background: var(--ok-bg); color: var(--ok-text); }
+        .pill-wip { background: var(--brand-50); color: var(--brand-700); }
+        .pill-todo { background: var(--gray-100); color: var(--gray-600); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* BAR CHART */
+        .chart-wrap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin: 14px 0;
+        }
+        .chart-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            color: var(--text);
+        }
+        .chart-caption {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+        }
+        .bar-chart {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 6px;
+            height: 220px;
+            padding: 0 4px;
+        }
+        .bar-day {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .bar {
+            width: 14px;
+            border-radius: 3px 3px 0 0;
+            min-height: 1px;
+            transition: opacity 0.2s;
+        }
+        .bar:hover { opacity: 0.75; }
+        .bar.sent { background: var(--sent); }
+        .bar.delivered { background: var(--delivered); }
+        .bar.tapped { background: var(--tapped); }
+        .bar-gap {
+            width: 14px;
+            height: 12px;
+            border: 1.5px dashed var(--danger-border);
+            border-radius: 3px;
+            background: var(--danger-bg);
+        }
+        .bar-day.gap-day .day-label { color: var(--danger-text); font-weight: 700; }
+        .bar-day.gap-day .day-total { color: var(--danger-text); font-weight: 600; }
+        .bar-day .day-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .bar-day .day-total {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            margin-top: 2px;
+            white-space: nowrap;
+        }
+        .chart-legend {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+        /* CALLOUT */
+        .callout {
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            font-size: 13.5px;
+            margin: 14px 0;
+            border: 1px solid;
+            line-height: 1.6;
+        }
+        .callout.warn {
+            background: var(--warn-bg);
+            border-color: var(--brand-200);
+            border-left: 3px solid var(--brand-500);
+            color: var(--warn-text);
+        }
+        .callout.ok {
+            background: var(--ok-bg);
+            border-color: var(--ok-border);
+            border-left: 3px solid #22c55e;
+            color: var(--ok-text);
+        }
+        .callout.danger {
+            background: var(--danger-bg);
+            border-color: var(--danger-border);
+            border-left: 3px solid #ef4444;
+            color: var(--danger-text);
+        }
+        .callout.info {
+            background: var(--info-bg);
+            border-color: var(--info-border);
+            border-left: 3px solid #3b82f6;
+            color: var(--info-text);
+        }
+        .callout strong { font-weight: 600; color: inherit; }
+        .callout ul { margin: 8px 0 0 22px; }
+        .callout ul li { margin-bottom: 6px; }
+        .callout ul li:last-child { margin-bottom: 0; }
+
+        /* PHASE TIMELINE */
+        .phase-timeline {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            margin: 14px 0;
+        }
+        .phase-track {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            position: relative;
+            margin-top: 8px;
+        }
+        .phase-step {
+            flex: 1;
+            padding: 14px 16px;
+            border-right: 1px dashed var(--border);
+            position: relative;
+        }
+        .phase-step:last-child { border-right: none; }
+        .phase-step .phase-date {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 4px;
+        }
+        .phase-step .phase-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .phase-notifs {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .phase-notif {
+            font-size: 11.5px;
+            color: var(--brand-700);
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: var(--brand-50);
+            line-height: 1.4;
+            border-left: 2px solid var(--brand-500);
+        }
+        .phase-notif.empty {
+            background: var(--gray-50);
+            color: var(--text-subtle);
+            border-left-color: var(--border);
+            font-style: italic;
+        }
+        .phase-step.gap { background: var(--danger-bg); }
+        .phase-step.gap .phase-name { color: var(--danger-text); }
+        .phase-step.gap .phase-notif.empty {
+            background: rgba(255,255,255,0.7);
+            color: var(--danger-text);
+            border-left-color: var(--danger-text);
+        }
+
+        /* FINDING */
+        .finding {
+            display: flex;
+            gap: 16px;
+            padding: 22px 0;
+            border-bottom: 1px solid var(--border-soft);
+            align-items: flex-start;
+        }
+        .finding:last-child { border-bottom: none; }
+        .finding-num {
+            flex: 0 0 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--brand-50);
+            color: var(--brand-600);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .finding-num.warn { background: var(--warn-bg); color: var(--warn-text); }
+        .finding-num.ok { background: var(--ok-bg); color: var(--ok-text); }
+        .finding-num.danger { background: var(--danger-bg); color: var(--danger-text); }
+        .finding-body { flex: 1; }
+        .finding-body h4 {
+            font-size: 14.5px;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .finding-body p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+        .finding-body p:last-child { margin-bottom: 0; }
+        .finding-body p strong { color: var(--text); font-weight: 600; }
+        .finding-body ul {
+            margin: 10px 0 14px 6px;
+            padding-left: 22px;
+            list-style-type: disc;
+        }
+        .finding-body ul li {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.65;
+            padding-left: 6px;
+        }
+        .finding-body ul li::marker { color: var(--brand-500); }
+        .finding-body ul li strong { color: var(--text); font-weight: 600; }
+        .finding-body ul li:last-child { margin-bottom: 0; }
+
+        .prio {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+        .prio.high { background: var(--danger-bg); color: var(--danger-text); }
+        .prio.mid { background: var(--warn-bg); color: var(--warn-text); }
+        .prio.low { background: var(--gray-100); color: var(--gray-600); }
+
+        /* NOTE / FOOTNOTE */
+        .note {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* GLOSSARY */
+        .glossary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 32px;
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 26px;
+        }
+        .glossary dt { font-weight: 600; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+        .glossary dd { font-size: 12.5px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.6; }
+        .glossary dd:last-child { margin-bottom: 0; }
+
+        .footer-note {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-subtle);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .instance-info { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+            .instance-info { grid-template-columns: 1fr; }
+            .header-banner { padding: 28px 24px 22px; }
+            .content { padding: 28px 24px 32px; }
+            .brand-title { font-size: 19px; }
+            .phase-track { flex-direction: column; }
+            .phase-step { border-right: none; border-bottom: 1px dashed var(--border); }
+            .phase-step:last-child { border-bottom: none; }
+            .funnel-row { flex-direction: column; align-items: stretch; gap: 6px; }
+            .funnel-label { flex: none; }
+            .funnel-conversion { flex: none; text-align: left; }
+            .exec-card .exec-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .glossary { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header-banner">
+        <div class="brand-title"><i class="fa-solid fa-bell"></i> Instance Notification Detail — EEX-12</div>
+        <div class="doc-subtitle">Report Pilot Testing Notifikasi — ALVIS Apps (Europe &amp; UK Tour Instance)</div>
+        <span class="doc-badge">📌 Detail instance notifikasi untuk satu katalog tur</span>
+        <div class="meta-box">
+            <span class="meta-item"><span class="label">Catalog:</span> <strong>EEX-12 1016/QR [FCO-AMS] + VENICE, VOLENDAM &amp; TITISEE (12D9N)</strong></span>
+            <span class="meta-item"><span class="label">Periode Tur:</span> <strong>16 – 27 Oktober 2026</strong></span>
+            <span class="meta-item"><span class="label">Periode Notifikasi:</span> <strong>15 – 28 Oktober 2026</strong></span>
+            <span class="meta-item"><span class="label">Tanggal Laporan:</span> <strong>29 Oktober 2026</strong></span>
+        </div>
+    </div>
+
+    <!-- INSTANCE INFO GRID -->
+    <div class="instance-info">
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-location-dot"></i> Destination</div>
+            <div class="info-value">EUROPE &amp; UK</div>
+            <div class="info-sub">Experience West Europe</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-user-tie"></i> Guide</div>
+            <div class="info-value">MAHARSANING BASUKI</div>
+            <div class="info-sub">maharsaning.basuki@panorama-jtb.com</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-plane-departure"></i> Rute</div>
+            <div class="info-value">FCO → AMS</div>
+            <div class="info-sub">Rome (Fiumicino) → Amsterdam (Schiphol)</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-heart-pulse"></i> Health Indicator</div>
+            <div class="info-value">100%</div>
+            <div class="info-sub"><span class="health-pill"><span class="hp-dot"></span>Good health</span></div>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- RINGKASAN EKSEKUTIF -->
+        <div class="section-title">Ringkasan Eksekutif</div>
+
+        <div class="exec-card">
+            <p class="exec-lead">Selama siklus notifikasi tur EEX-12 (15 – 28 Oktober 2026), sistem mengirim <strong>67 notifikasi</strong> melalui <strong>6 event</strong> ke peserta tur <strong>Europe &amp; UK</strong> (FCO–AMS, 12D9N). Capture rate mencapai <strong>64.2%</strong> — angka <strong>tertinggi sepanjang 3 pilot</strong>. Namun di balik angka yang membaik tersebut, terdapat <strong>empat temuan yang perlu ditindaklanjuti</strong>.</p>
+
+            <div class="exec-stats">
+                <div class="exec-stat">
+                    <span class="exec-stat-num">67</span>
+                    <span class="exec-stat-label">Total Notifikasi</span>
+                </div>
+                <div class="exec-stat">
+                    <span class="exec-stat-num">64.2%</span>
+                    <span class="exec-stat-label">Capture Rate</span>
+                </div>
+                <div class="exec-stat">
+                    <span class="exec-stat-num">39.5%</span>
+                    <span class="exec-stat-label">Tap Rate</span>
+                </div>
+                <div class="exec-stat">
+                    <span class="exec-stat-num">17</span>
+                    <span class="exec-stat-label">Tapped</span>
+                </div>
+            </div>
+
+            <ul class="exec-concerns">
+                <li><span class="exec-num">1</span><span><strong>Pre-trip reminder hanya menjangkau 7 dari ±17 peserta (41%)</strong> — karena instance &amp; scheduler welcome message baru terbentuk pada H-1 (15 Okt), participant list masih bertambah hingga menit terakhir, sementara "Besok Kita Berangkat!" terkunci pada list beku pukul 15:00.</span></li>
+                <li><span class="exec-num">2</span><span><strong>Tidak ada notifikasi on-trip selama 7 hari (17–23 Okt)</strong> pada tur berdurasi 12 hari — berbeda dengan pilot KOP-07 (8 hari, notifikasi harian aktif) dan BCL-05 (5 hari, on-trip memang di-skip).</span></li>
+                <li><span class="exec-num">3</span><span><strong>Notifikasi H-2 "Dua Hari Lagi Kembali ke Indonesia" tiba pukul 01:00 WIB</strong> (19:00 waktu lokal) — jam dini hari bagi peserta di Indonesia, diperparah transisi DST Eropa 25 Oktober (CEST → CET).</span></li>
+                <li><span class="exec-num">4</span><span><strong>Headline capture rate 64.2% terinflasi oleh 2 record non-SENT</strong> — welcome message (SENDING) dan thank-you (SCHEDULED) menyumbang 32 dari 67 recipient. Jika hanya event berstatus SENT, capture rate aktual <strong>31.4%</strong>.</span></li>
+            </ul>
+
+            <p class="exec-closing">✅ <strong>Status:</strong> Fitur notifikasi <strong>terbukti berjalan stabil</strong> — nol notifikasi gagal kirim, coverage seluruh fase perjalanan terisi kecuali fase on-trip, dan capture rate naik konsisten seiring pembaruan aplikasi. Temuan 1 &amp; 2 bersifat konfigurasi/scheduling (bukan bug), sementara temuan 3 &amp; 4 adalah isu kalender dan transparansi metrik.</p>
+        </div>
+
+        <!-- SECTION 1: INSTANCE OVERVIEW -->
+        <div class="section-title"><span class="num-tag">1</span> Instance Overview</div>
+        <p class="section-sub">Ringkasan performa notifikasi untuk instance tur EEX-12: total 6 event notifikasi (4 SENT, 1 SENDING, 1 SCHEDULED) dikirim ke peserta dalam rentang 15–28 Oktober 2026.</p>
+
+        <div class="kpi-grid">
+            <div class="kpi-card accent">
+                <div class="kpi-label"><i class="fa-solid fa-paper-plane"></i> Messages Sent</div>
+                <div class="kpi-value">67</div>
+                <div class="kpi-note">across 6 notification events</div>
+            </div>
+            <div class="kpi-card ok">
+                <div class="kpi-label"><i class="fa-solid fa-circle-check"></i> Delivered</div>
+                <div class="kpi-value">43<span class="unit">(64.2%)</span></div>
+                <div class="kpi-note">delivered / sent ratio</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-hand-pointer"></i> Tapped</div>
+                <div class="kpi-value">17</div>
+                <div class="kpi-note">opened by travelers</div>
+            </div>
+            <div class="kpi-card ok">
+                <div class="kpi-label"><i class="fa-solid fa-arrow-trend-up"></i> Tap Rate</div>
+                <div class="kpi-value">39.5<span class="unit">%</span></div>
+                <div class="kpi-note">tapped / delivered</div>
+            </div>
+        </div>
+
+        <div class="takeaway">
+            <strong>Snapshot:</strong> Instance EEX-12 mengirim <strong>67 notifikasi</strong> ke peserta tur Europe &amp; UK (FCO–AMS), dengan <strong>43 terkonfirmasi delivered</strong> (64.2%) dan <strong>17 dibuka</strong> oleh peserta (Tap Rate 39.5% dari yang delivered). Capture rate ini adalah <strong>terbaik dari ketiga pilot yang pernah dijalankan</strong> (37.5% pada KOP-07 0813/SQ → 53.4% pada BCL-05 0923/QG → <strong>64.2%</strong> di sini), konsisten dengan hipotesis bahwa callback otomatis dari perangkat ke sistem semakin baik seiring adopsi versi aplikasi terbaru.
+        </div>
+
+        <!-- SECTION 2: ENGAGEMENT FUNNEL -->
+        <div class="section-title"><span class="num-tag">2</span> Aggregate Engagement Funnel</div>
+        <p class="section-sub">Ringkasan performa notifikasi berdasarkan metrik utama — visualisasi funnel 3-tahap dari total 67 notifikasi yang dikirim, menunjukkan conversion rate antar-tahap (Sent → Delivered → Tapped).</p>
+
+        <div class="funnel-wrap">
+            <div class="chart-title">Engagement Funnel — All 6 Notification Events</div>
+            <div class="chart-caption">
+                Catalog EEX-12 1016/QR [FCO-AMS] + VENICE, VOLENDAM &amp; TITISEE (12D9N) · 16 Okt 2026 00:00:00 – 27 Okt 2026 23:59:59
+            </div>
+            <div class="funnel">
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--sent);"></span> Sent</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill sent" style="width:100%;">
+                            <span class="funnel-val">67 notifikasi</span>
+                        </div>
+                    </div>
+                    <div class="funnel-conversion">baseline</div>
+                </div>
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--delivered);"></span> Delivered</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill delivered" style="width:64.2%;">
+                            <span class="funnel-val">43</span>
+                        </div>
+                    </div>
+                    <div class="funnel-conversion"><strong>64.2%</strong> dari Sent</div>
+                </div>
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--tapped);"></span> Tapped</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill tapped" style="width:25.4%;">
+                            <span class="funnel-val">17</span>
+                        </div>
+                    </div>
+                    <div class="funnel-conversion"><strong>25.4%</strong> dari Sent<br><strong>39.5%</strong> dari Delivered</div>
+                </div>
+            </div>
+            <div class="funnel-caption">Catatan: 1 event (Trip Anda Bersama Panorama JTB) berstatus SENDING dan 1 event (Terima Kasih atas Feedback Anda) berstatus SCHEDULED — keduanya merepresentasikan kumpulan recipient yang dinamis, bukan pengiriman yang sudah ditutup.</div>
+        </div>
+
+        <div class="callout ok">
+            <strong>✅ Capture Rate Rekor: 64.2%</strong> — Delivered/Sent ratio ini <strong>meningkat konsisten di setiap pilot</strong>: 37.5% (KOP-07, 12–19 Agu) → 53.4% (BCL-05, 23–27 Sep) → <strong>64.2% (EEX-12, 15–28 Okt)</strong>. Tren ini menguatkan hipotesis bahwa capture callback otomatis dari perangkat ke sistem semakin andal seiring rollout aplikasi versi terbaru (iOS 3.17.3 / Android 3.17.2, divalidasi penuh pada pilot BCL-05).
+        </div>
+
+        <div class="callout warn">
+            <strong>⚠️ Namun angka agregat perlu dibaca dengan hati-hati:</strong> dari 67 notifikasi, <strong>32 di antaranya (47.8%) berasal dari dua record yang statusnya belum "tutup"</strong> — welcome message berstatus SENDING (17 recipient, 100% delivered) dan thank-you berstatus SCHEDULED (15 recipient, 100% delivered). Kedua record tersebut mengukur <em>kumpulan recipient</em>, bukan <em>pengiriman terkonfirmasi</em>. Isolasi terhadap 4 event berstatus <strong>SENT</strong> saja menghasilkan capture rate <strong>31.4%</strong> (11 dari 35) — jauh di bawah angka agregat 64.2%.
+        </div>
+
+        <!-- SECTION 3: MESSAGE DETAILS -->
+        <div class="section-title"><span class="num-tag">3</span> Message Details</div>
+        <p class="section-sub">Daftar lengkap 6 event notifikasi yang dikirim untuk instance ini, dikelompokkan berdasarkan tanggal pengiriman. Setiap event menampilkan judul, isi pesan, waktu kirim (Jakarta Time &amp; Local Tour Time), dan metrics S/D/T.</p>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:30%;">Notifikasi</th>
+                        <th style="width:9%;">Status</th>
+                        <th style="width:14%;">Jakarta Time</th>
+                        <th style="width:14%;">Local Tour Time</th>
+                        <th style="width:6%;" class="num"><span class="metric-chip"><span class="dot sent"></span>S</span></th>
+                        <th style="width:6%;" class="num"><span class="metric-chip"><span class="dot delivered"></span>D</span></th>
+                        <th style="width:6%;" class="num"><span class="metric-chip"><span class="dot tapped"></span>T</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- THURSDAY 15 OCT -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Thursday, 15 October 2026
+                                <span class="badge-count">2 notifications</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="row-warn">
+                        <td>
+                            <div class="msg-title">✈️ Besok Kita Berangkat!</div>
+                            <div class="msg-body">"Saatnya final check! Pastikan paspor, dokumen perjalanan, barang pribadi, obat-obatan, dan kebutuhan penting lainnya sudah masuk ke dalam tas. Jangan lupa cek kembali waktu &amp; meeting point keberangkatan. Sampai jumpa besok! 🌏✨"</div>
+                        </td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td><div class="time-block"><strong>15:00:00</strong><span>15 Oct 2026</span></div></td>
+                        <td><div class="time-block"><strong>10:00:00</strong><span>15 Oct 2026</span></div></td>
+                        <td class="num">7</td>
+                        <td class="num">3</td>
+                        <td class="num">1</td>
+                    </tr>
+                    <tr class="row-warn">
+                        <td>
+                            <div class="msg-title">✈️ Trip Anda Bersama Panorama JTB</div>
+                            <div class="msg-body">"Terima kasih telah mempercayakan perjalanan Anda kepada Panorama JTB. Detail perjalanan kini dapat Anda akses melalui ALVIS. Kami siap menemani perjalanan Anda menuju pengalaman yang tak terlupakan! 🌏✨"</div>
+                        </td>
+                        <td><span class="status-pill pill-sending"><span class="pill-dot"></span> SENDING</span></td>
+                        <td><div class="time-block"><strong>15:17:06</strong><span>15 Oct 2026</span></div></td>
+                        <td><div class="time-block"><strong>10:17:06</strong><span>15 Oct 2026</span></div></td>
+                        <td class="num">17</td>
+                        <td class="num">17</td>
+                        <td class="num">7</td>
+                    </tr>
+
+                    <!-- FRIDAY 16 OCT -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Friday, 16 October 2026
+                                <span class="badge-count">1 notification</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="msg-title">✈️ Selamat Memulai Perjalanan Anda !</div>
+                            <div class="msg-body">"Hari yang ditunggu akhirnya tiba! Selamat memulai perjalanan bersama Panorama JTB. Semoga perjalanan Anda berjalan lancar, nyaman, dan penuh pengalaman menyenangkan. Enjoy the journey and make wonderful memories! 💙🌏"</div>
+                        </td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td><div class="time-block"><strong>09:00:00</strong><span>16 Oct 2026</span></div></td>
+                        <td><div class="time-block"><strong>04:00:00</strong><span>16 Oct 2026</span></div></td>
+                        <td class="num">9</td>
+                        <td class="num">3</td>
+                        <td class="num">2</td>
+                    </tr>
+
+                    <!-- SATURDAY 24 OCT -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Saturday, 24 October 2026
+                                <span class="badge-count">1 notification</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="row-info">
+                        <td>
+                            <div class="msg-title">💙 Terima Kasih atas Feedback Anda!</div>
+                            <div class="msg-body">"Terima kasih sudah meluangkan waktu untuk berbagi pengalaman perjalanan Anda bersama Panorama JTB. Setiap feedback membantu kami memberikan pelayanan yang lebih baik. Jika masih ada hal lain yang ingin disampaikan, Anda dapat menghubungi Service Quality kami melalui kontak Service Quality +62 817-1730-0083"</div>
+                        </td>
+                        <td><span class="status-pill pill-scheduled"><span class="pill-dot"></span> SCHEDULED</span></td>
+                        <td><div class="time-block"><strong>13:51:34</strong><span>24 Oct 2026</span></div></td>
+                        <td><div class="time-block"><strong>08:51:34</strong><span>24 Oct 2026</span></div></td>
+                        <td class="num">15</td>
+                        <td class="num">15</td>
+                        <td class="num">2</td>
+                    </tr>
+
+                    <!-- MONDAY 26 OCT -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Monday, 26 October 2026
+                                <span class="badge-count">1 notification</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="msg-title">🏠 Dua Hari Lagi Kembali ke Indonesia</div>
+                            <div class="msg-body">"Sebelum pulang, kami mengundang Anda untuk menceritakan pengalaman Anda bersama Panorama JTB—pendapat Anda sangat berarti bagi kami. Buka Alvis Customer Satisfaction Survey DISINI 💙"</div>
+                        </td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td><div class="time-block"><strong>01:00:00</strong><span>26 Oct 2026</span></div></td>
+                        <td><div class="time-block"><strong>19:00:00</strong><span>25 Oct 2026</span></div></td>
+                        <td class="num">12</td>
+                        <td class="num">2</td>
+                        <td class="num">2</td>
+                    </tr>
+
+                    <!-- WEDNESDAY 28 OCT -->
+                    <tr>
+                        <td colspan="7" style="padding:0;">
+                            <div class="date-group-header">
+                                <i class="fa-regular fa-calendar"></i> Wednesday, 28 October 2026
+                                <span class="badge-count">1 notification</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="msg-title">💙 Ceritakan Pengalaman Anda</div>
+                            <div class="msg-body">"Kami masih ingin mendengar cerita dari Anda. Yuk, luangkan beberapa menit untuk mengisi Customer Satisfaction Survey di ALVIS. Feedback Anda menjadi bagian penting bagi kami untuk terus memberikan pengalaman perjalanan yang lebih baik."</div>
+                        </td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td><div class="time-block"><strong>09:00:00</strong><span>28 Oct 2026</span></div></td>
+                        <td><div class="time-block"><strong>03:00:00</strong><span>28 Oct 2026</span></div></td>
+                        <td class="num">7</td>
+                        <td class="num">3</td>
+                        <td class="num">3</td>
+                    </tr>
+
+                    <!-- TOTAL ROW -->
+                    <tr class="total-row">
+                        <td colspan="4"><strong>TOTAL (6 events)</strong></td>
+                        <td class="num"><strong>67</strong></td>
+                        <td class="num"><strong>43</strong></td>
+                        <td class="num"><strong>17</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="note">Verifikasi: penjumlahan kolom S/D/T pada tabel di atas (67 / 43 / 17) konsisten dengan angka pada Aggregate Engagement Funnel di Bagian 2.</p>
+
+        <!-- SECTION 4: PERBANDINGAN PILOT -->
+        <div class="section-title"><span class="num-tag">4</span> Perbandingan dengan Pilot Sebelumnya</div>
+        <p class="section-sub">Posisi instance EEX-12 terhadap dua pilot notifikasi sebelumnya — KOP-07 (pilot awal, 8 hari) dan BCL-05 (instance kedua, 5 hari) — sebagai basis penentuan arah perbaikan.</p>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:26%;">Metrik</th>
+                        <th style="width:19%;">KOP-07 0813/SQ</th>
+                        <th style="width:19%;">BCL-05 0923/QG</th>
+                        <th style="width:19%;">EEX-12 1016/QR</th>
+                        <th style="width:17%;">Tren</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Destinasi / Rute</strong></td>
+                        <td>Seoul · MT. SORAK &amp; EVERLAND</td>
+                        <td>Thailand · DMK–DMK</td>
+                        <td>Europe &amp; UK · FCO–AMS</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Durasi tur</strong></td>
+                        <td>8 hari</td>
+                        <td>5 hari</td>
+                        <td>12 hari</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Periode notifikasi</strong></td>
+                        <td>12 – 19 Agu 2026</td>
+                        <td>22 – 28 Sep 2026</td>
+                        <td>15 – 28 Okt 2026</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Event notifikasi</strong></td>
+                        <td>13</td>
+                        <td>6</td>
+                        <td>6</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sent</strong></td>
+                        <td class="num">128</td>
+                        <td class="num">103</td>
+                        <td class="num"><strong>67</strong></td>
+                        <td>—</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>Delivered (capture rate)</strong></td>
+                        <td class="num">48 <span style="font-weight:400; color:var(--text-muted);">(37.5%)</span></td>
+                        <td class="num">55 <span style="font-weight:400; color:var(--text-muted);">(53.4%)</span></td>
+                        <td class="num"><strong>43 (64.2%)</strong></td>
+                        <td style="color:var(--ok-text); font-weight:600;">▲ naik konsisten</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tapped</strong></td>
+                        <td class="num">31</td>
+                        <td class="num">21</td>
+                        <td class="num"><strong>17</strong></td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tap rate (T/D)</strong></td>
+                        <td class="num">64.6%</td>
+                        <td class="num">38.2%</td>
+                        <td class="num"><strong>39.5%</strong></td>
+                        <td style="color:var(--warn-text); font-weight:600;">▼ stabil di level rendah</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tapped / Sent</strong></td>
+                        <td class="num">24.2%</td>
+                        <td class="num">20.4%</td>
+                        <td class="num"><strong>25.4%</strong></td>
+                        <td style="color:var(--ok-text); font-weight:600;">▲ terbaik</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Notifikasi gagal (failed)</strong></td>
+                        <td class="num" style="color:var(--danger-text);">5</td>
+                        <td class="num">0</td>
+                        <td class="num"><strong>0</strong></td>
+                        <td style="color:var(--ok-text); font-weight:600;">▲ bersih</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Notifikasi on-trip harian</strong></td>
+                        <td>Aktif 5 hari (14–18 Agu)</td>
+                        <td>Di-skip (tur &lt; 7 hari)</td>
+                        <td style="color:var(--danger-text); font-weight:600;">Tidak ada (7 hari kosong)</td>
+                        <td style="color:var(--danger-text); font-weight:600;">▲ anomali</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>Status SENDING / SCHEDULED</strong></td>
+                        <td>2 (welcome · thank-you)</td>
+                        <td>2 (welcome · thank-you)</td>
+                        <td><strong>2 (welcome · thank-you)</strong></td>
+                        <td>konsisten</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Cara membaca perbandingan ini:</strong> ketiga instance memakai <strong>7 template notifikasi yang sama</strong> dengan aturan jadwal identik, sehingga perbandingan metrik antar-instance valid. Namun <strong>ukuran instance berbeda jauh</strong> — KOP-07 8 hari dengan participant list yang berganti (13 event), BCL-05 5 hari (6 event), dan EEX-12 12 hari (6 event). EEX-12 mengirim volume absolut paling sedikit (67) justru karena <strong>notifikasi on-trip harian tidak aktif</strong> — bukan karena lebih sedikit peserta.
+        </div>
+
+        <div class="callout ok">
+            <strong>✅ Akumulasi ketiga pilot:</strong> total <strong>298 notifikasi</strong> terkirim dengan <strong>146 delivered</strong> (capture rate agregat 49.0%) dan <strong>69 tapped</strong> (tap rate agregat 47.3%). Tren tiga pilot menunjukkan bahwa <strong>semakin lebar capture rate, semakin rendah tap rate</strong> — hal ini wajar, karena entry rate yang masuk ke denominator "Delivered" bertambah dari peserta yang sebelumnya belum pernah terkonfirmasi (app versi lama / permission mati), sehingga rerata tap per notifikasi terdilusi.
+        </div>
+
+        <!-- SECTION 5: PER TEMPLATE -->
+        <div class="section-title"><span class="num-tag">5</span> Performa per Template &amp; Reach</div>
+        <p class="section-sub">Pembacaan metrik di level template — notifikasi mana yang berhasil menjangkau peserta dan mana yang hanya terkonfirmasi sampai di perangkat. Reach dihitung terhadap <strong>estimated participant pool = 17</strong> (jumlah recipient terbesar yang teramati, yaitu pada welcome message join-triggered).</p>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:28%;">Template</th>
+                        <th style="width:9%;">Status</th>
+                        <th style="width:9%;">Jadwal (WIB)</th>
+                        <th style="width:5%;" class="num">S</th>
+                        <th style="width:5%;" class="num">D</th>
+                        <th style="width:5%;" class="num">T</th>
+                        <th style="width:9%;" class="num">Capture</th>
+                        <th style="width:9%;" class="num">Tap Rate</th>
+                        <th style="width:9%;" class="num">Reach</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row-danger">
+                        <td><strong>✈️ Besok Kita Berangkat!</strong><br><span style="font-size:11px; color:var(--text-muted);">Pre-trip reminder · H-1</span></td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td class="num">15 Okt<br>15:00</td>
+                        <td class="num">7</td>
+                        <td class="num">3</td>
+                        <td class="num">1</td>
+                        <td class="num">42.9%</td>
+                        <td class="num">33.3%</td>
+                        <td class="num" style="color:var(--danger-text);"><strong>41.2%</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>✈️ Trip Anda Bersama Panorama JTB</strong><br><span style="font-size:11px; color:var(--text-muted);">Welcome message · join-triggered</span></td>
+                        <td><span class="status-pill pill-sending"><span class="pill-dot"></span> SENDING</span></td>
+                        <td class="num">15 Okt<br>15:17</td>
+                        <td class="num">17</td>
+                        <td class="num">17</td>
+                        <td class="num">7</td>
+                        <td class="num">100%*</td>
+                        <td class="num">41.2%</td>
+                        <td class="num"><strong>100%</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>✈️ Selamat Memulai Perjalanan Anda !</strong><br><span style="font-size:11px; color:var(--text-muted);">Departure · Day 1</span></td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td class="num">16 Okt<br>09:00</td>
+                        <td class="num">9</td>
+                        <td class="num">3</td>
+                        <td class="num">2</td>
+                        <td class="num">33.3%</td>
+                        <td class="num">66.7%</td>
+                        <td class="num">52.9%</td>
+                    </tr>
+                    <tr class="row-info">
+                        <td><strong>💙 Terima Kasih atas Feedback Anda!</strong><br><span style="font-size:11px; color:var(--text-muted);">Survey thank-you · event-triggered</span></td>
+                        <td><span class="status-pill pill-scheduled"><span class="pill-dot"></span> SCHEDULED</span></td>
+                        <td class="num">24 Okt<br>13:51</td>
+                        <td class="num">15</td>
+                        <td class="num">15</td>
+                        <td class="num">2</td>
+                        <td class="num">100%*</td>
+                        <td class="num">13.3%</td>
+                        <td class="num">88.2%</td>
+                    </tr>
+                    <tr class="row-danger">
+                        <td><strong>🏠 Dua Hari Lagi Kembali ke Indonesia</strong><br><span style="font-size:11px; color:var(--text-muted);">Survey reminder · H-2</span></td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td class="num">26 Okt<br>01:00</td>
+                        <td class="num">12</td>
+                        <td class="num">2</td>
+                        <td class="num">2</td>
+                        <td class="num">16.7%</td>
+                        <td class="num">100%</td>
+                        <td class="num">70.6%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>💙 Ceritakan Pengalaman Anda</strong><br><span style="font-size:11px; color:var(--text-muted);">Survey reminder · H+1</span></td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td class="num">28 Okt<br>09:00</td>
+                        <td class="num">7</td>
+                        <td class="num">3</td>
+                        <td class="num">3</td>
+                        <td class="num">42.9%</td>
+                        <td class="num">100%</td>
+                        <td class="num">41.2%</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="3"><strong>TOTAL</strong></td>
+                        <td class="num"><strong>67</strong></td>
+                        <td class="num"><strong>43</strong></td>
+                        <td class="num"><strong>17</strong></td>
+                        <td class="num"><strong>64.2%</strong></td>
+                        <td class="num"><strong>39.5%</strong></td>
+                        <td class="num">—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="note">(*) Pada record berstatus <strong>SENDING</strong> dan <strong>SCHEDULED</strong>, angka S/D/T merepresentasikan <em>kumpulan recipient</em> yang dicatat scheduler, bukan hasil pengiriman yang sudah dikonfirmasi ke perangkat. Karena itu capture rate kedua record tersebut tampil 100% dan tidak boleh dibaca sebagai capture rate pengiriman.</p>
+        <p class="note">Estimated participant pool = 17, diambil dari jumlah recipient terbesar yang teramati (welcome message join-triggered). Angka ini merupakan estimasi — karena welcome message masih berstatus SENDING, participant pool final bisa sedikit lebih besar.</p>
+
+        <div class="callout danger">
+            <strong>🔴 Temuan Utama: jangkauan pre-trip reminder hanya 41% dari peserta.</strong> Pre-trip reminder "Besok Kita Berangkat!" terkirim ke <strong>7 peserta</strong>, sementara welcome message (yang memicu <em>join-triggered</em>, sehingga participant list terus bertambah) mencapai <strong>17 peserta</strong>. Selisih <strong>10 peserta (58.8%)</strong> berarti mereka <strong>tidak menerima pengingat keberangkatan H-1</strong> — pengingat yang berisi instruksi paspor, dokumen perjalanan, dan meeting point. Post-trip reminder "Ceritakan Pengalaman Anda" (28 Okt) punya pola yang sama: hanya 7 dari 17 peserta (41.2%).
+        </div>
+
+        <div class="callout ok">
+            <strong>✅ Di sisi positif, notifikasi yang benar-benar terkonfirmasi performanya baik:</strong> untuk ketiga template dengan delivery terendah ("Dua Hari Lagi Kembali", "Ceritakan Pengalaman", "Selamat Memulai Perjalanan"), <strong>100% dari notifikasi yang sampai di perangkat langsung dibuka</strong> (tap rate 100%, 100%, dan 66.7%). Artinya setiap notifikasi yang benar-benar sampai tidak pernah terlewat tanpa dibaca — masalahnya ada di <strong>jangkauan</strong>, bukan di <strong>minat</strong>.
+        </div>
+
+        <!-- SECTION 6: TIMEZONE -->
+        <div class="section-title"><span class="num-tag">6</span> Analisis Zona Waktu &amp; Transisi DST</div>
+        <p class="section-sub">Perbandingan waktu kirim dalam dua zona waktu: Jakarta Time (WIB, UTC+7) sebagai acuan operasional tim, dan Local Tour Time (Europe) sebagai acuan jadwal tur.</p>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:28%;">Notifikasi</th>
+                        <th style="width:13%;">Tanggal</th>
+                        <th style="width:15%;">Jakarta Time (WIB)</th>
+                        <th style="width:15%;">Local Tour Time</th>
+                        <th style="width:13%;">Zona Waktu Lokal</th>
+                        <th style="width:10%;">Selisih</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>✈️ Besok Kita Berangkat!</strong></td>
+                        <td>15 Oct 2026</td>
+                        <td class="num">15:00:00</td>
+                        <td class="num">10:00:00</td>
+                        <td>CEST (UTC+2)</td>
+                        <td class="num">−5 jam</td>
+                    </tr>
+                    <tr>
+                        <td><strong>✈️ Trip Anda Bersama Panorama JTB</strong></td>
+                        <td>15 Oct 2026</td>
+                        <td class="num">15:17:06</td>
+                        <td class="num">10:17:06</td>
+                        <td>CEST (UTC+2)</td>
+                        <td class="num">−5 jam</td>
+                    </tr>
+                    <tr>
+                        <td><strong>✈️ Selamat Memulai Perjalanan Anda !</strong></td>
+                        <td>16 Oct 2026</td>
+                        <td class="num">09:00:00</td>
+                        <td class="num">04:00:00</td>
+                        <td>CEST (UTC+2)</td>
+                        <td class="num">−5 jam</td>
+                    </tr>
+                    <tr>
+                        <td><strong>💙 Terima Kasih atas Feedback Anda!</strong></td>
+                        <td>24 Oct 2026</td>
+                        <td class="num">13:51:34</td>
+                        <td class="num">08:51:34</td>
+                        <td>CEST (UTC+2)</td>
+                        <td class="num">−5 jam</td>
+                    </tr>
+                    <tr class="row-warn">
+                        <td><strong>🏠 Dua Hari Lagi Kembali ke Indonesia</strong></td>
+                        <td>26 Oct 2026</td>
+                        <td class="num">01:00:00</td>
+                        <td class="num">19:00:00 <span style="font-size:10.5px; color:var(--text-muted);">(25 Oct)</span></td>
+                        <td>CET (UTC+1)</td>
+                        <td class="num">−6 jam</td>
+                    </tr>
+                    <tr class="row-warn">
+                        <td><strong>💙 Ceritakan Pengalaman Anda</strong></td>
+                        <td>28 Oct 2026</td>
+                        <td class="num">09:00:00</td>
+                        <td class="num">03:00:00</td>
+                        <td>CET (UTC+1)</td>
+                        <td class="num">−6 jam</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="callout warn">
+            <strong>⚠️ Transisi DST Eropa 25 Oktober 2026 mengubah offset lokal sebesar 1 jam.</strong> Seluruh notifikasi sampai 24 Oktober dikirim menggunakan <strong>CEST (UTC+2)</strong>, sedangkan notifikasi 26–28 Oktober menggunakan <strong>CET (UTC+1)</strong> — perpindahan DST terjadi pada hari Minggu, 25 Oktober 2026, pukul 03:00 CEST. Konsekuensinya, template yang dijadwalkan berbasis <em>Tour timezone</em> (seperti "Dua Hari Lagi Kembali ke Indonesia" pada 19:00 waktu lokal) <strong>jatuh pada 01:00 WIB</strong> — bukan 00:00 WIB seperti yang akan terjadi bila transisi DST belum terjadi.
+        </div>
+
+        <div class="callout danger">
+            <strong>🔴 Dampak terhadap pengalaman peserta:</strong> notifikasi H-2 "Dua Hari Lagi Kembali ke Indonesia" — yang isinya ajakan mengisi Customer Satisfaction Survey — tiba di perangkat peserta Indonesia pada <strong>pukul 01:00 pagi</strong>. Untuk audiens yang berada di WIB, ini adalah <strong>jam tidur</strong>: notifikasi akan dibiarkan terlewat, atau baru dibuka keesokan paginya (membantu menjelaskan capture rate 16.7% — terendah di seluruh template pada instance ini). Perhatikan bahwa capture rate notifikasi ini turun dari 8 delivered pada instance BCL-05 (turun 75%), sementara jarak waktu kirimnya justru bergeser 1 jam lebih akhir.
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Catatan akurasi data:</strong> zona waktu tur pada instance ini diturunkan dari selisih antara Jakarta Time dan Local Tour Time yang tercatat pada halaman Instance Notification Detail. Secara praktis, seluruh jadwal notifikasi — baik yang berbasis <em>System timezone</em> (WIB) maupun <em>Tour timezone</em> (Europe) — sudah tertuan dengan benar; yang menjadi masalah adalah <strong>waktu tiba</strong> notifikasi bagi peserta, bukan ketepatan eksekusi scheduler.
+        </div>
+
+        <!-- SECTION 7: PHASE COVERAGE -->
+        <div class="section-title"><span class="num-tag">7</span> Coverage per Fase Perjalanan</div>
+        <p class="section-sub">Pemetaan 6 event notifikasi terhadap 5 fase perjalanan tur (Pre-Trip → Departure → On-Trip → Pre-Return → Post-Tour) untuk tur EEX-12 yang berdurasi 12 hari.</p>
+
+        <div class="phase-timeline">
+            <div class="chart-title">Coverage Notifikasi per Fase Perjalanan</div>
+            <div class="chart-caption">📍 Europe &amp; UK (FCO–AMS), 16–27 Okt 2026 · 6 event notifikasi aktif · 7 hari tanpa notifikasi</div>
+
+            <div class="phase-track">
+                <div class="phase-step">
+                    <div class="phase-date">15 Oct 2026 · H-1</div>
+                    <div class="phase-name">Pre-Trip</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif">✈️ Besok Kita Berangkat! (15:00)</div>
+                        <div class="phase-notif">✈️ Trip Anda Bersama Panorama JTB (15:17)</div>
+                    </div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-date">16 Oct 2026 · Day 1</div>
+                    <div class="phase-name">Departure</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif">✈️ Selamat Memulai Perjalanan Anda ! (09:00)</div>
+                    </div>
+                </div>
+                <div class="phase-step gap">
+                    <div class="phase-date">17–23 Oct 2026 · Day 2–8</div>
+                    <div class="phase-name">On-Trip</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif empty">⚠️ Tidak ada notifikasi harian "How's Your Journey So Far?" selama 7 hari berturut-turut</div>
+                    </div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-date">25 Oct 2026 · H-2</div>
+                    <div class="phase-name">Pre-Return</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif">🏠 Dua Hari Lagi Kembali ke Indonesia (19:00 lokal · 01:00 WIB)</div>
+                    </div>
+                </div>
+                <div class="phase-step">
+                    <div class="phase-date">24 &amp; 28 Oct 2026</div>
+                    <div class="phase-name">Post-Tour</div>
+                    <div class="phase-notifs">
+                        <div class="phase-notif">💙 Terima Kasih atas Feedback Anda! (24 Okt, survey-triggered)</div>
+                        <div class="phase-notif">💙 Ceritakan Pengalaman Anda (28 Okt, 09:00)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout danger">
+            <strong>🔴 Cakupan on-trip yang kosong selama 7 hari (17–23 Oktober).</strong> Untuk tur berdurasi <strong>12 hari</strong>, tidak satu pun notifikasi harian <em>"How's Your Journey So Far?"</em> dikirim. Ini <strong>tidak konsisten</strong> dengan perilaku pada dua pilot sebelumnya:
+            <ul>
+                <li><strong>KOP-07 (8 hari)</strong> — notifikasi on-trip <strong>aktif 5 hari berturut-turut</strong> (14–18 Agustus).</li>
+                <li><strong>BCL-05 (5 hari)</strong> — on-trip <strong>di-skip dengan alasan yang terdokumentasi</strong>: aturan mengaktifkannya hanya untuk tur berdurasi ≥ 7 hari.</li>
+                <li><strong>EEX-12 (12 hari)</strong> — on-trip <strong>tidak ada</strong>, padahal durasinya jauh melampaui ambang 7 hari.</li>
+            </ul>
+            Dampak lebih dari sekadar metrik: untuk tur <strong>long-haul ke Eropa</strong>, fase on-trip justru merupakan <strong>periode paling operasional</strong> — peserta berada di negara asing, jauh dari rumah, dan paling mungkin membutuhkan informasi meeting point, waktu, atau bantuan lokal. Kesepian 7 hari ini juga berisiko menurunkan respons terhadap dua notifikasi pasca-tur.
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Catatan tentang notifikasi "Terima Kasih atas Feedback Anda" (24 Oktober):</strong> notifikasi ini dikirim <strong>di tengah tur</strong> (Hari ke-9 dari 12), bukan setelah tur berakhir. Hal ini <strong>wajar</strong> karena template-nya bersifat <em>event-triggered</em> — dipicu saat seorang peserta mengisi survey lebih awal, sehingga pesan dispatched pada 24 Okt pukul 13:51. Pesan ini <strong>tidak</strong> termasuk coverage fase post-tour.
+        </div>
+
+        <!-- SECTION 8: VOLUME TREND -->
+        <div class="section-title"><span class="num-tag">8</span> Volume Trend Harian</div>
+        <p class="section-sub">Tren volume notifikasi per hari pengiriman — 5 hari aktif (15, 16, 24, 26, 28 Oktober) serta 1 penanda gap on-trip (17–23 Oktober).</p>
+
+        <div class="chart-wrap">
+            <div class="chart-title">Notification Volume per Day</div>
+            <div class="chart-caption">Abu-abu = Sent · Orange = Delivered · Orange tua = Tapped · Kolom bergaris = hari tanpa notifikasi</div>
+            <div class="bar-chart">
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:100%;" title="Sent 24"></div>
+                    <div class="bar delivered" style="height:83.3%;" title="Delivered 20"></div>
+                    <div class="bar tapped" style="height:33.3%;" title="Tapped 8"></div>
+                </div><div class="day-label">15 Okt</div><div class="day-total">2 notif</div></div>
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:37.5%;" title="Sent 9"></div>
+                    <div class="bar delivered" style="height:12.5%;" title="Delivered 3"></div>
+                    <div class="bar tapped" style="height:8.3%;" title="Tapped 2"></div>
+                </div><div class="day-label">16 Okt</div><div class="day-total">1 notif</div></div>
+                <div class="bar-day gap-day"><div class="bars">
+                    <div class="bar-gap" title="Tidak ada notifikasi dikirim"></div>
+                </div><div class="day-label">17–23 Okt</div><div class="day-total">0 notif · 7 hari</div></div>
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:62.5%;" title="Sent 15"></div>
+                    <div class="bar delivered" style="height:62.5%;" title="Delivered 15"></div>
+                    <div class="bar tapped" style="height:8.3%;" title="Tapped 2"></div>
+                </div><div class="day-label">24 Okt</div><div class="day-total">1 notif</div></div>
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:50%;" title="Sent 12"></div>
+                    <div class="bar delivered" style="height:8.3%;" title="Delivered 2"></div>
+                    <div class="bar tapped" style="height:8.3%;" title="Tapped 2"></div>
+                </div><div class="day-label">26 Okt</div><div class="day-total">1 notif</div></div>
+                <div class="bar-day"><div class="bars">
+                    <div class="bar sent" style="height:29.2%;" title="Sent 7"></div>
+                    <div class="bar delivered" style="height:12.5%;" title="Delivered 3"></div>
+                    <div class="bar tapped" style="height:12.5%;" title="Tapped 3"></div>
+                </div><div class="day-label">28 Okt</div><div class="day-total">1 notif</div></div>
+            </div>
+            <div class="chart-legend">
+                <span><span class="dot sent"></span> Sent (67)</span>
+                <span><span class="dot delivered"></span> Delivered (43)</span>
+                <span><span class="dot tapped"></span> Tapped (17)</span>
+                <span><span style="width:10px; height:8px; border:1.5px dashed var(--danger-border); background:var(--danger-bg); border-radius:2px; display:inline-block;"></span> Tanpa notifikasi</span>
+            </div>
+        </div>
+
+        <div class="callout warn">
+            <strong>⚠️ Pola volume saat ini didominasi 1 hari:</strong> 15 Oktober menyumbang <strong>24 dari 67 notifikasi (35.8%)</strong> — seluruhnya dalam rentang 17 menit. Sebaliknya, 26 Oktober menjadi hari dengan delivery terendah (2 dari 12 terkonfirmasi) karena notifikasi H-2 tiba pada dini hari. Distribusi volume yang menumpuk di H-1 ini menjadi sinyal bahwa instance tur (<em>notification instance</em>) dibentuk terlalu dekat dengan tanggal keberangkatan.
+        </div>
+
+        <!-- SECTION 9: STATUS & ANOMALI -->
+        <div class="section-title"><span class="num-tag">9</span> Status &amp; Anomali</div>
+        <p class="section-sub">Temuan utama terhadap status, keanehan data, dan hal-hal yang perlu ditindaklanjuti oleh tim terkait.</p>
+
+        <div class="finding">
+            <div class="finding-num danger">1</div>
+            <div class="finding-body">
+                <h4>Pre-trip reminder menjangkau hanya 7 dari ±17 peserta — rekomendasi BCL-05 belum diterapkan <span class="prio high">HIGH PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> Pada 15 Oktober (H-1), "Besok Kita Berangkat!" terkirim ke <strong>7 peserta</strong>, sedangkan welcome message "Trip Anda Bersama Panorama JTB" yang dikirim <strong>17 menit kemudian</strong> tercatat memiliki <strong>17 recipient</strong>. Karena welcome message bersifat <em>join-triggered</em>, angka 17 merepresentasikan seluruh peserta yang tercatat masuk sampai tur berangkat.</p>
+                <p><strong>Root Cause:</strong> Instance notifikasi untuk tur EEX-12 <strong>baru dibentuk pada H-1</strong> (15 Oktober, +/- 15:00–15:17 WIB). Karena itu: (1) participant list masih bertambah hingga menit menuju keberangkatan, dan (2) scheduler untuk template dengan jadwal tetap ("Besok Kita Berangkat!") mengunci recipient list pada saat scheduling, bukan pada saat pengiriman. Konsekuensinya, <strong>10 peserta (58.8%)</strong> tidak pernah menerima pengingat keberangkatan yang berisi instruksi paspor dan meeting point.</p>
+                <p><strong>Impact &amp; Action:</strong> Pada pilot BCL-05 (September), akar masalah yang sama sudah teridentifikasi — instance formation terlalu dekat dengan tanggal keberangkatan — dan direkomendasikan untuk dilakukan <strong>&ge; H-4</strong>. Rekomendasi tersebut <strong>belum diterapkan</strong> pada instance EEX-12, dan konsekuensinya kini terukur: jangkauan pre-trip reminder turun menjadi 41.2%. Prioritas perbaikan: <strong>(a)</strong> membentuk instance tur paling lambat H-4 agar participant list stabil, dan <strong>(b)</strong> ubah scheduler template berkala tetap agar mengirim ke participant list saat <em>dispatch time</em>, bukan <em>scheduling time</em>.</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num danger">2</div>
+            <div class="finding-body">
+                <h4>Tidak ada notifikasi on-trip selama 7 hari pada tur 12 hari <span class="prio high">HIGH PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> Pada rentang 17–23 Oktober (Hari ke-2 sampai ke-8 dari 12 hari tur), <strong>tidak ada satu pun notifikasi</strong> yang dikirim. Template <em>"How's Your Journey So Far?"</em> yang pada pilot KOP-07 berjalan setiap hari selama 5 hari berturut-turut, tidak muncul sama sekali pada instance ini.</p>
+                <p><strong>Why It Matters:</strong> Dua instance sebelumnya memberi rujukan yang saling melengkapi — KOP-07 (8 hari) mengaktifkan notifikasi harian, sedangkan BCL-05 (5 hari) <strong>secara terdokumentasi</strong> melewati fase on-trip karena tur terlalu pendek. Tur EEX-12 berdurasi <strong>12 hari</strong>, jauh di atas ambang tersebut, sehingga absennya notifikasi on-trip <strong>tidak dapat dijelaskan oleh aturan durasi</strong>. Dua kemungkinan penyebab yang perlu diverifikasi: (a) aturan aktivasi on-trip memakai ambang yang berbeda dari yang diasumsikan, atau (b) template on-trip untuk instance ini memang tidak ter-attach pada scheduler.</p>
+                <p><strong>Impact &amp; Action:</strong> Selain itu, kesenjangan ini menghilangkan <strong>jendela layanan terbaik</strong> — peserta tur Eropa berada di negara asing dan paling mungkin butuh informasi meeting point, jadwal, atau bantuan lokal. Perlu <strong>verifikasi konfigurasi</strong> pada halaman template notifikasi untuk tur 12 hari, dan jika memang tidak ter-attach, aktifkan sebelum rollout ke tur long-haul berikutnya.</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num warn">3</div>
+            <div class="finding-body">
+                <h4>Notifikasi H-2 terkirim pukul 01:00 WIB — di luar jam waking <span class="prio mid">MEDIUM PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> "Dua Hari Lagi Kembali ke Indonesia" dijadwalkan pada 19:00 <em>tour timezone</em> (25 Oktober, 19:00 CET), yang setara <strong>01:00 WIB pada 26 Oktober</strong>. Dari 12 notifikasi, hanya <strong>2 terkonfirmasi delivered</strong> — capture rate 16.7%, terendah di seluruh template instance ini.</p>
+                <p><strong>Root Cause:</strong> Template <code>tour_reminder_submit_survey_h-2</code> memang dijadwalkan pada 19:00 waktu tur. Karena audiens notifikasi adalah peserta yang berada di <strong>Indonesia</strong> (WIB, UTC+7), konversi 19:00 CET menghasilkan <strong>01:00 WIB</strong>. Pada instance sebelumnya (BCL-05, zona waktu tur = WIB), konversi ini menjadi no-op (tidak mengubah apa pun) sehingga tidak pernah menjadi masalah. Transisi DST Eropa 25 Oktober membuat konversinya <strong>1 jam lebih awal</strong> dibanding CEST.</p>
+                <p><strong>Impact &amp; Action:</strong> Peserta menerima ajakan mengisi survey pada jam paling tidak realistis untuk dibaca. Rekomendasi: untuk template <em>tour timezone</em> yang ditujukan ke audiens Indonesia, <strong>ubah acuan jam ke System timezone (WIB)</strong> — misalnya 16:00–17:00 WIB — atau tambahkan parameter konversi zona waktu eksplisit pada level template. Notifikasi "Ceritakan Pengalaman Anda" (H+1, 09:00 WIB) membuktikan bahwa jam siang WIB bekerja baik: <strong>100% dari 3 notifikasi yang delivered langsung dibuka</strong>.</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num ok">4</div>
+            <div class="finding-body">
+                <h4>Status SENDING pada welcome message — <em>by design</em>, bukan anomali <span class="prio low">INFO</span></h4>
+                <p><strong>What Happened:</strong> "Trip Anda Bersama Panorama JTB" tercatat berstatus <strong>SENDING</strong> sejak dikirim 15 Oktober pukul 15:17:06 WIB, dengan 17 recipient, 17 delivered, dan 7 tapped.</p>
+                <p><strong>Root Cause (Dikonfirmasi):</strong> Status SENDING di sini adalah <strong>perilaku yang disengaja</strong>, bukan macet. Welcome message berfungsi mengirim notifikasi kepada peserta yang <em>bergabung setelah instance tur terbentuk</em> (join-trigger, bukan schedule-trigger). Karena participant list bersifat inkremental, scheduler mempertahankan status SENDING untuk terus memantau peserta baru yang eligible menerima welcome message — persis seperti pada instance BCL-05.</p>
+                <p><strong>Impact &amp; Action:</strong> <strong>Tidak ada tindakan perbaikan</strong> diperlukan. Namun angka 17 recipient inilah yang menjadi <strong>basis estimasi participant pool</strong> dan sekaligus <strong>indeks utama jangkauan notifikasi</strong> — kontras tajam dengan 7 recipient pada pre-trip reminder (Finding 1). Agar tim operasional tidak salah menginterpretasikan, halaman backoffice dapat menampilkan label kontekstual <em>"Join-triggered — active until tour start"</em>.</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num ok">5</div>
+            <div class="finding-body">
+                <h4>Status SCHEDULED pada thank-you message — <em>expected behavior</em> <span class="prio low">INFO</span></h4>
+                <p><strong>What Happened:</strong> "Terima Kasih atas Feedback Anda!" tercatat dengan status <strong>SCHEDULED</strong> pada 24 Oktober pukul 13:51:34 WIB dengan 15 recipient (15 delivered, 2 tapped). Dispatch-nya terjadi di tengah tur, dipicu saat seorang peserta mengisi survey.</p>
+                <p><strong>Why SCHEDULED, not SENT:</strong> Status SCHEDULED adalah <strong>kondisi normal dan permanen</strong> untuk template event-triggered — sistem membuat record SCHEDULED untuk setiap peserta yang eligible, namun baru benar-benar mengirim ke FCM ketika peserta tersebut submit survey. Ini identik dengan perilaku pada pilot KOP-07 (yang sempat komplain karena log ini tidak muncul di backoffice — bug tersebut sudah diperbaiki) maupun pada instance BCL-05.</p>
+                <p><strong>Recommendation:</strong> Tidak ada tindakan perbaikan pada statusnya. Namun akan lebih informatif jika halaman backoffice menampilkan label <strong>"Triggered by: Survey Submission"</strong> dan memisahkan kolom <em>recipient pool</em> dari <em>confirmed delivery</em>, agar capture rate agregat tidak terlihat lebih baik dari kenyataannya (Finding 6).</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num warn">6</div>
+            <div class="finding-body">
+                <h4>Capture rate agregat 64.2% lebih tinggi dari capture rate pengiriman nyata (31.4%) <span class="prio mid">MEDIUM PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> Angka headline "Delivered 43 (64.2%)" dihitung dari seluruh 6 event, termasuk 2 record yang statusnya belum menutup (SENDING dan SCHEDULED). Kedua record itu menyumbang <strong>32 dari 67 recipient (47.8%)</strong> dengan capture rate 100% karena metriknya hanya mencerminkan kumpulan recipient.</p>
+                <p><strong>Isolasi terhadap 4 event berstatus SENT:</strong> Sent 35, Delivered 11, Tapped 8 → <strong>capture rate 31.4%</strong> dan <strong>tap rate 72.7%</strong>. Ini adalah gambaran yang jauh lebih jujur mengenai notifikasi yang benar-benar dikirim: 64.6% yang pernah tiba tidak pernah dibuka.</p>
+                <p><strong>Impact &amp; Action:</strong> Angka agregat saat ini berpotensi <strong>membingungkan saat dipakai sebagai KPI lintas-instance</strong> — tur dengan banyak participant baru (yang inflasi pool join-triggered) akan terlihat lebih baik dibanding tur dengan participant list yang stabil. Rekomendasi: pada halaman Instance Notification Detail, tampilkan <strong>dua metrik terpisah</strong> — "Delivery Rate (closed events)" dan "Pool Coverage (all events)" — dan pilih satu sebagai KPI utama saat membandingkan antar-instance.</p>
+            </div>
+        </div>
+
+        <div class="finding">
+            <div class="finding-num ok">7</div>
+            <div class="finding-body">
+                <h4>Tidak ada notifikasi gagal kirim (failed) pada seluruh siklus <span class="prio low">INFO</span></h4>
+                <p><strong>What Happened:</strong> Seluruh 67 notifikasi keluar dari sistem tanpa satu pun insiden FCM failure. Dibandingkan pilot KOP-07 yang mencatat <strong>5 notifikasi failed</strong> (35% dari template thank-you, kemungkinan besar karena token FCM invalid), instance EEX-12 bersih. Hal ini konsisten dengan perbaikan token handling dan adopsi aplikasi versi terbaru yang tercatat sejak pilot sebelumnya.</p>
+                <p><strong>Impact &amp; Action:</strong> <strong>Tidak ada tindakan perbaikan</strong> — ini indikator kesehatan sistem yang positif. Yang tersisa adalah investigasi tingkat device (notification permission, dismiss behavior, doze, background kill) untuk capture rate yang belum tuntas, sebagaimana direkomendasikan pada instance BCL-05.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 10: INSIGHT & REKOMENDASI -->
+        <div class="section-title"><span class="num-tag">10</span> Insight &amp; Rekomendasi</div>
+        <p class="section-sub">Kesimpulan utama dari instance ini dan rekomendasi tindak lanjut untuk tim operasional &amp; development.</p>
+
+        <div class="callout ok">
+            <strong>✅ Hal yang sudah berjalan baik:</strong>
+            <ul>
+                <li><strong>Capture rate 64.2%</strong> — terbaik sepanjang 3 pilot, menandakan callback otomatis dari perangkat ke sistem semakin andal seiring adopsi versi aplikasi terbaru.</li>
+                <li><strong>Nol notifikasi gagal kirim</strong> — 67 pesan keluar sistem tanpa insiden FCM failure, bersih dibanding 5 failure pada pilot KOP-07.</li>
+                <li><strong>Notifikasi yang sampai selalu dibaca</strong> — pada ketiga template dengan delivery terendah, tap rate mencapai 66.7%–100%; tidak ada notifikasi yang sampai tapi sepenuhnya terlewat.</li>
+                <li><strong>Seluruh fase perjalanan terisi</strong> — Pre-Trip, Departure, Pre-Return, dan Post-Tour masing-masing punya notifikasi yang berjalan sesuai aturan template.</li>
+                <li><strong>Template konsisten</strong> — 7 template yang sama dipakai di ketiga pilot, sehingga perbandingan antar-instance valid dan regresi mudah dideteksi.</li>
+                <li><strong>Health Indicator 100%</strong> — seluruh indikator kesehatan instance berstatus <em>Good health</em>, mengonfirmasi tidak ada kendala kesehatan yang mengganggu kehadirannya peserta.</li>
+            </ul>
+        </div>
+
+        <div class="callout warn">
+            <strong>⚠️ Yang perlu diperbaiki:</strong>
+            <ul>
+                <li><strong>Jangkauan notifikasi</strong> — pre-trip reminder hanya menjangkau 41% peserta; participant list terkunci pada H-1. Instance formation harus digeser ke <strong>≥ H-4</strong>.</li>
+                <li><strong>Gap on-trip 7 hari</strong> — perlu verifikasi konfigurasi template harian untuk tur ≥ 7 hari.</li>
+                <li><strong>Jam kirim H-2 (01:00 WIB)</strong> — template berbasis tour timezone perlu dikonversi ke WIB untuk audiens Indonesia.</li>
+                <li><strong>Transparansi metrik</strong> — pisahkan "delivery rate (closed events)" dari "pool coverage" agar KPI lintas-instance tidak over-stated.</li>
+                <li><strong>Anti-stacking H-1</strong> — beri jeda minimal 3–4 jam antara welcome message dan pre-trip reminder.</li>
+            </ul>
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-list-check"></i> Improvement Plan &amp; Status</div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:20%;">Area</th>
+                        <th style="width:44%;">Planned Improvement</th>
+                        <th style="width:18%;">Owner / PIC</th>
+                        <th style="width:18%;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Scheduler instance formation</strong></td>
+                        <td>Membentuk instance notifikasi tur paling lambat H-4 (saat ini H-1), agar participant list stabil sebelum pre-trip reminder dijadwalkan.</td>
+                        <td>Tim Backoffice &amp; Tim Back-End</td>
+                        <td><span class="status-pill pill-todo">OPEN</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dynamic recipient list</strong></td>
+                        <td>Mengubah scheduler template berkala tetap agar recipient list diambil saat <em>dispatch time</em>, bukan saat scheduling — supaya peserta yang join belakangan tetap menerima pre-trip reminder.</td>
+                        <td>Tim Back-End</td>
+                        <td><span class="status-pill pill-todo">OPEN</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aktivasi notifikasi on-trip</strong></td>
+                        <td>Memverifikasi konfigurasi template "How's Your Journey So Far?" untuk tur ≥ 7 hari dan mengaktifkannya untuk instance yang lulus ambang.</td>
+                        <td>Tim Backoffice</td>
+                        <td><span class="status-pill pill-wip">VERIFY</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Konversi zona waktu template</strong></td>
+                        <td>Menambahkan konversi eksplisit ke WIB pada template berbasis <em>tour timezone</em> yang ditujukan ke audiens Indonesia, sehingga notifikasi H-2 tidak lagi jatuh pada pukul 01:00 WIB.</td>
+                        <td>Tim Backoffice &amp; Tim Development</td>
+                        <td><span class="status-pill pill-todo">OPEN</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anti-stacking notifikasi H-1</strong></td>
+                        <td>Memberi jarak minimal 3–4 jam antara welcome message (join-triggered) dan pre-trip reminder agar keduanya tidak tampil bersamaan di lock screen.</td>
+                        <td>Tim Backoffice</td>
+                        <td><span class="status-pill pill-todo">OPEN</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transparansi metrik backoffice</strong></td>
+                        <td>Menampilkan dua metrik terpisah pada halaman Instance Notification Detail — "Delivery Rate (closed events)" dan "Pool Coverage (all events)" — serta label kontekstual untuk status SENDING dan SCHEDULED.</td>
+                        <td>Tim Backoffice</td>
+                        <td><span class="status-pill pill-todo">OPEN</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Investigasi capture rate device-level</strong></td>
+                        <td>Melanjutkan investigasi faktor perangkat (notification permission, dismiss behavior, doze mode, background kill) untuk capture rate pada event berstatus SENT yang hanya 31.4%.</td>
+                        <td>Tim Mobile &amp; Tim Back-End</td>
+                        <td><span class="status-pill pill-wip">IN PROGRESS</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitoring log thank-you</strong></td>
+                        <td>Memastikan log notifikasi "Terima Kasih atas Feedback Anda!" tetap tampil di halaman Notification Instance (bug yang sudah diperbaiki di pilot KOP-07) untuk seluruh instance.</td>
+                        <td>Tim Backoffice</td>
+                        <td><span class="status-pill pill-done">COMPLETED</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="takeaway">
+            <strong>Bottom Line:</strong> Instance EEX-12 (Europe &amp; UK, FCO–AMS, 12D9N) adalah <strong>pilot dengan capture rate terbaik sejauh ini</strong> — 64.2% delivered dari 67 notifikasi, tanpa satu pun pengiriman gagal, dan dengan status SENDING/SCHEDULED yang terbukti <em>by design</em>. Namun seluruh nilai tersebut harus dibaca dengan kehati-hatian: <strong>jangkauan</strong> notifikasi adalah kelemahan utamanya — pre-trip reminder hanya menjangkau 7 dari ±17 peserta, dan tur berjalan <strong>7 hari tanpa satu pun notifikasi</strong> di fase on-trip. Rekomendasi BCL-05 tentang <strong>scheduler instance formation</strong> (<em>≥ H-4</em>) <strong>belum diterapkan</strong> dan kini dampaknya terukur. Prioritas berikutnya: (1) geser pembentukan instance ke ≥ H-4 dan dynamiskan recipient list, (2) verifikasi aktivasi template on-trip untuk tur ≥ 7 hari, (3) konversi jam kirim template tur-timezone ke WIB, dan (4) pisahkan metrik delivery rate vs pool coverage di backoffice. Secara keseluruhan fitur notifikasi <strong>sudah layak dilanjutkan ke lebih banyak instance</strong>, dengan empat perbaikan konfigurasi di atas sebagai prasyarat sebelum fase full roll-out.
+        </div>
+
+        <!-- GLOSSARY -->
+        <div class="section-title"><span class="num-tag">11</span> Glossary</div>
+        <p class="section-sub">Padanan istilah teknis dalam bahasa sehari-hari untuk memudahkan pemahaman laporan ini.</p>
+
+        <dl class="glossary">
+            <dt>Terkirim (Sent)</dt>
+            <dd>Notifikasi berhasil dikirim dari server sistem. Angka ini selalu berjumlah paling banyak karena dihitung saat notifikasi keluar dari sistem.</dd>
+            <dt>Sampai di HP (Delivered)</dt>
+            <dd>Notifikasi tercatat sampai di perangkat peserta, yang dilaporkan balik oleh aplikasi ke sistem.</dd>
+            <dt>Dibuka (Tapped)</dt>
+            <dd>Peserta membuka / mengetuk notifikasi pada HP-nya.</dd>
+            <dt>Capture Rate</dt>
+            <dd>Perbandingan jumlah notifikasi yang tercatat sampai di perangkat terhadap total yang dikirim (Delivered ÷ Sent).</dd>
+            <dt>Tap Rate</dt>
+            <dd>Perbandingan jumlah notifikasi yang dibuka terhadap yang sampai di perangkat (Tapped ÷ Delivered).</dd>
+            <dt>Reach</dt>
+            <dd>Jangkauan sebuah template terhadap keseluruhan peserta tur, dihitung dari jumlah recipient template tersebut dibagi estimated participant pool.</dd>
+            <dt>Participant Pool</dt>
+            <dd>Estimasi jumlah seluruh peserta tur, diambil dari recipient terbesar yang teramati (welcome message join-triggered).</dd>
+            <dt>Join-Triggered</dt>
+            <dd>Notifikasi yang dikirim berdasarkan peserta yang bergabung, sehingga recipient list terus bertambah hingga batas waktu trigger.</dd>
+            <dt>Event-Triggered</dt>
+            <dd>Notifikasi yang dibuat hanya setelah suatu kejadian terjadi — misalnya peserta mengisi survey.</dd>
+            <dt>Mesin Penjadwal (Scheduler)</dt>
+            <dd>Bagian sistem yang mengatur kapan sebuah notifikasi otomatis dikirim.</dd>
+            <dt>CEST / CET</dt>
+            <dd>Zona waktu Eropa: CEST (UTC+2, daylight saving) dan CET (UTC+1, standar). Peralihan terjadi pada hari Minggu terakhir di Oktober.</dd>
+            <dt>Notification Instance</dt>
+            <dd>Halaman backoffice yang menampilkan record notifikasi yang dikirim beserta status pengirimannya.</dd>
+            <dt>Penanggung Jawab (PIC)</dt>
+            <dd>Orang / tim yang bertanggung jawab atas suatu pekerjaan perbaikan.</dd>
+        </dl>
+
+        <div class="footer-note">
+            Report Pilot Testing Notifikasi — Instance EEX-12 · ALVIS Mobile Apps &amp; Backoffice Development Team © 2026<br>
+            Laporan ini bersifat internal untuk tim operasional dan management. Data bersumber dari halaman Instance Notification Detail backoffice per 29 Oktober 2026.
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
