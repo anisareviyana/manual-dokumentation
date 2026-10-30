@@ -691,12 +691,12 @@
         .bar-gap {
             width: 14px;
             height: 12px;
-            border: 1.5px dashed var(--danger-border);
+            border: 1.5px dashed var(--gray-300);
             border-radius: 3px;
-            background: var(--danger-bg);
+            background: var(--gray-100);
         }
-        .bar-day.gap-day .day-label { color: var(--danger-text); font-weight: 700; }
-        .bar-day.gap-day .day-total { color: var(--danger-text); font-weight: 600; }
+        .bar-day.gap-day .day-label { color: var(--text-muted); font-weight: 600; }
+        .bar-day.gap-day .day-total { color: var(--text-subtle); font-weight: 500; }
         .bar-day .day-label {
             font-size: 11px;
             color: var(--text-muted);
@@ -815,12 +815,12 @@
             border-left-color: var(--border);
             font-style: italic;
         }
-        .phase-step.gap { background: var(--danger-bg); }
-        .phase-step.gap .phase-name { color: var(--danger-text); }
-        .phase-step.gap .phase-notif.empty {
-            background: rgba(255,255,255,0.7);
-            color: var(--danger-text);
-            border-left-color: var(--danger-text);
+        .phase-step.quiet { background: var(--gray-50); }
+        .phase-step.quiet .phase-name { color: var(--text-muted); }
+        .phase-step.quiet .phase-notif.empty {
+            background: var(--card);
+            color: var(--text-muted);
+            border-left-color: var(--gray-300);
         }
 
         /* FINDING */
@@ -994,7 +994,7 @@
         <div class="section-title">Ringkasan Eksekutif</div>
 
         <div class="exec-card">
-            <p class="exec-lead">Selama siklus notifikasi tur EEX-12 (15 – 28 Oktober 2026), sistem mengirim <strong>67 notifikasi</strong> melalui <strong>6 event</strong> ke peserta tur <strong>Europe &amp; UK</strong> (FCO–AMS, 12D9N). Capture rate mencapai <strong>64.2%</strong> — angka <strong>tertinggi sepanjang 3 pilot</strong>. Namun di balik angka yang membaik tersebut, terdapat <strong>empat temuan yang perlu ditindaklanjuti</strong>.</p>
+            <p class="exec-lead">Selama siklus notifikasi tur EEX-12 (15 – 28 Oktober 2026), sistem mengirim <strong>67 notifikasi</strong> melalui <strong>6 event</strong> ke peserta tur <strong>Europe &amp; UK</strong> (FCO–AMS, 12D9N). Capture rate mencapai <strong>64.2%</strong> — angka <strong>tertinggi sepanjang 3 pilot</strong>. Namun di balik angka yang membaik tersebut, terdapat <strong>tiga temuan yang perlu ditindaklanjuti</strong>.</p>
 
             <div class="exec-stats">
                 <div class="exec-stat">
@@ -1017,12 +1017,11 @@
 
             <ul class="exec-concerns">
                 <li><span class="exec-num">1</span><span><strong>Pre-trip reminder hanya menjangkau 7 dari ±17 peserta (41%)</strong> — karena instance &amp; scheduler welcome message baru terbentuk pada H-1 (15 Okt), participant list masih bertambah hingga menit terakhir, sementara "Besok Kita Berangkat!" terkunci pada list beku pukul 15:00.</span></li>
-                <li><span class="exec-num">2</span><span><strong>Tidak ada notifikasi on-trip selama 7 hari (17–23 Okt)</strong> pada tur berdurasi 12 hari — berbeda dengan pilot KOP-07 (8 hari, notifikasi harian aktif) dan BCL-05 (5 hari, on-trip memang di-skip).</span></li>
-                <li><span class="exec-num">3</span><span><strong>Notifikasi H-2 "Dua Hari Lagi Kembali ke Indonesia" tiba pukul 01:00 WIB</strong> (19:00 waktu lokal) — jam dini hari bagi peserta di Indonesia, diperparah transisi DST Eropa 25 Oktober (CEST → CET).</span></li>
-                <li><span class="exec-num">4</span><span><strong>Headline capture rate 64.2% terinflasi oleh 2 record non-SENT</strong> — welcome message (SENDING) dan thank-you (SCHEDULED) menyumbang 32 dari 67 recipient. Jika hanya event berstatus SENT, capture rate aktual <strong>31.4%</strong>.</span></li>
+                <li><span class="exec-num">2</span><span><strong>Notifikasi H-2 "Dua Hari Lagi Kembali ke Indonesia" tiba pukul 01:00 WIB</strong> (19:00 waktu lokal) — jam dini hari bagi peserta di Indonesia, diperparah transisi DST Eropa 25 Oktober (CEST → CET).</span></li>
+                <li><span class="exec-num">3</span><span><strong>Headline capture rate 64.2% terinflasi oleh 2 record non-SENT</strong> — welcome message (SENDING) dan thank-you (SCHEDULED) menyumbang 32 dari 67 recipient. Jika hanya event berstatus SENT, capture rate aktual <strong>31.4%</strong>.</span></li>
             </ul>
 
-            <p class="exec-closing">✅ <strong>Status:</strong> Fitur notifikasi <strong>terbukti berjalan stabil</strong> — nol notifikasi gagal kirim, coverage seluruh fase perjalanan terisi kecuali fase on-trip, dan capture rate naik konsisten seiring pembaruan aplikasi. Temuan 1 &amp; 2 bersifat konfigurasi/scheduling (bukan bug), sementara temuan 3 &amp; 4 adalah isu kalender dan transparansi metrik.</p>
+            <p class="exec-closing">✅ <strong>Status:</strong> Fitur notifikasi <strong>terbukti berjalan stabil</strong> — nol notifikasi gagal kirim, seluruh fase perjalanan yang dikonfigurasi untuk memakai notifikasi otomatis terisi, dan capture rate naik konsisten seiring pembaruan aplikasi. Temuan 1 bersifat konfigurasi/scheduling (bukan bug), sementara temuan 2 &amp; 3 adalah isu kalender dan transparansi metrik.</p>
         </div>
 
         <!-- SECTION 1: INSTANCE OVERVIEW -->
@@ -1347,10 +1346,10 @@
                     </tr>
                     <tr>
                         <td><strong>Notifikasi on-trip harian</strong></td>
-                        <td>Aktif 5 hari (14–18 Agu)</td>
+                        <td>Aktif 5 hari (14–18 Agu)<br><span style="font-size:10.5px; color:var(--text-subtle);">konfigurasi lama</span></td>
                         <td>Di-skip (tur &lt; 7 hari)</td>
-                        <td style="color:var(--danger-text); font-weight:600;">Tidak ada (7 hari kosong)</td>
-                        <td style="color:var(--danger-text); font-weight:600;">▲ anomali</td>
+                        <td>Tidak aktif<br><span style="font-size:10.5px; color:var(--text-subtle);">sesuai kebijakan</span></td>
+                        <td>tidak lagi dipakai</td>
                     </tr>
                     <tr class="total-row">
                         <td><strong>Status SENDING / SCHEDULED</strong></td>
@@ -1364,7 +1363,7 @@
         </div>
 
         <div class="callout info">
-            <strong>ℹ️ Cara membaca perbandingan ini:</strong> ketiga instance memakai <strong>7 template notifikasi yang sama</strong> dengan aturan jadwal identik, sehingga perbandingan metrik antar-instance valid. Namun <strong>ukuran instance berbeda jauh</strong> — KOP-07 8 hari dengan participant list yang berganti (13 event), BCL-05 5 hari (6 event), dan EEX-12 12 hari (6 event). EEX-12 mengirim volume absolut paling sedikit (67) justru karena <strong>notifikasi on-trip harian tidak aktif</strong> — bukan karena lebih sedikit peserta.
+            <strong>ℹ️ Cara membaca perbandingan ini:</strong> ketiga instance memakai <strong>7 template notifikasi yang sama</strong> dengan aturan jadwal identik, sehingga perbandingan metrik antar-instance valid. Namun <strong>ukuran instance berbeda jauh</strong> — KOP-07 8 hari dengan participant list yang berganti (13 event), BCL-05 5 hari (6 event), dan EEX-12 12 hari (6 event). EEX-12 mengirim volume absolut paling sedikit (67) karena <strong>notifikasi on-trip harian tidak lagi dikirim</strong> — bukan karena lebih sedikit peserta. <br><br><strong>Catatan-template on-trip:</strong> template <em>"How's Your Journey So Far?"</em> pernah aktif pada KOP-07 (Agustus) dengan konfigurasi lama, lalu <strong>tidak lagi dipakai</strong> — saat ini notifikasi on-trip harian <strong>tidak dikirim untuk seluruh tur</strong> sesuai kebijakan yang berlaku. Ketiadaan notifikasi pada rentang 17–23 Oktober karena itu <strong>bukan anomali</strong>, melainkan perilaku yang diharapkan; baris ini dicantumkan hanya sebagai pembanding historis antar-instance.
         </div>
 
         <div class="callout ok">
@@ -1564,11 +1563,11 @@
 
         <!-- SECTION 7: PHASE COVERAGE -->
         <div class="section-title"><span class="num-tag">7</span> Coverage per Fase Perjalanan</div>
-        <p class="section-sub">Pemetaan 6 event notifikasi terhadap 5 fase perjalanan tur (Pre-Trip → Departure → On-Trip → Pre-Return → Post-Tour) untuk tur EEX-12 yang berdurasi 12 hari.</p>
+        <p class="section-sub">Pemetaan 6 event notifikasi terhadap 5 fase perjalanan tur (Pre-Trip → Departure → On-Trip → Pre-Return → Post-Tour) untuk tur EEX-12 yang berdurasi 12 hari. Fase On-Trip ditampilkan sebagai fase <em>tanpa notifikasi otomatis</em> — bukan kekosongan yang tidak disengaja.</p>
 
         <div class="phase-timeline">
             <div class="chart-title">Coverage Notifikasi per Fase Perjalanan</div>
-            <div class="chart-caption">📍 Europe &amp; UK (FCO–AMS), 16–27 Okt 2026 · 6 event notifikasi aktif · 7 hari tanpa notifikasi</div>
+            <div class="chart-caption">📍 Europe &amp; UK (FCO–AMS), 16–27 Okt 2026 · 6 event notifikasi aktif · fase on-trip berjalan tanpa notifikasi otomatis (sesuai kebijakan)</div>
 
             <div class="phase-track">
                 <div class="phase-step">
@@ -1586,11 +1585,11 @@
                         <div class="phase-notif">✈️ Selamat Memulai Perjalanan Anda ! (09:00)</div>
                     </div>
                 </div>
-                <div class="phase-step gap">
+                <div class="phase-step quiet">
                     <div class="phase-date">17–23 Oct 2026 · Day 2–8</div>
                     <div class="phase-name">On-Trip</div>
                     <div class="phase-notifs">
-                        <div class="phase-notif empty">⚠️ Tidak ada notifikasi harian "How's Your Journey So Far?" selama 7 hari berturut-turut</div>
+                        <div class="phase-notif empty">Tanpa notifikasi otomatis — fase on-trip tidak memakai template harian ("How's Your Journey So Far?")</div>
                     </div>
                 </div>
                 <div class="phase-step">
@@ -1611,14 +1610,13 @@
             </div>
         </div>
 
-        <div class="callout danger">
-            <strong>🔴 Cakupan on-trip yang kosong selama 7 hari (17–23 Oktober).</strong> Untuk tur berdurasi <strong>12 hari</strong>, tidak satu pun notifikasi harian <em>"How's Your Journey So Far?"</em> dikirim. Ini <strong>tidak konsisten</strong> dengan perilaku pada dua pilot sebelumnya:
+        <div class="callout info">
+            <strong>ℹ️ Fase On-Trip (17–23 Oktober) berjalan tanpa notifikasi otomatis — sesuai kebijakan, bukan anomali.</strong> Template harian <em>"How's Your Journey So Far?"</em> <strong>tidak lagi dikirim untuk seluruh tur</strong>. Karena itu, rentang 7 hari tersebut <strong>tidak merupakan gap coverage</strong> dan <strong>tidak ada tindakan perbaikan</strong> yang perlu dilakukan:
             <ul>
-                <li><strong>KOP-07 (8 hari)</strong> — notifikasi on-trip <strong>aktif 5 hari berturut-turut</strong> (14–18 Agustus).</li>
-                <li><strong>BCL-05 (5 hari)</strong> — on-trip <strong>di-skip dengan alasan yang terdokumentasi</strong>: aturan mengaktifkannya hanya untuk tur berdurasi ≥ 7 hari.</li>
-                <li><strong>EEX-12 (12 hari)</strong> — on-trip <strong>tidak ada</strong>, padahal durasinya jauh melampaui ambang 7 hari.</li>
+                <li><strong>Tidak ada template on-trip yang gagal atau gagal dijadwalkan</strong> — tidak ada scheduler yang berjalan, sehingga tidak ada delivery yang gagal, tidak ada capture rate yang hilang, dan tidak ada biaya yang terbuang.</li>
+                <li><strong>Volume notifikasi EEX-12 (67) tidak perlu dibandingkan langsung dengan KOP-07 (128)</strong> — selisihnya sebagian besar berasal dari template on-trip yang 5 hari aktif pada KOP-07 dengan konfigurasi lama.</li>
             </ul>
-            Dampak lebih dari sekadar metrik: untuk tur <strong>long-haul ke Eropa</strong>, fase on-trip justru merupakan <strong>periode paling operasional</strong> — peserta berada di negara asing, jauh dari rumah, dan paling mungkin membutuhkan informasi meeting point, waktu, atau bantuan lokal. Kesepian 7 hari ini juga berisiko menurunkan respons terhadap dua notifikasi pasca-tur.
+            <p style="margin-top:10px;">Sebagai catatan operasional: bila tim operasional/metrik membaca timeline notifikasi instance, rentang 17–23 Oktober akan tampak sebagai kekosongan. Anotasi <em>"fase on-trip — tanpa notifikasi otomatis (kebijakan)"</em> pada halaman Instance Notification Detail di backoffice dapat mencegah kesalahpahaman tersebut berulang pada instance berikutnya.</p>
         </div>
 
         <div class="callout info">
@@ -1627,11 +1625,11 @@
 
         <!-- SECTION 8: VOLUME TREND -->
         <div class="section-title"><span class="num-tag">8</span> Volume Trend Harian</div>
-        <p class="section-sub">Tren volume notifikasi per hari pengiriman — 5 hari aktif (15, 16, 24, 26, 28 Oktober) serta 1 penanda gap on-trip (17–23 Oktober).</p>
+        <p class="section-sub">Tren volume notifikasi per hari pengiriman — 5 hari aktif (15, 16, 24, 26, 28 Oktober) serta 1 kolom fase on-trip (17–23 Oktober) yang berjalan tanpa notifikasi otomatis sesuai kebijakan.</p>
 
         <div class="chart-wrap">
             <div class="chart-title">Notification Volume per Day</div>
-            <div class="chart-caption">Abu-abu = Sent · Orange = Delivered · Orange tua = Tapped · Kolom bergaris = hari tanpa notifikasi</div>
+            <div class="chart-caption">Abu-abu = Sent · Orange = Delivered · Orange tua = Tapped · Kolom bergaris abu-abu = fase tanpa notifikasi otomatis (on-trip, sesuai kebijakan)</div>
             <div class="bar-chart">
                 <div class="bar-day"><div class="bars">
                     <div class="bar sent" style="height:100%;" title="Sent 24"></div>
@@ -1644,8 +1642,8 @@
                     <div class="bar tapped" style="height:8.3%;" title="Tapped 2"></div>
                 </div><div class="day-label">16 Okt</div><div class="day-total">1 notif</div></div>
                 <div class="bar-day gap-day"><div class="bars">
-                    <div class="bar-gap" title="Tidak ada notifikasi dikirim"></div>
-                </div><div class="day-label">17–23 Okt</div><div class="day-total">0 notif · 7 hari</div></div>
+                    <div class="bar-gap" title="Fase on-trip — tanpa notifikasi otomatis (sesuai kebijakan)"></div>
+                </div><div class="day-label">17–23 Okt</div><div class="day-total">0 notif · by design</div></div>
                 <div class="bar-day"><div class="bars">
                     <div class="bar sent" style="height:62.5%;" title="Sent 15"></div>
                     <div class="bar delivered" style="height:62.5%;" title="Delivered 15"></div>
@@ -1666,7 +1664,7 @@
                 <span><span class="dot sent"></span> Sent (67)</span>
                 <span><span class="dot delivered"></span> Delivered (43)</span>
                 <span><span class="dot tapped"></span> Tapped (17)</span>
-                <span><span style="width:10px; height:8px; border:1.5px dashed var(--danger-border); background:var(--danger-bg); border-radius:2px; display:inline-block;"></span> Tanpa notifikasi</span>
+                <span><span style="width:10px; height:8px; border:1.5px dashed var(--gray-300); background:var(--gray-100); border-radius:2px; display:inline-block;"></span> Fase tanpa notifikasi otomatis (on-trip)</span>
             </div>
         </div>
 
@@ -1676,7 +1674,7 @@
 
         <!-- SECTION 9: STATUS & ANOMALI -->
         <div class="section-title"><span class="num-tag">9</span> Status &amp; Anomali</div>
-        <p class="section-sub">Temuan utama terhadap status, keanehan data, dan hal-hal yang perlu ditindaklanjuti oleh tim terkait.</p>
+        <p class="section-sub">Temuan utama terhadap status, keanehan data, perilaku yang diharapkan (<em>by design</em>), dan hal-hal yang perlu ditindaklanjuti oleh tim terkait. Temuan diurutkan berdasarkan prioritas: 1 temuan HIGH, 2 temuan MEDIUM, dan 4 temuan INFO.</p>
 
         <div class="finding">
             <div class="finding-num danger">1</div>
@@ -1689,22 +1687,22 @@
         </div>
 
         <div class="finding">
-            <div class="finding-num danger">2</div>
+            <div class="finding-num warn">2</div>
             <div class="finding-body">
-                <h4>Tidak ada notifikasi on-trip selama 7 hari pada tur 12 hari <span class="prio high">HIGH PRIORITY</span></h4>
-                <p><strong>What Happened:</strong> Pada rentang 17–23 Oktober (Hari ke-2 sampai ke-8 dari 12 hari tur), <strong>tidak ada satu pun notifikasi</strong> yang dikirim. Template <em>"How's Your Journey So Far?"</em> yang pada pilot KOP-07 berjalan setiap hari selama 5 hari berturut-turut, tidak muncul sama sekali pada instance ini.</p>
-                <p><strong>Why It Matters:</strong> Dua instance sebelumnya memberi rujukan yang saling melengkapi — KOP-07 (8 hari) mengaktifkan notifikasi harian, sedangkan BCL-05 (5 hari) <strong>secara terdokumentasi</strong> melewati fase on-trip karena tur terlalu pendek. Tur EEX-12 berdurasi <strong>12 hari</strong>, jauh di atas ambang tersebut, sehingga absennya notifikasi on-trip <strong>tidak dapat dijelaskan oleh aturan durasi</strong>. Dua kemungkinan penyebab yang perlu diverifikasi: (a) aturan aktivasi on-trip memakai ambang yang berbeda dari yang diasumsikan, atau (b) template on-trip untuk instance ini memang tidak ter-attach pada scheduler.</p>
-                <p><strong>Impact &amp; Action:</strong> Selain itu, kesenjangan ini menghilangkan <strong>jendela layanan terbaik</strong> — peserta tur Eropa berada di negara asing dan paling mungkin butuh informasi meeting point, jadwal, atau bantuan lokal. Perlu <strong>verifikasi konfigurasi</strong> pada halaman template notifikasi untuk tur 12 hari, dan jika memang tidak ter-attach, aktifkan sebelum rollout ke tur long-haul berikutnya.</p>
+                <h4>Notifikasi H-2 terkirim pukul 01:00 WIB — di luar jam waking <span class="prio mid">MEDIUM PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> "Dua Hari Lagi Kembali ke Indonesia" dijadwalkan pada 19:00 <em>tour timezone</em> (25 Oktober, 19:00 CET), yang setara <strong>01:00 WIB pada 26 Oktober</strong>. Dari 12 notifikasi, hanya <strong>2 terkonfirmasi delivered</strong> — capture rate 16.7%, terendah di seluruh template instance ini.</p>
+                <p><strong>Root Cause:</strong> Template <code>tour_reminder_submit_survey_h-2</code> memang dijadwalkan pada 19:00 waktu tur. Karena audiens notifikasi adalah peserta yang berada di <strong>Indonesia</strong> (WIB, UTC+7), konversi 19:00 CET menghasilkan <strong>01:00 WIB</strong>. Pada instance sebelumnya (BCL-05, zona waktu tur = WIB), konversi ini menjadi no-op (tidak mengubah apa pun) sehingga tidak pernah menjadi masalah. Transisi DST Eropa 25 Oktober membuat konversinya <strong>1 jam lebih awal</strong> dibanding CEST.</p>
+                <p><strong>Impact &amp; Action:</strong> Peserta menerima ajakan mengisi survey pada jam paling tidak realistis untuk dibaca. Rekomendasi: untuk template <em>tour timezone</em> yang ditujukan ke audiens Indonesia, <strong>ubah acuan jam ke System timezone (WIB)</strong> — misalnya 16:00–17:00 WIB — atau tambahkan parameter konversi zona waktu eksplisit pada level template. Notifikasi "Ceritakan Pengalaman Anda" (H+1, 09:00 WIB) membuktikan bahwa jam siang WIB bekerja baik: <strong>100% dari 3 notifikasi yang delivered langsung dibuka</strong>.</p>
             </div>
         </div>
 
         <div class="finding">
             <div class="finding-num warn">3</div>
             <div class="finding-body">
-                <h4>Notifikasi H-2 terkirim pukul 01:00 WIB — di luar jam waking <span class="prio mid">MEDIUM PRIORITY</span></h4>
-                <p><strong>What Happened:</strong> "Dua Hari Lagi Kembali ke Indonesia" dijadwalkan pada 19:00 <em>tour timezone</em> (25 Oktober, 19:00 CET), yang setara <strong>01:00 WIB pada 26 Oktober</strong>. Dari 12 notifikasi, hanya <strong>2 terkonfirmasi delivered</strong> — capture rate 16.7%, terendah di seluruh template instance ini.</p>
-                <p><strong>Root Cause:</strong> Template <code>tour_reminder_submit_survey_h-2</code> memang dijadwalkan pada 19:00 waktu tur. Karena audiens notifikasi adalah peserta yang berada di <strong>Indonesia</strong> (WIB, UTC+7), konversi 19:00 CET menghasilkan <strong>01:00 WIB</strong>. Pada instance sebelumnya (BCL-05, zona waktu tur = WIB), konversi ini menjadi no-op (tidak mengubah apa pun) sehingga tidak pernah menjadi masalah. Transisi DST Eropa 25 Oktober membuat konversinya <strong>1 jam lebih awal</strong> dibanding CEST.</p>
-                <p><strong>Impact &amp; Action:</strong> Peserta menerima ajakan mengisi survey pada jam paling tidak realistis untuk dibaca. Rekomendasi: untuk template <em>tour timezone</em> yang ditujukan ke audiens Indonesia, <strong>ubah acuan jam ke System timezone (WIB)</strong> — misalnya 16:00–17:00 WIB — atau tambahkan parameter konversi zona waktu eksplisit pada level template. Notifikasi "Ceritakan Pengalaman Anda" (H+1, 09:00 WIB) membuktikan bahwa jam siang WIB bekerja baik: <strong>100% dari 3 notifikasi yang delivered langsung dibuka</strong>.</p>
+                <h4>Capture rate agregat 64.2% lebih tinggi dari capture rate pengiriman nyata (31.4%) <span class="prio mid">MEDIUM PRIORITY</span></h4>
+                <p><strong>What Happened:</strong> Angka headline "Delivered 43 (64.2%)" dihitung dari seluruh 6 event, termasuk 2 record yang statusnya belum menutup (SENDING dan SCHEDULED). Kedua record itu menyumbang <strong>32 dari 67 recipient (47.8%)</strong> dengan capture rate 100% karena metriknya hanya mencerminkan kumpulan recipient.</p>
+                <p><strong>Isolasi terhadap 4 event berstatus SENT:</strong> Sent 35, Delivered 11, Tapped 8 → <strong>capture rate 31.4%</strong> dan <strong>tap rate 72.7%</strong>. Ini adalah gambaran yang jauh lebih jujur mengenai notifikasi yang benar-benar dikirim: 64.6% yang pernah tiba tidak pernah dibuka.</p>
+                <p><strong>Impact &amp; Action:</strong> Angka agregat saat ini berpotensi <strong>membingungkan saat dipakai sebagai KPI lintas-instance</strong> — tur dengan banyak participant baru (yang inflasi pool join-triggered) akan terlihat lebih baik dibanding tur dengan participant list yang stabil. Rekomendasi: pada halaman Instance Notification Detail, tampilkan <strong>dua metrik terpisah</strong> — "Delivery Rate (closed events)" dan "Pool Coverage (all events)" — dan pilih satu sebagai KPI utama saat membandingkan antar-instance.</p>
             </div>
         </div>
 
@@ -1724,17 +1722,17 @@
                 <h4>Status SCHEDULED pada thank-you message — <em>expected behavior</em> <span class="prio low">INFO</span></h4>
                 <p><strong>What Happened:</strong> "Terima Kasih atas Feedback Anda!" tercatat dengan status <strong>SCHEDULED</strong> pada 24 Oktober pukul 13:51:34 WIB dengan 15 recipient (15 delivered, 2 tapped). Dispatch-nya terjadi di tengah tur, dipicu saat seorang peserta mengisi survey.</p>
                 <p><strong>Why SCHEDULED, not SENT:</strong> Status SCHEDULED adalah <strong>kondisi normal dan permanen</strong> untuk template event-triggered — sistem membuat record SCHEDULED untuk setiap peserta yang eligible, namun baru benar-benar mengirim ke FCM ketika peserta tersebut submit survey. Ini identik dengan perilaku pada pilot KOP-07 (yang sempat komplain karena log ini tidak muncul di backoffice — bug tersebut sudah diperbaiki) maupun pada instance BCL-05.</p>
-                <p><strong>Recommendation:</strong> Tidak ada tindakan perbaikan pada statusnya. Namun akan lebih informatif jika halaman backoffice menampilkan label <strong>"Triggered by: Survey Submission"</strong> dan memisahkan kolom <em>recipient pool</em> dari <em>confirmed delivery</em>, agar capture rate agregat tidak terlihat lebih baik dari kenyataannya (Finding 6).</p>
+                <p><strong>Recommendation:</strong> Tidak ada tindakan perbaikan pada statusnya. Namun akan lebih informatif jika halaman backoffice menampilkan label <strong>"Triggered by: Survey Submission"</strong> dan memisahkan kolom <em>recipient pool</em> dari <em>confirmed delivery</em>, agar capture rate agregat tidak terlihat lebih baik dari kenyataannya (Finding 3).</p>
             </div>
         </div>
 
         <div class="finding">
-            <div class="finding-num warn">6</div>
+            <div class="finding-num ok">6</div>
             <div class="finding-body">
-                <h4>Capture rate agregat 64.2% lebih tinggi dari capture rate pengiriman nyata (31.4%) <span class="prio mid">MEDIUM PRIORITY</span></h4>
-                <p><strong>What Happened:</strong> Angka headline "Delivered 43 (64.2%)" dihitung dari seluruh 6 event, termasuk 2 record yang statusnya belum menutup (SENDING dan SCHEDULED). Kedua record itu menyumbang <strong>32 dari 67 recipient (47.8%)</strong> dengan capture rate 100% karena metriknya hanya mencerminkan kumpulan recipient.</p>
-                <p><strong>Isolasi terhadap 4 event berstatus SENT:</strong> Sent 35, Delivered 11, Tapped 8 → <strong>capture rate 31.4%</strong> dan <strong>tap rate 72.7%</strong>. Ini adalah gambaran yang jauh lebih jujur mengenai notifikasi yang benar-benar dikirim: 64.6% yang pernah tiba tidak pernah dibuka.</p>
-                <p><strong>Impact &amp; Action:</strong> Angka agregat saat ini berpotensi <strong>membingungkan saat dipakai sebagai KPI lintas-instance</strong> — tur dengan banyak participant baru (yang inflasi pool join-triggered) akan terlihat lebih baik dibanding tur dengan participant list yang stabil. Rekomendasi: pada halaman Instance Notification Detail, tampilkan <strong>dua metrik terpisah</strong> — "Delivery Rate (closed events)" dan "Pool Coverage (all events)" — dan pilih satu sebagai KPI utama saat membandingkan antar-instance.</p>
+                <h4>Fase on-trip berjalan tanpa notifikasi otomatis — <em>sesuai kebijakan</em>, bukan anomali <span class="prio low">INFO</span></h4>
+                <p><strong>What Happened:</strong> Pada rentang 17–23 Oktober (Hari ke-2 sampai ke-8 dari 12 hari tur) tidak ada notifikasi yang dikirim. Hal ini <strong>bukan kegagalan atau kekosongan yang tidak disengaja</strong> — template harian <em>"How's Your Journey So Far?"</em> <strong>tidak lagi dikirim untuk seluruh tur</strong> sesuai kebijakan notifikasi yang berlaku saat ini.</p>
+                <p><strong>Context:</strong> Template tersebut pernah aktif pada pilot KOP-07 (Agustus) dengan konfigurasi lama, ketika notifikasi harian on-trip masih digunakan selama 5 hari berturut-turut (14–18 Agustus). Pada dua instance berikutnya konfigurasi itu sudah tidak dipakai, sehingga KOP-07 <strong>bukan pembanding yang relevan</strong> untuk perilaku on-trip — perbedaan aktivitas on-trip antar-instance mencerminkan perubahan konfigurasi, bukan degradasi fitur.</p>
+                <p><strong>Impact &amp; Action:</strong> <strong>Tidak ada tindakan perbaikan</strong> yang diperlukan, dan tidak ada delivery yang hilang atau biaya yang terbuang — tidak ada scheduler on-trip yang pernah berjalan pada instance ini. Satu hal yang perlu diperhatikan adalah <strong>cara membacanya</strong>: volume notifikasi EEX-12 (67) tidak sebanding dengan KOP-07 (128) apabila on-trip ikut dihitung, dan rentang 17–23 Oktober dapat terlihat sebagai gap saat dibaca pada timeline atau grafik volume. Karena itu, halaman Instance Notification Detail di backoffice dapat menampilkan anotasi <em>"fase on-trip — tanpa notifikasi otomatis (kebijakan)"</em> agar kesalahpahaman yang sama tidak terulang pada instance berikutnya.</p>
             </div>
         </div>
 
@@ -1757,7 +1755,7 @@
                 <li><strong>Capture rate 64.2%</strong> — terbaik sepanjang 3 pilot, menandakan callback otomatis dari perangkat ke sistem semakin andal seiring adopsi versi aplikasi terbaru.</li>
                 <li><strong>Nol notifikasi gagal kirim</strong> — 67 pesan keluar sistem tanpa insiden FCM failure, bersih dibanding 5 failure pada pilot KOP-07.</li>
                 <li><strong>Notifikasi yang sampai selalu dibaca</strong> — pada ketiga template dengan delivery terendah, tap rate mencapai 66.7%–100%; tidak ada notifikasi yang sampai tapi sepenuhnya terlewat.</li>
-                <li><strong>Seluruh fase perjalanan terisi</strong> — Pre-Trip, Departure, Pre-Return, dan Post-Tour masing-masing punya notifikasi yang berjalan sesuai aturan template.</li>
+                <li><strong>Seluruh fase yang dikonfigurasi terisi</strong> — Pre-Trip, Departure, Pre-Return, dan Post-Tour masing-masing punya notifikasi yang berjalan sesuai aturan template; fase on-trip berjalan tanpa notifikasi otomatis sesuai kebijakan.</li>
                 <li><strong>Template konsisten</strong> — 7 template yang sama dipakai di ketiga pilot, sehingga perbandingan antar-instance valid dan regresi mudah dideteksi.</li>
                 <li><strong>Health Indicator 100%</strong> — seluruh indikator kesehatan instance berstatus <em>Good health</em>, mengonfirmasi tidak ada kendala kesehatan yang mengganggu kehadirannya peserta.</li>
             </ul>
@@ -1767,7 +1765,6 @@
             <strong>⚠️ Yang perlu diperbaiki:</strong>
             <ul>
                 <li><strong>Jangkauan notifikasi</strong> — pre-trip reminder hanya menjangkau 41% peserta; participant list terkunci pada H-1. Instance formation harus digeser ke <strong>≥ H-4</strong>.</li>
-                <li><strong>Gap on-trip 7 hari</strong> — perlu verifikasi konfigurasi template harian untuk tur ≥ 7 hari.</li>
                 <li><strong>Jam kirim H-2 (01:00 WIB)</strong> — template berbasis tour timezone perlu dikonversi ke WIB untuk audiens Indonesia.</li>
                 <li><strong>Transparansi metrik</strong> — pisahkan "delivery rate (closed events)" dari "pool coverage" agar KPI lintas-instance tidak over-stated.</li>
                 <li><strong>Anti-stacking H-1</strong> — beri jeda minimal 3–4 jam antara welcome message dan pre-trip reminder.</li>
@@ -1800,10 +1797,10 @@
                         <td><span class="status-pill pill-todo">OPEN</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Aktivasi notifikasi on-trip</strong></td>
-                        <td>Memverifikasi konfigurasi template "How's Your Journey So Far?" untuk tur ≥ 7 hari dan mengaktifkannya untuk instance yang lulus ambang.</td>
+                        <td><strong>Dokumentasi kebijakan on-trip</strong></td>
+                        <td>Menuliskan pada panduan pembuatan template bahwa notifikasi on-trip harian tidak lagi dikirim, dan menambahkan anotasi fase on-trip pada halaman Instance Notification Detail agar ketiadaan notifikasi pada fase tersebut tidak salah dibaca sebagai anomali.</td>
                         <td>Tim Backoffice</td>
-                        <td><span class="status-pill pill-wip">VERIFY</span></td>
+                        <td><span class="status-pill pill-todo">OPEN</span></td>
                     </tr>
                     <tr>
                         <td><strong>Konversi zona waktu template</strong></td>
@@ -1840,7 +1837,7 @@
         </div>
 
         <div class="takeaway">
-            <strong>Bottom Line:</strong> Instance EEX-12 (Europe &amp; UK, FCO–AMS, 12D9N) adalah <strong>pilot dengan capture rate terbaik sejauh ini</strong> — 64.2% delivered dari 67 notifikasi, tanpa satu pun pengiriman gagal, dan dengan status SENDING/SCHEDULED yang terbukti <em>by design</em>. Namun seluruh nilai tersebut harus dibaca dengan kehati-hatian: <strong>jangkauan</strong> notifikasi adalah kelemahan utamanya — pre-trip reminder hanya menjangkau 7 dari ±17 peserta, dan tur berjalan <strong>7 hari tanpa satu pun notifikasi</strong> di fase on-trip. Rekomendasi BCL-05 tentang <strong>scheduler instance formation</strong> (<em>≥ H-4</em>) <strong>belum diterapkan</strong> dan kini dampaknya terukur. Prioritas berikutnya: (1) geser pembentukan instance ke ≥ H-4 dan dynamiskan recipient list, (2) verifikasi aktivasi template on-trip untuk tur ≥ 7 hari, (3) konversi jam kirim template tur-timezone ke WIB, dan (4) pisahkan metrik delivery rate vs pool coverage di backoffice. Secara keseluruhan fitur notifikasi <strong>sudah layak dilanjutkan ke lebih banyak instance</strong>, dengan empat perbaikan konfigurasi di atas sebagai prasyarat sebelum fase full roll-out.
+            <strong>Bottom Line:</strong> Instance EEX-12 (Europe &amp; UK, FCO–AMS, 12D9N) adalah <strong>pilot dengan capture rate terbaik sejauh ini</strong> — 64.2% delivered dari 67 notifikasi, tanpa satu pun pengiriman gagal, dan dengan status SENDING/SCHEDULED yang terbukti <em>by design</em>. Namun seluruh nilai tersebut harus dibaca dengan kehati-hatian: <strong>jangkauan</strong> notifikasi adalah kelemahan utamanya — pre-trip reminder hanya menjangkau 7 dari ±17 peserta. Rekomendasi BCL-05 tentang <strong>scheduler instance formation</strong> (<em>≥ H-4</em>) <strong>belum diterapkan</strong> dan kini dampaknya terukur. Prioritas berikutnya: (1) geser pembentukan instance ke ≥ H-4 dan dynamiskan recipient list, (2) konversi jam kirim template tur-timezone ke WIB, (3) pisahkan metrik delivery rate vs pool coverage di backoffice, dan (4) dokumentasikan kebijakan on-trip agar fase tanpa notifikasi otomatis tidak salah dibaca sebagai anomali. Secara keseluruhan fitur notifikasi <strong>sudah layak dilanjutkan ke lebih banyak instance</strong>, dengan perbaikan-perbaikan konfigurasi di atas sebagai prasyarat sebelum fase full roll-out.
         </div>
 
         <!-- GLOSSARY -->
@@ -1864,6 +1861,8 @@
             <dd>Estimasi jumlah seluruh peserta tur, diambil dari recipient terbesar yang teramati (welcome message join-triggered).</dd>
             <dt>Join-Triggered</dt>
             <dd>Notifikasi yang dikirim berdasarkan peserta yang bergabung, sehingga recipient list terus bertambah hingga batas waktu trigger.</dd>
+            <dt>Notifikasi On-Trip</dt>
+            <dd>Notifikasi harian selama perjalanan ("How's Your Journey So Far?"). <strong>Saat ini tidak dikirim untuk seluruh tur</strong> sesuai kebijakan, sehingga fase on-trip berjalan tanpa notifikasi otomatis — ini perilaku yang diharapkan, bukan anomali.</dd>
             <dt>Event-Triggered</dt>
             <dd>Notifikasi yang dibuat hanya setelah suatu kejadian terjadi — misalnya peserta mengisi survey.</dd>
             <dt>Mesin Penjadwal (Scheduler)</dt>
