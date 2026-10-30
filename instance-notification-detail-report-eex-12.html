@@ -994,7 +994,7 @@
         <div class="section-title">Ringkasan Eksekutif</div>
 
         <div class="exec-card">
-            <p class="exec-lead">Selama siklus notifikasi tur EEX-12 (15 – 28 Oktober 2026), sistem mengirim <strong>67 notifikasi</strong> melalui <strong>6 event</strong> ke peserta tur <strong>Europe &amp; UK</strong> (FCO–AMS, 12D9N). Capture rate mencapai <strong>64.2%</strong> — angka <strong>tertinggi sepanjang 3 pilot</strong>. Namun di balik angka yang membaik tersebut, terdapat <strong>tiga temuan yang perlu ditindaklanjuti</strong>.</p>
+            <p class="exec-lead">Selama siklus notifikasi tur EEX-12 (15 – 28 Oktober 2026), sistem mengirim <strong>67 notifikasi</strong> melalui <strong>6 event</strong> ke peserta tur <strong>Europe &amp; UK</strong> (FCO–AMS, 12D9N). Capture rate mencapai <strong>64.2%</strong> — angka <strong>tertinggi sepanjang 3 pilot</strong>. Namun di balik angka yang membaik tersebut, terdapat <strong>dua temuan yang perlu ditindaklanjuti</strong>.</p>
 
             <div class="exec-stats">
                 <div class="exec-stat">
@@ -1017,11 +1017,10 @@
 
             <ul class="exec-concerns">
                 <li><span class="exec-num">1</span><span><strong>Pre-trip reminder hanya menjangkau 7 dari ±17 peserta (41%)</strong> — karena instance &amp; scheduler welcome message baru terbentuk pada H-1 (15 Okt), participant list masih bertambah hingga menit terakhir, sementara "Besok Kita Berangkat!" terkunci pada list beku pukul 15:00.</span></li>
-                <li><span class="exec-num">2</span><span><strong>Transisi DST Eropa menggeser timestamp monitoring notifikasi H-2 sebesar 1 jam</strong> — notifikasi dikirim pada 19:00 waktu lokal (sesuai jadwal), tetapi tercatat 01:00 WIB di sistem. Perlu rujukan konversi agar tim support tidak salah menandai sebagai pengiriman yang tidak sesuai jadwal.</span></li>
-                <li><span class="exec-num">3</span><span><strong>Headline capture rate 64.2% terinflasi oleh 2 record non-SENT</strong> — welcome message (SENDING) dan thank-you (SCHEDULED) menyumbang 32 dari 67 recipient. Jika hanya event berstatus SENT, capture rate aktual <strong>31.4%</strong>.</span></li>
+                <li><span class="exec-num">2</span><span><strong>Headline capture rate 64.2% terinflasi oleh 2 record non-SENT</strong> — welcome message (SENDING) dan thank-you (SCHEDULED) menyumbang 32 dari 67 recipient. Jika hanya event berstatus SENT, capture rate aktual <strong>31.4%</strong>.</span></li>
             </ul>
 
-            <p class="exec-closing">✅ <strong>Status:</strong> Fitur notifikasi <strong>terbukti berjalan stabil</strong> — nol notifikasi gagal kirim, seluruh fase perjalanan yang dikonfigurasi untuk memakai notifikasi otomatis terisi, dan capture rate naik konsisten seiring pembaruan aplikasi. Temuan 1 bersifat konfigurasi/scheduling (bukan bug), sementara temuan 2 menyangkut keterbacaan timestamp untuk monitoring, dan temuan 3 adalah transparansi metrik.</p>
+            <p class="exec-closing">✅ <strong>Status:</strong> Fitur notifikasi <strong>terbukti berjalan stabil</strong> — nol notifikasi gagal kirim, seluruh fase perjalanan yang dikonfigurasi untuk memakai notifikasi otomatis terisi, seluruh notifikasi terkirim sesuai jadwalnya, dan capture rate naik konsisten seiring pembaruan aplikasi. Temuan 1 bersifat konfigurasi/scheduling (bukan bug), sementara temuan 2 adalah transparansi metrik.</p>
         </div>
 
         <!-- SECTION 1: INSTANCE OVERVIEW -->
@@ -1257,7 +1256,7 @@
         </div>
 
         <p class="note">Verifikasi: penjumlahan kolom S/D/T pada tabel di atas (67 / 43 / 17) konsisten dengan angka pada Aggregate Engagement Funnel di Bagian 2.</p>
-        <p class="note"><strong>Catatan dua zona waktu:</strong> kolom <em>Local Tour Time</em> menyatakan waktu notifikasi diterima peserta di lokasi tour (acuan utama), sedangkan kolom <em>Jakarta Time (WIB)</em> menyatakan waktu pengiriman yang tercatat pada sistem — dicatat untuk memudahkan monitoring tim support agar dapat dipastikan notifikasi benar-benar terkirim dan diterima pengguna ALVIS pada waktu yang sama. Rincian per template ada di Bagian 6.</p>
+        <p class="note"><strong>Catatan dua zona waktu:</strong> kolom <em>Local Tour Time</em> menyatakan waktu notifikasi diterima peserta di lokasi tour (acuan utama), sedangkan kolom <em>Jakarta Time (WIB)</em> menyatakan waktu pengiriman yang tercatat pada sistem dalam zona Indonesia. <strong>Kedua kolom menunjuk momen pengiriman yang sama</strong> — WIB dicatat sebagai pelengkap untuk memudahkan monitoring tim support agar dapat dipastikan notifikasi benar-benar terkirim dan diterima pengguna ALVIS pada waktu yang sama. Rincian per template ada di Bagian 6.</p>
 
         <!-- SECTION 4: PERBANDINGAN PILOT -->
         <div class="section-title"><span class="num-tag">4</span> Perbandingan dengan Pilot Sebelumnya</div>
@@ -1551,11 +1550,7 @@
         </div>
 
         <div class="callout ok">
-            <strong>✅ Jadwal notifikasi H-2 sudah benar — 19:00 waktu lokal adalah jam yang disengaja.</strong> "Dua Hari Lagi Kembali ke Indonesia" dijadwalkan pada <strong>19:00 Tour timezone</strong>, sehingga peserta di lokasi tur menerimanya pada sore/malam hari — slot waktu yang wajar untuk ajakan mengisi Customer Satisfaction Survey. Angka <strong>01:00 WIB</strong> yang tercatat pada sistem adalah <strong>timestamp monitoring</strong>, bukan indikasi bahwa notifikasi dikirim pada jam tersebut.
-        </div>
-
-        <div class="callout warn">
-            <strong>⚠️ Transisi DST Eropa 25 Oktober 2026 menggeser <em>timestamp monitoring</em> sebesar 1 jam.</strong> Seluruh notifikasi sampai 24 Oktober memakai <strong>CEST (UTC+2)</strong> — selisih −5 jam terhadap WIB; notifikasi 26–28 Oktober memakai <strong>CET (UTC+1)</strong> — selisih −6 jam, karena perpindahan DST terjadi pada hari Minggu, 25 Oktober 2026 pukul 03:00 CEST. Akibatnya template yang dijadwalkan pada 19:00 Tour timezone (seperti H-2) tercatat pada <strong>01:00 WIB</strong>, bukan 00:00 WIB seperti yang akan terjadi seandainya transisi DST belum terjadi. <strong>Offset berubah, jadwal di lokasi tur tidak berubah</strong> — namun tim support perlu mengetahui hal ini agar selisih 1 jam tidak salah ditafsirkan sebagai pengiriman yang tidak sesuai jadwal.
+            <strong>✅ Jadwal notifikasi H-2 sudah benar — 19:00 waktu lokal adalah jam yang disengaja.</strong> "Dua Hari Lagi Kembali ke Indonesia" dijadwalkan pada <strong>19:00 Tour timezone</strong>, sehingga peserta di lokasi tur menerimanya pada sore/malam hari — slot waktu yang wajar untuk ajakan mengisi Customer Satisfaction Survey. Angka <strong>01:00 WIB</strong> pada kolom WIB adalah <strong>pencatatan momen yang sama dalam zona waktu Indonesia</strong>, bukan indikasi pengiriman pada jam yang berbeda.
         </div>
 
         <div class="callout info">
@@ -1565,6 +1560,10 @@
                 <li><strong>Jakarta Time (WIB) — acuan monitoring tim support.</strong> Backend dan halaman Instance Notification Detail mencatat waktu dalam WIB; kolom ini memudahkan tim support mencocokkan bahwa notifikasi benar-benar keluar dari sistem pada waktu yang terlewat <em>dan</em> diterima pengguna ALVIS pada waktu yang sama.</li>
             </ul>
             Kedua kolom sengaja disimpan berdampingan agar kesesuaian antara <em>waktu dijadwalkan</em>, <em>waktu dikirim</em>, dan <em>waktu diterima</em> dapat diverifikasi. Untuk instance ini seluruh jadwal — baik berbasis System timezone (WIB) maupun Tour timezone (Europe) — tertuan dengan benar.
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Catatan pembacaan tabel: selisih antara kedua jam berubah setelah 25 Oktober 2026.</strong> Seluruh notifikasi sampai 24 Oktober memakai <strong>CEST (UTC+2)</strong> — selisih −5 jam terhadap WIB; notifikasi 26–28 Oktober memakai <strong>CET (UTC+1)</strong> — selisih −6 jam, karena perpindahan DST Eropa terjadi pada hari Minggu, 25 Oktober 2026 pukul 03:00 CEST. Perlu dicatat bahwa <strong>kedua timestamp pada setiap baris selalu menunjuk momen pengiriman yang sama</strong> — notifikasi H-2, misalnya, tercatat 19:00 pada 25 Oktober <em>dan</em> 01:00 WIB pada 26 Oktober, yang secara absolut adalah waktu yang identik. Yang berubah hanyalah <strong>selisih antara kedua jam</strong>, bukan waktu pengiriman, dan bukan jadwal notifikasi di lokasi tur.
         </div>
 
         <p class="note">Catatan: perbedaan acuan jadwal antar-template pada tabel di atas bersifat disengaja. Template "Besok Kita Berangkat!" (15:00), "Selamat Memulai Perjalanan Anda !" (09:00), dan "Ceritakan Pengalaman Anda" (09:00) memakai <strong>System timezone (WIB)</strong>; "Dua Hari Lagi Kembali ke Indonesia" memakai <strong>Tour timezone (19:00 di lokasi tur)</strong>; sedangkan welcome message dan thank-you message dipicu oleh kejadian (join peserta &amp; submit survey), sehingga timestamp-nya adalah moment pemicu, bukan jadwal tetap.</p>
@@ -1682,7 +1681,7 @@
 
         <!-- SECTION 9: STATUS & ANOMALI -->
         <div class="section-title"><span class="num-tag">9</span> Status &amp; Anomali</div>
-        <p class="section-sub">Temuan utama terhadap status, keanehan data, perilaku yang diharapkan (<em>by design</em>), dan hal-hal yang perlu ditindaklanjuti oleh tim terkait. Temuan diurutkan berdasarkan prioritas: 1 temuan HIGH, 2 temuan MEDIUM, dan 4 temuan INFO.</p>
+        <p class="section-sub">Temuan utama terhadap status, keanehan data, perilaku yang diharapkan (<em>by design</em>), dan hal-hal yang perlu ditindaklanjuti oleh tim terkait. Temuan diurutkan berdasarkan prioritas: 1 temuan HIGH, 1 temuan MEDIUM, dan 4 temuan INFO.</p>
 
         <div class="finding">
             <div class="finding-num danger">1</div>
@@ -1697,17 +1696,6 @@
         <div class="finding">
             <div class="finding-num warn">2</div>
             <div class="finding-body">
-                <h4>Timestamp WIB pada notifikasi H-2 (01:00) adalah acuan monitoring — perlu rujukan agar tidak salah ditafsirkan <span class="prio mid">MEDIUM PRIORITY</span></h4>
-                <p><strong>What Happened:</strong> "Dua Hari Lagi Kembali ke Indonesia" dijadwalkan pada <strong>19:00 Tour timezone</strong> dan dikirim pada saat itu — yaitu 25 Oktober pukul 19:00 CET di lokasi tur. Pada sistem, pengiriman ini tercatat pada <strong>01:00 WIB tanggal 26 Oktober</strong>, karena kedua jam tersebut berbeda 6 jam (CET). Dari 12 notifikasi, hanya <strong>2 terkonfirmasi delivered</strong> — capture rate 16.7%, terendah di seluruh template instance ini.</p>
-                <p><strong>Why two clocks are recorded:</strong> <strong>Local Tour Time</strong> adalah acuan utama — waktu notifikasi benar-benar diterima peserta di lokasi tur, dan sekaligus dasar aturan jadwal template. <strong>Jakarta Time (WIB)</strong> dicatat sebagai pelengkap untuk <strong>memudahkan monitoring tim support</strong>, yaitu memastikan notifikasi benar-benar terkirim dari sistem dan diterima pengguna ALVIS pada waktu yang sama. Karena backend dan halaman Instance Notification Detail berada di WIB, tanpa kolom kedua ini tim support tidak akan dapat mencocokkan kedua sisi tersebut.</p>
-                <p><strong>Root Cause (DST):</strong> Template <code>tour_reminder_submit_survey_h-2</code> dijadwalkan pada 19:00 waktu tur, dan slot itu memang disengaja — sore/malam hari di lokasi tur adalah waktu yang wajar untuk ajakan mengisi survey. Yang perlu diwaspadai adalah <strong>transisi DST Eropa 25 Oktober</strong>: sebelum transisi, selisih WIB adalah −5 jam, sesudahnya −6 jam. Akibatnya timestamp monitoring untuk jadwal yang sama bergeser 1 jam, dan hal ini <strong>bukan tanda pengiriman yang tidak sesuai jadwal</strong>.</p>
-                <p><strong>Impact &amp; Action:</strong> <strong>Tidak ada cacat pada pengiriman</strong> — jadwal 19:00 waktu lokal sudah tepat dan capture rate yang rendah tidak boleh disimpulkan berasal dari waktu kirim. Actions: <strong>(a)</strong> sediakan rujukan konversi waktu pada halaman Instance Notification Detail dan panduan support (waktu penerimaan di lokasi tur = acuan utama; timestamp WIB = acuan monitoring; offset −5 jam menjadi −6 jam sejak 25 Oktober 2026) agar selisih 1 jam tidak memicu tiket palsu; <strong>(b)</strong> untuk capture rate 16.7% pada template ini, lanjutkan investigasi <strong>device-level</strong> yang sama seperti template lain, karena tidak ada indikasi penyebab pada sisi scheduling.</p>
-            </div>
-        </div>
-
-        <div class="finding">
-            <div class="finding-num warn">3</div>
-            <div class="finding-body">
                 <h4>Capture rate agregat 64.2% lebih tinggi dari capture rate pengiriman nyata (31.4%) <span class="prio mid">MEDIUM PRIORITY</span></h4>
                 <p><strong>What Happened:</strong> Angka headline "Delivered 43 (64.2%)" dihitung dari seluruh 6 event, termasuk 2 record yang statusnya belum menutup (SENDING dan SCHEDULED). Kedua record itu menyumbang <strong>32 dari 67 recipient (47.8%)</strong> dengan capture rate 100% karena metriknya hanya mencerminkan kumpulan recipient.</p>
                 <p><strong>Isolasi terhadap 4 event berstatus SENT:</strong> Sent 35, Delivered 11, Tapped 8 → <strong>capture rate 31.4%</strong> dan <strong>tap rate 72.7%</strong>. Ini adalah gambaran yang jauh lebih jujur mengenai notifikasi yang benar-benar dikirim: 64.6% yang pernah tiba tidak pernah dibuka.</p>
@@ -1716,7 +1704,7 @@
         </div>
 
         <div class="finding">
-            <div class="finding-num ok">4</div>
+            <div class="finding-num ok">3</div>
             <div class="finding-body">
                 <h4>Status SENDING pada welcome message — <em>by design</em>, bukan anomali <span class="prio low">INFO</span></h4>
                 <p><strong>What Happened:</strong> "Trip Anda Bersama Panorama JTB" tercatat berstatus <strong>SENDING</strong> sejak dikirim 15 Oktober pukul 15:17:06 WIB, dengan 17 recipient, 17 delivered, dan 7 tapped.</p>
@@ -1726,17 +1714,17 @@
         </div>
 
         <div class="finding">
-            <div class="finding-num ok">5</div>
+            <div class="finding-num ok">4</div>
             <div class="finding-body">
                 <h4>Status SCHEDULED pada thank-you message — <em>expected behavior</em> <span class="prio low">INFO</span></h4>
                 <p><strong>What Happened:</strong> "Terima Kasih atas Feedback Anda!" tercatat dengan status <strong>SCHEDULED</strong> pada 24 Oktober pukul 13:51:34 WIB dengan 15 recipient (15 delivered, 2 tapped). Dispatch-nya terjadi di tengah tur, dipicu saat seorang peserta mengisi survey.</p>
                 <p><strong>Why SCHEDULED, not SENT:</strong> Status SCHEDULED adalah <strong>kondisi normal dan permanen</strong> untuk template event-triggered — sistem membuat record SCHEDULED untuk setiap peserta yang eligible, namun baru benar-benar mengirim ke FCM ketika peserta tersebut submit survey. Ini identik dengan perilaku pada pilot KOP-07 (yang sempat komplain karena log ini tidak muncul di backoffice — bug tersebut sudah diperbaiki) maupun pada instance BCL-05.</p>
-                <p><strong>Recommendation:</strong> Tidak ada tindakan perbaikan pada statusnya. Namun akan lebih informatif jika halaman backoffice menampilkan label <strong>"Triggered by: Survey Submission"</strong> dan memisahkan kolom <em>recipient pool</em> dari <em>confirmed delivery</em>, agar capture rate agregat tidak terlihat lebih baik dari kenyataannya (Finding 3).</p>
+                <p><strong>Recommendation:</strong> Tidak ada tindakan perbaikan pada statusnya. Namun akan lebih informatif jika halaman backoffice menampilkan label <strong>"Triggered by: Survey Submission"</strong> dan memisahkan kolom <em>recipient pool</em> dari <em>confirmed delivery</em>, agar capture rate agregat tidak terlihat lebih baik dari kenyataannya (Finding 2).</p>
             </div>
         </div>
 
         <div class="finding">
-            <div class="finding-num ok">6</div>
+            <div class="finding-num ok">5</div>
             <div class="finding-body">
                 <h4>Fase on-trip berjalan tanpa notifikasi otomatis — <em>sesuai kebijakan</em>, bukan anomali <span class="prio low">INFO</span></h4>
                 <p><strong>What Happened:</strong> Pada rentang 17–23 Oktober (Hari ke-2 sampai ke-8 dari 12 hari tur) tidak ada notifikasi yang dikirim. Hal ini <strong>bukan kegagalan atau kekosongan yang tidak disengaja</strong> — template harian <em>"How's Your Journey So Far?"</em> <strong>tidak lagi dikirim untuk seluruh tur</strong> sesuai kebijakan notifikasi yang berlaku saat ini.</p>
@@ -1746,7 +1734,7 @@
         </div>
 
         <div class="finding">
-            <div class="finding-num ok">7</div>
+            <div class="finding-num ok">6</div>
             <div class="finding-body">
                 <h4>Tidak ada notifikasi gagal kirim (failed) pada seluruh siklus <span class="prio low">INFO</span></h4>
                 <p><strong>What Happened:</strong> Seluruh 67 notifikasi keluar dari sistem tanpa satu pun insiden FCM failure. Dibandingkan pilot KOP-07 yang mencatat <strong>5 notifikasi failed</strong> (35% dari template thank-you, kemungkinan besar karena token FCM invalid), instance EEX-12 bersih. Hal ini konsisten dengan perbaikan token handling dan adopsi aplikasi versi terbaru yang tercatat sejak pilot sebelumnya.</p>
@@ -1763,6 +1751,7 @@
             <ul>
                 <li><strong>Capture rate 64.2%</strong> — terbaik sepanjang 3 pilot, menandakan callback otomatis dari perangkat ke sistem semakin andal seiring adopsi versi aplikasi terbaru.</li>
                 <li><strong>Nol notifikasi gagal kirim</strong> — 67 pesan keluar sistem tanpa insiden FCM failure, bersih dibanding 5 failure pada pilot KOP-07.</li>
+                <li><strong>Seluruh notifikasi terkirim sesuai jadwalnya</strong> — tidak ada scheduling error; pencatatan waktu di lokasi tur maupun di WIB menunjukkan delivery berjalan pada waktu yang dijadwalkan untuk masing-masing template.</li>
                 <li><strong>Notifikasi yang sampai selalu dibaca</strong> — pada ketiga template dengan delivery terendah, tap rate mencapai 66.7%–100%; tidak ada notifikasi yang sampai tapi sepenuhnya terlewat.</li>
                 <li><strong>Seluruh fase yang dikonfigurasi terisi</strong> — Pre-Trip, Departure, Pre-Return, dan Post-Tour masing-masing punya notifikasi yang berjalan sesuai aturan template; fase on-trip berjalan tanpa notifikasi otomatis sesuai kebijakan.</li>
                 <li><strong>Template konsisten</strong> — 7 template yang sama dipakai di ketiga pilot, sehingga perbandingan antar-instance valid dan regresi mudah dideteksi.</li>
@@ -1774,7 +1763,6 @@
             <strong>⚠️ Yang perlu diperbaiki:</strong>
             <ul>
                 <li><strong>Jangkauan notifikasi</strong> — pre-trip reminder hanya menjangkau 41% peserta; participant list terkunci pada H-1. Instance formation harus digeser ke <strong>≥ H-4</strong>.</li>
-                <li><strong>Timestamp WIB pada notifikasi H-2 (01:00)</strong> — perlu rujukan konversi waktu (lokasi tur = acuan utama, WIB = acuan monitoring, offset −5 jam → −6 jam sejak 25 Okt) agar tim support tidak salah menandai.</li>
                 <li><strong>Transparansi metrik</strong> — pisahkan "delivery rate (closed events)" dari "pool coverage" agar KPI lintas-instance tidak over-stated.</li>
                 <li><strong>Anti-stacking H-1</strong> — beri jeda minimal 3–4 jam antara welcome message dan pre-trip reminder.</li>
             </ul>
@@ -1812,12 +1800,6 @@
                         <td><span class="status-pill pill-todo">OPEN</span></td>
                     </tr>
                     <tr>
-                        <td><strong>Rujukan konversi waktu (monitoring)</strong></td>
-                        <td>Menyusun rujukan konversi waktu pada halaman Instance Notification Detail dan panduan support: waktu penerimaan di lokasi tur sebagai acuan utama, timestamp WIB sebagai acuan monitoring, serta perubahan offset −5 jam (CEST) menjadi −6 jam (CET) sejak 25 Oktober 2026 — agar selisih 1 jam tidak ditafsirkan sebagai pengiriman yang tidak sesuai jadwal.</td>
-                        <td>Tim Backoffice &amp; Tim Support</td>
-                        <td><span class="status-pill pill-todo">OPEN</span></td>
-                    </tr>
-                    <tr>
                         <td><strong>Anti-stacking notifikasi H-1</strong></td>
                         <td>Memberi jarak minimal 3–4 jam antara welcome message (join-triggered) dan pre-trip reminder agar keduanya tidak tampil bersamaan di lock screen.</td>
                         <td>Tim Backoffice</td>
@@ -1846,7 +1828,7 @@
         </div>
 
         <div class="takeaway">
-            <strong>Bottom Line:</strong> Instance EEX-12 (Europe &amp; UK, FCO–AMS, 12D9N) adalah <strong>pilot dengan capture rate terbaik sejauh ini</strong> — 64.2% delivered dari 67 notifikasi, tanpa satu pun pengiriman gagal, dan dengan status SENDING/SCHEDULED yang terbukti <em>by design</em>. Namun seluruh nilai tersebut harus dibaca dengan kehati-hatian: <strong>jangkauan</strong> notifikasi adalah kelemahan utamanya — pre-trip reminder hanya menjangkau 7 dari ±17 peserta. Rekomendasi BCL-05 tentang <strong>scheduler instance formation</strong> (<em>≥ H-4</em>) <strong>belum diterapkan</strong> dan kini dampaknya terukur. Prioritas berikutnya: (1) geser pembentukan instance ke ≥ H-4 dan dynamiskan recipient list, (2) sediakan rujukan konversi waktu untuk monitoring (waktu lokasi tur = acuan utama, timestamp WIB = acuan monitoring, offset berubah −5 jam → −6 jam sejak 25 Oktober 2026), (3) pisahkan metrik delivery rate vs pool coverage di backoffice, dan (4) dokumentasikan kebijakan on-trip agar fase tanpa notifikasi otomatis tidak salah dibaca sebagai anomali. Secara keseluruhan fitur notifikasi <strong>sudah layak dilanjutkan ke lebih banyak instance</strong>, dengan perbaikan-perbaikan konfigurasi di atas sebagai prasyarat sebelum fase full roll-out.
+            <strong>Bottom Line:</strong> Instance EEX-12 (Europe &amp; UK, FCO–AMS, 12D9N) adalah <strong>pilot dengan capture rate terbaik sejauh ini</strong> — 64.2% delivered dari 67 notifikasi, tanpa satu pun pengiriman gagal, dan dengan status SENDING/SCHEDULED yang terbukti <em>by design</em>. Namun seluruh nilai tersebut harus dibaca dengan kehati-hatian: <strong>jangkauan</strong> notifikasi adalah kelemahan utamanya — pre-trip reminder hanya menjangkau 7 dari ±17 peserta. Rekomendasi BCL-05 tentang <strong>scheduler instance formation</strong> (<em>≥ H-4</em>) <strong>belum diterapkan</strong> dan kini dampaknya terukur. Prioritas berikutnya: (1) geser pembentukan instance ke ≥ H-4 dan dynamiskan recipient list, (2) pisahkan metrik delivery rate vs pool coverage di backoffice, dan (3) dokumentasikan kebijakan on-trip agar fase tanpa notifikasi otomatis tidak salah dibaca sebagai anomali. Secara keseluruhan fitur notifikasi <strong>sudah layak dilanjutkan ke lebih banyak instance</strong>, dengan perbaikan-perbaikan konfigurasi di atas sebagai prasyarat sebelum fase full roll-out.
         </div>
 
         <!-- GLOSSARY -->
@@ -1881,7 +1863,7 @@
             <dt>Local Tour Time</dt>
             <dd>Waktu notifikasi diterima peserta di lokasi tur. Acuan utama dalam pembahasan jadwal notifikasi, dan dasar aturan jadwal template (misal template H-2 dijadwalkan 19:00 waktu tur).</dd>
             <dt>Timestamp Monitoring (WIB)</dt>
-            <dd>Waktu pengiriman yang tercatat pada sistem dalam zona WIB. Dicatat sebagai pelengkap untuk memudahkan monitoring tim support memastikan notifikasi benar-benar terkirim dan diterima pengguna ALVIS pada waktu yang sama.</dd>
+            <dd>Waktu pengiriman yang tercatat pada sistem dalam zona WIB. Menunjuk <strong>momen yang sama</strong> dengan Local Tour Time — hanya ditulis dalam zona waktu Indonesia untuk memudahkan monitoring tim support memastikan notifikasi benar-benar terkirim dan diterima pengguna ALVIS pada waktu yang sama.</dd>
             <dt>Notification Instance</dt>
             <dd>Halaman backoffice yang menampilkan record notifikasi yang dikirim beserta status pengirimannya.</dd>
             <dt>Penanggung Jawab (PIC)</dt>
