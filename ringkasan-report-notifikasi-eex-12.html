@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Pilot Testing Notifikasi — Instance EEX-12 (Europe &amp; UK) — ALVIS Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --brand-50:  #fff7ed;
+            --brand-100: #ffedd5;
+            --brand-200: #fed7aa;
+            --brand-300: #fdba74;
+            --brand-400: #fb923c;
+            --brand-500: #f97316;
+            --brand-600: #ea580c;
+            --brand-700: #c2410c;
+            --brand-800: #9a3412;
+
+            --gray-50:  #fafaf9;
+            --gray-100: #f5f5f4;
+            --gray-200: #e7e5e4;
+            --gray-300: #d6d3d1;
+            --gray-400: #a8a29e;
+            --gray-500: #78716c;
+            --gray-600: #57534e;
+            --gray-700: #44403c;
+            --gray-800: #292524;
+            --gray-900: #1c1917;
+
+            --bg:        #fafaf9;
+            --card:      #ffffff;
+            --text:      #1c1917;
+            --text-muted:#57534e;
+            --text-subtle:#a8a29e;
+            --border:    #e7e5e4;
+            --border-soft:#f5f5f4;
+
+            --sent:      #d6d3d1;
+            --delivered: #f97316;
+            --tapped:    #c2410c;
+
+            --ok-bg:     #f0fdf4;
+            --ok-border: #86efac;
+            --ok-text:   #166534;
+            --warn-bg:   #fff7ed;
+            --warn-text: #9a3412;
+            --danger-bg: #fef2f2;
+            --danger-border: #fecaca;
+            --danger-text: #991b1b;
+            --danger-soft: #fee2e2;
+            --info-bg:   #eff6ff;
+            --info-border:#bfdbfe;
+            --info-text: #1e40af;
+
+            --radius:    12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 2px rgba(28,25,23,0.04);
+            --shadow:    0 2px 6px rgba(28,25,23,0.05), 0 1px 2px rgba(28,25,23,0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            padding: 32px 16px;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        /* HEADER */
+        .header-banner {
+            background: var(--card);
+            padding: 36px 40px 28px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .header-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--brand-500) 0%, var(--brand-400) 60%, var(--brand-300) 100%);
+        }
+        .brand-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-title i { color: var(--brand-500); }
+        .doc-subtitle {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+        .doc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--brand-50);
+            color: var(--brand-700);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+
+        /* INSTANCE INFO GRID */
+        .instance-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .info-cell {
+            background: var(--card);
+            padding: 18px 20px;
+        }
+        .info-cell .info-label {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .info-cell .info-label i {
+            font-size: 11px;
+            color: var(--brand-500);
+        }
+        .info-cell .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+        }
+        .info-cell .info-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+            word-break: break-word;
+        }
+        .health-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--ok-bg);
+            color: var(--ok-text);
+            border: 1px solid var(--ok-border);
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-top: 6px;
+        }
+        .health-pill .hp-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: #22c55e;
+        }
+        .meta-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border);
+        }
+        .meta-box .meta-item {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .meta-box .meta-item strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .meta-box .meta-item .label {
+            color: var(--text-subtle);
+            font-weight: 500;
+        }
+
+        .content { padding: 36px 40px 40px; }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 44px 0 4px;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title:first-of-type { margin-top: 0; }
+        .section-title .num-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 8px;
+            background: var(--brand-50);
+            color: var(--brand-600);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .section-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0 0 22px;
+        }
+        .sub-heading {
+            font-size: 13px;
+            font-weight: 700;
+            margin: 22px 0 10px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sub-heading i { color: var(--brand-500); }
+
+        /* EXEC CARD */
+        .exec-card {
+            background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-400) 100%);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        .exec-card::after {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 160px; height: 160px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+        .exec-card p strong { color: #fff; font-weight: 600; }
+        .exec-card .exec-tag {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.85;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .exec-card .exec-lead {
+            font-size: 14.5px;
+            color: #fff;
+            line-height: 1.7;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .exec-card .exec-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 14px 10px;
+            margin-bottom: 22px;
+            position: relative;
+        }
+        .exec-stat { text-align: center; color: #fff; padding: 0 4px; }
+        .exec-stat-num {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .exec-stat-label {
+            display: block;
+            font-size: 10.5px;
+            opacity: 0.9;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+        .exec-card .exec-concerns {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 18px;
+            position: relative;
+        }
+        .exec-concerns li {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 11px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            font-size: 13px;
+            line-height: 1.65;
+            color: #fff;
+        }
+        .exec-concerns li:last-child { border-bottom: none; padding-bottom: 0; }
+        .exec-num {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px; height: 22px;
+            background: rgba(255,255,255,0.28);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 1px;
+        }
+        .exec-concerns strong { color: #fff; font-weight: 600; }
+        .exec-card .exec-closing {
+            font-size: 13px;
+            color: #fff;
+            background: rgba(255,255,255,0.18);
+            padding: 10px 14px;
+            border-radius: 8px;
+            line-height: 1.6;
+            position: relative;
+        }
+        .exec-card .exec-closing strong { color: #fff; font-weight: 600; }
+
+        /* KPI CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 18px 0 14px;
+        }
+        .kpi-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .kpi-card:hover {
+            border-color: var(--brand-300);
+            transform: translateY(-1px);
+        }
+        .kpi-card .kpi-label {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .kpi-card .kpi-label i {
+            color: var(--brand-500);
+            font-size: 11px;
+        }
+        .kpi-card .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        .kpi-card .kpi-value .unit {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-left: 3px;
+        }
+        .kpi-card .kpi-note {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            margin-top: 6px;
+            line-height: 1.3;
+        }
+        .kpi-card.accent { background: var(--brand-50); border-color: var(--brand-100); }
+        .kpi-card.accent .kpi-value { color: var(--brand-700); }
+        .kpi-card.ok { background: var(--ok-bg); border-color: var(--ok-border); }
+        .kpi-card.ok .kpi-value { color: var(--ok-text); }
+        .kpi-card.warn { background: var(--warn-bg); border-color: var(--brand-200); }
+        .kpi-card.warn .kpi-value { color: var(--warn-text); }
+        .kpi-card.danger { background: var(--danger-bg); border-color: var(--danger-soft); }
+        .kpi-card.danger .kpi-value { color: var(--danger-text); }
+
+        /* TAKEAWAY */
+        .takeaway {
+            background: var(--brand-50);
+            border: 1px solid var(--brand-100);
+            border-left: 3px solid var(--brand-500);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            font-size: 13.5px;
+            color: var(--text);
+            margin: 6px 0 14px;
+        }
+        .takeaway strong { color: var(--brand-700); font-weight: 600; }
+
+        /* FUNNEL */
+        .funnel-wrap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 14px 0;
+        }
+        .funnel {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-width: 720px;
+            margin: 8px auto 0;
+        }
+        .funnel-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .funnel-label {
+            flex: 0 0 130px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .funnel-label .dot {
+            width: 10px; height: 10px; border-radius: 3px;
+        }
+        .funnel-bar {
+            flex: 1;
+            height: 48px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .funnel-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+        .funnel-fill.sent { background: var(--sent); }
+        .funnel-fill.delivered { background: var(--delivered); }
+        .funnel-fill.tapped { background: var(--tapped); }
+        .funnel-fill .funnel-val {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+        .funnel-fill.sent .funnel-val { color: var(--gray-800); }
+        .funnel-conversion {
+            flex: 0 0 90px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+            font-weight: 500;
+        }
+        .funnel-conversion strong { color: var(--brand-700); font-weight: 700; }
+        .funnel-caption {
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--text-subtle);
+            margin-top: 14px;
+        }
+
+        /* TABLES */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 14px 0 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            font-size: 13px;
+        }
+        table.data-table th {
+            background: var(--gray-50);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 14px;
+            white-space: nowrap;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid var(--border);
+        }
+        table.data-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-soft);
+            color: var(--text);
+            vertical-align: top;
+        }
+        table.data-table tbody tr:last-child td { border-bottom: none; }
+        table.data-table tbody tr:hover { background: var(--gray-50); }
+        table.data-table tbody tr.row-warn td { background: var(--warn-bg); }
+        table.data-table tbody tr.row-info td { background: var(--info-bg); }
+        table.data-table tbody tr.row-danger td { background: var(--danger-bg); }
+        table.data-table tbody tr.total-row td {
+            background: var(--gray-50);
+            font-weight: 600;
+            border-top: 1px solid var(--border);
+        }
+        table.data-table tr.highlight-row td { background: var(--ok-bg); }
+
+        .num { text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+        .metric-chip {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            font-weight: 500;
+        }
+        .dot {
+            width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+        }
+        .dot.sent { background: var(--sent); }
+        .dot.delivered { background: var(--delivered); }
+        .dot.tapped { background: var(--tapped); }
+
+        .date-group-header {
+            background: var(--brand-50);
+            font-weight: 700;
+            color: var(--brand-800);
+            font-size: 12.5px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .date-group-header .badge-count {
+            font-size: 10.5px;
+            font-weight: 600;
+            background: var(--brand-200);
+            color: var(--brand-800);
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin-left: auto;
+        }
+
+        .msg-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+            font-size: 13.5px;
+        }
+        .msg-body {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.55;
+            font-style: italic;
+            max-width: 460px;
+        }
+        .time-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .time-block strong {
+            color: var(--text);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* STATUS PILLS */
+        .status-pill {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+        .status-pill .pill-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .pill-sent { background: var(--ok-bg); color: var(--ok-text); }
+        .pill-sent .pill-dot { background: var(--ok-text); }
+        .pill-sending { background: var(--warn-bg); color: var(--warn-text); animation: pulse 1.5s infinite; }
+        .pill-sending .pill-dot { background: var(--warn-text); }
+        .pill-scheduled { background: var(--gray-100); color: var(--gray-700); }
+        .pill-scheduled .pill-dot { background: var(--gray-600); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* BAR CHART */
+        .chart-wrap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin: 14px 0;
+        }
+        .chart-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            color: var(--text);
+        }
+        .chart-caption {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+        }
+        .bar-chart {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 6px;
+            height: 220px;
+            padding: 0 4px;
+        }
+        .bar-day {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .bar {
+            width: 14px;
+            border-radius: 3px 3px 0 0;
+            min-height: 1px;
+            transition: opacity 0.2s;
+        }
+        .bar:hover { opacity: 0.75; }
+        .bar.sent { background: var(--sent); }
+        .bar.delivered { background: var(--delivered); }
+        .bar.tapped { background: var(--tapped); }
+        .bar-gap {
+            width: 14px;
+            height: 12px;
+            border: 1.5px dashed var(--gray-300);
+            border-radius: 3px;
+            background: var(--gray-100);
+        }
+        .bar-day.gap-day .day-label { color: var(--text-muted); font-weight: 600; }
+        .bar-day.gap-day .day-total { color: var(--text-subtle); font-weight: 500; }
+        .bar-day .day-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .bar-day .day-total {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            margin-top: 2px;
+            white-space: nowrap;
+        }
+        .chart-legend {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+        /* CALLOUT */
+        .callout {
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            font-size: 13.5px;
+            margin: 14px 0;
+            border: 1px solid;
+            line-height: 1.6;
+        }
+        .callout.warn {
+            background: var(--warn-bg);
+            border-color: var(--brand-200);
+            border-left: 3px solid var(--brand-500);
+            color: var(--warn-text);
+        }
+        .callout.ok {
+            background: var(--ok-bg);
+            border-color: var(--ok-border);
+            border-left: 3px solid #22c55e;
+            color: var(--ok-text);
+        }
+        .callout.danger {
+            background: var(--danger-bg);
+            border-color: var(--danger-border);
+            border-left: 3px solid #ef4444;
+            color: var(--danger-text);
+        }
+        .callout.info {
+            background: var(--info-bg);
+            border-color: var(--info-border);
+            border-left: 3px solid #3b82f6;
+            color: var(--info-text);
+        }
+        .callout strong { font-weight: 600; color: inherit; }
+        .callout ul { margin: 8px 0 0 22px; }
+        .callout ul li { margin-bottom: 6px; }
+        .callout ul li:last-child { margin-bottom: 0; }
+
+        /* PHASE TIMELINE */
+        .phase-timeline {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            margin: 14px 0;
+        }
+        .phase-track {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            position: relative;
+            margin-top: 8px;
+        }
+        .phase-step {
+            flex: 1;
+            padding: 14px 16px;
+            border-right: 1px dashed var(--border);
+            position: relative;
+        }
+        .phase-step:last-child { border-right: none; }
+        .phase-step .phase-date {
+            font-size: 10.5px;
+            color: var(--text-subtle);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 4px;
+        }
+        .phase-step .phase-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .phase-notifs {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .phase-notif {
+            font-size: 11.5px;
+            color: var(--brand-700);
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: var(--brand-50);
+            line-height: 1.4;
+            border-left: 2px solid var(--brand-500);
+        }
+        .phase-notif.empty {
+            background: var(--gray-50);
+            color: var(--text-subtle);
+            border-left-color: var(--border);
+            font-style: italic;
+        }
+        .phase-step.quiet { background: var(--gray-50); }
+        .phase-step.quiet .phase-name { color: var(--text-muted); }
+        .phase-step.quiet .phase-notif.empty {
+            background: var(--card);
+            color: var(--text-muted);
+            border-left-color: var(--gray-300);
+        }
+
+
+        .note {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* GLOSSARY */
+        .glossary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 32px;
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 26px;
+        }
+        .glossary dt { font-weight: 600; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+        .glossary dd { font-size: 12.5px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.6; }
+        .glossary dd:last-child { margin-bottom: 0; }
+
+        .footer-note {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-subtle);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .instance-info { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+            .instance-info { grid-template-columns: 1fr; }
+            .header-banner { padding: 28px 24px 22px; }
+            .content { padding: 28px 24px 32px; }
+            .brand-title { font-size: 19px; }
+            .phase-track { flex-direction: column; }
+            .phase-step { border-right: none; border-bottom: 1px dashed var(--border); }
+            .phase-step:last-child { border-bottom: none; }
+            .funnel-row { flex-direction: column; align-items: stretch; gap: 6px; }
+            .funnel-label { flex: none; }
+            .funnel-conversion { flex: none; text-align: left; }
+            .exec-card .exec-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .glossary { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header-banner">
+        <div class="brand-title"><i class="fa-solid fa-bell"></i> Laporan Pilot Testing Notifikasi</div>
+        <div class="doc-subtitle">Ringkasan Kinerja Notifikasi Otomatis — Instance Tur EEX-12 · ALVIS Apps</div>
+        <span class="doc-badge">📌 Ringkasan eksekutif untuk satu instance tur</span>
+        <div class="meta-box">
+            <span class="meta-item"><span class="label">Catalog:</span> <strong>EEX-12 1016/QR [FCO-AMS] + VENICE, VOLENDAM &amp; TITISEE (12D9N)</strong></span>
+            <span class="meta-item"><span class="label">Periode Tur:</span> <strong>16 – 27 Oktober 2026</strong></span>
+            <span class="meta-item"><span class="label">Periode Notifikasi:</span> <strong>15 – 28 Oktober 2026</strong></span>
+            <span class="meta-item"><span class="label">Tanggal Laporan:</span> <strong>29 Oktober 2026</strong></span>
+        </div>
+    </div>
+
+    <!-- INSTANCE INFO -->
+    <div class="instance-info">
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-location-dot"></i> Destinasi</div>
+            <div class="info-value">EUROPE &amp; UK</div>
+            <div class="info-sub">Experience West Europe</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-user-tie"></i> Tour Leader</div>
+            <div class="info-value">MAHARSANING BASUKI</div>
+            <div class="info-sub">maharsaning.basuki@panorama-jtb.com</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-plane-departure"></i> Rute</div>
+            <div class="info-value">FCO → AMS</div>
+            <div class="info-sub">Rome (Fiumicino) → Amsterdam (Schiphol)</div>
+        </div>
+        <div class="info-cell">
+            <div class="info-label"><i class="fa-solid fa-heart-pulse"></i> Health Indicator</div>
+            <div class="info-value">100%</div>
+            <div class="info-sub"><span class="health-pill"><span class="hp-dot"></span>Good health</span></div>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- 1. RINGKASAN EKSEKUTIF -->
+        <div class="section-title"><span class="num-tag">1</span> Ringkasan Eksekutif</div>
+        <p class="section-sub">Kinerja notifikasi otomatis untuk tur EEX-12 selama periode 15 – 28 Oktober 2026, diuraikan dalam enam event notifikasi yang dikirim kepada peserta tur.</p>
+
+        <div class="exec-card">
+            <p class="exec-lead">Sistem mengirim <strong>67 notifikasi</strong> melalui <strong>6 event</strong> kepada peserta tur EEX-12 (Europe &amp; UK, FCO–AMS, 12 hari). Dari jumlah tersebut, <strong>43 tercatat sampai ke perangkat peserta</strong> (64.2%) dan <strong>17 dibuka</strong> (39.5% dari yang tercatat sampai). Kinerja delivery ini merupakan <strong>terbaik di antara tiga pilot</strong> yang telah dijalankan, dan tidak ditemukan satu pun notifikasi yang gagal dikirim.</p>
+
+            <div class="exec-stats">
+                <div class="exec-stat">
+                    <span class="exec-stat-num">67</span>
+                    <span class="exec-stat-label">Notifikasi Dikirim</span>
+                </div>
+                <div class="exec-stat">
+                    <span class="exec-stat-num">43</span>
+                    <span class="exec-stat-label">Sampai ke Perangkat (64.2%)</span>
+                </div>
+                <div class="exec-stat">
+                    <span class="exec-stat-num">17</span>
+                    <span class="exec-stat-label">Dibuka peserta</span>
+                </div>
+                <div class="exec-stat">
+                    <span class="exec-stat-num">25.4%</span>
+                    <span class="exec-stat-label">Dibuka dari Total Dikirim</span>
+                </div>
+            </div>
+
+            <ul class="exec-concerns">
+                <li><span class="exec-num">1</span><span><strong>Kinerja delivery sudah memadai.</strong> Capture rate 64.2% adalah nilai tertinggi sepanjang tiga pilot (37.5% pada KOP-07, 53.4% pada BCL-05), seluruh notifikasi terkirim sesuai jadwalnya, dan tidak ada kegagalan pengiriman.</span></li>
+                <li><span class="exec-num">2</span><span><strong>Engagement peserta masih rendah.</strong> Hanya 17 dari 67 notifikasi yang pernah disentuh peserta. Dihitung terhadap jumlah peserta tur, engagement ini setara <strong>1,0 tap per peserta</strong> sepanjang durasi tur 12 hari.</span></li>
+                <li><span class="exec-num">3</span><span><strong>Penyebab utama sudah dapat diidentifikasi.</strong> Angka tap rate 39.5% tertutup oleh dua record yang belum berstatus final, sedangkan notifikasi yang disertai <strong>CTA eksplisit</strong> mencapai tap rate 100%.</span></li>
+            </ul>
+
+            <p class="exec-closing">✅ <strong>Kesimpulan:</strong> Fitur notifikasi otomatis dapat dinyatakan <strong>layak dilanjutkan ke instance tur berikutnya</strong>. Fokus perbaikan pada periode berikutnya perlu diarahkan ke sisi <strong>engagement</strong> — memastikan setiap notifikasi memberikan alasan yang jelas bagi peserta untuk membukanya — bukan ke sisi pengiriman.</p>
+        </div>
+
+        <!-- 2. KINERJA NOTIFIKASI -->
+        <div class="section-title"><span class="num-tag">2</span> Kinerja Notifikasi</div>
+        <p class="section-sub">Ringkasan jumlah notifikasi pada setiap tahap — dikirim, sampai ke perangkat, dan dibuka peserta — beserta rincian per event notifikasi.</p>
+
+        <div class="kpi-grid">
+            <div class="kpi-card accent">
+                <div class="kpi-label"><i class="fa-solid fa-paper-plane"></i> Dikirim</div>
+                <div class="kpi-value">67</div>
+                <div class="kpi-note">pada 6 event notifikasi</div>
+            </div>
+            <div class="kpi-card ok">
+                <div class="kpi-label"><i class="fa-solid fa-circle-check"></i> Sampai ke Perangkat</div>
+                <div class="kpi-value">43<span class="unit">(64.2%)</span></div>
+                <div class="kpi-note">rasio terhadap total dikirim</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-hand-pointer"></i> Dibuka</div>
+                <div class="kpi-value">17</div>
+                <div class="kpi-note">25.4% dari 67 notifikasi</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-arrow-trend-up"></i> Tap Rate</div>
+                <div class="kpi-value">39.5<span class="unit">%</span></div>
+                <div class="kpi-note">dibuka ÷ sampai ke perangkat</div>
+            </div>
+        </div>
+
+        <div class="funnel-wrap">
+            <div class="chart-title">Alur Engagement — Keseluruhan 6 Event Notifikasi</div>
+            <div class="chart-caption">Sent (total keluar sistem) → Delivered (terkonfirmasi sampai ke perangkat) → Tapped (dibuka peserta).</div>
+            <div class="funnel">
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--sent);"></span> Dikirim</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill sent" style="width:100%;"><span class="funnel-val">67 notifikasi</span></div>
+                    </div>
+                    <div class="funnel-conversion">dasar</div>
+                </div>
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--delivered);"></span> Sampai</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill delivered" style="width:64.2%;"><span class="funnel-val">43</span></div>
+                    </div>
+                    <div class="funnel-conversion"><strong>64.2%</strong> dari dikirim</div>
+                </div>
+                <div class="funnel-row">
+                    <div class="funnel-label"><span class="dot" style="background:var(--tapped);"></span> Dibuka</div>
+                    <div class="funnel-bar">
+                        <div class="funnel-fill tapped" style="width:25.4%;"><span class="funnel-val">17</span></div>
+                    </div>
+                    <div class="funnel-conversion"><strong>25.4%</strong> dari dikirim<br><strong>39.5%</strong> dari sampai</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:27%;">Event Notifikasi</th>
+                        <th style="width:9%;">Status</th>
+                        <th style="width:13%;">Waktu Kirim (WIB)</th>
+                        <th style="width:5%;" class="num">S</th>
+                        <th style="width:5%;" class="num">D</th>
+                        <th style="width:5%;" class="num">T</th>
+                        <th style="width:9%;" class="num">Capture</th>
+                        <th style="width:9%;" class="num">Tap Rate</th>
+                        <th style="width:9%;" class="num">Jangkauan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row-warn">
+                        <td><strong>✈️ Besok Kita Berangkat!</strong><br><span style="font-size:11px; color:var(--text-muted);">Pengingat pra-keberangkatan · H-1</span></td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td class="num">15 Okt 2026<br>15:00:00</td>
+                        <td class="num">7</td><td class="num">3</td><td class="num">1</td>
+                        <td class="num">42.9%</td><td class="num">33.3%</td><td class="num">41.2%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>✈️ Trip Anda Bersama Panorama JTB</strong><br><span style="font-size:11px; color:var(--text-muted);">Pesan sambutan · dipicu saat peserta bergabung</span></td>
+                        <td><span class="status-pill pill-sending"><span class="pill-dot"></span> SENDING</span></td>
+                        <td class="num">15 Okt 2026<br>15:17:06</td>
+                        <td class="num">17</td><td class="num">17</td><td class="num">7</td>
+                        <td class="num">100%*</td><td class="num">41.2%</td><td class="num">100%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>✈️ Selamat Memulai Perjalanan Anda!</strong><br><span style="font-size:11px; color:var(--text-muted);">Ucapan keberangkatan · Hari ke-1</span></td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td class="num">16 Okt 2026<br>09:00:00</td>
+                        <td class="num">9</td><td class="num">3</td><td class="num">2</td>
+                        <td class="num">33.3%</td><td class="num">66.7%</td><td class="num">52.9%</td>
+                    </tr>
+                    <tr class="row-info">
+                        <td><strong>💙 Terima Kasih atas Feedback Anda!</strong><br><span style="font-size:11px; color:var(--text-muted);">Ucapan terima kasih · dipicu saat peserta mengisi survei</span></td>
+                        <td><span class="status-pill pill-scheduled"><span class="pill-dot"></span> SCHEDULED</span></td>
+                        <td class="num">24 Okt 2026<br>13:51:34</td>
+                        <td class="num">15</td><td class="num">15</td><td class="num">2</td>
+                        <td class="num">100%*</td><td class="num">13.3%</td><td class="num">88.2%</td>
+                    </tr>
+                    <tr class="row-danger">
+                        <td><strong>🏠 Dua Hari Lagi Kembali ke Indonesia</strong><br><span style="font-size:11px; color:var(--text-muted);">Pengingat survei · H-2</span></td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td class="num">26 Okt 2026<br>01:00:00</td>
+                        <td class="num">12</td><td class="num">2</td><td class="num">2</td>
+                        <td class="num">16.7%</td><td class="num">100%</td><td class="num">70.6%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>💙 Ceritakan Pengalaman Anda</strong><br><span style="font-size:11px; color:var(--text-muted);">Pengingat survei · H+1</span></td>
+                        <td><span class="status-pill pill-sent"><span class="pill-dot"></span> SENT</span></td>
+                        <td class="num">28 Okt 2026<br>09:00:00</td>
+                        <td class="num">7</td><td class="num">3</td><td class="num">3</td>
+                        <td class="num">42.9%</td><td class="num">100%</td><td class="num">41.2%</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="3"><strong>TOTAL</strong></td>
+                        <td class="num"><strong>67</strong></td><td class="num"><strong>43</strong></td><td class="num"><strong>17</strong></td>
+                        <td class="num"><strong>64.2%</strong></td><td class="num"><strong>39.5%</strong></td><td class="num">—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="note">Keterangan: <strong>S</strong> = dikirim, <strong>D</strong> = sampai ke perangkat, <strong>T</strong> = dibuka peserta. <strong>Jangkauan</strong> dihitung terhadap estimasi jumlah peserta tur (±17 peserta), yang diambil dari jumlah penerima terbesar yang tercatat. Tanda (*) pada kolom Capture menandakan record yang belum berstatus final, sehingga nilai capture mencerminkan kumpulan penerima dan bukan konfirmasi penerimaan.</p>
+
+        <!-- 3. ANALISIS ENGAGEMENT -->
+        <div class="section-title"><span class="num-tag">3</span> Analisis Engagement</div>
+        <p class="section-sub">Uraian mengenai tingkat engagement peserta. Angka tap rate 39.5% merupakan angka gabungan; bagian ini memisahkan komponen yang benar-benar mengukur engagement dari komponen yang merupakan artefak pencatatan.</p>
+
+        <div class="sub-heading"><i class="fa-solid fa-layer-group"></i> 3.1 Angka 39.5% merupakan gabungan dua kelompok data</div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:30%;">Kelompok Record</th>
+                        <th style="width:20%;">Status</th>
+                        <th style="width:11%;" class="num">Sampai</th>
+                        <th style="width:11%;" class="num">Dibuka</th>
+                        <th style="width:12%;" class="num">Tap Rate</th>
+                        <th style="width:16%;">Makna Angka</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td><strong>Event yang telah selesai</strong><br><span style="font-size:11px; color:var(--text-muted);">pengiriman sudah final</span></td>
+                        <td>SENT</td>
+                        <td class="num">11</td><td class="num">8</td>
+                        <td class="num"><strong>72.7%</strong></td>
+                        <td>Angka engagement yang paling dapat diandalkan</td>
+                    </tr>
+                    <tr class="row-warn">
+                        <td><strong>Record yang belum selesai</strong><br><span style="font-size:11px; color:var(--text-muted);">kolom "sampai" menyatakan jumlah penerima</span></td>
+                        <td>SENDING · SCHEDULED</td>
+                        <td class="num">32</td><td class="num">9</td>
+                        <td class="num">28.1%</td>
+                        <td>Menggabungkan kumpulan penerima dengan jumlah pembukaan aktual</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>Agregat (angka utama laporan)</strong></td>
+                        <td>seluruh</td>
+                        <td class="num"><strong>43</strong></td><td class="num"><strong>17</strong></td>
+                        <td class="num"><strong>39.5%</strong></td>
+                        <td>Kombinasi kedua kelompok</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="callout warn">
+            <strong>⚠️ Dua record yang belum selesai menyumbang 74.4% penyebut dan hanya 52.9% jumlah pembukaan.</strong> Pada pesan sambutan dan pesan terima kasih, kolom "sampai" menyatakan jumlah penerima yang tercatat, bukan konfirmasi bahwa pesan benar-benar diterima perangkat. Keduanya karena itu menurunkan tap rate agregat secara struktural, bukan karena peserta yang menerimanya kurang tertarik. Kondisi ini diperparah oleh satu baris, yaitu pesan terima kasih yang mencatat 15 penerima dengan hanya 2 pembukaan (13.3%).
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-ruler-horizontal"></i> 3.2 Tiga sudut pandang atas angka yang sama</div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-hand-pointer"></i> Tap Rate</div>
+                <div class="kpi-value">39.5<span class="unit">%</span></div>
+                <div class="kpi-note">17 ÷ 43 yang sampai ke perangkat</div>
+            </div>
+            <div class="kpi-card danger">
+                <div class="kpi-label"><i class="fa-solid fa-paper-plane"></i> Dibuka per Dikirim</div>
+                <div class="kpi-value">25.4<span class="unit">%</span></div>
+                <div class="kpi-note">17 ÷ 67 — 3 dari 4 pesan tidak pernah disentuh</div>
+            </div>
+            <div class="kpi-card danger">
+                <div class="kpi-label"><i class="fa-solid fa-user"></i> Pembukaan per Peserta</div>
+                <div class="kpi-value">1.0<span class="unit">×</span></div>
+                <div class="kpi-note">17 pembukaan ÷ 17 peserta sepanjang tur 12 hari</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label"><i class="fa-solid fa-list-check"></i> Template Produktif</div>
+                <div class="kpi-value">1<span class="unit"> dari 6</span></div>
+                <div class="kpi-note">hanya pesan sambutan yang melampaui 3 pembukaan</div>
+            </div>
+        </div>
+
+        <div class="callout danger">
+            <strong>🔴 Permasalahan utamanya terletak pada skalanya, bukan hanya pada rasionya.</strong> Tiga dari setiap empat notifikasi yang dikirim <strong>tidak pernah disentuh</strong>. Untuk tur beranggota 12 hari dengan ±17 peserta, total 17 pembukaan setara <strong>1,0 tap per peserta untuk seluruh durasi tur</strong>. Selain pesan sambutan yang mencatat 7 pembukaan, <strong>tidak satu pun template lain menyentuh lebih dari 3 peserta</strong>. Berapa pun rasio yang dipilih sebagai ukuran, jumlah peserta yang benar-benar kembali ke aplikasi ALVIS tetap sangat terbatas.
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-envelope-open-text"></i> 3.3 Pola menurut karakter pesan</div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:26%;">Template</th>
+                        <th style="width:22%;">Karakter Pesan</th>
+                        <th style="width:10%;" class="num">Sampai</th>
+                        <th style="width:10%;" class="num">Dibuka</th>
+                        <th style="width:11%;" class="num">Tap Rate</th>
+                        <th style="width:21%;">Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>🏠 Dua Hari Lagi Kembali ke Indonesia</strong></td>
+                        <td>Tindakan tunggal dan eksplisit<br><span style="font-size:10.5px; color:var(--text-muted);">"Buka survei DI SINI"</span></td>
+                        <td class="num">2</td><td class="num">2</td><td class="num">100%</td>
+                        <td>Setiap penerima membuka</td>
+                    </tr>
+                    <tr>
+                        <td><strong>💙 Ceritakan Pengalaman Anda</strong></td>
+                        <td>Tindakan tunggal dan eksplisit<br><span style="font-size:10.5px; color:var(--text-muted);">"isi survei di ALVIS"</span></td>
+                        <td class="num">3</td><td class="num">3</td><td class="num">100%</td>
+                        <td>Setiap penerima membuka</td>
+                    </tr>
+                    <tr>
+                        <td><strong>✈️ Selamat Memulai Perjalanan Anda!</strong></td>
+                        <td>Ucapan,<br><span style="font-size:10.5px; color:var(--text-muted);">tanpa ajakan tindakan</span></td>
+                        <td class="num">3</td><td class="num">2</td><td class="num">66.7%</td>
+                        <td>2 dari 3 membuka</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>✈️ Trip Anda Bersama Panorama JTB</strong></td>
+                        <td>Manfaat yang jelas, tanpa urgensi<br><span style="font-size:10.5px; color:var(--text-muted);">"detail perjalanan tersedia di ALVIS"</span></td>
+                        <td class="num">17</td><td class="num">7</td><td class="num">41.2%</td>
+                        <td>Template dengan penyebut terbesar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>✈️ Besok Kita Berangkat!</strong></td>
+                        <td>Daftar periksa yang panjang<br><span style="font-size:10.5px; color:var(--text-muted);">tanpa satu tindakan yang jelas</span></td>
+                        <td class="num">3</td><td class="num">1</td><td class="num">33.3%</td>
+                        <td>Pesan terpanjang, ajakan tidak tegas</td>
+                    </tr>
+                    <tr class="row-warn">
+                        <td><strong>💙 Terima Kasih atas Feedback Anda!</strong></td>
+                        <td>Tanpa ajakan tindakan sama sekali<br><span style="font-size:10.5px; color:var(--text-muted);">pesan tanpa ajakan</span></td>
+                        <td class="num">15</td><td class="num">2</td><td class="num">13.3%</td>
+                        <td>Terendah, tetapi hanya 2 yang benar-benar dikirim</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="note">Catatan: pola di atas bersifat <strong>indikatif dan belum final</strong>. Empat dari enam template memiliki penyebut hanya 2 – 3, sehingga satu kejadian saja dapat menggeser tap rate sebesar 33 – 50 poin. Dua baris yang paling dapat diandalkan adalah pesan sambutan (n=17) dan pesan terima kasih (n=15).</p>
+
+        <div class="callout info">
+            <strong>ℹ️ Bacaan yang dapat diambil:</strong> peserta tampaknya <strong>tidak kehilangan minat</strong>, melainkan tidak diberi alasan yang jelas untuk menyentuh notifikasi. Dua template dengan tindakan tunggal mencapai tap rate 100%, sedangkan dua template tanpa ajakan tindakan berada pada posisi terendah. Namun keterbatasan data pada 3.4 perlu diperhatikan sebelum pola ini dijadikan dasar perubahan isi pesan.
+        </div>
+
+        <div class="sub-heading"><i class="fa-solid fa-scale-balanced"></i> 3.4 Batas validitas dan perbandingan antar-pilot</div>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:26%;">Pilot</th>
+                        <th style="width:11%;" class="num">Dikirim</th>
+                        <th style="width:15%;" class="num">Sampai</th>
+                        <th style="width:11%;" class="num">Dibuka</th>
+                        <th style="width:13%;" class="num">Tap Rate</th>
+                        <th style="width:14%;" class="num">Dibuka per Dikirim</th>
+                        <th style="width:10%;">Durasi Tur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>KOP-07 0813/SQ</strong><br><span style="font-size:11px; color:var(--text-muted);">12 – 19 Agustus 2026</span></td>
+                        <td class="num">128</td><td class="num">48 <span style="font-weight:400; color:var(--text-muted);">(37.5%)</span></td><td class="num">31</td>
+                        <td class="num">64.6%</td><td class="num">24.2%</td><td>8 hari</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BCL-05 0923/QG</strong><br><span style="font-size:11px; color:var(--text-muted);">22 – 28 September 2026</span></td>
+                        <td class="num">103</td><td class="num">55 <span style="font-weight:400; color:var(--text-muted);">(53.4%)</span></td><td class="num">21</td>
+                        <td class="num">38.2%</td><td class="num">20.4%</td><td>5 hari</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>EEX-12 1016/QR</strong><br><span style="font-size:11px; color:var(--text-muted);">15 – 28 Oktober 2026</span></td>
+                        <td class="num">67</td><td class="num">43 <span style="font-weight:400; color:var(--text-muted);">(64.2%)</span></td><td class="num">17</td>
+                        <td class="num">39.5%</td><td class="num"><strong>25.4%</strong></td><td>12 hari</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Penurunan tap rate antar-pilot sebagian besar merupakan pengaruh komposisi penyebut.</strong> Tap rate menurun dari 64.6% → 38.2% → 39.5%, namun <strong>rasio pembukaan terhadap total pesan yang dikirim justru meningkat</strong>: 24.2% → 20.4% → <strong>25.4%</strong>. Penyebabnya adalah semakin luasnya jangkauan capture rate (37.5% → 53.4% → 64.2%), sehingga penyebut "sampai" semakin banyak terisi peserta yang memang tidak berniat menyentuh notifikasi. <strong>EEX-12 merupakan pilot terbaik secara relatif terhadap seluruh pesan yang dikirim</strong>, meskipun secara rasio tampak paling rendah.
+        </div>
+
+        <div class="callout danger">
+            <strong>🔴 Size data per template masih terlalu kecil untuk dijadikan dasar perubahan desain pesan.</strong> Empat dari enam template memiliki penyebut hanya 2 – 3. Pada penyebut 2, satu pembukaan saja menggeser angka sebesar 50 poin. Karena itu pola pada 3.3 <strong>tidak dapat digunakan sebagai dasar tunggal</strong> untuk mengubah isi atau template notifikasi. Yang diperlukan adalah pengumpulan data lanjutan: instance dengan volume peserta lebih besar, serta pencatatan alasan peserta tidak menyentuh notifikasi yang saat ini belum tersedia sama sekali.
+        </div>
+
+        <!-- 4. TEMUAN UTAMA -->
+        <div class="section-title"><span class="num-tag">4</span> Temuan Utama</div>
+        <p class="section-sub">Tujuh temuan terhadap status notifikasi, keanehan data, serta perilaku yang memang diharapkan. Temuan diurutkan berdasarkan prioritas: dua temuan berkategori tinggi, satu sedang, dan empat bersifat informasi.</p>
+
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width:5%;" class="num">No</th>
+                        <th style="width:27%;">Temuan</th>
+                        <th style="width:10%;">Prioritas</th>
+                        <th style="width:58%;">Ringkasan dan Dampak</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="num">1</td>
+                        <td><strong>Pengingat keberangkatan hanya menjangkau 7 dari ±17 peserta</strong></td>
+                        <td><span class="status-pill pill-sent" style="font-size:10px;">TINGGI</span></td>
+                        <td>Instance notifikasi baru dibentuk pada H-1 (15 Oktober), sehingga daftar peserta masih bertambah ketika pengingat keberangkatan dikunci pada pukul 15:00. Akibatnya <strong>10 peserta (58.8%) tidak menerima pengingat paspor dan meeting point</strong>. Rekomendasi dari pilot BCL-05 agar instance dibentuk paling lambat H-4 belum diterapkan.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">2</td>
+                        <td><strong>Engagement rendah: 1,0 tap per peserta sepanjang tur</strong></td>
+                        <td><span class="status-pill pill-sent" style="font-size:10px;">TINGGI</span></td>
+                        <td>Hanya <strong>17 dari 67</strong> notifikasi yang pernah disentuh peserta (25.4%). Angka tap rate 39.5% tertutup dua record yang belum final. Pesan dengan tindakan eksplisit mencapai 100%, sedangkan pesan tanpa ajakan tindakan berada pada 13.3% — minat peserta tersedia, namun alasan untuk menyentuh notifikasi tidak.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">3</td>
+                        <td><strong>Capture rate agregat lebih tinggi daripada kondisi sebenarnya</strong></td>
+                        <td><span class="status-pill pill-sending" style="font-size:10px;">SEDANG</span></td>
+                        <td>Angka 64.2% dihitung dari 6 event termasuk 2 record yang belum ditutup (32 dari 67 penerima). Jika hanya event berstatus SENT yang dihitung, capture rate adalah <strong>31.4%</strong> dengan tap rate 72.7% — gambaran yang jauh lebih jujur mengenai notifikasi yang benar-benar dikirim.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">4</td>
+                        <td><strong>Status SENDING pada pesan sambutan</strong></td>
+                        <td><span class="status-pill pill-scheduled" style="font-size:10px;">INFORMASI</span></td>
+                        <td>Perilaku yang memang disengaja untuk notifikasi yang dipicu saat peserta bergabung, sehingga daftar penerima bersifat bertambah. Angka 17 penerima menjadi dasar estimasi jumlah peserta tur sekaligus ukuran utama jangkauan notifikasi.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">5</td>
+                        <td><strong>Status SCHEDULED pada pesan terima kasih</strong></td>
+                        <td><span class="status-pill pill-scheduled" style="font-size:10px;">INFORMASI</span></td>
+                        <td>Kondisi normal dan permanen untuk template yang dipicu oleh pengisian survei. Pesan dikirim saat peserta mengisi survei. Kendala pencatatan yang pernah terjadi pada pilot KOP-07 telah diperbaiki.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">6</td>
+                        <td><strong>Fase on-trip berjalan tanpa notifikasi otomatis</strong></td>
+                        <td><span class="status-pill pill-scheduled" style="font-size:10px;">INFORMASI</span></td>
+                        <td>Notifikasi harian selama perjalanan <strong>tidak lagi dikirim untuk seluruh tur</strong>; pilot KOP-07 masih menggunakan konfigurasi lama. Ini merupakan keputusan yang berlaku, bukan kekosongan cakupan: tidak ada pengiriman yang hilang dan tidak ada biaya yang terbuang.</td>
+                    </tr>
+                    <tr>
+                        <td class="num">7</td>
+                        <td><strong>Tidak ditemukan notifikasi gagal kirim</strong></td>
+                        <td><span class="status-pill pill-scheduled" style="font-size:10px;">INFORMASI</span></td>
+                        <td>Seluruh 67 notifikasi keluar dari sistem tanpa satu pun kegagalan pengiriman, dibandingkan 5 kegagalan pada pilot KOP-07. Ini merupakan indikator kesehatan sistem yang baik.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 5. CATATAN TEKNIS -->
+        <div class="section-title"><span class="num-tag">5</span> Catatan Teknis Penting</div>
+        <p class="section-sub">Tiga hal yang perlu dipahami agar data pada laporan ini dibaca dengan tepat.</p>
+
+        <div class="callout info">
+            <strong>ℹ️ Dua jam pencatatan pada setiap notifikasi.</strong> Setiap notifikasi dicatat dalam dua zona waktu. <strong>Local Tour Time</strong> merupakan acuan utama, yaitu waktu ketika notifikasi diterima peserta di lokasi tur, dan menjadi dasar aturan jadwal template. <strong>Jakarta Time (WIB)</strong> dicatat sebagai pelengkap untuk memudahkan monitoring tim support dalam memastikan notifikasi benar-benar terkirim dan diterima pengguna ALVIS pada waktu yang sama. Kedua pencatatan ini selalu menunjukkan momen yang sama. Contohnya, pesan H-2 tercatat pada 19.00 waktu tur dan 01.00 WIB, yang secara absolut merupakan waktu yang identik.
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Pergeseran jam lokal pada 25 Oktober 2026.</strong> Uni Eropa yang menggunakan CEST (UTC+2) hingga 24 Oktober dan beralih ke CET (UTC+1) pada 25 Oktober. Akibatnya selisih antara kedua jam berubah dari −5 jam menjadi −6 jam. Yang berubah hanyalah selisih pencatatan, <strong>bukan waktu pengiriman dan bukan jadwal notifikasi di lokasi tur</strong>.
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Health Indicator 100%.</strong> Seluruh indikator kesehatan instance berstatus <em>Good health</em>, yang mengonfirmasi tidak adanya kendala kesehatan yang mengganggu kehadirannya peserta. Nilai ini bersifat konfirmasi dan tidak berkaitan langsung dengan kinerja notifikasi.
+        </div>
+
+        <!-- 6. REKOMENDASI -->
+        <div class="section-title"><span class="num-tag">6</span> Rekomendasi</div>
+        <p class="section-sub">Enam arah tindak lanjut yang diturunkan dari tujuh temuan pada Bagian 4, disusun menurut prioritas temuan yang melatarbelakanginya.</p>
+
+        <div class="callout warn">
+            <strong>⚠️ Enam arah tindak lanjut:</strong>
+            <ul>
+                <li><strong>Isi pesan dan ajakan tindakan</strong> — berikan setiap notifikasi satu ajakan tindakan yang eksplisit. Pesan tanpa ajakan tindakan perlu diberi tujuan yang dapat ditindaklanjuti atau tidak dikirimkan sama sekali, dan template berupa daftar periksa yang memuat banyak item tanpa satu tindakan yang jelas perlu ditinjau ulang. <em>→ Temuan 2</em></li>
+                <li><strong>Jangkauan notifikasi</strong> — bentuk instance tur paling lambat <strong>H-4</strong> agar daftar peserta stabil, dan pengambilan daftar penerima pada template berkala tetap dilakukan saat pengiriman, bukan saat penjadwalan. <em>→ Temuan 1</em></li>
+                <li><strong>Pengukuran kinerja</strong> — jadikan rasio <strong>pembukaan terhadap total pesan yang dikirim (25.4%)</strong> sebagai ukuran utama, dan tampilkan dua ukuran terpisah pada halaman Instance Notification Detail, yaitu "Delivery Rate (closed events)" dan "Pool Coverage (all events)". <em>→ Temuan 3</em></li>
+                <li><strong>Pencatatan alasan tidak disentuh</strong> — mulai mencatat alasan peserta tidak menyentuh notifikasi, misalnya usiran, penolakan, atau penundaan. Tanpa data ini, perbaikan isi pesan hanya dapat bertumpu pada dugaan. <em>→ Temuan 2</em></li>
+                <li><strong>Penjadwalan pada H-1</strong> — beri jarak minimal 3 – 4 jam antara pesan sambutan dan pengingat keberangkatan agar keduanya tidak bersaing pada slot notifikasi yang sama. <em>→ Temuan 1</em></li>
+                <li><strong>Dokumentasi keputusan on-trip</strong> — catat bahwa notifikasi harian selama perjalanan tidak lagi dikirim, agar fase tersebut tidak salah dibaca sebagai anomali pada instance berikutnya. <em>→ Temuan 6</em></li>
+            </ul>
+        </div>
+
+        <!-- 7. KESIMPULAN -->
+        <div class="section-title"><span class="num-tag">7</span> Kesimpulan</div>
+
+        <div class="takeaway">
+            <strong>Kesimpulan umum:</strong> Instance EEX-12 menjawab pertanyaan mengenai apakah notifikasi berhasil dikirim dengan hasil yang jelas: sistem berjalan sesuai rencana, seluruh jadwal terpenuhi, dan semua status yang tampak ganjil — SENDING, SCHEDULED, serta fase on-trip yang kosong — terbukti merupakan perilaku yang memang disengaja.
+            <br><br>
+            Titik berat fitur ini berpindah pada pertanyaan berikutnya, yaitu mengapa notifikasi yang telah sampai belum dibuka. Jumlah sebenarnya jauh lebih kecil daripada yang ditunjukkan angka agregat: headline 39.5% tertutup dua record yang belum final, dan apabila dihitung dari seluruh pesan yang terkirim, hanya 17 yang pernah disentuh peserta atau setara <strong>1,0 tap per peserta</strong> sepanjang tur 12 hari.
+            <br><br>
+            Bukti pada Bagian 3 menguraikan arahnya: pesan dengan tindakan tunggal dan eksplisit mencapai tap rate 100%, sedangkan pesan tanpa ajakan tindakan berada pada posisi terendah. Minat peserta <strong>tidak hilang</strong>, yang hilang adalah alasan spesifik untuk menyentuh notifikasi. Karena itu, sasaran periode berikutnya <strong>bukan menambah volume notifikasi, melainkan meningkatkan nilai setiap pesan</strong>.
+            <br><br>
+            Secara keseluruhan, fitur notifikasi otomatis <strong>sudah layak dilanjutkan ke instance tur yang lebih banyak</strong>, dengan perbaikan konfigurasi tersebut di atas sebagai prasyarat sebelum tahap penerapan penuh.
+        </div>
+
+        <!-- ISTILAH -->
+        <div class="section-title"><span class="num-tag">8</span> Istilah</div>
+
+        <dl class="glossary">
+            <dt>Capture Rate</dt>
+            <dd>Perbandingan jumlah notifikasi yang tercatat sampai ke perangkat terhadap total notifikasi yang dikirim.</dd>
+            <dt>Tap Rate</dt>
+            <dd>Perbandingan jumlah notifikasi yang dibuka terhadap yang tercatat sampai ke perangkat. Untuk instance ini, ukuran yang lebih jujur adalah rasio pembukaan terhadap total pesan yang dikirim, yaitu 25.4%.</dd>
+            <dt>Jangkauan</dt>
+            <dd>Proporsi peserta tur yang menerima sebuah template, dihitung terhadap estimasi jumlah peserta.</dd>
+            <dt>Local Tour Time</dt>
+            <dd>Waktu notifikasi diterima peserta di lokasi tur. Merupakan acuan utama dalam pembahasan jadwal notifikasi.</dd>
+            <dt>Timestamp Monitoring (WIB)</dt>
+            <dd>Waktu pengiriman yang tercatat dalam zona waktu Indonesia, dicatat untuk memudahkan monitoring tim support.</dd>
+            <dt>Event Notifikasi</dt>
+            <dd>Satu pengiriman notifikasi beserta jumlah penerima, jumlah yang sampai ke perangkat, dan jumlah yang dibuka.</dd>
+            <dt>Instance</dt>
+            <dd>Satu catatan tur beserta seluruh notifikasi yang dikirim untuk tur tersebut.</dd>
+            <dt>Participant Pool</dt>
+            <dd>Estimasi jumlah seluruh peserta tur, diambil dari jumlah penerima terbesar yang tercatat.</dd>
+        </dl>
+
+        <div class="footer-note">
+            Laporan Ringkasan Pilot Testing Notifikasi — Instance EEX-12 · ALVIS Mobile Apps &amp; Backoffice Development Team © 2026<br>
+            Dokumen ini merupakan ringkasan dari laporan lengkap Instance Notification Detail EEX-12. Data bersumber dari halaman Instance Notification Detail backoffice per 29 Oktober 2026.
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
