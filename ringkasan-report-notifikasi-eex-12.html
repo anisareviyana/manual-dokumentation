@@ -130,7 +130,7 @@
         /* INSTANCE INFO GRID */
         .instance-info {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1px;
             background: var(--border);
             border-top: 1px solid var(--border);
@@ -167,22 +167,6 @@
             font-weight: 400;
             margin-top: 2px;
             word-break: break-word;
-        }
-        .health-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--ok-bg);
-            color: var(--ok-text);
-            border: 1px solid var(--ok-border);
-            font-size: 11.5px;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 999px;
-            margin-top: 6px;
-        }
-        .health-pill .hp-dot {
-            width: 6px; height: 6px; border-radius: 50%; background: #22c55e;
         }
         .meta-box {
             display: flex;
@@ -908,11 +892,6 @@
             <div class="info-value">FCO → AMS</div>
             <div class="info-sub">Rome (Fiumicino) → Amsterdam (Schiphol)</div>
         </div>
-        <div class="info-cell">
-            <div class="info-label"><i class="fa-solid fa-heart-pulse"></i> Health Indicator</div>
-            <div class="info-value">100%</div>
-            <div class="info-sub"><span class="health-pill"><span class="hp-dot"></span>Good health</span></div>
-        </div>
     </div>
 
     <div class="content">
@@ -1074,7 +1053,7 @@
             </table>
         </div>
 
-        <p class="note">Keterangan: <strong>S</strong> = dikirim, <strong>D</strong> = sampai ke perangkat, <strong>T</strong> = dibuka peserta. <strong>Jangkauan</strong> dihitung terhadap estimasi jumlah peserta tur (±17 peserta), yang diambil dari jumlah penerima terbesar yang tercatat. Tanda (*) pada kolom Capture menandakan record yang belum berstatus final, sehingga nilai capture mencerminkan kumpulan penerima dan bukan konfirmasi penerimaan.</p>
+        <p class="note">Keterangan: <strong>S</strong> = dikirim, <strong>D</strong> = sampai ke perangkat, <strong>T</strong> = dibuka peserta. <strong>Jangkauan</strong> dihitung terhadap estimasi jumlah peserta tur (±17 peserta), yang diambil dari jumlah penerima terbesar yang tercatat. Peserta yang baru bergabung setelah sebuah notifikasi dikirim secara wajar tidak menerima notifikasi tersebut, sehingga angka jangkauan tidak menunjukkan adanya peserta yang terlewat. Tanda (*) pada kolom Capture menandakan record yang belum berstatus final, sehingga nilai capture mencerminkan kumpulan penerima dan bukan konfirmasi penerimaan.</p>
 
         <!-- 3. ANALISIS ENGAGEMENT -->
         <div class="section-title"><span class="num-tag">3</span> Analisis Engagement</div>
@@ -1259,7 +1238,7 @@
 
         <!-- 4. TEMUAN UTAMA -->
         <div class="section-title"><span class="num-tag">4</span> Temuan Utama</div>
-        <p class="section-sub">Tujuh temuan terhadap status notifikasi, keanehan data, serta perilaku yang memang diharapkan. Temuan diurutkan berdasarkan prioritas: dua temuan berkategori tinggi, satu sedang, dan empat bersifat informasi.</p>
+        <p class="section-sub">Enam temuan terhadap status notifikasi, keanehan data, serta perilaku yang diharapkan. Temuan diurutkan berdasarkan prioritas: satu temuan berkategori tinggi, satu sedang, dan empat bersifat informasi.</p>
 
         <div class="table-responsive">
             <table class="data-table">
@@ -1274,42 +1253,36 @@
                 <tbody>
                     <tr>
                         <td class="num">1</td>
-                        <td><strong>Pengingat keberangkatan hanya menjangkau 7 dari ±17 peserta</strong></td>
-                        <td><span class="status-pill pill-sent" style="font-size:10px;">TINGGI</span></td>
-                        <td>Instance notifikasi baru dibentuk pada H-1 (15 Oktober), sehingga daftar peserta masih bertambah ketika pengingat keberangkatan dikunci pada pukul 15:00. Akibatnya <strong>10 peserta (58.8%) tidak menerima pengingat paspor dan meeting point</strong>. Rekomendasi dari pilot BCL-05 agar instance dibentuk paling lambat H-4 belum diterapkan.</td>
-                    </tr>
-                    <tr>
-                        <td class="num">2</td>
                         <td><strong>Engagement rendah: 1,0 tap per peserta sepanjang tur</strong></td>
                         <td><span class="status-pill pill-sent" style="font-size:10px;">TINGGI</span></td>
                         <td>Hanya <strong>17 dari 67</strong> notifikasi yang pernah disentuh peserta (25.4%). Angka tap rate 39.5% tertutup dua record yang belum final. Pesan dengan tindakan eksplisit mencapai 100%, sedangkan pesan tanpa ajakan tindakan berada pada 13.3% — minat peserta tersedia, namun alasan untuk menyentuh notifikasi tidak.</td>
                     </tr>
                     <tr>
-                        <td class="num">3</td>
+                        <td class="num">2</td>
                         <td><strong>Capture rate agregat lebih tinggi daripada kondisi sebenarnya</strong></td>
                         <td><span class="status-pill pill-sending" style="font-size:10px;">SEDANG</span></td>
                         <td>Angka 64.2% dihitung dari 6 event termasuk 2 record yang belum ditutup (32 dari 67 penerima). Jika hanya event berstatus SENT yang dihitung, capture rate adalah <strong>31.4%</strong> dengan tap rate 72.7% — gambaran yang jauh lebih jujur mengenai notifikasi yang benar-benar dikirim.</td>
                     </tr>
                     <tr>
-                        <td class="num">4</td>
+                        <td class="num">3</td>
                         <td><strong>Status SENDING pada pesan sambutan</strong></td>
                         <td><span class="status-pill pill-scheduled" style="font-size:10px;">INFORMASI</span></td>
                         <td>Perilaku yang memang disengaja untuk notifikasi yang dipicu saat peserta bergabung, sehingga daftar penerima bersifat bertambah. Angka 17 penerima menjadi dasar estimasi jumlah peserta tur sekaligus ukuran utama jangkauan notifikasi.</td>
                     </tr>
                     <tr>
-                        <td class="num">5</td>
+                        <td class="num">4</td>
                         <td><strong>Status SCHEDULED pada pesan terima kasih</strong></td>
                         <td><span class="status-pill pill-scheduled" style="font-size:10px;">INFORMASI</span></td>
                         <td>Kondisi normal dan permanen untuk template yang dipicu oleh pengisian survei. Pesan dikirim saat peserta mengisi survei. Kendala pencatatan yang pernah terjadi pada pilot KOP-07 telah diperbaiki.</td>
                     </tr>
                     <tr>
-                        <td class="num">6</td>
+                        <td class="num">5</td>
                         <td><strong>Fase on-trip berjalan tanpa notifikasi otomatis</strong></td>
                         <td><span class="status-pill pill-scheduled" style="font-size:10px;">INFORMASI</span></td>
                         <td>Notifikasi harian selama perjalanan <strong>tidak lagi dikirim untuk seluruh tur</strong>; pilot KOP-07 masih menggunakan konfigurasi lama. Ini merupakan keputusan yang berlaku, bukan kekosongan cakupan: tidak ada pengiriman yang hilang dan tidak ada biaya yang terbuang.</td>
                     </tr>
                     <tr>
-                        <td class="num">7</td>
+                        <td class="num">6</td>
                         <td><strong>Tidak ditemukan notifikasi gagal kirim</strong></td>
                         <td><span class="status-pill pill-scheduled" style="font-size:10px;">INFORMASI</span></td>
                         <td>Seluruh 67 notifikasi keluar dari sistem tanpa satu pun kegagalan pengiriman, dibandingkan 5 kegagalan pada pilot KOP-07. Ini merupakan indikator kesehatan sistem yang baik.</td>
@@ -1320,7 +1293,7 @@
 
         <!-- 5. CATATAN TEKNIS -->
         <div class="section-title"><span class="num-tag">5</span> Catatan Teknis Penting</div>
-        <p class="section-sub">Tiga hal yang perlu dipahami agar data pada laporan ini dibaca dengan tepat.</p>
+        <p class="section-sub">Dua hal yang perlu dipahami agar data pada laporan ini dibaca dengan tepat.</p>
 
         <div class="callout info">
             <strong>ℹ️ Dua jam pencatatan pada setiap notifikasi.</strong> Setiap notifikasi dicatat dalam dua zona waktu. <strong>Local Tour Time</strong> merupakan acuan utama, yaitu waktu ketika notifikasi diterima peserta di lokasi tur, dan menjadi dasar aturan jadwal template. <strong>Jakarta Time (WIB)</strong> dicatat sebagai pelengkap untuk memudahkan monitoring tim support dalam memastikan notifikasi benar-benar terkirim dan diterima pengguna ALVIS pada waktu yang sama. Kedua pencatatan ini selalu menunjukkan momen yang sama. Contohnya, pesan H-2 tercatat pada 19.00 waktu tur dan 01.00 WIB, yang secara absolut merupakan waktu yang identik.
@@ -1330,23 +1303,18 @@
             <strong>ℹ️ Pergeseran jam lokal pada 25 Oktober 2026.</strong> Uni Eropa yang menggunakan CEST (UTC+2) hingga 24 Oktober dan beralih ke CET (UTC+1) pada 25 Oktober. Akibatnya selisih antara kedua jam berubah dari −5 jam menjadi −6 jam. Yang berubah hanyalah selisih pencatatan, <strong>bukan waktu pengiriman dan bukan jadwal notifikasi di lokasi tur</strong>.
         </div>
 
-        <div class="callout info">
-            <strong>ℹ️ Health Indicator 100%.</strong> Seluruh indikator kesehatan instance berstatus <em>Good health</em>, yang mengonfirmasi tidak adanya kendala kesehatan yang mengganggu kehadirannya peserta. Nilai ini bersifat konfirmasi dan tidak berkaitan langsung dengan kinerja notifikasi.
-        </div>
-
         <!-- 6. REKOMENDASI -->
         <div class="section-title"><span class="num-tag">6</span> Rekomendasi</div>
-        <p class="section-sub">Enam arah tindak lanjut yang diturunkan dari tujuh temuan pada Bagian 4, disusun menurut prioritas temuan yang melatarbelakanginya.</p>
+        <p class="section-sub">Lima arah tindak lanjut yang diturunkan dari enam temuan pada Bagian 4, disusun menurut prioritas temuan yang melatarbelakanginya.</p>
 
         <div class="callout warn">
-            <strong>⚠️ Enam arah tindak lanjut:</strong>
+            <strong>⚠️ Lima arah tindak lanjut:</strong>
             <ul>
-                <li><strong>Isi pesan dan ajakan tindakan</strong> — berikan setiap notifikasi satu ajakan tindakan yang eksplisit. Pesan tanpa ajakan tindakan perlu diberi tujuan yang dapat ditindaklanjuti atau tidak dikirimkan sama sekali, dan template berupa daftar periksa yang memuat banyak item tanpa satu tindakan yang jelas perlu ditinjau ulang. <em>→ Temuan 2</em></li>
-                <li><strong>Jangkauan notifikasi</strong> — bentuk instance tur paling lambat <strong>H-4</strong> agar daftar peserta stabil, dan pengambilan daftar penerima pada template berkala tetap dilakukan saat pengiriman, bukan saat penjadwalan. <em>→ Temuan 1</em></li>
-                <li><strong>Pengukuran kinerja</strong> — jadikan rasio <strong>pembukaan terhadap total pesan yang dikirim (25.4%)</strong> sebagai ukuran utama, dan tampilkan dua ukuran terpisah pada halaman Instance Notification Detail, yaitu "Delivery Rate (closed events)" dan "Pool Coverage (all events)". <em>→ Temuan 3</em></li>
-                <li><strong>Pencatatan alasan tidak disentuh</strong> — mulai mencatat alasan peserta tidak menyentuh notifikasi, misalnya usiran, penolakan, atau penundaan. Tanpa data ini, perbaikan isi pesan hanya dapat bertumpu pada dugaan. <em>→ Temuan 2</em></li>
-                <li><strong>Penjadwalan pada H-1</strong> — beri jarak minimal 3 – 4 jam antara pesan sambutan dan pengingat keberangkatan agar keduanya tidak bersaing pada slot notifikasi yang sama. <em>→ Temuan 1</em></li>
-                <li><strong>Dokumentasi keputusan on-trip</strong> — catat bahwa notifikasi harian selama perjalanan tidak lagi dikirim, agar fase tersebut tidak salah dibaca sebagai anomali pada instance berikutnya. <em>→ Temuan 6</em></li>
+                <li><strong>Isi pesan dan ajakan tindakan</strong> — berikan setiap notifikasi satu ajakan tindakan yang eksplisit. Pesan tanpa ajakan tindakan perlu diberi tujuan yang dapat ditindaklanjuti atau tidak dikirimkan sama sekali, dan template berupa daftar periksa yang memuat banyak item tanpa satu tindakan yang jelas perlu ditinjau ulang. <em>→ Temuan 1</em></li>
+                <li><strong>Pengukuran kinerja</strong> — jadikan rasio <strong>pembukaan terhadap total pesan yang dikirim (25.4%)</strong> sebagai ukuran utama, dan tampilkan dua ukuran terpisah pada halaman Instance Notification Detail, yaitu "Delivery Rate (closed events)" dan "Pool Coverage (all events)". <em>→ Temuan 2</em></li>
+                <li><strong>Pencatatan alasan tidak disentuh</strong> — mulai mencatat alasan peserta tidak menyentuh notifikasi, misalnya usiran, penolakan, atau penundaan. Tanpa data ini, perbaikan isi pesan hanya dapat bertumpu pada dugaan. <em>→ Temuan 1</em></li>
+                <li><strong>Penjadwalan pada H-1</strong> — beri jarak minimal 3 – 4 jam antara pesan sambutan dan pengingat keberangkatan agar keduanya tidak bersaing pada slot notifikasi yang sama.</li>
+                <li><strong>Dokumentasi keputusan on-trip</strong> — catat bahwa notifikasi harian selama perjalanan tidak lagi dikirim, agar fase tersebut tidak salah dibaca sebagai anomali pada instance berikutnya. <em>→ Temuan 5</em></li>
             </ul>
         </div>
 
