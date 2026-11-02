@@ -1831,18 +1831,16 @@
 
         <!-- SECTION 10: STATUS & ANOMALI -->
         <div class="section-title"><span class="num-tag">10</span> Status &amp; Anomali</div>
-        <p class="section-sub">Ringkasan 7 temuan atas status notifikasi, keanehan data, dan perilaku yang diharapkan (<em>by design</em>) — 2 temuan HIGH, 1 MEDIUM, dan 4 INFO. Rincian analitis tiap temuan tersedia pada bagian terkait.</p>
+        <p class="section-sub">Ringkasan 7 temuan atas status notifikasi, keanehan data, dan perilaku yang diharapkan (<em>by design</em>) — 2 temuan HIGH, 1 MEDIUM, dan 4 INFO. Rincian analitis tiap temuan tersedia pada bagian terkait; arah tindak unggulan ada di Bagian 11.</p>
 
         <div class="table-responsive">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th style="width:4%;" class="num">No</th>
-                        <th style="width:19%;">Temuan</th>
-                        <th style="width:9%;">Prioritas</th>
-                        <th style="width:31%;">Ringkasan &amp; dampak</th>
-                        <th style="width:23%;">Tindakan</th>
-                        <th style="width:14%;">PIC</th>
+                        <th style="width:5%;" class="num">No</th>
+                        <th style="width:26%;">Temuan</th>
+                        <th style="width:11%;">Prioritas</th>
+                        <th style="width:58%;">Ringkasan &amp; dampak</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1851,95 +1849,73 @@
                         <td><strong>Pre-trip reminder hanya menjangkau 7 dari ±17 peserta (41%)</strong></td>
                         <td><span class="prio high">HIGH PRIORITY</span></td>
                         <td>Instance notifikasi baru dibentuk pada H-1 (15 Okt), sehingga participant list masih bertambah saat pre-trip reminder dikunci pukul 15:00. <strong>10 peserta (58.8%)</strong> tidak menerima pengingat paspor &amp; meeting point. Rekomendasi BCL-05 (instance formation ≥ H-4) belum diterapkan.</td>
-                        <td>Bentuk instance tur ≥ H-4 agar participant list stabil; scheduler template berkala tetap ambil recipient list saat <em>dispatch time</em>, bukan <em>scheduling time</em>.</td>
-                        <td>Tim Backoffice &amp; Tim Back-End</td>
                     </tr>
                     <tr>
                         <td class="num">2</td>
                         <td><strong>Engagement rendah — hanya 1,0 tap per peserta sepanjang tur 12 hari</strong></td>
                         <td><span class="prio high">HIGH PRIORITY</span></td>
                         <td>Hanya <strong>17 dari 67</strong> notifikasi yang pernah disentuh peserta (25.4%). Headline 39.5% tertutup dua record non-SENT (74.4% denominator, 52.9% tap). Pesan dengan CTA tunggal mencapai 100%, tanpa CTA 13.3% — minat ada, alasan mengetuk tidak.</td>
-                        <td>Satu <strong>CTA eksplisit</strong> per notifikasi; jadikan <strong>tap per notifikasi terkirim (25.4%)</strong> sebagai KPI utama; mulai kumpulkan data alasan tidak-tap.</td>
-                        <td>Tim Operasional, Tim Development, Tim Mobile &amp; Tim Back-End</td>
                     </tr>
                     <tr>
                         <td class="num">3</td>
                         <td><strong>Capture rate agregat 64.2% terinflasi oleh 2 record non-SENT</strong></td>
                         <td><span class="prio mid">MEDIUM PRIORITY</span></td>
                         <td>Delivered dihitung dari 6 event termasuk 2 record yang belum menutup (32 dari 67 recipient). Isolasi 4 event berstatus SENT: capture 31.4%, tap 72.7% — gambaran yang jauh lebih jujur.</td>
-                        <td>Tampilkan dua metrik terpisah di backoffice: "Delivery Rate (closed events)" dan "Pool Coverage (all events)", dan pilih satu sebagai KPI lintas-instance.</td>
-                        <td>Tim Backoffice</td>
                     </tr>
                     <tr>
                         <td class="num">4</td>
                         <td><strong>Status SENDING pada welcome message — <em>by design</em></strong></td>
                         <td><span class="prio low">INFO</span></td>
                         <td>Perilaku yang disengaja untuk notifikasi join-triggered; participant list bersifat inkremental. Angka 17 recipient menjadi <strong>basis estimasi participant pool</strong> dan indeks utama jangkauan notifikasi.</td>
-                        <td>Tidak ada perbaikan. Tambahkan label kontekstual "Join-triggered — active until tour start" di backoffice.</td>
-                        <td>Tim Backoffice</td>
                     </tr>
                     <tr>
                         <td class="num">5</td>
                         <td><strong>Status SCHEDULED pada thank-you message — <em>expected behavior</em></strong></td>
                         <td><span class="prio low">INFO</span></td>
                         <td>Kondisi normal dan permanen untuk template event-triggered (dikirim saat peserta submit survey). Bug log thank-you di backoffice sudah diperbaiki sejak pilot KOP-07.</td>
-                        <td>Tidak ada perbaikan. Tambahkan label "Triggered by: Survey Submission" di backoffice.</td>
-                        <td>Tim Backoffice</td>
                     </tr>
                     <tr>
                         <td class="num">6</td>
                         <td><strong>Fase on-trip (17–23 Okt) tanpa notifikasi otomatis — sesuai kebijakan</strong></td>
                         <td><span class="prio low">INFO</span></td>
                         <td>Notifikasi on-trip harian tidak lagi dikirim untuk seluruh tur; pilot KOP-07 masih memakai konfigurasi lama. Bukan gap coverage — tidak ada delivery yang hilang, tidak ada biaya yang terbuang.</td>
-                        <td>Anotasi fase on-trip di backoffice agar tidak salah dibaca sebagai anomali pada instance berikutnya.</td>
-                        <td>Tim Backoffice</td>
                     </tr>
                     <tr>
                         <td class="num">7</td>
                         <td><strong>Tidak ada notifikasi gagal kirim (failed) pada seluruh siklus</strong></td>
                         <td><span class="prio low">INFO</span></td>
                         <td>Seluruh 67 notifikasi keluar dari sistem tanpa satu pun insiden FCM failure — bersih dibanding 5 failure pada pilot KOP-07.</td>
-                        <td>Tidak ada perbaikan — indikator kesehatan sistem yang positif. Sisa isu capture rate masuk investigasi device-level.</td>
-                        <td>&mdash;</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <p class="note">Rincian di balik setiap temuan: performa per template &amp; reach di Bagian 5 · analisis engagement &amp; tap rate di Bagian 6 · analisis zona waktu di Bagian 7 · coverage per fase di Bagian 8 · volume harian di Bagian 9.</p>
+        <p class="note">Rincian di balik setiap temuan: performa per template &amp; reach di Bagian 5 — analisis engagement &amp; tap rate di Bagian 6 — analisis zona waktu di Bagian 7 — coverage per fase di Bagian 8 — volume harian di Bagian 9.</p>
 
         <!-- SECTION 11: INSIGHT & REKOMENDASI -->
         <div class="section-title"><span class="num-tag">11</span> Insight &amp; Rekomendasi</div>
-        <p class="section-sub">Kesimpulan utama dari instance ini dan rekomendasi tindak lanjut untuk tim operasional &amp; development.</p>
-
-        <div class="callout ok">
-            <strong>✅ Hal yang sudah berjalan baik:</strong>
-            <ul>
-                <li><strong>Capture rate 64.2%</strong> — terbaik sepanjang 3 pilot, menandakan callback otomatis dari perangkat ke sistem semakin andal seiring adopsi versi aplikasi terbaru.</li>
-                <li><strong>Nol notifikasi gagal kirim</strong> — 67 pesan keluar sistem tanpa insiden FCM failure, bersih dibanding 5 failure pada pilot KOP-07.</li>
-                <li><strong>Seluruh notifikasi terkirim sesuai jadwalnya</strong> — tidak ada scheduling error; pencatatan waktu di lokasi tur maupun di WIB menunjukkan delivery berjalan pada waktu yang dijadwalkan untuk masing-masing template.</li>
-                <li><strong>Notifikasi yang sampai selalu dibaca</strong> — pada ketiga template dengan delivery terendah, tap rate mencapai 66.7%–100%; tidak ada notifikasi yang sampai tapi sepenuhnya terlewat.</li>
-                <li><strong>Seluruh fase yang dikonfigurasi terisi</strong> — Pre-Trip, Departure, Pre-Return, dan Post-Tour masing-masing punya notifikasi yang berjalan sesuai aturan template; fase on-trip berjalan tanpa notifikasi otomatis sesuai kebijakan.</li>
-                <li><strong>Template konsisten</strong> — 7 template yang sama dipakai di ketiga pilot, sehingga perbandingan antar-instance valid dan regresi mudah dideteksi.</li>
-                <li><strong>Health Indicator 100%</strong> — seluruh indikator kesehatan instance berstatus <em>Good health</em>, mengonfirmasi tidak ada kendala kesehatan yang mengganggu kehadirannya peserta.</li>
-            </ul>
-        </div>
+        <p class="section-sub">Arah tindak lanjut dari 7 temuan di Bagian 10, diurutkan menurut prioritas temuan terkait. Setiap butir dirujuk ke nomor temuannya agar tidak perlu mengulang ringkasan di Bagian 10.</p>
 
         <div class="callout warn">
-            <strong>⚠️ Yang perlu diperbaiki:</strong>
+            <strong>⚠️ Enam arah tindak lanjut:</strong>
             <ul>
-                <li><strong>Engagement — konten &amp; CTA</strong> — pastikan setiap notifikasi punya <strong>satu CTA eksplisit</strong>. Pesan tanpa ajakan aksi (thank-you message, 13.3% tap) perlu diberi tujuan yang bisa ditindaklanjuti atau tidak dikirim sama sekali; template checklist yang memuat banyak item tanpa aksi tunggal perlu ditinjau ulang. <em>— PIC: Tim Operasional &amp; Tim Development</em></li>
-                <li><strong>Metrik — tap per notifikasi terkirim</strong> — jadikan rasio <strong>25.4%</strong> (17 dari 67) sebagai KPI utama bersama capture rate, karena rasio terhadap delivered (39.5%) terlihat jauh lebih sehat dari kenyataannya. <em>— PIC: Tim Backoffice</em></li>
-                <li><strong>Pengumpulan data alasan tidak-tap</strong> — saat ini belum ada pencatatan mengapa peserta tidak mengetuk (swipe, dismiss, atau ditunda). Tanpa data ini, perbaikan konten hanya berdasar dugaan. <em>— PIC: Tim Mobile &amp; Tim Back-End</em></li>
-                <li><strong>Jangkauan notifikasi</strong> — pre-trip reminder hanya menjangkau 41% peserta; participant list terkunci pada H-1. Instance formation harus digeser ke <strong>≥ H-4</strong>, dan scheduler template berkala tetap perlu mengambil recipient list saat <em>dispatch time</em>, bukan saat scheduling. <em>— PIC: Tim Backoffice &amp; Tim Back-End</em></li>
-                <li><strong>Transparansi metrik</strong> — pisahkan "delivery rate (closed events)" dari "pool coverage" agar KPI lintas-instance tidak over-stated. <em>— PIC: Tim Backoffice</em></li>
-                <li><strong>Anti-stacking H-1</strong> — beri jeda minimal 3–4 jam antara welcome message dan pre-trip reminder. <em>— PIC: Tim Backoffice</em></li>
-                <li><strong>Dokumentasi kebijakan on-trip</strong> — catat bahwa notifikasi on-trip harian tidak lagi dikirim, agar fase tersebut tidak salah dibaca sebagai anomali pada instance berikutnya. <em>— PIC: Tim Backoffice</em></li>
+                <li><strong>Konten &amp; CTA</strong> — beri setiap notifikasi <strong>satu CTA eksplisit</strong>. Pesan tanpa ajakan aksi diberi tujuan yang bisa ditindaklanjuti atau tidak dikirim sama sekali; template checklist yang memuat banyak item tanpa aksi tunggal ditinjau ulang. <em>→ Temuan 2 (HIGH)</em></li>
+                <li><strong>Jangkauan</strong> — bentuk instance tur <strong>≥ H-4</strong> agar participant list stabil, dan ambil recipient list saat <em>dispatch time</em> pada template berkala tetap. <em>→ Temuan 1 (HIGH)</em></li>
+                <li><strong>Pengukuran</strong> — jadikan <strong>tap per notifikasi terkirim (25.4%)</strong> sebagai KPI utama, dan tampilkan dua metrik terpisah di backoffice: "Delivery Rate (closed events)" dan "Pool Coverage (all events)". <em>→ Temuan 3</em></li>
+                <li><strong>Data alasan tidak-tap</strong> — mulai catat alasan peserta tidak mengetuk (swipe, dismiss, atau ditunda). Tanpa data ini, perbaikan konten hanya berdasar dugaan. <em>→ Temuan 2</em></li>
+                <li><strong>Scheduling H-1</strong> — beri jeda minimal 3–4 jam antara welcome message dan pre-trip reminder, agar keduanya tidak bersaing di slot notifikasi yang sama. <em>→ Temuan 1</em></li>
+                <li><strong>Dokumentasi kebijakan on-trip</strong> — catat bahwa notifikasi on-trip harian tidak lagi dikirim, agar fase tersebut tidak salah dibaca sebagai anomali pada instance berikutnya. <em>→ Temuan 6</em></li>
             </ul>
         </div>
 
         <div class="takeaway">
-            <strong>Bottom Line:</strong> Instance EEX-12 (Europe &amp; UK, FCO-AMS, 12D9N) adalah pilot dengan <strong>capture rate terbaik sejauh ini</strong> — 64.2% delivered dari 67 notifikasi, tanpa satu pun pengiriman gagal, dan dengan status SENDING/SCHEDULED yang terbukti <em>by design</em>. Namun Delivery yang membaik <strong>tidak diterjemahkan menjadi engagement</strong>: hanya <strong>17 dari 67</strong> notifikasi yang pernah disentuh peserta (25.4%), dengan headline 39.5% yang sebetulnya tertutup oleh dua record non-SENT. Untuk tur 12 hari, itu hanya <strong>1,0 tap per peserta</strong>. Pola di Bagian 6 menunjukkan arah yang jelas: <strong>pesan dengan CTA tunggal dan eksplisit mencapai tap rate 100%</strong>, sedangkan pesan tanpa CTA berada di titik terendah — peserta tampak <strong>tidak kehilangan minat, tetapi tidak diberi alasan spesifik untuk mengetuk</strong>. Prioritas berikutnya: (1) <strong>beri setiap notifikasi satu CTA eksplisit</strong> dan tinjau ulang template checklist, (2) jadikan <strong>tap per notifikasi terkirim (25.4%)</strong> sebagai KPI utama, (3) mulai kumpulkan data alasan tidak-tap, (4) geser pembentukan instance ke ≥ H-4 dan dynamiskan recipient list, (5) pisahkan metrik delivery rate vs pool coverage di backoffice, dan (6) dokumentasikan kebijakan on-trip. Secara keseluruhan fitur notifikasi <strong>sudah layak dilanjutkan ke lebih banyak instance</strong>, dengan perbaikan-perbaikan konfigurasi di atas sebagai prasyarat sebelum fase full roll-out.
+            <strong>Bottom Line:</strong> EEX-12 menutup pertanyaan "apakah notifikasi sampai" — dan jawabannya sudah tegas: pipeline berjalan, jadwal terpenuhi, dan seluruh status yang tampak ganjil (SENDING, SCHEDULED, fase on-trip kosong) terbukti <em>by design</em>.
+
+            Titik berat fitur ini bergeser ke pertanyaan berikutnya: kenapa notifikasi yang sudah sampai belum dibuka? Jumlah sebenarnya jauh lebih kecil daripada yang terlihat di angka agregat — headline 39.5% tertutup dua record non-SENT, dan jika dihitung dari seluruh pesan yang terkirim, hanya 17 yang pernah disentuh peserta, atau <strong>1,0 tap per peserta</strong> sepanjang tur 12 hari.
+
+            Bukti di Bagian 6 menunjukkan arahnya: pesan dengan CTA tunggal dan eksplisit mencapai tap rate 100%, sedangkan pesan tanpa CTA berada di titik terendah. Minat peserta <strong>tidak hilang</strong> — yang hilang adalah alasan spesifik untuk menyentuhnya. Jadi target periode berikutnya <strong>bukan menambah volume notifikasi, melainkan menaikkan nilai per pesan</strong>; itulah fokus enam arah tindak lanjut di atas.
+
+            Secara keseluruhan fitur notifikasi <strong>sudah layak dilanjutkan ke lebih banyak instance</strong>, dengan perbaikan konfigurasi tersebut sebagai prasyarat sebelum fase full roll-out.
         </div>
 
         <!-- SECTION 12: GLOSSARY -->
@@ -1977,8 +1953,6 @@
             <dd>Waktu pengiriman yang tercatat pada sistem dalam zona WIB. Menunjuk <strong>momen yang sama</strong> dengan Local Tour Time — hanya ditulis dalam zona waktu Indonesia untuk memudahkan monitoring tim support memastikan notifikasi benar-benar terkirim dan diterima pengguna ALVIS pada waktu yang sama.</dd>
             <dt>Notification Instance</dt>
             <dd>Halaman backoffice yang menampilkan record notifikasi yang dikirim beserta status pengirimannya.</dd>
-            <dt>Penanggung Jawab (PIC)</dt>
-            <dd>Orang / tim yang bertanggung jawab atas suatu pekerjaan perbaikan.</dd>
         </dl>
     </div>
 </div>
